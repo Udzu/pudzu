@@ -16,3 +16,6 @@ The modules aren't properly packaged up or pip-able but are reasonably simple, g
 - *tureen.py* - various BeautifulSoup utilities.
 - *wikipage.py* - wikipedia and wikidata parsing utilities.
 
+## Copyright
+
+Copyright © 2017 by Udzu. Licensed under the [MIT License](LICENSE).

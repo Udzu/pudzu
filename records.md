@@ -1,4 +1,4 @@
-# records.py
+# [records.py](records.py)
 
 ## Summary 
 Various utilities for handling records (lists of dicts), grouped records (ordered dicts of records) and tables (pandas dataframes). Fairly lightweight with an emphasis on pure functional manipulation of builtin structures. Some overlap with packages such as pandas; this is certainly not the only (or necessarily best) way to handle records, but should have a reasonably shallow learning curve. Not optimised for speed.

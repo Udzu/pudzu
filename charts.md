@@ -14,19 +14,19 @@ Three chart types are currently supported: **bar charts**, **time charts** and *
 
 ### Bar charts
 
-**bar_chart**: generate a bar chart; supports grouped, stacked and percentage stacked charts. E.g.: [ukelections.py](dataviz/ukelections.py).
+**bar_chart**: generate a bar chart; supports grouped, stacked and percentage stacked charts. Sample script: [ukelections.py](dataviz/ukelections.py).
 
 ![uk elections bar chart](images/chart_elections.png)
 
 ### Time charts
 
-**time_chart**: generate a time chart; supports numeric and date timelines. E.g.: [g7.py](dataviz/g7.py).
+**time_chart**: generate a time chart; supports numeric and date timelines. Sample script: [g7.py](dataviz/g7.py).
 
 ![time chart example](images/chart_g7.png)
 
 ### Grid charts
 
-**grid_chart**: generate an image grid chart; essentially a convenient wrapper for `Image.from_array`. E.g.: [periodic.py](dataviz/periodic.py) and [40under40.py](dataviz/40under40.py).
+**grid_chart**: generate an image grid chart; essentially a convenient wrapper for `Image.from_array`. Sample scripts: [periodic.py](dataviz/periodic.py) and [40under40.py](dataviz/40under40.py).
 
 ![grid chart example](images/chart_periodic.png)
 

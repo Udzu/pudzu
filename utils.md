@@ -72,9 +72,9 @@ ImportError: Missing module: module
 **ignoring_extra_args**: wrapper that calls the function with the correct number of positional arguments and supported keyword arguments only. Useful for flexible user input.
 
 ```python
->> ignoring_extra_args(operator.eq)(4.99998, 5.0, rel_tol=1e-5)
+>> ignoring_extra_args(operator.eq)(4.99998, 5.0, 1e-5)
 False
->> ignoring_extra_args(math.isclose)(4.99998, 5.0, rel_tol=1e-5)
+>> ignoring_extra_args(lambda x,y,n=0: abs(x-y)<=n)(4.99998, 5.0, 1e-3)
 True
 ```
 

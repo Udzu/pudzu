@@ -10,24 +10,24 @@ Pillow-based charting.
 
 ## Documentation
 
-Three chart types are currently supported: **bar charts**, **time charts** and **grid charts**. For usage information, see the docstrings and sample scripts.
+Three chart types are currently supported: **bar charts**, **time charts** and **grid charts**. For usage information, see the docstrings and [sample scripts](dataviz/).
 
 ### Bar charts
 
-**bar_chart**: generate a bar chart; supports grouped, stacked and percentage stacked charts.
+**bar_chart**: generate a bar chart; supports grouped, stacked and percentage stacked charts. E.g.: [ukelections.py](dataviz/ukelections.py).
 
-![bar chart example](images/example1_small.png)
+![uk elections bar chart](images/chart_elections.png)
 
 ### Time charts
 
-**time_chart**: generate a time chart; supports numeric and date timelines.
+**time_chart**: generate a time chart; supports numeric and date timelines. E.g.: [g7.py](dataviz/g7.py).
 
-![time chart example](images/example2_small.png)
+![time chart example](images/chart_g7.png)
 
 ### Grid charts
 
-**grid_chart**: generate an image grid chart; essentially a convenient wrapper for `Image.from_array`.
+**grid_chart**: generate an image grid chart; essentially a convenient wrapper for `Image.from_array`. E.g.: [periodic.py](dataviz/periodic.py) and [40under40.py](dataviz/40under40.py).
 
-![grid chart example](images/example3_small.png)
+![grid chart example](images/chart_periodic.png)
 
-![grid chart example](images/example4_small.png)
+![grid chart example](images/chart_40under40.png)

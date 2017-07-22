@@ -75,7 +75,7 @@ def number_of_args(fn):
     except ValueError:
         # signatures don't work for built-in operators, so check for a few explicitly
         UNARY_OPS = [len, op.not_, op.truth, op.abs, op.index, op.inv, op.invert, op.neg, op.pos]
-        BINARY_OPS = [op.lt, op.le, op.gt, op.ge, op.eq, op.ne, op.is_, op.is_not, op.add, op.and_, op.floordiv, op.lshift, op.mod, op.mul, op.or_, op.pow, op.rshift, op.sub, op.truediv, op.xor, op.concat, op.contains, op.countOf, op.delitem, op.getitem, op.indexOf, math.isclose]
+        BINARY_OPS = [op.lt, op.le, op.gt, op.ge, op.eq, op.ne, op.is_, op.is_not, op.add, op.and_, op.floordiv, op.lshift, op.mod, op.mul, op.or_, op.pow, op.rshift, op.sub, op.truediv, op.xor, op.concat, op.contains, op.countOf, op.delitem, op.getitem, op.indexOf]
         TERNARY_OPS = [op.setitem]
         if fn in UNARY_OPS:
             return 1
@@ -98,7 +98,7 @@ def all_keyword_args(fn):
             return [p.name for p in signature(fn).parameters.values() if p.kind in (p.KEYWORD_ONLY, p.POSITIONAL_OR_KEYWORD)]
     except ValueError:
         # signatures don't work for built-in operators, so check for a few explicitly, otherwise assume none
-        BUILTINS = { math.isclose: ['rel_tol', 'abs_tol'] }
+        BUILTINS = { }
         return BUILTINS.get(fn, [])
         
 def ignoring_extra_args(fn):

@@ -89,14 +89,14 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 >> Image.from_text("The rain", arial(16, bold=True), fg="white", bg="#1f5774", padding=10).show()
 ```
 
-![alt](images\fromtext1.png)
+![alt](images/fromtext1.png)
 
 ```python
 >> Image.from_text("dedicated to the proposition that all men are created equal", arial(16),
                    fg="white", bg="black", max_width=100, align="center", padding=5).show()
 ```
 
-![alt](images\fromtext2.png)
+![alt](images/fromtext2.png)
 
 ```python
 >> Image.from_text("dedicated to the proposition that all men are created equal", arial(16), 
@@ -104,7 +104,7 @@ RGBA(red=100, green=50, blue=50, alpha=5)
                    hyphenator=language_hyphenator("en_EN")).show()
 ```
 
-![alt](images\fromtext3.png)
+![alt](images/fromtext3.png)
 
 **Image.from_array**: create an image from an array of images. Similarly, **Image.from_row** and **Image.from_column** create images form a list of images.
 
@@ -113,7 +113,7 @@ RGBA(red=100, green=50, blue=50, alpha=5)
                     padding=(5,2), xalign=(0,0.5,1), bg="#1f5774").show()
 ```                    
 
-![alt](images\fromarray1.png)
+![alt](images/fromarray1.png)
 
 **Image.from_pattern**: create an image from a background pattern, either scaled or tiled. Similarly, **Image.from_vertical_pattern** and **Image.from_horiztonal_pattern** automatically scale to the image width or height.
 
@@ -122,19 +122,19 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 >> Image.from_pattern(flag.resize_fixed_aspect(width=50), (150,150)).show()
 ```
 
-![alt](images\frompattern1.png)
+![alt](images/frompattern1.png)
 
 ```python
 >> Image.from_vertical_pattern(flag, (150,150)).show()
 ```
 
-![alt](images\frompattern2.png)
+![alt](images/frompattern2.png)
 
 ```python
 >> Image.from_horizontal_pattern(flag, (150,150), align=0.5).show()
 ```
 
-![alt](images\frompattern3.png)
+![alt](images/frompattern3.png)
 
 **Image.EMPTY_IMAGE**: an empty "RGBA" image.
 
@@ -152,7 +152,7 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 >> base.overlay(Image.from_text("red", arial(24)), (0,0), copy=True).show()
 ```
 
-![alt](images\overlay1.png)
+![alt](images/overlay1.png)
 
 **Image.Image.place**: overlay an image at the given alignment and padding.
 
@@ -161,13 +161,13 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 >> base.place(img).show()
 ```
 
-![alt](images\place1.png)
+![alt](images/place1.png)
 
 ```python
 >> base.place(img, align=(0,1), padding=5).show()
 ```
 
-![alt](images\place2.png)
+![alt](images/place2.png)
 
 **Image.Image.pin**: pin an image on another, expanding the base image if necessary.
 
@@ -175,13 +175,13 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 >> base.pin(img, (0,30), bg="black").show()
 ```
 
-![alt](images\pin1.png)
+![alt](images/pin1.png)
 
 ```python
 >> base.pin(img, (0,30), align=(1,0.5), bg="black").show()
 ```
 
-![alt](images\pin2.png)
+![alt](images/pin2.png)
 
 **Image.Image.pad**: pad an image.
 
@@ -189,13 +189,13 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 >> base.pad(5, "grey").show()
 ```
 
-![alt](images\pad1.png)
+![alt](images/pad1.png)
 
 ```python
 >> base.pad((10,10,0,0), "grey").show()
 ```
 
-![alt](images\pad2.png)
+![alt](images/pad2.png)
 
 **Image.Image.resize**: monkey-patched to handle zero-width/height sizes.
 
@@ -210,14 +210,14 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 >> flag.resize_fixed_aspect(scale=0.25).show()
 ```
 
-![alt](images\resizefixed1.png)
+![alt](images/resizefixed1.png)
 
 ```python
 >> smallflag = flag.resize_fixed_aspect(width=100)
 >> smallflag.show()
 ```
 
-![alt](images\resizefixed2.png)
+![alt](images/resizefixed2.png)
 
 **Image.Image.pad_to_aspect**: pad an image so that it has the given aspect ratio.
 
@@ -225,13 +225,13 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 >> smallflag.pad_to_aspect(1, bg="grey").show()
 ```
 
-![alt](images\padtoaspect1.png)
+![alt](images/padtoaspect1.png)
 
 ```python
 >> smallflag.pad_to_aspect(800, 600, align=0).show()
 ```
 
-![alt](images\padtoaspect2.png)
+![alt](images/padtoaspect2.png)
 
 **Image.Image.crop_to_aspect**: crop an image so that it has the given aspect ratio.
 
@@ -239,11 +239,11 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 >> smallflag.crop_to_aspect(1).show()
 ```
 
-![alt](images\croptoaspect1.png)
+![alt](images/croptoaspect1.png)
 
 ```python
 >> smallflag.crop_to_aspect(800, 600, align=0).show()
 ```
 
-![alt](images\croptoaspect2.png)
+![alt](images/croptoaspect2.png)
 

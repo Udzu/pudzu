@@ -13,8 +13,8 @@ The modules aren't properly packaged up or pip-able (yet) but are reasonably sim
 - [records.py](records.md) - utilities for functional handling of records (lists of dicts).
 - [pillar.py](pillar.md) - various monkey-patched Pillow utilities.
 - [charts.py](charts.md) - Pillow-based charting tools.
-- *tureen.py* - various BeautifulSoup utilities.
-- *wikipage.py* - wikipedia and wikidata parsing utilities.
+- [tureen.py](tureen.md) - various BeautifulSoup utilities.
+- [wikipage.py](wikipage.md) - wikipedia and wikidata parsing utilities.
 
 ## Copyright
 

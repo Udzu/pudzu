@@ -1,4 +1,4 @@
-# pillar.py
+# [pillar.py](pillar.py)
 
 ## Summary 
 Various Pillow utilities. These are monkey-patched on, allowing continued use of the Image.new factory function. Most have only been tested in RGB/RGBA modes and may not work in other modes.

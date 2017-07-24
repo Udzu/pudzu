@@ -54,7 +54,7 @@ Class representing a WikiData entity (both items and properties). Can be initial
 >> WDPage(wp.entity)
 <WDPage at Q103846 (Groucho Marx)>
 >> WDPage.from_name("Γκράουτσο Μαρξ", "el")
-<WikiData at Q103846 (Γκράουτσο Μαρξ)>
+<WDPage at Q103846 (Γκράουτσο Μαρξ)>
 >> WDPage.from_wikipedia(wp)
 <WDPage at Q103846 (Groucho Marx)>
 >> wd = _
@@ -68,7 +68,7 @@ Property entries can be initialised by name using the WDProp constructor. Proper
 
 ```python
 >> WDProp("date of birth")
-<WikiData at P569 (date of birth)>
+<WDPage at P569 (date of birth)>
 >> wd.property_values('P569')
 [2 October 1890 (day) [Gregorian]] # Date type for time values
 >> wd.property_values(WDProp("lieu de naissance", "fr"))

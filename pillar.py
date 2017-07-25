@@ -16,6 +16,7 @@ from utils import *
 
 pyphen = optional_import("pyphen")
 requests = optional_import("requests")
+np = optional_import("numpy")
 
 # Various pillow utilities, monkey patched onto the Image, ImageDraw and ImageColor classes
 
@@ -339,6 +340,21 @@ class _Image(Image.Image):
             return self.resize((width, int(width * (self.height / self.width))), resample=resample)
         else:
             return self.resize((int(height * (self.width / self.height)), height), resample=resample)
+            
+    def replace_color(self, color1, color2, ignore_alpha=False):
+        """Return an image with color1 replaced by color2. Requires numpy."""
+        if 'RGB' not in self.mode:
+            raise NotImplementedError
+        n = 3 if (self.mode == 'RGB' or ignore_alpha) else 4
+        color1 = ImageColor.getrgba(color1)[:n]
+        color2 = ImageColor.getrgba(color2)[:n]
+        data = np.array(self)
+        channels = [data[...,i] for i in range(n)]
+        mask = np.ones(data.shape[:-1], dtype=bool)
+        for c,channel in zip(color1, channels):
+            mask = mask & (channel == c)
+        data[:,:,:n][mask] = color2
+        return Image.fromarray(data)
 
 Image.from_text = _Image.from_text
 Image.from_array = _Image.from_array
@@ -360,6 +376,7 @@ Image.Image.pad_to_aspect = _Image.pad_to_aspect
 Image.Image.resize_nonempty = Image.Image.resize
 Image.Image.resize = _Image.resize
 Image.Image.resize_fixed_aspect = _Image.resize_fixed_aspect
+Image.Image.replace_color = _Image.replace_color
 
 def font(name, size, bold=False, italics=False):
     """Return a truetype font object."""

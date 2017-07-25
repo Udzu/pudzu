@@ -4,6 +4,8 @@ from enum import Enum
 
 # Random collection of Pillow-based charting functions
 
+logger = logging.getLogger('charts')
+
 # Bar charts
 
 VEGA_PALETTE = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
@@ -378,3 +380,51 @@ def grid_chart(data, image_key, image_process=None,
     
     if title is not None: chart = Image.from_column((title, chart), bg=bg)
     return chart
+
+# Map charts
+
+class ImageMapSort(Enum):
+    """Image map color sort."""
+    USAGE, HORIZONTAL, VERTICAL = range(3)
+
+def generate_imagemap_csv(imagemap, presorted=(), sort=ImageMapSort.USAGE, overwrite=False):
+    """Generate a blank imagemap label csv, for use in map_chart."""
+    if not overwrite and os.path.exists(imagemap+".csv"):
+        raise Exception("Imagemap csv file already exists.")
+    img = Image.open(imagemap)
+    if sort == ImageMapSort.USAGE:
+        cols = [c for _,c in sorted(img.getcolors(), reverse=True)]
+    else:
+        data = np.array(img)
+        if sort == ImageMapSort.HORIZONTAL: data = data.transpose([1,0,2])
+        coldict = OrderedDict()
+        for row in data:
+            for pixel in row:
+                coldict[tuple(pixel)] = True
+        cols = list(coldict)
+    cols = list(presorted) + [c for c in cols if c not in presorted]
+    rs = [{ 'color': c, 'name': "color{}".format(i) } for i,c in enumerate(cols)]
+    RecordCSV.save_file(imagemap+".csv", rs)
+
+def map_chart(imagemap, colorfn):
+    # TODO: image patterns, labels, title
+    """Generate a map chart.
+    - imagemap [filename]: the function will also look for a label csv with the .csv suffix
+    - colorfn [dict/label->color]: a color map or function. This gets passed the label (or color tuple, if there isn't one) and returns the new color (or None to leave unchanged).
+    """
+    img = Image.open(imagemap)
+    if 'RGB' not in img.mode: raise NotImplementedError("Image maps must be RGB/RGBA")
+    if os.path.exists(imagemap+".csv"):
+        rs = RecordCSV.load_file(imagemap+".csv")
+        labelmap = { tuple(d['color']) : d['name'] for d in rs }
+    else:
+        logger.warning("No label file found for imagemap {}".format(imagemap))
+        labelmap = {}
+    for _,c in img.getcolors():
+        label = labelmap.get(c, c)
+        color = colorfn(label) if callable(colorfn) else colorfn.get(label)
+        if color is not None:
+            img = img.replace_color(c, color)
+    return img
+            
+        

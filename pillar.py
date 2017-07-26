@@ -344,17 +344,32 @@ class _Image(Image.Image):
     def replace_color(self, color1, color2, ignore_alpha=False):
         """Return an image with color1 replaced by color2. Requires numpy."""
         if 'RGB' not in self.mode:
-            raise NotImplementedError
+            raise NotImplementedError("replace_color expects RGB/RGBA image")
         n = 3 if (self.mode == 'RGB' or ignore_alpha) else 4
         color1 = ImageColor.getrgba(color1)[:n]
         color2 = ImageColor.getrgba(color2)[:n]
         data = np.array(self)
-        channels = [data[...,i] for i in range(n)]
-        mask = np.ones(data.shape[:-1], dtype=bool)
-        for c,channel in zip(color1, channels):
-            mask = mask & (channel == c)
+        mask = _nparray_mask_by_color(data, color1, n)
         data[:,:,:n][mask] = color2
         return Image.fromarray(data)
+
+    def select_color(self, color):
+        """Return a transparency mask selecting a color in an image. Requires numpy."""
+        if 'RGB' not in self.mode:
+            raise NotImplementedError("replace_color expects RGB/RGBA image")
+        data = np.array(self)
+        color = ImageColor.getrgba(color)[:data.shape[-1]]
+        mask = _nparray_mask_by_color(data, color)
+        return Image.fromarray(mask * 255).convert("1")
+
+def _nparray_mask_by_color(nparray, color, num_channels=None):
+    if len(nparray.shape) != 3: raise NotImplementedError
+    n = nparray.shape[-1] if num_channels is None else num_channels
+    channels = [nparray[...,i] for i in range(n)]
+    mask = np.ones(nparray.shape[:-1], dtype=bool)
+    for c,channel in zip(color, channels):
+        mask = mask & (channel == c)
+    return mask
 
 Image.from_text = _Image.from_text
 Image.from_array = _Image.from_array
@@ -377,6 +392,7 @@ Image.Image.resize_nonempty = Image.Image.resize
 Image.Image.resize = _Image.resize
 Image.Image.resize_fixed_aspect = _Image.resize_fixed_aspect
 Image.Image.replace_color = _Image.replace_color
+Image.Image.select_color = _Image.select_color
 
 def font(name, size, bold=False, italics=False):
     """Return a truetype font object."""

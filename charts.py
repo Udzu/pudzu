@@ -387,8 +387,8 @@ class ImageMapSort(Enum):
     """Image map color sort."""
     USAGE, HORIZONTAL, VERTICAL = range(3)
 
-def generate_imagemap_csv(imagemap, presorted=(), sort=ImageMapSort.USAGE, overwrite=False):
-    """Generate a blank imagemap label csv, for use in map_chart."""
+def generate_imagemap_csv(imagemap, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite=False):
+    """Generate a blank imagemap name csv, for use in map_chart."""
     if not overwrite and os.path.exists(imagemap+".csv"):
         raise Exception("Imagemap csv file already exists.")
     img = Image.open(imagemap)
@@ -406,23 +406,41 @@ def generate_imagemap_csv(imagemap, presorted=(), sort=ImageMapSort.USAGE, overw
     rs = [{ 'color': c, 'name': "color{}".format(i) } for i,c in enumerate(cols)]
     RecordCSV.save_file(imagemap+".csv", rs)
 
-def map_chart(imagemap, colormap):
-    # TODO: image patterns, labels, title
+def generate_labelmap_csv(labelmap):
+    """Generate a labelmap coordinate csv, for use in map_chart."""
+    img = Image.open(labelmap)
+    data = np.array(img)
+    minx, maxx, miny, maxy = {}, {}, {}, {}
+    for y,row in enumerate(data):
+        for x,pixel in enumerate(row):
+            c = tuple(pixel)
+            minx[c] = min(minx.get(c,img.width), x)
+            maxx[c] = max(maxx.get(c,0), x)
+            miny[c] = min(miny.get(c,img.height), y)
+            maxy[c] = max(maxy.get(c,0), y)
+    rs = [{ 'color': c, 'minx': minx[c], 'maxx': maxx[c], 'miny': miny[c], 'maxy': maxy[c] } for c in minx ]
+    RecordCSV.save_file(labelmap+".csv", rs)
+
+def map_chart(imagemap, colormap, labelmap=None):
+    # TODO: labels
     """Generate a map chart.
-    - imagemap [filename]: the function will also look for a label csv with the .csv suffix
-    - colormap [label->color/pattern]: a color dict or function. This gets passed the label (or color tuple, if there isn't one) and returns the new color (or None to leave unchanged).
+    - imagemap (filename): the function will also look for a name csv with the .csv suffix.
+    - colormap (name->color/pattern/None): a color dict or function. This gets passed the name (or color tuple, if there isn't one) and returns the new color (or None to leave unchanged).
     """
     img = Image.open(imagemap)
-    if 'RGB' not in img.mode: raise NotImplementedError("Image maps must be RGB/RGBA")
-    if os.path.exists(imagemap+".csv"):
+    
+    # read name csv
+    try:
         rs = RecordCSV.load_file(imagemap+".csv")
-        labelmap = { tuple(d['color']) : d['name'] for d in rs }
-    else:
-        logger.warning("No label file found for imagemap {}".format(imagemap))
-        labelmap = {}
+        namemap = { tuple(d['color']) : d['name'] for d in rs }
+    except FileNotFoundError:
+        logger.warning("No name file found for imagemap {}".format(imagemap))
+        namemap = {}
+        
+    # generate image
     for _,c in img.getcolors():
-        label = labelmap.get(c, c)
-        color = colormap(label) if callable(colormap) else colormap.get(label)
+        name = namemap.get(c, c)
+        color = colormap(name) if callable(colormap) else colormap.get(name)
         if color is None:
             continue
         elif isinstance(color, Image.Image):
@@ -431,6 +449,7 @@ def map_chart(imagemap, colormap):
             img.place(pattern, mask=mask, copy=False)
         else:
             img = img.replace_color(c, color)
+            
+    # read label image
     return img
             
-        

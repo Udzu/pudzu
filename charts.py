@@ -406,11 +406,11 @@ def generate_imagemap_csv(imagemap, presorted=(), sort=ImageMapSort.USAGE, overw
     rs = [{ 'color': c, 'name': "color{}".format(i) } for i,c in enumerate(cols)]
     RecordCSV.save_file(imagemap+".csv", rs)
 
-def map_chart(imagemap, colorfn):
+def map_chart(imagemap, colormap):
     # TODO: image patterns, labels, title
     """Generate a map chart.
     - imagemap [filename]: the function will also look for a label csv with the .csv suffix
-    - colorfn [dict/label->color]: a color map or function. This gets passed the label (or color tuple, if there isn't one) and returns the new color (or None to leave unchanged).
+    - colormap [label->color/pattern]: a color dict or function. This gets passed the label (or color tuple, if there isn't one) and returns the new color (or None to leave unchanged).
     """
     img = Image.open(imagemap)
     if 'RGB' not in img.mode: raise NotImplementedError("Image maps must be RGB/RGBA")
@@ -422,8 +422,14 @@ def map_chart(imagemap, colorfn):
         labelmap = {}
     for _,c in img.getcolors():
         label = labelmap.get(c, c)
-        color = colorfn(label) if callable(colorfn) else colorfn.get(label)
-        if color is not None:
+        color = colormap(label) if callable(colormap) else colormap.get(label)
+        if color is None:
+            continue
+        elif isinstance(color, Image.Image):
+            mask = img.select_color(c)
+            pattern = Image.from_pattern(color, img.size)
+            img.place(pattern, mask=mask, copy=False)
+        else:
             img = img.replace_color(c, color)
     return img
             

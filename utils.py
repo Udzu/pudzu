@@ -203,7 +203,15 @@ def batch_iterable(iterable, batch_size):
 def repeat_each(iterable, repeats):
     """Generator that yields the elements of an iterable, repeated n times each."""
     return (p[0] for p in itertools.product(iterable, range(repeats)))
-        
+      
+def leafs(iterable):
+    """Generator that yields all the leafs of an iterable."""
+    for x in iterable:
+        if non_string_iterable(x):
+            yield from leafs(x)
+        else:
+            yield x
+            
 def remove_duplicates(seq, key=lambda v:v, keep_last=False):
     """Return an order preserving tuple copy containing items from an iterable, deduplicated
     based on the given key function."""

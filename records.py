@@ -131,7 +131,7 @@ def make_group_map(map_or_records, default_key=None):
     """Return the group map or wrap the records in a singleton map."""
     return map_or_records if isinstance(map_or_records, Mapping) else { default_key: map_or_records }
     
-def group_records(records, group_by=None, groups=None, by_filter=False):
+def group_records(records, group_by=None, groups=None, by_filter=False, split_iterable_keys=True):
     """Group records into a group map with group names extracted either from group_by (a field, function or iterable)
     or groups (a sequence). Records may be placed in multiple groups. If by_filter is True then group_by
     is interpreted as a filter on records and groups rather a group key."""
@@ -144,7 +144,7 @@ def group_records(records, group_by=None, groups=None, by_filter=False):
         for d in (zip(records, group_by) if non_string_iterable(group_by) else records):
             g = grouper(d)
             if g is None: continue
-            for g in make_iterable(g):
+            for g in make_iterable(g) if split_iterable_keys else (g,):
                 if groups is None or g in groups:
                     group_map.setdefault(g,[]).append(d[0] if non_string_iterable(group_by) else d)
     return group_map

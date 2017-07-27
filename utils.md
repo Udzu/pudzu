@@ -167,6 +167,13 @@ False
 (0, "bob", 2, 3)
 ```
 
+**leafs**: generator returning all the non-string iterables inside an iterable.
+
+```python
+>> list(leafs([(1,[2],3),"four"]))
+[1, 2, 3, 'four']
+```
+
 ### Functions
 
 **papply**: like functools.partial but also postpones evaluation of positional arguments with 

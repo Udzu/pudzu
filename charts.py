@@ -439,7 +439,7 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
     img = Image.open(map)
     try:
         rs = RecordCSV.load_file(name_csv_path(map))
-        logger.info("Using color name file {}".format(name_csv_path(map))
+        logger.info("Using color name file {}".format(name_csv_path(map)))
         namemap = { tuple(d['color']) : d['name'] for d in rs }
     except FileNotFoundError:
         logger.warning("No color name file found at {}".format(name_csv_path(map)))
@@ -461,7 +461,7 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
     # generate labels
     if label_fn is not None:
         rs = RecordCSV.load_file(labelbox_csv_path(map))
-        logger.info("Using label bounding box file {}".format(labelbox_csv_path(map))
+        logger.info("Using label bounding box file {}".format(labelbox_csv_path(map)))
         labelboxes = { tuple(d["color"]) : BoundingBox(d['bbox']) for d in rs }
         for c,name in colors:
             label = label_fn(name) if callable(label_fn) else label_fn.get(name)

@@ -209,7 +209,7 @@ def repeat_each(iterable, repeats):
     return (p[0] for p in itertools.product(iterable, range(repeats)))
       
 def leafs(iterable):
-    """Generator that yields all the leafs of an iterable."""
+    """Generator that yields all the leaf nodes of an iterable."""
     for x in iterable:
         if non_string_iterable(x):
             yield from leafs(x)

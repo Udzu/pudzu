@@ -50,7 +50,9 @@ class Padding():
     """Padding class, initialized from one, two or four integers."""
     
     def __init__(self, padding):
-        if isinstance(padding, Integral):
+        if padding is None:
+            return self.__init__((0,0,0,0))
+        elif isinstance(padding, Integral):
             return self.__init__((padding, padding, padding, padding))
         elif non_string_sequence(padding, Integral) and len(padding) == 2:
             return self.__init__((padding[0], padding[1], padding[0], padding[1]))
@@ -79,6 +81,37 @@ class Padding():
     @property
     def y(self): return self.u + self.d
 
+class BoundingBox():
+    """Bounding box class initialized from 4 LURD coordinates or a collection of points with optional padding. Not used much at the moment."""
+        
+    def __init__(self, box, padding=None):
+        padding = Padding(padding)
+        if non_string_sequence(box, Integral) and len(box) == 4:
+            self.corners = tuple(box)
+        elif non_string_sequence(box) and all(non_string_sequence(point, Integral) and len(point) == 2 for point in box):
+            self.corners = (min(x for x,y in box), min(y for x,y in box), max(x for x,y in box), max(y for x,y in box))
+        else:
+            raise TypeError("Box expects four coordinates or a collection of points: got {}".format(box))
+        self.corners = (self.l - padding.l, self.u - padding.u, self.r + padding.r, self.d + padding.d)        
+            
+    def __repr__(self):
+        return "Box(l={}, u={}, r={}, d={})".format(self.l, self.u, self.r, self.d)
+
+    @property
+    def l(self): return self.corners[0]
+    @property
+    def u(self): return self.corners[1]
+    @property
+    def r(self): return self.corners[2]
+    @property
+    def d(self): return self.corners[3]
+    @property
+    def width(self): return self.l + self.r
+    @property
+    def height(self): return self.u + self.d
+    @property
+    def center(self): return ((self.l + self.r) // 2, (self.u + self.d) // 2)
+    
 def whitespace_span_tokenize(text):
     """Whitespace span tokenizer."""
     return ((m.start(), m.end()) for m in re.finditer(r'\S+', text))
@@ -149,7 +182,7 @@ ImageColor.getrgba = _getrgba
 class _Image(Image.Image):
 
     @classmethod
-    def from_text(cls, text, font, fg="white", bg=None, padding=0,
+    def from_text(cls, text, font, fg="black", bg=None, padding=0,
                   max_width=None, line_spacing=0, align="left",
                   tokenizer=whitespace_span_tokenize, hyphenator=None):
         """Create image from text. If max_width is set, uses the tokenizer and optional hyphenator
@@ -264,6 +297,8 @@ class _Image(Image.Image):
         """Paste an image. By default this uses its alpha channel as a mask (unlike Image.paste)."""
         if mask is Ellipsis:
             mask = img if 'A' in img.mode else None
+        if isinstance(box, BoundingBox):
+            box = box.corners
         base = self.copy() if copy else self
         base.paste(img, box, mask)
         return base

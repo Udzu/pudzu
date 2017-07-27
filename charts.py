@@ -410,36 +410,39 @@ def generate_labelmap_csv(labelmap):
     """Generate a labelmap coordinate csv, for use in map_chart."""
     img = Image.open(labelmap)
     data = np.array(img)
-    minx, maxx, miny, maxy = {}, {}, {}, {}
+    xmin, xmax, ymin, ymax = {}, {}, {}, {}
     for y,row in enumerate(data):
         for x,pixel in enumerate(row):
             c = tuple(pixel)
-            minx[c] = min(minx.get(c,img.width), x)
-            maxx[c] = max(maxx.get(c,0), x)
-            miny[c] = min(miny.get(c,img.height), y)
-            maxy[c] = max(maxy.get(c,0), y)
-    rs = [{ 'color': c, 'minx': minx[c], 'maxx': maxx[c], 'miny': miny[c], 'maxy': maxy[c] } for c in minx ]
+            xmin[c] = min(xmin.get(c,img.width), x)
+            xmax[c] = max(xmax.get(c,0), x)
+            ymin[c] = min(ymin.get(c,img.height), y)
+            ymax[c] = max(ymax.get(c,0), y)
+    rs = [{ 'color': c[:3], 'xmin': xmin[c], 'xmax': xmax[c], 'ymin': ymin[c], 'ymax': ymax[c] } for c in xmin if ImageColor.getrgba(c).alpha == 255 ]
     RecordCSV.save_file(labelmap+".csv", rs)
 
-def map_chart(imagemap, colormap, labelmap=None):
-    # TODO: labels
+def map_chart(imagemap, colormap, labelmap=None, labelfont=None, labelcolor="black"):
     """Generate a map chart.
     - imagemap (filename): the function will also look for a name csv with the .csv suffix.
     - colormap (name->color/pattern/None): a color dict or function. This gets passed the name (or color tuple, if there isn't one) and returns the new color (or None to leave unchanged).
+    - labelmap (name->text/image/None): an optional label dict or function. This uses label locations from the .label.csv file.
+    - labelfont (font): font to use for text labels.
+    - labelcolor (color): color to use for text labels.
     """
-    img = Image.open(imagemap)
     
-    # read name csv
+    # read image and name csv
+    img = Image.open(imagemap)
     try:
         rs = RecordCSV.load_file(imagemap+".csv")
+        logger.info("Using color name file {}".format(imagemap+".csv"))
         namemap = { tuple(d['color']) : d['name'] for d in rs }
     except FileNotFoundError:
         logger.warning("No name file found for imagemap {}".format(imagemap))
         namemap = {}
         
-    # generate image
-    for _,c in img.getcolors():
-        name = namemap.get(c, c)
+    # generate map
+    colors = [(c,namemap.get(c, c)) for _,c in img.getcolors()]
+    for c,name in colors:
         color = colormap(name) if callable(colormap) else colormap.get(name)
         if color is None:
             continue
@@ -450,6 +453,24 @@ def map_chart(imagemap, colormap, labelmap=None):
         else:
             img = img.replace_color(c, color)
             
-    # read label image
+    # generate labels
+    if labelmap is not None:
+        base, ext = splitext(imagemap)
+        rs = RecordCSV.load_file(base+".labels"+ext+".csv")
+        logger.info("Using label coordinate file {}".format(imagemap+".labels.csv"))
+        labellocs = { tuple(d["color"]) : BoundingBox((d['xmin'], d['ymin'], d['xmax'], d['ymax'])) for d in rs }
+        for c,name in colors:
+            label = labelmap(name) if callable(labelmap) else labelmap.get(name)
+            if label is None:
+                continue
+            if c not in labellocs:
+                logger.warning("No label location found for {}".format(name))
+                continue
+            if isinstance(label, str):
+                label = Image.from_text(label, labelfont, labelcolor)
+            if label.width > labellocs[c].width or label.height > labellocs[c].height:
+                logger.warning("Label for {} too small to fit {}x{} box".format(name, labellocs[c].width, labellocs[c].height))
+            else:
+                img = img.pin(label, labellocs[c].center)
     return img
             

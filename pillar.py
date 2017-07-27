@@ -106,9 +106,11 @@ class BoundingBox():
     @property
     def d(self): return self.corners[3]
     @property
-    def width(self): return self.l + self.r
+    def width(self): return self.r - self.l + 1
     @property
-    def height(self): return self.u + self.d
+    def height(self): return self.d - self.u + 1
+    @property
+    def size(self): return (self.width, self.height)
     @property
     def center(self): return ((self.l + self.r) // 2, (self.u + self.d) // 2)
     

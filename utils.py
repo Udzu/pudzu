@@ -36,6 +36,8 @@ class MissingModule(object):
         raise ImportError("Missing module: {}".format(self._module))
     def __bool__(self):
         return False
+    def __repr__(self):
+        return "<MissingModule: {}>".format(self._module)
         
 def optional_import(module, **bindings):
     """Optionally load the named module, returning a MissingModule
@@ -56,6 +58,8 @@ class ValueCache():
         self.value = value
     def __pos__(self):
         return self.value
+    def __repr__(self):
+        return "ValueCache({})".format(self.value)
     def set(self, value):
         self.value = value
         return value

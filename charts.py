@@ -418,7 +418,7 @@ def generate_labelmap_csv(labelmap):
             xmax[c] = max(xmax.get(c,0), x)
             ymin[c] = min(ymin.get(c,img.height), y)
             ymax[c] = max(ymax.get(c,0), y)
-    rs = [{ 'color': c[:3], 'xmin': xmin[c], 'xmax': xmax[c], 'ymin': ymin[c], 'ymax': ymax[c] } for c in xmin if ImageColor.getrgba(c).alpha == 255 ]
+    rs = [{ 'color': c[:3], 'bbox': (xmin[c], ymin[c], xmax[c], ymax[c]) } for c in xmin if ImageColor.getrgba(c).alpha == 255 ]
     RecordCSV.save_file(labelmap+".csv", rs)
 
 def map_chart(imagemap, colormap, labelmap=None, labelfont=None, labelcolor="black"):
@@ -458,7 +458,7 @@ def map_chart(imagemap, colormap, labelmap=None, labelfont=None, labelcolor="bla
         base, ext = splitext(imagemap)
         rs = RecordCSV.load_file(base+".labels"+ext+".csv")
         logger.info("Using label coordinate file {}".format(imagemap+".labels.csv"))
-        labellocs = { tuple(d["color"]) : BoundingBox((d['xmin'], d['ymin'], d['xmax'], d['ymax'])) for d in rs }
+        labellocs = { tuple(d["color"]) : BoundingBox(d['bbox']) for d in rs }
         for c,name in colors:
             label = labelmap(name) if callable(labelmap) else labelmap.get(name)
             if label is None:

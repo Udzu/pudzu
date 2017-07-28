@@ -18,17 +18,12 @@ rs = RecordCSV.load_file("periodic.csv", delimiter="\t", array_separator=",")
 def year_group(d): return next(i+1 for i,x in enumerate(DATERANGES) if int(d['year']) < x)
 rs = update_records(rs, update_with(group=year_group))
 
-# generate flag urls
-try:
-    flags = { d['country'] : d['flag'] for d in RecordCSV.load_file("periodic_flags.csv") }
-except:
-    from wikipage import *
-    countrynames = { 'se': 'Sweden', 'uk': 'UK', 'de': 'Germany', 'dk': 'Denmark', 'fr': 'France', 'mx': 'Mexico', 'fi': 'Finland', 'ru': 'Russia', 'it': 'Italy', 'at': 'Austria', 'us': 'United States', 'ch': 'Switzerland', 'es': 'Spain', 'jp': 'Japan', 'ca': 'Canada', 'pl': 'Poland' }
-    flags = { k : WikiPage("Flag of {}".format(v)).image_url for k,v in countrynames.items() }
-    flags['un'] = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_the_United_Nations.svg/1024px-Flag_of_the_United_Nations.svg.png'
-    RecordCSV.save_file("periodic_flags.csv", map_to_records(flags, "country", "flag"))
+# load flag urls
+atlas = RecordCSV.load_file("countries.csv")
+flags = { tld[1:] : d['flag'] for d in atlas for tld in d.get('tld',[]) if 'flag' in d }
+flags['un'] = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_the_United_Nations.svg/1024px-Flag_of_the_United_Nations.svg.png'
 countries = {c for d in rs for c in d.get('countries',[])} | {'un'}
-assert(countries == set(list(flags)))
+assert(countries <= set(list(flags)))
 
 # generate main grid
 def table_cell(d):

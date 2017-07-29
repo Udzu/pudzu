@@ -7,6 +7,8 @@ import seaborn as sns
 import imageio
 import os
 
+# TODO: bigger contrast between neighbouring countries?
+
 MAP = "maps/Europe.png"
 BACKGROUND = 'Sea'
 MERGE = { 'Gibraltar': 'UK', 'Jersey': 'UK', 'Guernsey': 'UK', 'Faroe Islands': 'Denmark' }
@@ -44,20 +46,22 @@ def one_country(country):
         if c[:3] == bgcolor[:3]: continue
         elif c not in bordercolors: base = base.replace_color(c, IGNORECOLOR)
     base.place(borders, copy=False)
-    title = Image.from_row([Image.from_text("The near countries to:", arial(60, bold=True), "black", "white", padding=20),
-                            Image.from_text(country, arial(60, bold=True), "red", "white")], bg="white")
+    title = Image.from_row([Image.from_text("The nearest countries to:", arial(60, bold=True), "black", "white", padding=20),
+                            Image.from_text(country, arial(60, bold=True), "red", "white", padding=(0,20,0,0))], bg="white", yalign=0)
     footer = Image.from_text("Blank map from Wikipedia. Dependencies counted under parent state. Calculations based on Euclidean distance and low resolution map, so not 100% accurate.", arial(16), "black", "white", padding=10)
     chart = Image.from_column([title, base, footer], bg="white", xalign=0)
     chart.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
     return chart
 
 def make_gif(countries, basename, duration):
+    gifpath = "{}.gif".format(basename)
+    if os.path.exists(gifpath): os.remove(gifpath)
     pngs = []
     for i,c in tqdm.tqdm(list(enumerate(countries))):
         png = "{}_{:02d}.png".format(basename, i)
         one_country(c).save(png)
         pngs.append(png)
-    imageio.mimsave("{}.gif".format(basename), [imageio.imread(f) for f in pngs], duration=duration)
+    imageio.mimsave(gifpath, [imageio.imread(f) for f in pngs], duration=duration)
     for p in pngs: os.remove(p)
 
 PLOT1 = ('UK', 'France', 'Spain', 'Italy', 'Germany', 'Poland')

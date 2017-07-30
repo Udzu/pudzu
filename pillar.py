@@ -173,13 +173,25 @@ ImageDraw.word_wrap = _ImageDraw.word_wrap
 
 RGBA = namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])
 
-def _getrgba(color):
-    """Convert color to an RGBA named tuple."""
-    color = tuple(color) if non_string_sequence(color, Integral) else ImageColor.getrgb(color)
-    if len(color) == 3: color += (255,)
-    return RGBA(*color)
+class _ImageColor():
 
-ImageColor.getrgba = _getrgba
+    @classmethod
+    def getrgba(cls, color):
+        """Convert color to an RGBA named tuple."""
+        color = tuple(color) if non_string_sequence(color, Integral) else ImageColor.getrgb(color)
+        if len(color) == 3: color += (255,)
+        return RGBA(*color)
+        
+    @classmethod
+    def from_floats(cls, color):
+        """Convert a 0-1 float color tuple (or a list of such tuples) to 0-255 ints."""
+        if non_string_sequence(color, Real):
+            return cls.getrgba([int(x*255) for x in color])
+        else:
+            return [cls.getrgba([int(x*255) for x in c]) for c in color]
+    
+ImageColor.getrgba = _ImageColor.getrgba
+ImageColor.from_floats = _ImageColor.from_floats
 
 class _Image(Image.Image):
 

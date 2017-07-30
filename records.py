@@ -184,6 +184,11 @@ def merge_groups(group_map, group_key=None, record_key=None, record_merge_fn=lam
     new_map = valmap(lambda rs: merge_records(*rs, merge_key=record_key, merge_fn=merge_fn), new_map, factory=OrderedDict)
     return new_map[None] if group_key is None else new_map
     
+def records_to_dict(records, key):
+    """Convert records into an ordered dict with a given key."""
+    return update_groups(group_records(records, key), first_or_none)
+    
+
 # Tables (= Panda dataframes) - a bit confusing
 
 def tabulate_records(records, row_group_by=None, rows=None, row_filter=False, col_group_by=None, columns=None, col_filter=False, fn=len):

@@ -395,6 +395,7 @@ def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite
     """Generate a name csv skeleton, for use in map_chart."""
     if not overwrite and os.path.exists(name_csv_path(map)):
         raise Exception("Imagemap csv file already exists.")
+    logger.info("Generating name CSV file at {}".format(name_csv_path(map)))
     img = Image.open(map)
     if sort == ImageMapSort.USAGE:
         cols = [c for _,c in sorted(img.getcolors(), reverse=True)]
@@ -413,6 +414,7 @@ def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite
 def generate_labelbox_csv(map):
     """Generate a label bounding box csv, for use in map_chart."""
     img = Image.open(labelbox_img_path(map))
+    logger.info("Generating labelbox CSV file at {}".format(labelbox_csv_path(map)))
     data = np.array(img)
     xmin, xmax, ymin, ymax = {}, {}, {}, {}
     for y,row in enumerate(data):

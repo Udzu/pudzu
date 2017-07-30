@@ -5,10 +5,12 @@ from records import *
 import seaborn as sns
 import dateparser
 
-# TODO: use proper dates, add timeline
+# TODO: picture timeline
 
 rs = RecordCSV.load_file("femaleleaders.csv")
-rs = update_records(rs, update_if(lambda d: 'hosyear' in d or 'hogyear' in d, update_with(year=lambda d: min(d.get('hosyear',2017), d.get('hogyear',2017)))))
+rs = update_records(rs, update_if(lambda d: 'hosdate' in d, lambda d: update_in(d, ['hosdate'], lambda v: dateparser.parse(v).date())))
+rs = update_records(rs, update_if(lambda d: 'hogdate' in d, lambda d: update_in(d, ['hogdate'], lambda v: dateparser.parse(v).date())))
+rs = update_records(rs, update_if(lambda d: 'hosdate' in d or 'hogdate' in d, update_all(update_with(date=lambda d: min(d.get('hosdate',datetime.date.today()), d.get('hogdate',datetime.date.today()))), update_with(year=lambda d: d['date'].year))))
 rd = records_to_dict(rs, "country")
 
 hog = ImageColor.from_floats(sns.color_palette("Blues", 6))
@@ -21,11 +23,11 @@ def stripe(c1, c2):
 def colorfn(c):
     if c not in rd: return None if c == 'Sea' else "grey"
     d = rd.get(c, {})
-    y = d.get('year', 2017) // 10 - 196
     if 'year' not in d : return stripe("grey", hos[-1])
-    elif 'hog' not in d: return hos[y]
+    y = d.get('year') // 10 - 196
+    if 'hog' not in d: return hos[y]
     elif 'hos' not in d: return hog[y]
-    elif 'hosyear' not in d: return stripe(hog[y], both[y])
+    elif 'hosdate' not in d: return stripe(hog[y], both[y])
     else: return both[y]
     
 chart = map_chart("maps/Europe.png", colorfn, ignoring_exceptions(lambda c: str(rd[c]["year"])), label_font=arial(16, bold=True))

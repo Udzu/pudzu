@@ -1,4 +1,4 @@
-country_s,hos_s,hosyear_i,hog_s,hogyear_i
+country_s,hos_s,hosdate_s,hog_s,hogdate_s
 Cyprus,Elizabeth II,,,
 Denmark,Margrethe II,,Helle Thorning-Schmidt,2011
 Estonia,,,Kersti Kaljulaid,2016
@@ -25,4 +25,3 @@ Switzerland,Elisabeth Kopp,1984,Elisabeth Kopp,1984
 Turkey,,,Tansu Çiller,1993
 UK,Elizabeth II,,Margaret Thatcher,1979
 Ukraine,,,Yulia Tymoshenko,2005
-

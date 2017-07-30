@@ -67,5 +67,5 @@ def make_gif(countries, basename, duration):
 PLOT1 = ('UK', 'France', 'Spain', 'Italy', 'Germany', 'Poland')
 make_gif(PLOT1, "neighbours", 4)
 
-PLOT2 = ('Portugal', 'Spain', 'France', 'Italy', 'Switzerland', 'Austria', 'Germany', 'Luxembourg', 'Belgium', 'Netherlands', 'UK', 'Ireland', 'Iceland', 'Norway', 'Denmark', 'Sweden', 'Finland', 'Russia', 'Estonia', 'Latvia', 'Lithuania', 'Belarus', 'Ukraine', 'Moldova', 'Romania', 'Bulgaria', 'Turkey', 'Cyprus', 'Greece', 'Macedonia', 'Albania', 'Montenegro', 'Serbia', 'Bosnia', 'Croatia', 'Slovenia', 'Hungary', 'Slovakia', 'Czech Republic', 'Poland')
+PLOT2 = ('Portugal', 'Spain', 'France', 'Italy', 'Switzerland', 'Austria', 'Germany', 'Luxembourg', 'Belgium', 'Netherlands', 'UK', 'Ireland', 'Iceland', 'Norway', 'Denmark', 'Sweden', 'Finland', 'Russia', 'Estonia', 'Latvia', 'Lithuania', 'Belarus', 'Ukraine', 'Moldova', 'Romania', 'Bulgaria', 'Turkey', 'Cyprus', 'Greece', 'Macedonia', 'Kosovo', 'Albania', 'Montenegro', 'Serbia', 'Bosnia', 'Croatia', 'Slovenia', 'Hungary', 'Slovakia', 'Czech Republic', 'Poland')
 make_gif(PLOT2, "neighbours2", 3)

@@ -16,6 +16,7 @@ from utils import *
 
 pyphen = optional_import("pyphen")
 requests = optional_import("requests")
+np = optional_import("numpy")
 
 # Various pillow utilities, monkey patched onto the Image, ImageDraw and ImageColor classes
 
@@ -49,7 +50,9 @@ class Padding():
     """Padding class, initialized from one, two or four integers."""
     
     def __init__(self, padding):
-        if isinstance(padding, Integral):
+        if padding is None:
+            return self.__init__((0,0,0,0))
+        elif isinstance(padding, Integral):
             return self.__init__((padding, padding, padding, padding))
         elif non_string_sequence(padding, Integral) and len(padding) == 2:
             return self.__init__((padding[0], padding[1], padding[0], padding[1]))
@@ -78,6 +81,39 @@ class Padding():
     @property
     def y(self): return self.u + self.d
 
+class BoundingBox():
+    """Bounding box class initialized from 4 LURD coordinates or a collection of points with optional padding. Not used much at the moment."""
+        
+    def __init__(self, box, padding=None):
+        padding = Padding(padding)
+        if non_string_sequence(box, Integral) and len(box) == 4:
+            self.corners = tuple(box)
+        elif non_string_sequence(box) and all(non_string_sequence(point, Integral) and len(point) == 2 for point in box):
+            self.corners = (min(x for x,y in box), min(y for x,y in box), max(x for x,y in box), max(y for x,y in box))
+        else:
+            raise TypeError("Box expects four coordinates or a collection of points: got {}".format(box))
+        self.corners = (self.l - padding.l, self.u - padding.u, self.r + padding.r, self.d + padding.d)        
+            
+    def __repr__(self):
+        return "Box(l={}, u={}, r={}, d={})".format(self.l, self.u, self.r, self.d)
+
+    @property
+    def l(self): return self.corners[0]
+    @property
+    def u(self): return self.corners[1]
+    @property
+    def r(self): return self.corners[2]
+    @property
+    def d(self): return self.corners[3]
+    @property
+    def width(self): return self.r - self.l + 1
+    @property
+    def height(self): return self.d - self.u + 1
+    @property
+    def size(self): return (self.width, self.height)
+    @property
+    def center(self): return ((self.l + self.r) // 2, (self.u + self.d) // 2)
+    
 def whitespace_span_tokenize(text):
     """Whitespace span tokenizer."""
     return ((m.start(), m.end()) for m in re.finditer(r'\S+', text))
@@ -137,18 +173,30 @@ ImageDraw.word_wrap = _ImageDraw.word_wrap
 
 RGBA = namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])
 
-def _getrgba(color):
-    """Convert color to an RGBA named tuple."""
-    color = tuple(color) if non_string_sequence(color, Integral) else ImageColor.getrgb(color)
-    if len(color) == 3: color += (255,)
-    return RGBA(*color)
+class _ImageColor():
 
-ImageColor.getrgba = _getrgba
+    @classmethod
+    def getrgba(cls, color):
+        """Convert color to an RGBA named tuple."""
+        color = tuple(color) if non_string_sequence(color, Integral) else ImageColor.getrgb(color)
+        if len(color) == 3: color += (255,)
+        return RGBA(*color)
+        
+    @classmethod
+    def from_floats(cls, color):
+        """Convert a 0-1 float color tuple (or a list of such tuples) to 0-255 ints."""
+        if non_string_sequence(color, Real):
+            return cls.getrgba([int(x*255) for x in color])
+        else:
+            return [cls.getrgba([int(x*255) for x in c]) for c in color]
+    
+ImageColor.getrgba = _ImageColor.getrgba
+ImageColor.from_floats = _ImageColor.from_floats
 
 class _Image(Image.Image):
 
     @classmethod
-    def from_text(cls, text, font, fg="white", bg=None, padding=0,
+    def from_text(cls, text, font, fg="black", bg=None, padding=0,
                   max_width=None, line_spacing=0, align="left",
                   tokenizer=whitespace_span_tokenize, hyphenator=None):
         """Create image from text. If max_width is set, uses the tokenizer and optional hyphenator
@@ -263,6 +311,8 @@ class _Image(Image.Image):
         """Paste an image. By default this uses its alpha channel as a mask (unlike Image.paste)."""
         if mask is Ellipsis:
             mask = img if 'A' in img.mode else None
+        if isinstance(box, BoundingBox):
+            box = box.corners
         base = self.copy() if copy else self
         base.paste(img, box, mask)
         return base
@@ -339,6 +389,36 @@ class _Image(Image.Image):
             return self.resize((width, int(width * (self.height / self.width))), resample=resample)
         else:
             return self.resize((int(height * (self.width / self.height)), height), resample=resample)
+            
+    def replace_color(self, color1, color2, ignore_alpha=False):
+        """Return an image with color1 replaced by color2. Requires numpy."""
+        if 'RGB' not in self.mode:
+            raise NotImplementedError("replace_color expects RGB/RGBA image")
+        n = 3 if (self.mode == 'RGB' or ignore_alpha) else 4
+        color1 = ImageColor.getrgba(color1)[:n]
+        color2 = ImageColor.getrgba(color2)[:n]
+        data = np.array(self)
+        mask = _nparray_mask_by_color(data, color1, n)
+        data[:,:,:n][mask] = color2
+        return Image.fromarray(data)
+
+    def select_color(self, color):
+        """Return a transparency mask selecting a color in an image. Requires numpy."""
+        if 'RGB' not in self.mode:
+            raise NotImplementedError("replace_color expects RGB/RGBA image")
+        data = np.array(self)
+        color = ImageColor.getrgba(color)[:data.shape[-1]]
+        mask = _nparray_mask_by_color(data, color)
+        return Image.fromarray(mask * 255).convert("1")
+
+def _nparray_mask_by_color(nparray, color, num_channels=None):
+    if len(nparray.shape) != 3: raise NotImplementedError
+    n = nparray.shape[-1] if num_channels is None else num_channels
+    channels = [nparray[...,i] for i in range(n)]
+    mask = np.ones(nparray.shape[:-1], dtype=bool)
+    for c,channel in zip(color, channels):
+        mask = mask & (channel == c)
+    return mask
 
 Image.from_text = _Image.from_text
 Image.from_array = _Image.from_array
@@ -360,6 +440,8 @@ Image.Image.pad_to_aspect = _Image.pad_to_aspect
 Image.Image.resize_nonempty = Image.Image.resize
 Image.Image.resize = _Image.resize
 Image.Image.resize_fixed_aspect = _Image.resize_fixed_aspect
+Image.Image.replace_color = _Image.replace_color
+Image.Image.select_color = _Image.select_color
 
 def font(name, size, bold=False, italics=False):
     """Return a truetype font object."""

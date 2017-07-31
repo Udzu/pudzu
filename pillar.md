@@ -32,6 +32,17 @@ Alignment(x=50%, y=50%)
 Alignment(x=0%, y=100%)
 ```
 
+**BoundingBox**: a class representing a bounding box, initialized from the 4 coordinates or from a collection of points, with optional padding. Not really used at the moment.
+
+```python
+>> BoundingBox([(10,10), (15,8), (12,15)])
+Box(l=10, u=8, r=15, d=15)
+>> _.width
+25
+>> BoundingBox((5,5,10,10), padding=2)
+Box(l=3, u=3, r=12, d=12)
+```
+
 **font**: shorthand function for generating a truetype font object with standard variant naming (e.g. arialbd for bold). Also, **arial** is defined explicitly for the Arial family.
 
 ```python
@@ -247,3 +258,21 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 
 ![alt](images/croptoaspect2.png)
 
+**Image.Image.replace_color**: return an image with one color replaced by another. Requires numpy.
+
+```python
+>> base = Image.new("RGB", (80,40), "blue").pad(5)
+>> img = Image.from_text("red", arial(24), "blue")
+>> base.replace_color("blue", "grey").place(img.replace_color("blue", "red", ignore_alpha=True)).show()
+```
+
+![alt](images/colorreplace.png)
+
+**Image.Image.select_color**: return an image mask selection of a color. Requires numpy.
+
+```python
+>> pattern = Image.from_pattern(flag.resize_fixed_aspect(width=30), base.size)
+>> mask = base.select_color("blue")
+>> base.place(pattern, mask=mask).show()
+```
+![alt](images/colorselect.png)

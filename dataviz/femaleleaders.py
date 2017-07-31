@@ -5,6 +5,7 @@ from records import *
 import seaborn as sns
 import dateparser
 
+# mappy bit
 rs = RecordCSV.load_file("femaleleaders.csv")
 rs = update_records(rs, update_if('hosdate:exists or hogdate:exists', update_with(date=lambda d: min(d.get('hosdate',2017), d.get('hogdate',2017)))))
 rd = records_to_dict(rs, "country")
@@ -44,6 +45,26 @@ year_leg = Image.from_column([Image.from_text("First elected", arial(font_size, 
 legend = Image.from_column([type_leg, year_leg], bg="white", xalign=0, padding=5).pad(1, "black")
 chart = chart.place(legend, align=(1,0), padding=10)
 
-title = Image.from_text("40 years of women leaders in Europe", arial(60, bold=True), "black", "white", padding=20)
-img = Image.from_column([title, chart], bg="white")
+# griddy bit
+trs = RecordCSV.load_file("femaleleaders_timeline.csv")
+tdata = pd.DataFrame([trs[i:i+12] for i in range(0,36,12)])
+atlas = records_to_dict(RecordCSV.load_file("countries.csv"), "tld")
+atlas[".kv"] = { "flag" : "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Kosovo.svg/1024px-Flag_of_Kosovo.svg.png" }
+atlas[".yu"] = { "flag" : "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_SFR_Yugoslavia.svg/1000px-Flag_of_SFR_Yugoslavia.svg.png" }
+
+def process(img, d):
+    return Image.from_column([
+      img.crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=100),
+      Image.from_text(d['name'].split(" ")[-1], arial(10, bold=True), fg="black", bg="white"),
+      Image.from_row([Image.from_url_with_cache(atlas[".{}".format(d['country'])]['flag']).resize_fixed_aspect(width=10),
+                      Image.from_text(str(d['year']), arial(10, bold=True), fg="black", bg="white")], bg="white", padding=3, yalign=1)
+      ], bg="white")
+    
+grid = grid_chart(tdata, lambda d: d and d["url"], process, bg="white", padding=1)
+
+# put it all together
+title = Image.from_text("40 Years of Women Leaders in Europe".upper(), arial(56, bold=True), "black", "white", padding=(0,20))
+img = Image.from_column([title, chart, grid], bg="white")
+img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("femaleleaders.png")
+

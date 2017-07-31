@@ -35,7 +35,7 @@ box_size = 30
 def box(c): return Image.new("RGBA", (box_size,box_size), c)
 def stripebox(c1, c2): return Image.from_pattern(stripe(c1, c2), (box_size,box_size))
 
-type_boxes = ((box(hog[-1]), "premier"), (box(hos[-2]), "president"), (stripebox(hos[-2], "grey"), "queen"), (box(both[-2]), "premier & president"), (stripebox(hog[-2], both[-2]), "premier & queen"), (box("grey"), "none (so far)"))
+type_boxes = ((box(hog[-1]), "premier"), (box(hos[-2]), "president"), (stripebox(hos[-2], "grey"), "queen"), (box(both[-2]), "premier & president"), (stripebox(hog[-2], both[-2]), "premier & queen"), (box("grey"), "none yet"))
 type_arr = Image.from_array([[b, Image.from_text(label, arial(font_size), padding=(10,0))] for b,label in type_boxes], xalign=0, bg="white")
 type_leg = Image.from_column([Image.from_text("Office held", arial(font_size, bold=True)), type_arr], bg="white", xalign=0, padding=(0,5))
 
@@ -64,7 +64,7 @@ grid = grid_chart(tdata, lambda d: d and d["url"], process, bg="white", padding=
 
 # put it all together
 title = Image.from_text("40 Years of Women Leaders in Europe".upper(), arial(52, bold=True), "black", "white", padding=(0,20))
-img = Image.from_column([title, chart, grid], bg="white")
+img = Image.from_column([title, chart, grid], bg="white", padding=2)
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("femaleleaders.png")
 

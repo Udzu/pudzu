@@ -4,6 +4,8 @@ from enum import Enum
 
 # Random collection of Pillow-based charting functions
 
+logger = logging.getLogger('charts')
+
 # Bar charts
 
 VEGA_PALETTE = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
@@ -324,7 +326,7 @@ def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_h
 
 def grid_chart(data, image_key, image_process=None,
                fg="white", bg="black", xalign=0.5, yalign=0.5, padding=(0,0,0,0),
-               row_label=None, col_label=None, title=None, empty_image=None):
+               row_label=None, col_label=None, title=None):
     """Plot an image grid chart.
     - data (pandas dataframe): table to base chart on
     - image_key (datavalue->image/url/None): image, cached url or None for each grid cell
@@ -378,3 +380,103 @@ def grid_chart(data, image_key, image_process=None,
     
     if title is not None: chart = Image.from_column((title, chart), bg=bg)
     return chart
+
+# Map charts
+
+class ImageMapSort(Enum):
+    """Image map color sort in name CSV file."""
+    USAGE, HORIZONTAL, VERTICAL = range(3)
+    
+def name_csv_path(map): return splitext(map)[0] + ".csv"
+def labelbox_img_path(map): return splitext(map)[0] + "_lbox" + splitext(map)[1]
+def labelbox_csv_path(map): return splitext(map)[0] + "_lbox.csv"
+
+def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite=False):
+    """Generate a name csv skeleton, for use in map_chart."""
+    if not overwrite and os.path.exists(name_csv_path(map)):
+        raise Exception("Imagemap csv file already exists.")
+    logger.info("Generating name CSV file at {}".format(name_csv_path(map)))
+    img = Image.open(map)
+    if sort == ImageMapSort.USAGE:
+        cols = [c for _,c in sorted(img.getcolors(), reverse=True)]
+    else:
+        data = np.array(img)
+        if sort == ImageMapSort.HORIZONTAL: data = data.transpose([1,0,2])
+        coldict = OrderedDict()
+        for row in data:
+            for pixel in row:
+                coldict[tuple(pixel)] = True
+        cols = list(coldict)
+    cols = list(presorted) + [c for c in cols if c not in presorted]
+    rs = [{ 'color': c, 'name': "color{}".format(i) } for i,c in enumerate(cols)]
+    RecordCSV.save_file(name_csv_path(map), rs)
+
+def generate_labelbox_csv(map):
+    """Generate a label bounding box csv, for use in map_chart."""
+    img = Image.open(labelbox_img_path(map))
+    logger.info("Generating labelbox CSV file at {}".format(labelbox_csv_path(map)))
+    data = np.array(img)
+    xmin, xmax, ymin, ymax = {}, {}, {}, {}
+    for y,row in enumerate(data):
+        for x,pixel in enumerate(row):
+            c = tuple(pixel)
+            xmin[c] = min(xmin.get(c,img.width), x)
+            xmax[c] = max(xmax.get(c,0), x)
+            ymin[c] = min(ymin.get(c,img.height), y)
+            ymax[c] = max(ymax.get(c,0), y)
+    rs = [{ 'color': c[:3], 'bbox': (xmin[c], ymin[c], xmax[c], ymax[c]) } for c in xmin if ImageColor.getrgba(c).alpha == 255 ]
+    RecordCSV.save_file(labelbox_csv_path(map), rs)
+
+def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"):
+    """Generate a map chart from a map image and color mapping. If present, this will use a name csv file with image names
+    and a label csv file with label bounding boxes.
+    - map (filename): map image filename (and template for the name and label csv filenames).
+    - color_fn (name -> color/pattern/None): a dict or function that gets passed each region name (or color tuple, if there isn't one) and returns a new color, pattern, or None (to leave the region unchanged).
+    - label_fn (name -> text/image/None): an dict or function that returns either a text label or image. The label location is determined from the label csv file. [None]
+    - label_font (font): font to use for text labels. [None]
+    - label_color (color): color to use for text labels. [black]
+    """
+    
+    # read image and name csv
+    img = Image.open(map)
+    try:
+        rs = RecordCSV.load_file(name_csv_path(map))
+        logger.info("Using color name file {}".format(name_csv_path(map)))
+        namemap = { tuple(d['color']) : d['name'] for d in rs }
+    except FileNotFoundError:
+        logger.warning("No color name file found at {}".format(name_csv_path(map)))
+        namemap = {}
+        
+    # generate map
+    colors = [(c,namemap.get(c, c)) for _,c in img.getcolors()]
+    for c,name in colors:
+        color = color_fn(name) if callable(color_fn) else color_fn.get(name)
+        if color is None:
+            continue
+        elif isinstance(color, Image.Image):
+            mask = img.select_color(c)
+            pattern = Image.from_pattern(color, img.size)
+            img.place(pattern, mask=mask, copy=False)
+        else:
+            img = img.replace_color(c, color)
+            
+    # generate labels
+    if label_fn is not None:
+        rs = RecordCSV.load_file(labelbox_csv_path(map))
+        logger.info("Using label bounding box file {}".format(labelbox_csv_path(map)))
+        labelboxes = { tuple(d["color"]) : BoundingBox(d['bbox']) for d in rs }
+        for c,name in colors:
+            label = label_fn(name) if callable(label_fn) else label_fn.get(name)
+            if label is None:
+                continue
+            if c not in labelboxes:
+                logger.warning("No label location found for {}".format(name))
+                continue
+            if isinstance(label, str):
+                label = Image.from_text(label, label_font, label_color)
+            if label.width > labelboxes[c].width or label.height > labelboxes[c].height:
+                logger.warning("Label for {} too small to fit {}x{} bounding box".format(name, labelboxes[c].width, labelboxes[c].height))
+            else:
+                img = img.pin(label, labelboxes[c].center)
+    return img
+            

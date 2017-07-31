@@ -36,6 +36,8 @@ class MissingModule(object):
         raise ImportError("Missing module: {}".format(self._module))
     def __bool__(self):
         return False
+    def __repr__(self):
+        return "<MissingModule: {}>".format(self._module)
         
 def optional_import(module, **bindings):
     """Optionally load the named module, returning a MissingModule
@@ -56,6 +58,8 @@ class ValueCache():
         self.value = value
     def __pos__(self):
         return self.value
+    def __repr__(self):
+        return "ValueCache({})".format(self.value)
     def set(self, value):
         self.value = value
         return value
@@ -203,7 +207,15 @@ def batch_iterable(iterable, batch_size):
 def repeat_each(iterable, repeats):
     """Generator that yields the elements of an iterable, repeated n times each."""
     return (p[0] for p in itertools.product(iterable, range(repeats)))
-        
+      
+def leafs(iterable):
+    """Generator that yields all the leaf nodes of an iterable."""
+    for x in iterable:
+        if non_string_iterable(x):
+            yield from leafs(x)
+        else:
+            yield x
+            
 def remove_duplicates(seq, key=lambda v:v, keep_last=False):
     """Return an order preserving tuple copy containing items from an iterable, deduplicated
     based on the given key function."""

@@ -3,7 +3,6 @@ sys.path.append('..')
 from charts import *
 from records import *
 import seaborn as sns
-import dateparser
 
 # generate map
 rs = RecordCSV.load_file("femaleleaders.csv")

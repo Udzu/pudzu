@@ -22,6 +22,7 @@ palette = [tuple(int(x*255) for x in c) for c in sns.color_palette("hls", len(na
 colorfn = lambda n: None if n == BACKGROUND else palette[names.index(MERGE[n])] if n in MERGE else palette[names.index(n)]
 map = map_chart(MAP, colorfn).convert("RGBA")
 maparray = np.array(map)
+atlas = records_to_dict(RecordCSV.load_file("countries.csv"), "country")
 
 def mask_by_color(nparray, color):
     color = ImageColor.getrgba(color)
@@ -54,12 +55,21 @@ def one_country(country):
     chart.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
     return chart
 
-def all_countries(countries=names):
+def all_countries():
     base = map.copy()
-    for c in tqdm.tqdm(countries):
+    for c in tqdm.tqdm(names):
         borders = country_borders(c)
         base.place(borders, copy=False)
     return base
+    
+def use_flags(base, width=20):
+    img = base.copy()
+    for c in tqdm.tqdm(names):
+        mask = base.select_color(palette[names.index(c)])
+        flag = Image.from_url_with_cache(atlas[c]['flag']).resize_fixed_aspect(width=width)
+        pattern = Image.from_pattern(flag, base.size)
+        img.place(pattern, mask=mask, copy=False)
+    return img
     
 def make_gif(countries, basename, duration):
     gifpath = "{}.gif".format(basename)
@@ -73,6 +83,6 @@ def make_gif(countries, basename, duration):
     for p in pngs: os.remove(p)
 
 # PLOT1 = ('UK', 'France', 'Spain', 'Italy', 'Germany', 'Poland')
-# make_gif(PLOT1, "neighbours", 4)
+# make_gif(PLOT1, "neighbours", 5)
 # PLOT2 = ('Portugal', 'Spain', 'France', 'Italy', 'Switzerland', 'Austria', 'Germany', 'Luxembourg', 'Belgium', 'Netherlands', 'UK', 'Ireland', 'Iceland', 'Norway', 'Denmark', 'Sweden', 'Finland', 'Russia', 'Estonia', 'Latvia', 'Lithuania', 'Belarus', 'Ukraine', 'Moldova', 'Romania', 'Bulgaria', 'Turkey', 'Cyprus', 'Greece', 'Macedonia', 'Kosovo', 'Albania', 'Montenegro', 'Serbia', 'Bosnia', 'Croatia', 'Slovenia', 'Hungary', 'Slovakia', 'Czech Republic', 'Poland')
 # make_gif(PLOT2, "neighbours2", 3)

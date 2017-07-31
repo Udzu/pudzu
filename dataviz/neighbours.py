@@ -4,8 +4,9 @@ from charts import *
 from records import *
 from scipy import ndimage
 import seaborn as sns
-import imageio
 import os
+
+imageio = optional_import("imageio")
 
 # TODO: bigger contrast between neighbouring countries?
 
@@ -53,6 +54,13 @@ def one_country(country):
     chart.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
     return chart
 
+def all_countries(countries=names):
+    base = map.copy()
+    for c in tqdm.tqdm(countries):
+        borders = country_borders(c)
+        base.place(borders, copy=False)
+    return base
+    
 def make_gif(countries, basename, duration):
     gifpath = "{}.gif".format(basename)
     if os.path.exists(gifpath): os.remove(gifpath)
@@ -64,8 +72,7 @@ def make_gif(countries, basename, duration):
     imageio.mimsave(gifpath, [imageio.imread(f) for f in pngs], duration=duration)
     for p in pngs: os.remove(p)
 
-PLOT1 = ('UK', 'France', 'Spain', 'Italy', 'Germany', 'Poland')
-make_gif(PLOT1, "neighbours", 4)
-
-PLOT2 = ('Portugal', 'Spain', 'France', 'Italy', 'Switzerland', 'Austria', 'Germany', 'Luxembourg', 'Belgium', 'Netherlands', 'UK', 'Ireland', 'Iceland', 'Norway', 'Denmark', 'Sweden', 'Finland', 'Russia', 'Estonia', 'Latvia', 'Lithuania', 'Belarus', 'Ukraine', 'Moldova', 'Romania', 'Bulgaria', 'Turkey', 'Cyprus', 'Greece', 'Macedonia', 'Kosovo', 'Albania', 'Montenegro', 'Serbia', 'Bosnia', 'Croatia', 'Slovenia', 'Hungary', 'Slovakia', 'Czech Republic', 'Poland')
-make_gif(PLOT2, "neighbours2", 3)
+# PLOT1 = ('UK', 'France', 'Spain', 'Italy', 'Germany', 'Poland')
+# make_gif(PLOT1, "neighbours", 4)
+# PLOT2 = ('Portugal', 'Spain', 'France', 'Italy', 'Switzerland', 'Austria', 'Germany', 'Luxembourg', 'Belgium', 'Netherlands', 'UK', 'Ireland', 'Iceland', 'Norway', 'Denmark', 'Sweden', 'Finland', 'Russia', 'Estonia', 'Latvia', 'Lithuania', 'Belarus', 'Ukraine', 'Moldova', 'Romania', 'Bulgaria', 'Turkey', 'Cyprus', 'Greece', 'Macedonia', 'Kosovo', 'Albania', 'Montenegro', 'Serbia', 'Bosnia', 'Croatia', 'Slovenia', 'Hungary', 'Slovakia', 'Czech Republic', 'Poland')
+# make_gif(PLOT2, "neighbours2", 3)

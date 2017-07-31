@@ -326,7 +326,7 @@ def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_h
 
 def grid_chart(data, image_key, image_process=None,
                fg="white", bg="black", xalign=0.5, yalign=0.5, padding=(0,0,0,0),
-               row_label=None, col_label=None, title=None, empty_image=None):
+               row_label=None, col_label=None, title=None):
     """Plot an image grid chart.
     - data (pandas dataframe): table to base chart on
     - image_key (datavalue->image/url/None): image, cached url or None for each grid cell

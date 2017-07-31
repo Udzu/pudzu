@@ -34,4 +34,6 @@ Three chart types are currently supported: **bar charts**, **time charts** and *
 
 ### Map charts
 
-**map_chart**: generate a map chart; essentially a convenient wrapper for Image.replace/select_color. Input is a map tempalte with each region having a unique color. Regions can be named (see generate_name_csv) and label bounding boxes can be defined (see generate_labelbox_csv).
+**map_chart**: generate a map chart; essentially a convenient wrapper for Image.replace_color/select_color. Input is a map template with each region having a unique color. Regions can be named (see generate_name_csv) and label bounding boxes can be defined (see generate_labelbox_csv).
+
+![grid chart example](images/chart_femaleleaders.png)

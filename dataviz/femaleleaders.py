@@ -34,14 +34,16 @@ box_size = 30
 def box(c): return Image.new("RGBA", (box_size,box_size), c)
 def stripebox(c1, c2): return Image.from_pattern(stripe(c1, c2), (box_size,box_size))
 
-type_boxes = ((box(hog[-1]), "premier"), (box(hos[-2]), "president"), (stripebox(hos[-2], "grey"), "queen"), (box(both[-2]), "premier & president"), (stripebox(hog[-2], both[-2]), "premier & queen"), (box("grey"), "none yet"))
+type_boxes = ((box(hog[-1]), "premier"), (box(hos[-2]), "president"), (stripebox(hos[-2], "grey"), "monarch*"), (box(both[-2]), "premier & president"), (stripebox(hog[-2], both[-2]), "premier & monarch*"), (box("grey"), "none yet"))
 type_arr = Image.from_array([[b, Image.from_text(label, arial(font_size), padding=(10,0))] for b,label in type_boxes], xalign=0, bg="white")
 type_leg = Image.from_column([Image.from_text("Office held", arial(font_size, bold=True)), type_arr], bg="white", xalign=0, padding=(0,5))
 
 year_arr = Image.from_array([[box(hog[i]), box(hos[i]), box(both[i]), Image.from_text("{}0s".format(i+196), arial(font_size), padding=(10,0))] for i in range(1,6)], bg="white")
 year_leg = Image.from_column([Image.from_text("First elected", arial(font_size, bold=True)), year_arr], bg="white", xalign=0, padding=(0,5))
 
-legend = Image.from_column([type_leg, year_leg], bg="white", xalign=0, padding=5).pad(1, "black")
+note_leg = Image.from_text("*last 40 years only", arial(font_size), bg="white")
+
+legend = Image.from_column([type_leg, note_leg, year_leg], bg="white", xalign=0, padding=5).pad(1, "black")
 chart = chart.place(legend, align=(1,0), padding=10)
 
 # generate image grid

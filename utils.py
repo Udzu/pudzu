@@ -1,3 +1,4 @@
+import bisect
 import datetime
 import hashlib
 import itertools
@@ -5,8 +6,9 @@ import logging
 import math
 import operator as op
 import os.path
+import random
 
-from collections import abc, OrderedDict, Iterable, Mapping, namedtuple
+from collections import abc, OrderedDict, Iterable, Mapping, Counter, namedtuple
 from collections.abc import Sequence
 from functools import wraps, partial
 from importlib import import_module
@@ -208,6 +210,10 @@ def repeat_each(iterable, repeats):
     """Generator that yields the elements of an iterable, repeated n times each."""
     return (p[0] for p in itertools.product(iterable, range(repeats)))
       
+def generate_ngrams(iterable, n):
+    """Generator that yields n-grams from a sequence."""
+    return zip(*[itertools.islice(it,i,None) for i,it in enumerate(itertools.tee(iterable, n))])
+
 def leafs(iterable):
     """Generator that yields all the leaf nodes of an iterable."""
     for x in iterable:
@@ -243,7 +249,7 @@ def update_sequence(s, n, x):
         return t[0:n] + (x,) + t[n+1:0 if n ==-1 else None]
     else:
         raise IndexError("sequence index out of range")
-    
+
 # Mappings
     
 def make_mapping(v, key_fn=identity):
@@ -365,6 +371,26 @@ def ceil_significant(x, n=1):
 def delimit(x, low, high):
     """Delimit x so that it lies between the low and high marks."""
     return max(low, min(x, high))
+
+def weighted_choices(seq, weights, n):
+    """Return random elements from a sequence, according to the given relative weights."""
+    cum = list(itertools.accumulate(weights, op.add))
+    return [seq[bisect.bisect_left(cum, random.uniform(0, cum[-1]))] for i in range(n)]
+
+def weighted_choice(seq, weights):
+    """Return a single random elements from a sequence, according to the given relative weights."""
+    return weighted_choices(seq, weights, n=1)[0]
+
+def _Counter_randoms(self, n):
+    """Return random elements from the Counter collection, weighted by count."""
+    return weighted_choices(list(self.keys()), list(self.values()), n=n)
+    
+def _Counter_random(self):
+    """Return a single random elements from the Counter collection, weighted by count."""
+    return weighted_choice(list(self.keys()), list(self.values()))
+    
+Counter.randoms = _Counter_randoms
+Counter.random = _Counter_random
 
 # Network/io
 

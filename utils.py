@@ -257,7 +257,7 @@ def make_mapping(v, key_fn=identity):
     Mappings are left as is, iterables are split into elements, everything else is
     wrapped in a singleton map."""
     if isinstance(v, Mapping): return v
-    elif non_string_iterable(v): return { ignoring_extra_args(key_fn)(i, x) : x for (x,i) in enumerate(v) }
+    elif non_string_iterable(v): return { ignoring_extra_args(key_fn)(i, x) : x for (i,x) in enumerate(v) }
     else: return { ignoring_extra_args(key_fn)(None, v) : v }
 
 def merge_dicts(*dicts, merge_fn=lambda k, *vs: vs[-1]):

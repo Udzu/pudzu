@@ -41,8 +41,8 @@ def all_countries():
     
 all = all_countries()
 
-maps = Image.from_array([[Image.from_text("Nearest Country".upper(), arial(60, bold=True), "black", "white"),
-                          Image.from_text("Second-Nearest Country".upper(), arial(60, bold=True), "black", "white")],
+maps = Image.from_array([[Image.from_text("Closest country".upper(), arial(60, bold=True), "black", "white"),
+                          Image.from_text("Closest foreign country".upper(), arial(60, bold=True), "black", "white")],
                          [map, all]], bg="white", padding=10)
 footer = Image.from_text("Blank map from Wikipedia. Dependencies counted under parent state. Calculations based on Euclidean distance and low resolution map, so not 100% accurate. Not for use in pub quizzes or planning escape routes.", arial(24), "black", "white", padding=10)
 chart = Image.from_column([maps, footer], bg="white")

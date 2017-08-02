@@ -29,11 +29,8 @@ class MarkovGenerator(object):
         stop_fn = (stop_if if callable(stop_if) else
                    (lambda o: len(o) >= stop_if) if isinstance(stop_if, Integral) else
                    (lambda o: o and o[-1] == stop_if))
-        output = ()
-        while True:
-            ngram = self.prob_dict.random()
-            if start_if is None or start_if(ngram):
-                break # might take ages if you're not careful
+        ngram = self.prob_dict.random()
+        output = ngram
         while True:
             if stop_fn(output):
                 break

@@ -298,7 +298,7 @@ class RecordFilter:
         else:
             x, y = cls._eval_parse(parse[0], d), cls._eval_parse(parse[2], d)
             if isinstance(x, str):
-                return any(parse[1](d[k], y) for k in d if fnmatch.fnmatch(k, x))
+                return any(parse[1](d[k], y) for k in d if fnmatch.fnmatch(str(k), x))
             else:
                 return parse[1](x, y)
             

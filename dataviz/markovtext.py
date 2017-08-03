@@ -12,7 +12,7 @@ from math import log
 
 CORPUS = "-wikifrench"
 TITLE = "Letter and next-letter frequencies in French"
-SUBTITLE = "measured across a selection articles from Wikipedia"
+SUBTITLE = "measured across a selection of articles from Wikipedia"
 LETTERS = string.ascii_lowercase + ' '
 
 def normalise(i):
@@ -72,8 +72,8 @@ grid = grid_chart(data, lambda p, r: image_fn(p, row=r, palette=ptwo), fg="black
 font_size = 18
 
 type_boxes = Image.from_array([
-[image_fn(('a', 0.01), pone, size=60), Image.from_text("Letters and spaces sorted by overall frequency. Ignores case and accents.", arial(font_size), padding=(10,0), max_width=300)],
-[image_fn(('n', 0.01), ptwo, row='d', size=60), Image.from_text("Next letter sorted by frequency. Small letter is the most common third letter following the pair.", arial(font_size), padding=(10,0), max_width=300)]
+[image_fn(('a', 0.01), pone, size=60), Image.from_text("Letters and spaces sorted by overall frequency. Ignores case and accents.", arial(font_size), padding=(10,0), max_width=200)],
+[image_fn(('n', 0.01), ptwo, row='d', size=60), Image.from_text("Next letter sorted by frequency. Small letter is the most common third letter following the pair.", arial(font_size), padding=(10,0), max_width=200)]
 ], bg="white", xalign=0, padding=(0,2))
 type_leg = Image.from_column([Image.from_text("Colour key", arial(font_size, bold=True)), type_boxes, Image.from_text("Blank letters indicate spaces", arial(font_size))], bg="white", xalign=0, padding=(0,2))
 

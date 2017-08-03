@@ -12,7 +12,7 @@ from math import log
 
 CORPUS = "-wikifrench"
 TITLE = "Letter and next-letter frequencies in French"
-SUBTITLE = "measured across a selection of text from Wikipedia"
+SUBTITLE = "measured across a selection articles from Wikipedia"
 LETTERS = string.ascii_lowercase + ' '
 
 def normalise(i):
@@ -53,33 +53,33 @@ ptwo = ImageColor.from_floats(sns.color_palette("Blues", 8))
 pthree = ImageColor.from_floats(sns.color_palette("Purples", 8))
 color_index = lambda p: 0 if p == 0 else delimit(6 + int(log(p, 10) * 2), 0, 6)
 
-def image_fn(pair, palette, row=None):
+def image_fn(pair, palette, row=None, size=40):
     if pair is None: return None
     bg = palette[color_index(pair[1])]
-    img = Image.new("RGBA", (40,40), bg)
-    img.place(Image.from_text(pair[0], arial(20), "black", bg=bg), copy=False)
+    img = Image.new("RGBA", (size,size), bg)
+    img.place(Image.from_text(pair[0], arial(size//2), "black", bg=bg), copy=False)
     if row is not None and pair[0] != " ":
         if not isinstance(row, str):
             twogram = g2.markov_dict[(index[row][0], pair[0])].most_common()
             row, _ = twogram[0][0], twogram[0][1] / sum(n for _,n in twogram)
-        img.place(Image.from_text(row, arial(10), "black", bg=bg), align=(1,0), padding=(4,2), copy=False)
+        img.place(Image.from_text(row, arial(size//4), "black", bg=bg), align=(1,0), padding=(size//10,size//5), copy=False)
     return img
  
 logger.info("Generating grid chart") 
 grid = grid_chart(data, lambda p, r: image_fn(p, row=r, palette=ptwo), fg="black", bg="white", padding=1, row_label=lambda i: image_fn(data.index[i], palette=pone))
 
 # legend
-font_size = 12
+font_size = 18
 
 type_boxes = Image.from_array([
-[image_fn(('a', 0.01), pone), Image.from_text("Letters and spaces sorted by frequency. Ignores case and accents.", arial(font_size), padding=(10,0), max_width=150)],
-[image_fn(('n', 0.01), ptwo, row='d'), Image.from_text("Subsequent letter sorted by frequency. Small letter is the most common third letter following the pair.", arial(font_size), padding=(10,0), max_width=150)]
+[image_fn(('a', 0.01), pone, size=60), Image.from_text("Letters and spaces sorted by overall frequency. Ignores case and accents.", arial(font_size), padding=(10,0), max_width=300)],
+[image_fn(('n', 0.01), ptwo, row='d', size=60), Image.from_text("Next letter sorted by frequency. Small letter is the most common third letter following the pair.", arial(font_size), padding=(10,0), max_width=300)]
 ], bg="white", xalign=0, padding=(0,2))
-type_leg = Image.from_column([Image.from_text("Letter type", arial(font_size, bold=True)), type_boxes, Image.from_text("Blank letters indicate spaces", arial(font_size))], bg="white", xalign=0, padding=(0,2))
+type_leg = Image.from_column([Image.from_text("Colour key", arial(font_size, bold=True)), type_boxes, Image.from_text("Blank letters indicate spaces", arial(font_size))], bg="white", xalign=0, padding=(0,2))
 
 color_from_index = lambda i: 10 ** ((i - 6) / 2)
 color_label = lambda i: "{:.1%} to {:.1%}".format(color_from_index(i-1), color_from_index(i))
-freq_boxes = Image.from_array([[Image.new("RGBA", (20,20), "white" if i == 6 else pone[i]), Image.new("RGBA", (20,20), ptwo[i]), Image.from_text(color_label(i), arial(font_size), padding=(10,0))] for i in reversed(range(0, 7))], bg="white", xalign=0)
+freq_boxes = Image.from_array([[Image.new("RGBA", (30,30), "white" if i == 6 else pone[i]), Image.new("RGBA", (30,30), ptwo[i]), Image.from_text(color_label(i), arial(font_size), padding=(10,0))] for i in reversed(range(0, 7))], bg="white", xalign=0)
 freq_leg = Image.from_column([Image.from_text("Letter frequencies", arial(font_size, bold=True)), freq_boxes], bg="white", xalign=0, padding=(0,5))
 
 legend = Image.from_column([type_leg, freq_leg], bg="white", xalign=0, padding=5).pad(1, "black").pad((20,0,10,0), "white")

@@ -92,4 +92,9 @@ full = Image.from_column([title, chart], bg="white", padding=(0,10))
 full.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 full.save("markovtext_{}.png".format(CORPUS))
 
-
+# ngrams?
+def gen_words(gen):
+    while True:
+        word = "".join(gen.render(lambda o: len(o) > 1 and o[-1] == ' '))
+        if len(word.strip()) >= 3 and word.startswith(" "):
+            yield word.strip()

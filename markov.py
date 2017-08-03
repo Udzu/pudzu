@@ -25,7 +25,7 @@ class MarkovGenerator(object):
         with open(filename, "r", encoding=encoding) as f:
             self.train(normalise(convert(f)))
             
-    def render(self, stop_if, start_if=None):
+    def render(self, stop_if):
         stop_fn = (stop_if if callable(stop_if) else
                    (lambda o: len(o) >= stop_if) if isinstance(stop_if, Integral) else
                    (lambda o: o and o[-1] == stop_if))

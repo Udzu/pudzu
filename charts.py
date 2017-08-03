@@ -329,8 +329,8 @@ def grid_chart(data, image_key, image_process=None,
                row_label=None, col_label=None, title=None):
     """Plot an image grid chart.
     - data (pandas dataframe): table to base chart on
-    - image_key (datavalue->image/url/None): image, cached url or None for each grid cell
-    - image_process (image, datavalue->image): post-processing for all images [none]
+    - image_key (datavalue,row,column->image/url/None): image, cached url or None for each grid cell
+    - image_process (image,datavalue,row,column->image): post-processing for all images [none]
     - fg (color): font color [white]
     - bg (color): background color [black]
     - xalign (0 to 1): cell x alignment [center]
@@ -351,7 +351,7 @@ def grid_chart(data, image_key, image_process=None,
     img_array = [[None for _ in data.columns] for _ in data.index]
     for r, row in enumerate(data.values):
         for c, v in enumerate(row):
-            img = image_fn(v)
+            img = image_fn(v, r, c)
             if img is None:
                 continue
             elif isinstance(img, str):

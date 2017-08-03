@@ -1,7 +1,7 @@
 # [records.py](records.py)
 
 ## Summary 
-Various utilities for handling records (lists of dicts), grouped records (ordered dicts of records) and tables (pandas dataframes). Fairly lightweight with an emphasis on pure functional manipulation of builtin structures. Some overlap with packages such as pandas; this is certainly not the only (or necessarily best) way to handle records, but should have a reasonably shallow learning curve. Not optimised for speed.
+Various utilities for handling records (lists of dicts), grouped records (ordered dicts of records) and tables (pandas dataframes). Fairly lightweight with an emphasis on pure functional manipulation of builtin structures. Lots of overlap with pandas; this was written before I started using that. At some point I plan to migrate most of the code.
 
 ## Dependencies
 *Required*: [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
@@ -24,7 +24,7 @@ Records are just lists of dicts, usually with the same or overlapping keys. Reco
 ['Fred', 'Wilma', 'Dino']
 >> record_values(rs, 'surname')
 ['Flintstone']
->> pd.DateFrame(rs)
+>> pd.DataFrame(rs)
    children   name     surname
 0         2   Fred  Flintstone
 1         2  Wilma  Flintstone

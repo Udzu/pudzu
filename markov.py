@@ -6,7 +6,7 @@ from collections import Counter
 from numbers import Integral
 
 class MarkovGenerator(object):
-    """Markov Chain n-gram-based generator for aribtrary iterables."""
+    """Markov Chain n-gram-based generator for arbitrary iterables."""
     
     def __init__(self, order):
         self.n = order

@@ -27,6 +27,9 @@ from numbers import Integral
 # >> import pickle
 # >> with open("warandpeace_2grams.p", "wb") as f:
 #        pickle.dump(mk, f, pickle.HIGHEST_PROTOCOL)
+#
+# And then unpickle it later:
+# 
 # >> with open("warandpeace_2grams.p", "rb") as f:
 #        mk = pickle.load(f)
 

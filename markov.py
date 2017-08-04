@@ -30,7 +30,6 @@ from numbers import Integral
 # >> with open("warandpeace_2grams.p", "rb") as f:
 #        mk = pickle.load(f)
 
-
 def generate_ngrams(iterable, n):
     """Generator that yields n-grams from a sequence."""
     return zip(*[itertools.islice(it,i,None) for i,it in enumerate(itertools.tee(iterable, n))])

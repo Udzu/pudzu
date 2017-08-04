@@ -13,7 +13,8 @@ def df_keys(df):
 def df_values(df, key):
     return remove_duplicates(df[key])
     
-# TODO: recordfilter not working
+# DEPRECATE: make_records, map_to_records
+
 def filter_df(df, filter=None, key_filter=None):
     if filter is not None:
         record_filter = filter if callable(filter) else RecordFilter.make_filter(filter) 
@@ -26,6 +27,7 @@ def filter_df(df, filter=None, key_filter=None):
     return df
 
 # TODO: progressbar
+
 def update_with(**kwargs):
     return df.assign(**kwargs)
 

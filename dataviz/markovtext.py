@@ -60,6 +60,11 @@ index = sorted([(x, g1.prob_dict[(x,)] / sum(g1.prob_dict.values())) for x in le
 array = [[(y,n / sum(g1.markov_dict[(x,)].values())) for y,n in g1.markov_dict[(x,)].most_common()] for x,_ in index]
 data = pd.DataFrame(array, index=index)
 
+csvarray = [["{} [{:.1%}]".format(*p) for p in r] for r in array]
+csvindex = ["{} [{:.1%}]".format(*p) for p in index]
+csvdata = pd.DataFrame(csvarray, index=csvindex)
+csvdata.to_csv("{}.csv".format(filebase))
+
 pone = ImageColor.from_floats(sns.color_palette("Reds", 8))
 ptwo = ImageColor.from_floats(sns.color_palette("Blues", 8))
 color_index = lambda p: 0 if p == 0 else delimit(6 + int(log(p, 10) * 2), 0, 6)

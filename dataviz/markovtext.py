@@ -12,7 +12,7 @@ from math import log
 
 CORPUS = "-wikienglish"
 TITLE = "Letter and next-letter frequencies in English"
-SUBTITLE = "measured across 1 million articles from Wikipedia"
+SUBTITLE = "measured across 1 million sentences from Wikipedia"
 
 # CORPUS = "-wikifrench"
 # TITLE = "Letter and next-letter frequencies in French"

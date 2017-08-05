@@ -1,0 +1,41 @@
+age_i,category_s,cause_s,image_url_s,name_s
+27,artists,heroin,https://upload.wikimedia.org/wikipedia/en/9/9e/Basquiat.jpg,Jean-Michel Basquiat
+28,artists,Spanish flu,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Egon_Schiele_-_Self-Portrait_with_Physalis_-_Google_Art_Project.jpg/1200px-Egon_Schiele_-_Self-Portrait_with_Physalis_-_Google_Art_Project.jpg,Egon Schiele
+31,artists,meningitis(?),https://static.standard.co.uk/s3fs-public/styles/story_medium/public/thumbnails/image/2014/03/28/14/GeorgesSeurat2.jpg,Georges Seurat
+34,artists,heart attack,https://www.departures.com/sites/default/files/1432130261/article_all_about_yves_yves_klein_2000x1333.jpg,Yves Klein
+35,artists,meningitis,http://puzzles-games.eu/data/media/30/Amedeo-Modigliani-Self-Portrait.jpg,Amedeo Modigliani
+37,artists,excessive sex,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Raffaello_Sanzio.jpg/1200px-Raffaello_Sanzio.jpg,Raphael
+37,artists,suicide,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg/1200px-Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg,Vincent van Gogh
+38,artists,lead poisoning(?),https://upload.wikimedia.org/wikipedia/commons/7/73/Bild-Ottavio_Leoni%2C_Caravaggio.jpg,Caravaggio
+31,composers,typhoid(?),http://www.thefamouspeople.com/profiles/images/franz-peter-schubert.jpg,Franz Schubert
+35,composers,fever(?),https://s2-ssl.dmcdn.net/TVIxi.jpg,Wolfgang Amadeus Mozart
+36,composers,heart attack,https://upload.wikimedia.org/wikipedia/commons/9/96/Georges_bizet.jpg,Georges Bizet
+36,composers,pneumonia(?),https://upload.wikimedia.org/wikipedia/commons/5/53/Henry_Purcell.jpg,Henry Purcell
+38,composers,stroke,http://www.theimaginativeconservative.org/wp-content/uploads/2017/04/Felix-Mendelssohn.jpg,Felix Mendelssohn
+38,composers,brain tumor,http://assets1.classicfm.com/2013/28/george-gershwin-1374071114-view-0.jpg,George Gershwin
+39,composers,tuberculosis,http://cdn-images.audioaddict.com/8/b/8/3/f/7/8b83f76da0c88bf71fe7e63eae1fd986.png,Frédéric Chopin
+39,composers,tuberculosis,https://upload.wikimedia.org/wikipedia/commons/2/22/Port%C3%A4t_des_Komponisten_Carl_Maria_von_Weber.jpg,Carl Maria von Weber
+22,musicians,plane crash,http://www.oddopolis.com/wp-content/uploads/2015/03/BuddyHolly2-1100x1406.jpg,Buddy Holly
+25,musicians,shooting,https://ae01.alicdn.com/kf/HTB1MfE0NXXXXXbVaXXXq6xXFXXXp/2Pac-font-b-Tupac-b-font-Amaru-Shakur-Hip-Hop-Rap-Music-Art-Huge-Print-font.jpg,Tupac Shakur
+27,musicians,barbiturates,http://img.wennermedia.com/920-width/rs-136467-2b1d08ea01d2714a82785574e1434b4dcbecbc53.jpg,Jimi Hendrix
+27,musicians,heart failure(?),https://www.biography.com/.image/t_share/MTE5NTU2MzE2MzIzMTUzNDE5/jim-morrison-9415576-1-402.jpg,Jim Morrison
+27,musicians,heroin,http://www.americaneye.al/wp-content/uploads/2017/03/1448229270018.cached-1240x826.jpg,Janis Joplin
+27,musicians,suicide,http://www.clashmusic.com/sites/default/files/field/image/kurt-cobain-suicide-note.jpg,Kurt Cobain
+30,musicians,drowning,http://rollingstoneaus.com/assets/Uploads/ro0915-Website-Cover-JeffBuckley.jpg,Jeff Buckley
+36,musicians,skin cancer,http://www.bobmarley.com/wp-content/uploads/2013/11/bob-marley-wallpaper1.jpg,Bob Marley
+20,scientists,duel,https://upload.wikimedia.org/wikipedia/commons/5/53/Evariste_galois.jpg,Évariste Galois
+26,scientists,tuberculosis,https://upload.wikimedia.org/wikipedia/commons/8/80/Niels_Henrik_Abel.jpg,Niels Henrik Abel
+27,scientists,WWI,https://upload.wikimedia.org/wikipedia/en/d/dd/Henry_Moseley.jpg,Henry Moseley
+32,scientists,amoebiasis,https://upload.wikimedia.org/wikipedia/commons/c/c1/Srinivasa_Ramanujan_-_OPC_-_1.jpg,Srinivasa Ramanujan
+36,scientists,granulomatosis,https://upload.wikimedia.org/wikipedia/commons/5/50/Heinrich_Rudolf_Hertz.jpg,Heinrich Hertz
+37,scientists,ovarian cancer,https://upload.wikimedia.org/wikipedia/en/9/97/Rosalind_Franklin.jpg,Rosalind Franklin
+39,scientists,tuberculosis,https://media1.britannica.com/eb-media/76/9576-004-6044DFAB.jpg,Bernhard Riemann
+39,scientists,tuberculosis,https://tarangini.files.wordpress.com/2014/12/the-art-of-knowing-blaise-pascal.jpg,Blaise Pascal
+25,writers,tuberculosis,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/John_Keats_by_William_Hilton.jpg/1200px-John_Keats_by_William_Hilton.jpg,John Keats
+30,writers,suicide,https://www.poets.org/sites/default/files/styles/286x289/public/images/biographies/11_splat_150.jpg?itok=G6k35THT,Sylvia Plath
+36,writers,fever(?),https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/George_Gordon_Byron%2C_6th_Baron_Byron_by_Richard_Westall_%282%29.jpg/1200px-George_Gordon_Byron%2C_6th_Baron_Byron_by_Richard_Westall_%282%29.jpg,Lord Byron
+37,writers,duel,https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Portrait_of_Alexander_Pushkin_%28Orest_Kiprensky%2C_1827%29.PNG/1200px-Portrait_of_Alexander_Pushkin_%28Orest_Kiprensky%2C_1827%29.PNG,Alexander Pushkin
+37,writers,bone cancer,https://upload.wikimedia.org/wikipedia/commons/1/1c/Rimbaud.PNG,Arthur Rimbaud
+38,writers,morning sickness(?),https://upload.wikimedia.org/wikipedia/commons/3/3a/CBRichmond.png,Charlotte Brontë
+38,writers,assassination,http://www.poemsofgarcialorca.com/images/lorca_portrait_full.jpg,Federico García Lorca
+39,writers,alcoholism,http://news.bbcimg.co.uk/media/images/70992000/jpg/_70992831_dylan-thomas-getty.jpg,Dylan Thomas

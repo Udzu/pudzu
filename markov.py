@@ -24,9 +24,9 @@ def counter_random(counter, filter=None):
     cum = list(itertools.accumulate(list(counter.values()), op.add))
     return seq[bisect.bisect_left(cum, random.uniform(0, cum[-1]))]
    
-def latin_normalise(i):
+def latin_normalise(i, letters=string.ascii_lowercase + ' '):
     """Example normalisation function that strips everything apart from letters and spaces (even accents)."""
-    return (nc for c in i for nc in unicodedata.normalize('NFKD', c).lower() if nc in string.ascii_lowercase + ' ')
+    return (nc for c in i for nc in (c if c in letters else unicodedata.normalize('NFKD', c)).lower() if nc in letters)
 
 class MarkovGenerator(object):
     """Markov Chain n-gram-based generator for arbitrary iterables."""

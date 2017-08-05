@@ -51,4 +51,4 @@ And then unpickle it later:
 
 ### Word generation
 
-Note that **render_word** assumes that the generator was trained on character data including spaces (which are used to detect pseudoword boundaries). It doesn't filter out real words. 
+Note that **render_word** assumes that the generator was trained on character data including spaces (which are used to detect pseudoword boundaries). It doesn't filter out real words. For good results make sure to use a larhe training corpus and experiment with different values of n.

@@ -8,7 +8,9 @@ None.
 
 ## Documentation
 
-**MarkovGenerator**: a simple Markov Chain n-gram based generator. 
+### MarkovGenerator
+
+A simple Markov Chain n-gram based generator. 
 
 ```python
 >> mk = MarkovGenerator(order=1) # use 1-grams (i.e. single elements)

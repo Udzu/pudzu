@@ -6,7 +6,7 @@ from charts import *
 # 40 under 40 grid chart
 # ----------------------
 
-rs = RecordCSV.load_file("40under40.csv")
+rs = RecordCSV.load_file("datasets/40under40.csv")
 data = tabulate_records(rs, row_group_by="category", col_group_by=range(8), fn=first_or_none)
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 
@@ -29,4 +29,4 @@ footer = Image.from_row([
       
 grid = grid_chart(data, lambda d: d.get("image_url", default_img), image_process=process, padding=5, row_label=arial(20, bold=True), bg="black", title=title).pad((0,0,10,0), "black")
 img = Image.from_column([grid, footer], bg="black", xalign=1, padding=5)
-img.save("40under40.png")
+img.save("output/40under40.png")

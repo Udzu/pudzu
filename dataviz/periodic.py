@@ -12,14 +12,14 @@ SAMPLE = {"Z": "number", "name": "Element", "symbol": "El", "year": "date", "cou
 DATERANGES = (1600,1800,1850,1900,1950,2000,2050)
 
 # load records
-rs = RecordCSV.load_file("periodic.csv", delimiter="\t", array_separator=",")
+rs = RecordCSV.load_file("datasets/periodic.csv", delimiter="\t", array_separator=",")
 @artial(ignoring_exceptions, -1, KeyError)
 @artial(ignoring_exceptions, 0, ValueError)
 def year_group(d): return next(i+1 for i,x in enumerate(DATERANGES) if int(d['year']) < x)
 rs = update_records(rs, update_with(group=year_group))
 
 # load flag urls
-atlas = RecordCSV.load_file("countries.csv")
+atlas = RecordCSV.load_file("datasets/countries.csv")
 flags = { tld[1:] : d['flag'] for d in atlas for tld in d.get('tld',[]) if 'flag' in d }
 flags['un'] = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_the_United_Nations.svg/1024px-Flag_of_the_United_Nations.svg.png'
 countries = {c for d in rs for c in d.get('countries',[])} | {'un'}
@@ -95,4 +95,4 @@ title = Image.from_column([
 footer = Image.from_text("*dates, discoverers, etymologies and flags all from Wikipedia; etymology icons by SimpleIcon and Freepik from www.flaticon.com, licensed by CC 3.0 BY.", arial(36), "black", "white")
 img = Image.from_column([title, grid, footer], bg="white", padding=50)
 img = img.place(Image.from_text("/u/Udzu", font("arial", 36), fg="black", bg="white", padding=15).pad((2,2,0,0), "black"), align=1)
-img.save("periodic.png")
+img.save("output/periodic.png")

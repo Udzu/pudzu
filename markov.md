@@ -30,6 +30,8 @@ N-grams can be trained directly from files, with an optional method to convert t
 # [...takes a while...]
 >> for i in range(3): print(mk.render_word())
 pring
+hetedly
+nued
 ```
 
 To avoid having to regenerate the probability dictionary each time, you can pickle the MarkovGenerator object:

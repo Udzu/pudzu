@@ -14,12 +14,12 @@ None.
 >> mk = MarkovGenerator(order=1) # use 1-grams (i.e. single elements)
 >> mk.train("The rain in Spain")
 >> mk.train("The food in Mexico")
->> mk.render(10)
-
+>> mk.render(5)
+('a', 'i', 'n', ' ', 'f')
 >> mk.reset()
->> mk.train((1,2,3,2,3,1))
->> mk.render(10)
-
+>> mk.train((1,2,1,2,3,1))
+>> mk.render(5)
+(3, 1, 2, 3, 1)
 ```
 
 N-grams can be trained directly from files, with an optional method to convert the file iterable (which defaults to extracting characters) and another to normalise it (which defaults to doing nothing). A sample normalising function, latin_normalise, is provided, which strips accents and all non-Latin characters, and lower cases the input. To avoid high memory footprints, normalisers should be written as generators. 
@@ -51,4 +51,4 @@ And then unpickle it later:
 
 ### Word generation
 
-Note that *render_word* assumes that the generator was trained on character data including spaces (which are used to detect pseudoword boundaries). It doesn't filter out real words. 
+Note that **render_word** assumes that the generator was trained on character data including spaces (which are used to detect pseudoword boundaries). It doesn't filter out real words. 

@@ -14,8 +14,12 @@ def generate_ngrams(iterable, n):
     """Generator that yields n-grams from a sequence."""
     return zip(*[itertools.islice(it,i,None) for i,it in enumerate(itertools.tee(iterable, n))])
 
-def counter_random(counter):
+def counter_random(counter, filter=None):
     """Return a single random elements from the Counter collection, weighted by count."""
+    if filter is not None:
+        counter = { k : v for k,v in counter.items() if filter(k) }
+    if len(counter) == 0:
+        raise Exception("No matching elements in Counter collection")
     seq = list(counter.keys())
     cum = list(itertools.accumulate(list(counter.values()), op.add))
     return seq[bisect.bisect_left(cum, random.uniform(0, cum[-1]))]
@@ -49,10 +53,11 @@ class MarkovGenerator(object):
         with open(filename, "r", encoding=encoding) as f:
             self.train(normalise(convert(f)))
             
-    def render(self, stop_if):
+    def render(self, stop_when, start_ngram=None):
         """Return a tuple using the trained probabilities. Stop condition can be a maximum length or function."""
-        stop_fn = stop_if if callable(stop_if) else lambda o: len(o) >= stop_if
-        ngram = counter_random(self.prob_dict)
+        stop_fn = stop_when if callable(stop_when) else lambda o: len(o) >= stop_when
+        start_fn = start_ngram if (callable(start_ngram) or start_ngram is None) else lambda n: n == tuple(start_ngram)
+        ngram = counter_random(self.prob_dict, filter=start_fn)
         output = ngram
         while True:
             if stop_fn(output):
@@ -67,11 +72,8 @@ class MarkovGenerator(object):
 
     def render_word(self, min_length=3, max_length=12):
         """Generates a word. Assumes training on characters including spaces.
-        Doesn't filter out real words. Currently tries repeatedly until it gets a word
-        starting with a space, which for larger n-values may be slow. If it becomes
-        a problem, consider updating render to take an optional prefix and select the
-        initial ngram accordingly."""
+        Doesn't filter out real words."""
         while True:
-            word = "".join(self.render(lambda o: len(o) > 1 and o[-1] == ' '))
-            if word.startswith(" ") and min_length <= len(word.strip()) <= max_length:
+            word = "".join(self.render(lambda o: len(o) > 1 and o[-1] == ' ', lambda n: n[0] == ' '))
+            if min_length <= len(word.strip()) <= max_length:
                 return word.strip()

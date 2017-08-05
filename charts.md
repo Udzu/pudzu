@@ -26,11 +26,13 @@ Three chart types are currently supported: **bar charts**, **time charts** and *
 
 ### Grid charts
 
-**grid_chart**: generate an image grid chart; essentially a convenient wrapper for `Image.from_array`. Sample scripts: [periodic.py](dataviz/periodic.py) and [40under40.py](dataviz/40under40.py).
+**grid_chart**: generate an image grid chart; essentially a convenient wrapper for `Image.from_array`. Sample scripts: [periodic.py](dataviz/periodic.py), [40under40.py](dataviz/40under40.py) and [markovtext.py](dataviz/markovtext.py).
 
 ![grid chart example](images/chart_periodic.png)
 
 ![grid chart example](images/chart_40under40.png)
+
+![grid chart example](images/chart_markovtext.png)
 
 ### Map charts
 

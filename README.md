@@ -2,7 +2,7 @@
 
 ## Summary
 
-Various Python 3 utility functions, mostly geared towards dataviz and used to create visualisations such as this [bar chart](https://raw.githubusercontent.com/Udzu/pudzu/master/dataviz/ukelections.png), [time chart](https://raw.githubusercontent.com/Udzu/pudzu/master/dataviz/g7.png), [periodic table](https://raw.githubusercontent.com/Udzu/pudzu/master/dataviz/periodic.png), [image grid](https://raw.githubusercontent.com/Udzu/pudzu/master/dataviz/40under40.png) and [map chart](https://raw.githubusercontent.com/Udzu/pudzu/master/dataviz/femaleleaders.png).
+Various Python 3 utility functions, mostly geared towards dataviz and used to create visualisations such as this [bar chart](https://raw.githubusercontent.com/Udzu/pudzu/master/dataviz/output/ukelections.png), [time chart](https://raw.githubusercontent.com/Udzu/pudzu/master/dataviz/output/g7.png), [periodic table](https://raw.githubusercontent.com/Udzu/pudzu/master/dataviz/output/periodic.png), [image grid](https://raw.githubusercontent.com/Udzu/pudzu/master/dataviz/output/40under40.png), [map chart](https://raw.githubusercontent.com/Udzu/pudzu/master/dataviz/output/femaleleaders.png) and [frequency chart](https://raw.githubusercontent.com/Udzu/pudzu/master/dataviz/output/markovtext_wikienglish.png).
 
 The modules aren't properly packaged up or pip-able (yet) but are reasonably simple, generic and docstringed. They are not optimised for speed or tested for resilience. They are targeted at for-fun, interactive work.
 

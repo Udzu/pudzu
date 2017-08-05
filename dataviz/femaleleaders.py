@@ -5,7 +5,7 @@ from records import *
 import seaborn as sns
 
 # generate map
-rs = RecordCSV.load_file("femaleleaders.csv")
+rs = RecordCSV.load_file("datasets/femaleleaders.csv")
 rs = update_records(rs, update_if('hosdate:exists or hogdate:exists', update_with(date=lambda d: min(d.get('hosdate',2017), d.get('hogdate',2017)))))
 rd = records_to_dict(rs, "country")
 
@@ -47,9 +47,9 @@ legend = Image.from_column([type_leg, note_leg, year_leg], bg="white", xalign=0,
 chart = chart.place(legend, align=(1,0), padding=10)
 
 # generate image grid
-trs = RecordCSV.load_file("femaleleaders_timeline.csv")
+trs = RecordCSV.load_file("datasets/femaleleaders_timeline.csv")
 tdata = pd.DataFrame([trs[i:i+12] for i in range(0,36,12)])
-atlas = records_to_dict(RecordCSV.load_file("countries.csv"), "tld")
+atlas = records_to_dict(RecordCSV.load_file("datasets/countries.csv"), "tld")
 atlas[".kv"] = { "flag" : "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Kosovo.svg/1024px-Flag_of_Kosovo.svg.png" }
 atlas[".yu"] = { "flag" : "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_SFR_Yugoslavia.svg/1000px-Flag_of_SFR_Yugoslavia.svg.png" }
 
@@ -67,5 +67,5 @@ grid = grid_chart(tdata, lambda d: d and d["url"], process, bg="white", padding=
 title = Image.from_text("40 Years of Women Leaders in Europe".upper(), arial(52, bold=True), "black", "white", padding=(0,20))
 img = Image.from_column([title, chart, grid], bg="white", padding=2)
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
-img.save("femaleleaders.png")
+img.save("output/femaleleaders.png")
 

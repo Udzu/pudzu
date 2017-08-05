@@ -8,30 +8,7 @@ import unicodedata
 from collections import Counter
 from numbers import Integral
 
-# Simple Markov Chain n-gram generator
-# 
-# Usage example:
-#
-# >> from markov import *
-# >> mk = MarkovGenerator(2) # use 2-grams (i.e. pairs of letters)
-# >> mk.train_file("warandpeace.txt", normalise=latin_normalise)
-# [takes a while]
-# >> for i in range(3): print(mk.render_word())
-# pring
-# hetedly
-# nued
-#
-# To avoid having to regenerate the probability dictionary each time
-# you can just pickle the MarkovGenerator:
-#
-# >> import pickle
-# >> with open("warandpeace_2grams.p", "wb") as f:
-#        pickle.dump(mk, f, pickle.HIGHEST_PROTOCOL)
-#
-# And then unpickle it later:
-# 
-# >> with open("warandpeace_2grams.p", "rb") as f:
-#        mk = pickle.load(f)
+# Simple Markov n-gram based generator.
 
 def generate_ngrams(iterable, n):
     """Generator that yields n-grams from a sequence."""

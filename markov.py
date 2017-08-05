@@ -1,8 +1,12 @@
+import argparse
 import bisect
+import functools
 import random
 import itertools
 import operator as op
+import pickle
 import string
+import sys
 import unicodedata
 
 from collections import Counter
@@ -24,9 +28,12 @@ def counter_random(counter, filter=None):
     cum = list(itertools.accumulate(list(counter.values()), op.add))
     return seq[bisect.bisect_left(cum, random.uniform(0, cum[-1]))]
    
-def latin_normalise(i, letters=string.ascii_lowercase + ' '):
+def latin_normalise(i, letters=string.ascii_letters + ' ', lowercase=True):
     """Example normalisation function that strips everything apart from letters and spaces (even accents)."""
-    return (nc for c in i for nc in (c if c in letters else unicodedata.normalize('NFKD', c)).lower() if nc in letters)
+    return (nc for c in i
+               for cc in (c.lower() if lowercase else c)
+               for nc in (cc if cc in letters else unicodedata.normalize('NFKD', cc))
+               if nc in letters)
 
 class MarkovGenerator(object):
     """Markov Chain n-gram-based generator for arbitrary iterables."""
@@ -77,3 +84,30 @@ class MarkovGenerator(object):
             word = "".join(self.render(lambda o: len(o) > 1 and o[-1] == ' ', lambda n: n[0] == ' '))
             if min_length <= len(word.strip()) <= max_length:
                 return word.strip()
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description = 'Generate pseudowords using Markov chains')
+    parser.add_argument("corpus", type=str, help="text corpus name")
+    parser.add_argument("number", type=int, help="number of words to generate")
+    parser.add_argument("-n", "--order", type=int, help="n-gram order [2]", default=2)
+    parser.add_argument("-l", "--letters", type=str, help="letters to keep [a-z/A-Z]", default=string.ascii_letters)
+    parser.add_argument("-c", "--casesensitive", action="store_true", help="case sensitive generator [False]")
+    parser.add_argument("-r", "--regenerate", action="store_true", help="always regenerate generator [False]")
+    args = parser.parse_args()
+    
+    pickled_dict = "{}_{}.p".format(args.corpus, args.order)
+    try:
+        if args.regenerate: raise FileNotFoundError
+        print("Checking for cached generator at {}".format(pickled_dict), file=sys.stderr)
+        with open(pickled_dict, "rb") as f:
+            mk = pickle.load(f) 
+    except FileNotFoundError:
+        print("Training from corpus (may take a while).", file=sys.stderr)
+        mk = MarkovGenerator(order=args.order)
+        mk.train_file(args.corpus, normalise=functools.partial(latin_normalise, letters=args.letters + ' ', lowercase=not args.casesensitive))
+        print("Saving generated generator to {}".format(pickled_dict), file=sys.stderr)
+        with open(pickled_dict, "wb") as f:
+            pickle.dump(mk, f, pickle.HIGHEST_PROTOCOL)
+    for i in range(args.number):
+        print(mk.render_word())
+

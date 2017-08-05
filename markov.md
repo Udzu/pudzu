@@ -16,6 +16,8 @@ None.
 >> mk.train("The food in Mexico")
 >> mk.render(5)
 ('a', 'i', 'n', ' ', 'f')
+>> mk.render(5, start_ngram="M")
+('M', 'e', ' ', 'f', 'o')
 >> mk.reset()
 >> mk.train((1,2,1,2,3,1))
 >> mk.render(5)

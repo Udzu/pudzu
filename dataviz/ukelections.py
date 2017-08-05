@@ -7,7 +7,7 @@ from records import *
 # UK elections
 # ------------
 
-records = RecordCSV.load_file("ukelections.csv")
+records = RecordCSV.load_file("datasets/ukelections.csv")
 records = sorted(records, key=lambda d: d["year"])
 records = filter_records(records, lambda d: int(d["year"][:4]) >= 1966)
 
@@ -51,4 +51,4 @@ text = Image.from_text("Chart highlights the top three parties by popular vote s
 legendtext = Image.from_column([legend, text], padding=(0,10), xalign=0)
 img = Image.from_row([chart, legendtext], bg="white", yalign=0, padding=(10,0))
 img = Image.from_column([title, img], bg="white").pad((0,5), "white")
-img.save("ukelections.png")
+img.save("output/ukelections.png")

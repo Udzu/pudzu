@@ -1,5 +1,4 @@
 from pillar import *
-from records import *
 from enum import Enum
 
 # Random collection of Pillow-based charting functions
@@ -219,7 +218,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     
     return chart
 
-# Time charts
+# Time charts (TODO: switch to pandas)
 
 def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_height,
                fg="white", bg="black", xmin=None, xmax=None, title=None,
@@ -227,9 +226,9 @@ def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_h
                grid_interval=None, label_interval=Ellipsis, grid_labels=None, label_format=str):
     """Plot a time chart. Times can be numeric, dates or anything that supports arithmetic.
     - group_map (group map): group map containing time series
-    - start_key (key or record->time): start time for a given record
-    - end_key (key or record->time): end time for a given record
-    - color_key (key or record->color): color for a given record
+    - start_key (key or row->time): start time for a given record
+    - end_key (key or row->time): end time for a given record
+    - color_key (key or row->color): color for a given record
     - chart_width (int): chart width
     - timeline_height (int): height for each timeline
     - fg (color): text and grid color [white]
@@ -381,7 +380,7 @@ def grid_chart(data, image_key, image_process=None,
     if title is not None: chart = Image.from_column((title, chart), bg=bg)
     return chart
 
-# Map charts
+# Map charts (TODO: switch to pandas)
 
 class ImageMapSort(Enum):
     """Image map color sort in name CSV file."""

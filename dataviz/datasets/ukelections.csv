@@ -1,4 +1,4 @@
-year,party1,party2,party3,votes1_i,votes2_i,votes3_i,votestotal_i,turnout_f,seats1_i,seats2_i,seats3_i,seatstotal_i
+year,party1,party2,party3,votes1,votes2,votes3,votestotal,turnout,seats1,seats2,seats3,seatstotal
 2017,C,L,LD,13667231,12874284,2371762,32181756,68.7,318,262,12,650
 2015,C,L,UKIP,11300109,9347324,3881099,30691680,66.4,330,232,1,650
 2010,C,L,LD,10703754,8609527,6836825,29687604,65.1,306,258,57,650

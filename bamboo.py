@@ -33,13 +33,13 @@ def _row_groupby(df, by):
     return df.groupby(lambda i: by(df.ix[i]) if callable(by) else by[i] if non_string_iterable(by) else df.ix[i].get(by))
 
 def _column_split(df, by):
-    """Split rows by column, making one copy for each column value."""
+    """Split rows by column, making one copy for each item in the column value."""
     return pd.DataFrame(pd.Series(assoc_in(row, [by], v)) for _, row in df.iterrows() for v in make_iterable(row[by]))
 
 # todo: tabulation
     
-pd.DataFrame.filter_key = _key_filter
-pd.DataFrame.filter_row = _row_filter
+pd.DataFrame.filter_keys = _key_filter
+pd.DataFrame.filter_rows = _row_filter
 pd.DataFrame.assign_row = _row_assign
 pd.DataFrame.groupby_row = _row_groupby
 pd.DataFrame.update_column = _column_update

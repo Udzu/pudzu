@@ -6,7 +6,7 @@ import unicodedata
 sys.path.append('..')
 
 from markov import *
-from records import *
+from bamboo import *
 from charts import *
 from math import log
 

@@ -381,16 +381,17 @@ def weighted_choice(seq, weights):
     """Return a single random elements from a sequence, according to the given relative weights."""
     return weighted_choices(seq, weights, n=1)[0]
 
-def _Counter_randoms(self, n):
+def _Counter_randoms(self, n, filter=None):
     """Return random elements from the Counter collection, weighted by count."""
-    return weighted_choices(list(self.keys()), list(self.values()), n=n)
+    d = self if filter is None else { k : v for k,v in self.items() if filter(k) }
+    return weighted_choices(list(d.keys()), list(d.values()), n=n)
     
-def _Counter_random(self):
+def _Counter_random(self, filter=None):
     """Return a single random elements from the Counter collection, weighted by count."""
-    return weighted_choice(list(self.keys()), list(self.values()))
+    return _Counter_randoms(self, 1, filter=filter)[0]
     
-Counter.randoms = _Counter_randoms
-Counter.random = _Counter_random
+Counter.random_choices = _Counter_randoms
+Counter.random_choice = _Counter_random
 
 # Network/io
 

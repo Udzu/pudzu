@@ -20,9 +20,16 @@ def _row_assign(df, assign_if=None, **kwargs):
     """Assign or update columns using row function, with an optional row predicate condition."""
     return df.assign(**{k : (lambda df: [fn(r) if (assign_if is None or assign_if(r)) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
 
+def _row_groupby(df, by):
+    """Group rows using a row function, map, list or column name."""
+    return df.groupby(lambda i: by(df.ix[i]) if callable(by) else by[i] if non_string_iterable(by) else df.ix[i].get(by))
+
+# TODO: sorting, handling multiple groups
+ 
 pd.DataFrame.value_filter = _value_filter
 pd.DataFrame.key_filter = _key_filter
 pd.DataFrame.row_assign = _row_assign
+pd.DataFrame.row_groupby = _row_groupby
 
 # Testing
 

@@ -1,6 +1,7 @@
 import sys
 sys.path.append('..')
 from charts import *
+from bamboo import *
 
 # -------------------------
 # Periodic table grid chart
@@ -11,18 +12,18 @@ PALETTE = ["#c3dcee", "#c9c8d8", "#eac8ea", "#f9b4b7", "#fdd8b0", "#fffcbf", "#c
 SAMPLE = {"Z": "number", "name": "Element", "symbol": "El", "year": "date", "countries": ["un"], "types": "etymology", "group": -1}
 DATERANGES = (1600,1800,1850,1900,1950,2000,2050)
 
-# load records
-rs = RecordCSV.load_file("datasets/periodic.csv", delimiter="\t", array_separator=",")
+# load data
+df = pd.read_csv("datasets/periodic.csv").split_columns(('countries', 'types'), "|")
 @artial(ignoring_exceptions, -1, KeyError)
 @artial(ignoring_exceptions, 0, ValueError)
-def year_group(d): return next(i+1 for i,x in enumerate(DATERANGES) if int(d['year']) < x)
-rs = update_records(rs, update_with(group=year_group))
+def year_group(d): return -1 if none_or_nan(d['year']) else next(i for i,x in enumerate(DATERANGES) if int(d['year']) < x)
+df = df.assign_rows(group=year_group)
 
 # load flag urls
-atlas = RecordCSV.load_file("datasets/countries.csv")
-flags = { tld[1:] : d['flag'] for d in atlas for tld in d.get('tld',[]) if 'flag' in d }
+atlas = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|")
+flags = { tld[1:] : d['flag'] for _,d in atlas.iterrows() for tld in d['tld'] }
 flags['un'] = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_the_United_Nations.svg/1024px-Flag_of_the_United_Nations.svg.png'
-countries = {c for d in rs for c in d.get('countries',[])} | {'un'}
+countries = {c for _,d in df.iterrows() for c in d['countries']} | {'un'}
 assert(countries <= set(list(flags)))
 
 # generate main grid
@@ -31,25 +32,25 @@ def table_cell(d):
     c = PALETTE[d['group']]
     cbg = ImageColor.getrgba(c)._replace(alpha=0)
     flagbase = Image.new("RGBA", (W,H), c)
-    n = len(d.get('countries',[]))
+    n = len(d['countries'])
     flag = flagbase if n == 0 else Image.from_row([Image.from_url_with_cache(flags[d['countries'][i]]).resize((W//n,H)) for i in range(n)])
     flag = Image.blend(flagbase, flag.convert("RGBA"), 0.8)
     flag = flag.place(Image.from_text(d['symbol'], arial(48,bold=True), fg="black"))
     year = Image.new("RGBA", (W,H//2), c)
-    year = year.place(Image.from_text(d.get('year'," "), arial(24,bold=True), fg="black", bg=cbg), align=(0,0.5),padding=(5,0))
+    year = year.place(Image.from_text(get_non(d,'year'," "), arial(24,bold=True), fg="black", bg=cbg), align=(0,0.5),padding=(5,0))
     if d == SAMPLE:
         year = year.place(Image.from_text(d['types'], arial(24,bold=True), fg="black", bg=cbg), align=(1,0.5),padding=(5,0))
-    elif 'types' in d:
+    elif len(d['types']) > 0:
         types = Image.from_row([Image.open("icons/{}.png".format(t)).resize_fixed_aspect(width=30).convert("RGBA") for t in d['types']], padding=2, bg=cbg)
         year = year.place(types, align=(1,0.5), padding=(5,0))
     name = Image.new("RGBA", (W,H//2), c)
-    name = name.place(Image.from_text(d.get('name'," "), arial(24,bold=True), fg="black", bg=cbg), align=(0,0.5),padding=(5,0))
-    name = name.place(Image.from_text(d.get('Z'," "), arial(24,bold=True), fg="black", bg=cbg), align=(1,0.5),padding=(5,0))
+    name = name.place(Image.from_text(get_non(d,'name'," "), arial(24,bold=True), fg="black", bg=cbg), align=(0,0.5),padding=(5,0))
+    name = name.place(Image.from_text(get_non(d,'Z'," "), arial(24,bold=True), fg="black", bg=cbg), align=(1,0.5),padding=(5,0))
     return Image.from_column([year, flag, name]).pad(1, "black")
-    
-table = tabulate_records(rs, col_group_by="x", columns=range(1,max(d['x'] for d in rs)+1),
-                             row_group_by="y", rows=range(1,max(d['y'] for d in rs)+1),
-                             fn=first_or_none)
+  
+# df.x.max()
+table = pd.DataFrame([[first_or_none([dict(d) for _,d in df[(df.x == x) & (df.y == y)].iterrows()]) for x in range(1,df.x.max()+1)] for y in range(1,df.y.max()+1)])
+
 grid = grid_chart(table, table_cell, bg="white")
     
 # legends
@@ -57,31 +58,29 @@ GLABELS = ["premodern", "1650–1799", "1800–1849", "1850–1899", "1900–194
 CLABELS = {"uk": "UK", "se": "Sweden", "fr": "France", "de": "Germany", "ru": "Russia/USSR", "us": "US", "other": "Other" }
 TLABELS = ["color", "myth", "person", "place"]
 
-gdata = tabulate_records(rs, rows=["value"], col_group_by="group", columns=range(0,7))
-cgroup = group_records(rs, group_by=lambda d: ["other" if c not in CLABELS else c for c in d.get("countries",[])])
-cgroup = sorted_groups(cgroup, group_key=lambda g,v: -1 if g=="other" else len(v), group_reverse=True)
-cdata = tabulate_groups(cgroup, subgroups=["value"], transpose=True)
-tdata = tabulate_records(rs, rows=["value"], col_group_by="types", columns=TLABELS)
+gdata = df.groupby('group').count().Z
+cdata = df.split_rows('countries').update_columns(countries=lambda v: v if v in CLABELS else 'other').groupby('countries').count().Z
+tdata = df.split_rows('types').groupby('types').count().Z
 
 def make_legend(array, title):
     aimg = Image.from_array(array, xalign=(0.5,0), padding=(5,6), bg="white")
     return Image.from_column([Image.from_text(title, arial(36, bold=True), "black").pad((7,0,0,10),"white"), aimg], xalign=0, bg="white").pad(12,"white").pad(2)
         
 def glegend_entry(i, s):
-    box = Image.new("RGBA", (50,40), PALETTE[i]).place(Image.from_text(str(gdata[i]["value"]), arial(24), "black", bg=PALETTE[i]))
+    box = Image.new("RGBA", (50,40), PALETTE[i]).place(Image.from_text(str(gdata[i]), arial(24), "black", bg=PALETTE[i]))
     label = Image.from_text(s, arial(32), "black", bg="white")
     return [box, label]
 glegend = make_legend([glegend_entry(i, s) for i,s in enumerate(GLABELS)], "by date")
 
 def clegend_entry(c):
     box = Image.from_url_with_cache(flags["un" if c == "other" else c]).resize((50,40))
-    label = Image.from_text("{} ({})".format(CLABELS[c], cdata[c]["value"]), arial(32), "black", bg="white")
+    label = Image.from_text("{} ({})".format(CLABELS[c], cdata[c]), arial(32), "black", bg="white")
     return [box, label]
-clegend = make_legend([clegend_entry(c) for c in cdata.columns], "by country")
+clegend = make_legend([clegend_entry(c) for c in sorted(CLABELS, key=lambda c: "zz" if c=='other' else CLABELS[c])], "by country")
 
 def tlegend_entry(t):
     box = Image.open("icons/{}.png".format(t)).resize_fixed_aspect(width=50).convert("RGBA")
-    label = Image.from_text("{} ({})".format(t, tdata[t]["value"]), arial(32), "black", bg="white")
+    label = Image.from_text("{} ({})".format(t, tdata[t]), arial(32), "black", bg="white")
     return [box, label]
 tlegend = make_legend([tlegend_entry(t) for t in TLABELS], "by etymology")
     

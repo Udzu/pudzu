@@ -1,4 +1,4 @@
-country_s,name_s,url_s,year_i
+country,name,url,year
 uk,Margaret Thatcher,http://www.abc.net.au/news/image/3980674-3x4-700x933.jpg,1979
 pt,Maria de Lourdes Pintasilgo,https://upload.wikimedia.org/wikipedia/commons/0/0b/Maria_de_Lourdes_Pintasilgo_%281986%29_%28cropped%29.jpg,1979
 is,Vigdís Finnbogadóttir,https://upload.wikimedia.org/wikipedia/commons/a/ae/Vigdis_Finnbogadottir_%281985%29.jpg,1980

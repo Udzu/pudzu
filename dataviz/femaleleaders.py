@@ -1,13 +1,13 @@
 import sys
 sys.path.append('..')
 from charts import *
-from records import *
+from bamboo import *
 import seaborn as sns
 
 # generate map
-rs = RecordCSV.load_file("datasets/femaleleaders.csv")
-rs = update_records(rs, update_if('hosdate:exists or hogdate:exists', update_with(date=lambda d: min(d.get('hosdate',2017), d.get('hogdate',2017)))))
-rd = records_to_dict(rs, "country")
+df = pd.read_csv("datasets/femaleleaders.csv")
+df = df.assign_rows(assign_if='hosdate:exists or hogdate:exists', date=lambda d: min(get_non(d,'hosdate',2017), get_non(d,'hogdate',2017)))
+df = df.set_index('country')
 
 hog = ImageColor.from_floats(sns.color_palette("Blues", 6))
 hos = ImageColor.from_floats(sns.light_palette((0.7,0.2,0.1)))
@@ -17,16 +17,16 @@ def stripe(c1, c2):
     return Image.from_column([Image.new("RGBA", (100,4), c1), Image.new("RGBA", (100,4), c2)])
 
 def colorfn(c):
-    if c not in rd: return None if c == 'Sea' else "grey"
-    d = rd.get(c, {})
-    if 'date' not in d : return stripe("grey", hos[-1])
-    y = d.get('date') // 10 - 196
-    if 'hog' not in d: return hos[y]
-    elif 'hos' not in d: return hog[y]
-    elif 'hosdate' not in d: return stripe(hog[y], both[y])
+    if c not in df.index: return None if c == 'Sea' else "grey"
+    d = df.ix[c]
+    if none_or_nan(df['date'][c]) : return stripe("grey", hos[-1])
+    y = int(df['date'][c]) // 10 - 196
+    if none_or_nan(df['hog'][c]): return hos[y]
+    elif none_or_nan(df['hos'][c]): return hog[y]
+    elif none_or_nan(df['hosdate'][c]): return stripe(hog[y], both[y])
     else: return both[y]
     
-chart = map_chart("maps/Europe.png", colorfn, ignoring_exceptions(lambda c: str(rd[c]["date"])), label_font=arial(16, bold=True))
+chart = map_chart("maps/Europe.png", colorfn, ignoring_exceptions(lambda c: str(int(df["date"][c]))), label_font=arial(16, bold=True))
 
 # generate legend
 font_size = 16
@@ -47,21 +47,22 @@ legend = Image.from_column([type_leg, note_leg, year_leg], bg="white", xalign=0,
 chart = chart.place(legend, align=(1,0), padding=10)
 
 # generate image grid
-trs = RecordCSV.load_file("datasets/femaleleaders_timeline.csv")
-tdata = pd.DataFrame([trs[i:i+12] for i in range(0,36,12)])
-atlas = records_to_dict(RecordCSV.load_file("datasets/countries.csv"), "tld")
-atlas[".kv"] = { "flag" : "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Kosovo.svg/1024px-Flag_of_Kosovo.svg.png" }
-atlas[".yu"] = { "flag" : "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_SFR_Yugoslavia.svg/1000px-Flag_of_SFR_Yugoslavia.svg.png" }
+df = pd.read_csv("datasets/femaleleaders_timeline.csv")
+tdata = pd.DataFrame([[df.loc[i+j] for j in range(12) if i + j < len(df)] for i in range(0,36,12)])
+
+flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('tld').set_index('tld')['flag']
+flags[".kv"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Kosovo.svg/1024px-Flag_of_Kosovo.svg.png"
+flags[".yu"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_SFR_Yugoslavia.svg/1000px-Flag_of_SFR_Yugoslavia.svg.png"
 
 def process(img, d):
     return Image.from_column([
       img.crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=100),
       Image.from_text(d['name'].split(" ")[-1], arial(10, bold=True), fg="black", bg="white"),
-      Image.from_row([Image.from_url_with_cache(atlas[".{}".format(d['country'])]['flag']).resize((15,9)),
+      Image.from_row([Image.from_url_with_cache(flags[".{}".format(d['country'])]).resize((15,9)),
                       Image.from_text(str(d['year']), arial(10, bold=True), fg="black", bg="white")], bg="white", padding=3, yalign=1)
       ], bg="white")
     
-grid = grid_chart(tdata, lambda d: d and d["url"], process, bg="white", padding=1)
+grid = grid_chart(tdata, lambda d: None if none_or_nan(d) else d["url"], process, bg="white", padding=1)
 
 # put it all together
 title = Image.from_text("40 Years of Women Leaders in Europe".upper(), arial(52, bold=True), "black", "white", padding=(0,20))

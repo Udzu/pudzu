@@ -1,7 +1,6 @@
 import sys
 sys.path.append('..')
 from charts import *
-from records import *
 from scipy import ndimage
 import seaborn as sns
 
@@ -9,9 +8,9 @@ MAP = "maps/Europe.png"
 BACKGROUND = 'Sea'
 MERGE = { 'Gibraltar': 'UK', 'Jersey': 'UK', 'Guernsey': 'UK', 'Faroe Islands': 'Denmark' }
 
-mapnames = RecordCSV.load_file(name_csv_path(MAP))
-names = [d['name'] for d in mapnames if d['name'] not in MERGE and d['name'] != BACKGROUND]
-bgcolor = tuple(records_to_dict(mapnames, 'name')[BACKGROUND]['color'])
+mapnames = load_name_csv(MAP)
+names = [d['name'] for _,d in mapnames.iterrows() if d['name'] not in MERGE and d['name'] != BACKGROUND]
+bgcolor = mapnames[mapnames['name']==BACKGROUND].color.loc[0]
 palette = ImageColor.from_floats(sns.color_palette("hls", len(names)))
 colorfn = lambda n: None if n == BACKGROUND else palette[names.index(MERGE[n])] if n in MERGE else palette[names.index(n)]
 map = map_chart(MAP, colorfn).convert("RGBA")
@@ -47,5 +46,5 @@ maps = Image.from_array([[Image.from_text("Closest country".upper(), arial(60, b
 footer = Image.from_text("Blank map from Wikipedia. Dependencies counted under parent state. Calculations based on Euclidean distance and low resolution map, so not 100% accurate. Not for use in pub quizzes or planning escape routes.", arial(24), "black", "white", padding=10)
 chart = Image.from_column([maps, footer], bg="white")
 chart.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, copy=False)
-chart.save("neighbours.png")
+chart.save("output/neighbours.png")
 

@@ -1,4 +1,6 @@
+from bamboo import *
 from pillar import *
+from os.path import splitext
 from enum import Enum
 
 # Random collection of Pillow-based charting functions
@@ -218,7 +220,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     
     return chart
 
-# Time charts (TODO: switch to pandas)
+# Time charts
 
 def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_height,
                fg="white", bg="black", xmin=None, xmax=None, title=None,
@@ -380,7 +382,7 @@ def grid_chart(data, image_key, image_process=None,
     if title is not None: chart = Image.from_column((title, chart), bg=bg)
     return chart
 
-# Map charts (TODO: switch to pandas)
+# Map charts
 
 class ImageMapSort(Enum):
     """Image map color sort in name CSV file."""
@@ -407,9 +409,12 @@ def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite
                 coldict[tuple(pixel)] = True
         cols = list(coldict)
     cols = list(presorted) + [c for c in cols if c not in presorted]
-    rs = [{ 'color': c, 'name': "color{}".format(i) } for i,c in enumerate(cols)]
-    RecordCSV.save_file(name_csv_path(map), rs)
+    rs = [{ 'color': "|".join(str(x) for x in c), 'name': "color{}".format(i) } for i,c in enumerate(cols)]
+    pd.DataFrame(rs).to_csv(name_csv_path(map), index=False)
 
+def load_name_csv(map):
+    return pd.read_csv(name_csv_path(map)).split_columns('color', '|', int)
+    
 def generate_labelbox_csv(map):
     """Generate a label bounding box csv, for use in map_chart."""
     img = Image.open(labelbox_img_path(map))
@@ -423,9 +428,12 @@ def generate_labelbox_csv(map):
             xmax[c] = max(xmax.get(c,0), x)
             ymin[c] = min(ymin.get(c,img.height), y)
             ymax[c] = max(ymax.get(c,0), y)
-    rs = [{ 'color': c[:3], 'bbox': (xmin[c], ymin[c], xmax[c], ymax[c]) } for c in xmin if ImageColor.getrgba(c).alpha == 255 ]
-    RecordCSV.save_file(labelbox_csv_path(map), rs)
+    rs = [{ 'color': "|".join(str(x) for x in c[:3]), 'bbox': "|".join(str(x) for x in (xmin[c], ymin[c], xmax[c], ymax[c])) } for c in xmin if ImageColor.getrgba(c).alpha == 255 ]
+    pd.DataFrame(rs).to_csv(labelbox_csv_path(map), index=False)
 
+def load_labelbox_csv(map):
+    return pd.read_csv(labelbox_csv_path(map)).split_columns(('bbox', 'color'), '|', int)
+    
 def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"):
     """Generate a map chart from a map image and color mapping. If present, this will use a name csv file with image names
     and a label csv file with label bounding boxes.
@@ -439,9 +447,9 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
     # read image and name csv
     img = Image.open(map)
     try:
-        rs = RecordCSV.load_file(name_csv_path(map))
+        df = load_name_csv(map)
         logger.info("Using color name file {}".format(name_csv_path(map)))
-        namemap = { tuple(d['color']) : d['name'] for d in rs }
+        namemap = { tuple(d['color']) : d['name'] for _,d in df.iterrows() }
     except FileNotFoundError:
         logger.warning("No color name file found at {}".format(name_csv_path(map)))
         namemap = {}
@@ -461,9 +469,9 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
             
     # generate labels
     if label_fn is not None:
-        rs = RecordCSV.load_file(labelbox_csv_path(map))
+        df = load_labelbox_csv(map)
         logger.info("Using label bounding box file {}".format(labelbox_csv_path(map)))
-        labelboxes = { tuple(d["color"]) : BoundingBox(d['bbox']) for d in rs }
+        labelboxes = { tuple(d["color"]) : BoundingBox(d['bbox']) for _,d in df.iterrows() }
         for c,name in colors:
             label = label_fn(name) if callable(label_fn) else label_fn.get(name)
             if label is None:

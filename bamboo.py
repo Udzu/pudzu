@@ -11,18 +11,20 @@ logger = logging.getLogger('bamboo')
 
 # Various pandas utility functions
 
+def _make_filter(filter):
+    return (lambda x: True) if filter is None else filter if callable(filter) else FilterExpression.make_filter(filter) 
+
 def _key_filter(df, filter):
     """Filter rows using either a list of keys or a key predicate."""
     return df.select(filter, axis=1) if callable(filter) else df.filter(make_iterable(filter), axis=1)
 
 def _row_filter(df, filter):
     """Filter rows using either a row predicate or a RecordFilter expression."""
-    df_filter = filter if callable(filter) else FilterExpression.make_filter(filter) 
-    return df[df.apply(df_filter, axis=1)]
+    return df[df.apply(_make_filter(filter), axis=1)]
 
 def _row_assign(df, assign_if=None, **kwargs):
     """Assign or update columns using row function, with an optional row predicate condition."""
-    return df.assign(**{k : (lambda df: [fn(r) if (assign_if is None or assign_if(r)) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
+    return df.assign(**{k : (lambda df: [fn(r) if _make_filter(assign_if)(r) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
 
 def _row_groupby(df, by):
     """Group rows using a row function, map, list or column name."""
@@ -33,8 +35,8 @@ def _row_split(df, by):
     return pd.DataFrame(pd.Series(assoc_in(row, [by], v)) for _, row in df.iterrows() for v in make_iterable(row[by]))
 
 def _column_update(df, update_if=None, **kwargs):
-    """Update columns using a value function, with an optional value predicate condition."""
-    return df.assign(**{k : (lambda df, k=k, fn=fn: [fn(r[k]) if (update_if is None or update_if(r[k])) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
+    """Update columns using a value function, with an optional value predicate condition, or True to update just non-nans."""
+    return df.assign(**{k : (lambda df, k=k, fn=fn: [fn(r[k]) if (update_if is None or callable(update_if) and update_if(r[k]) or update_if is True and not none_or_nan(r[k])) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
     
 def _column_split(df, columns, delimiter, converter=identity):
     """Split column values into lists with the given delimiter."""

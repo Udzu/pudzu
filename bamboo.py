@@ -36,9 +36,9 @@ def _column_update(df, update_if=None, **kwargs):
     """Update columns using a value function, with an optional value predicate condition."""
     return df.assign(**{k : (lambda df, k=k, fn=fn: [fn(r[k]) if (update_if is None or update_if(r[k])) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
     
-def _column_split(df, columns, delimiter):
+def _column_split(df, columns, delimiter, converter=identity):
     """Split column values into lists with the given delimiter."""
-    return df.update_columns(**{column : ignoring_exceptions(lambda s: tuple(s.split(delimiter)), (), (AttributeError)) for column in columns })
+    return df.update_columns(**{column : ignoring_exceptions(lambda s: tuple(converter(x) for x in s.split(delimiter)), (), (AttributeError)) for column in make_iterable(columns) })
     
 pd.DataFrame.filter_keys = _key_filter
 pd.DataFrame.filter_rows = _row_filter

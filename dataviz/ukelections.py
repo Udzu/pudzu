@@ -7,18 +7,18 @@ from bamboo import *
 # UK elections
 # ------------
 
-records = pd.read_csv("datasets/ukelections.csv").sort_values("year").filter_rows(lambda d: int(d["year"][:4]) >= 1966)
+df = pd.read_csv("datasets/ukelections.csv").sort_values("year").filter_rows(lambda d: int(d["year"][:4]) >= 1966)
 
 groups = OrderedDict()
 for i in map(str, range(1,4)):
-    groups[i] = [{ "year": d["year"], "votes": d["votes"+i], "seats": d["seats"+i], "party": d["party"+i] } for _,d in records.iterrows()]
+    groups[i] = [{ "year": d["year"], "votes": d["votes"+i], "seats": d["seats"+i], "party": d["party"+i] } for _,d in df.iterrows()]
 groups["rest"] = [{ "year": d["year"], "votes": d["votestotal"] - d["votes1"] - d["votes2"] - d["votes3"],
-                    "seats": d["seatstotal"] - d["seats1"] - d["seats2"] - d["seats3"], "party": "other" } for _,d in records.iterrows()]
-groups["noshow"] = [{ "year": d["year"], "votes": int(d["votestotal"] / (d["turnout"]/100)) - d["votestotal"], "seats": 0, "party": "noshow" } for _,d in records.iterrows()]
+                    "seats": d["seatstotal"] - d["seats1"] - d["seats2"] - d["seats3"], "party": "other" } for _,d in df.iterrows()]
+groups["noshow"] = [{ "year": d["year"], "votes": int(d["votestotal"] / (d["turnout"]/100)) - d["votestotal"], "seats": 0, "party": "noshow" } for _,d in df.iterrows()]
 
-vote_data = pd.DataFrame(groups, index=records['year']).applymap(lambda d: d['votes'])
-seat_data = pd.DataFrame(groups, index=records['year']).applymap(lambda d: d['seats'])
-party_data = pd.DataFrame(groups, index=records['year']).applymap(lambda d: d['party'])
+vote_data = pd.DataFrame(groups, index=df['year']).applymap(lambda d: d['votes'])
+seat_data = pd.DataFrame(groups, index=df['year']).applymap(lambda d: d['seats'])
+party_data = pd.DataFrame(groups, index=df['year']).applymap(lambda d: d['party'])
 
 def colorfn(c,r,v):
     return {"L": "#d62728", "C": "#393b79", "LD": "#e7ba52", "LB": "#e7ba52", "SLA": "#e7ba52", "UKIP": "#7b4173", "other": "grey", "noshow": "#bdbdbd"}[party_data[party_data.columns[c]][party_data.index[r]]]

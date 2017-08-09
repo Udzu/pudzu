@@ -11,7 +11,7 @@ The modules aren't properly packaged up or pip-able (yet) but are reasonably sim
 - [utils.py](utils.md) - various utility functions and data structures.
 - [dates.py](dates.md) - date classes supporting flexible calendars, deltas and ranges.
 - [markov.py](markov.md) - simple Markov Chain n-gram based generator.
-- [records.py](records.md) - utilities for functional handling of records (lists of dicts).
+- [bamboo.py](bamboo.md) - various monkey-patched pandas utilities.
 - [pillar.py](pillar.md) - various monkey-patched Pillow utilities.
 - [charts.py](charts.md) - Pillow-based charting tools.
 - [tureen.py](tureen.md) - various BeautifulSoup utilities.

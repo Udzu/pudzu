@@ -2,6 +2,7 @@ import fnmatch
 import math
 import operator
 import pandas as pd
+import re
 
 from utils import *
 
@@ -24,11 +25,11 @@ def _filter_rows(df, filter):
 
 def _assign_rows(df, assign_if=None, **kwargs):
     """Assign or update columns using row function, with an optional row predicate condition."""
-    return df.assign(**{k : (lambda df: [fn(r) if _make_filter(assign_if)(r) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
+    return df.assign(**{k : (lambda df, k=k, fn=fn: [(fn(r) if callable(fn) else fn) if _make_filter(assign_if)(r) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
 
 def _update_columns(df, update_if=None, **kwargs):
     """Update columns using a value function, with an optional value predicate condition, or True to update just non-nans."""
-    return df.assign(**{k : (lambda df, k=k, fn=fn: [fn(r[k]) if (update_if is None or callable(update_if) and update_if(r[k]) or update_if is True and not none_or_nan(r[k])) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
+    return df.assign(**{k : (lambda df, k=k, fn=fn: [(fn(r[k]) if callable(fn) else fn) if (update_if is None or callable(update_if) and update_if(r[k]) or isinstance(update_if, bool) and update_if != none_or_nan(r[k])) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
     
 def _groupby_rows(df, by):
     """Group rows using a row function, map, list or column name."""
@@ -39,7 +40,7 @@ def _split_rows(df, by):
     return pd.DataFrame(pd.Series(assoc_in(row, [by], v)) for _, row in df.iterrows() for v in make_iterable(row[by]))
 
 def _split_columns(df, columns, delimiter, converter=identity):
-    """Split column values into lists with the given delimiter."""
+    """Split column string values into tuples with the given delimiter."""
     return df.update_columns(**{column : ignoring_exceptions(lambda s: tuple(converter(x) for x in s.split(delimiter)), (), (AttributeError)) for column in make_iterable(columns) })
     
 pd.DataFrame.filter_columns = _filter_columns
@@ -49,6 +50,19 @@ pd.DataFrame.update_columns = _update_columns
 pd.DataFrame.groupby_rows = _groupby_rows
 pd.DataFrame.split_rows = _split_rows
 pd.DataFrame.split_columns = _split_columns
+
+# standalone functions
+
+def prompt_for_value(default=math.nan, prompt=lambda r: r.to_dict()):
+    """Row update function for a new field value.
+    - default is either a value or a function on rows, used when no value is provided.
+    - prompt is either a value or function on rows."""
+    defaulter = default if callable(default) else lambda r: default
+    def updater(r):
+        v = input('[{}] = '.format(prompt(r)))
+        if v == '': v = defaulter(r)
+        return v
+    return updater
 
 # filter expressions
 
@@ -122,9 +136,7 @@ class FilterExpression:
         parse = cls.expr.parseString(string, parseAll=True).asList()
         return lambda d: cls._eval_parse(parse, d)
 
-# Testing
-
-rs = [ { "name": "Fred", "surname": "Flintstone", "children": 2, "childname": ["Pebbles", "Stony"] },
-       { "name": "Wilma", "surname": "Flintstone", "children": 2, "childname": ["Pebbles", "Stony"] },
+rs = [ { "name": "Fred", "surname": "Flintstone", "children": 2 },
+       { "name": "Wilma", "surname": "Flintstone", "children": 2 },
        { "name": "Dino", "children": 15 } ]
 df = pd.DataFrame(rs)

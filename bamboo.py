@@ -53,7 +53,7 @@ pd.DataFrame.split_columns = _split_columns
 
 # standalone functions
 
-def prompt_for_value(default=math.nan, prompt=lambda r: r.to_dict()):
+def prompt_for_value(default=np.nan, prompt=lambda r: r.to_dict()):
     """Row update function for a new field value.
     - default is either a value or a function on rows, used when no value is provided.
     - prompt is either a value or function on rows."""

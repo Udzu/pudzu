@@ -1,5 +1,6 @@
+from bamboo import *
 from pillar import *
-from records import *
+from os.path import splitext
 from enum import Enum
 
 # Random collection of Pillow-based charting functions
@@ -221,15 +222,15 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
 
 # Time charts
 
-def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_height,
+def time_chart(groups, start_key, end_key, color_key, chart_width, timeline_height,
                fg="white", bg="black", xmin=None, xmax=None, title=None,
-               group_labels=None, group_info=None, element_images=None,
+               group_order=None, group_labels=None, group_info=None, element_images=None,
                grid_interval=None, label_interval=Ellipsis, grid_labels=None, label_format=str):
     """Plot a time chart. Times can be numeric, dates or anything that supports arithmetic.
-    - group_map (group map): group map containing time series
-    - start_key (key or record->time): start time for a given record
-    - end_key (key or record->time): end time for a given record
-    - color_key (key or record->color): color for a given record
+    - groups (pandas groupby): group map containing time series
+    - start_key (key or row->time): start time for a given record
+    - end_key (key or row->time): end time for a given record
+    - color_key (key or row->color): color for a given record
     - chart_width (int): chart width
     - timeline_height (int): height for each timeline
     - fg (color): text and grid color [white]
@@ -237,6 +238,7 @@ def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_h
     - xmin (time): chart start time [auto]
     - xmax (time): chart end time [auto]
     - title (image): image to use for title [none]
+    - group_order (key sequence): optional group key ordering
     - group_labels (group->font/image): timeline labels on the left [none]
     - group_info (group->font/image): timeline info on the right [none]
     - element_images (record->image): element label, only used if it fits [none]
@@ -248,18 +250,17 @@ def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_h
     constants.
     """
 
-    group_map = make_group_map(group_map)
-    start_fn = start_key if callable(start_key) else lambda d: d.get(start_key)
-    end_fn = end_key if callable(end_key) else lambda d: d.get(end_key)
-    color_fn = color_key if callable(color_key) else lambda d: d.get(color_key)
+    start_fn = start_key if callable(start_key) else lambda d: get_non(d, start_key)
+    end_fn = end_key if callable(end_key) else lambda d: get_non(d, end_key)
+    color_fn = color_key if callable(color_key) else lambda d: get_non(d, color_key)
     group_label_fn = group_labels if callable(group_labels) else lambda g: group_labels
     group_info_fn = group_info if callable(group_info) else lambda g, r: group_info
     grid_label_fn = grid_labels if callable(grid_labels) else lambda v: grid_labels
     
     if xmin is None:
-        xmin = min(start_fn(d) for r in group_map.values() for d in r)
+        xmin = min(start_fn(d) for _,df in groups for _,d in df.iterrows())
     if xmax is None:
-        xmax = max(end_fn(d) for r in group_map.values() for d in r)
+        xmax = max(end_fn(d) for _,df in groups for _,d in df.iterrows())
     if xmin >= xmax:
         raise ValueError("Mininum x value {0:.3g} must be smaller than maximum x vaue {0:.3g}".format(xmin, xmax))
     def xvalue(x):
@@ -271,9 +272,10 @@ def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_h
     
     # chart
     timelines = []
-    for g,r in group_map.items():
+    for g in group_order or groups.groups:
+        r = groups.get_group(g)
         timeline = Image.new("RGBA", (chart_width, timeline_height), bg)
-        for d in r:
+        for _,d in r.iterrows():
             start, end = xvalue(start_fn(d)), xvalue(end_fn(d))
             bar = Image.new("RGBA", (end-start, timeline_height), color_fn(d)).pad((1,0,0,0), bg)
             if element_images is not None:
@@ -408,9 +410,12 @@ def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite
                 coldict[tuple(pixel)] = True
         cols = list(coldict)
     cols = list(presorted) + [c for c in cols if c not in presorted]
-    rs = [{ 'color': c, 'name': "color{}".format(i) } for i,c in enumerate(cols)]
-    RecordCSV.save_file(name_csv_path(map), rs)
+    rs = [{ 'color': "|".join(str(x) for x in c), 'name': "color{}".format(i) } for i,c in enumerate(cols)]
+    pd.DataFrame(rs).to_csv(name_csv_path(map), index=False)
 
+def load_name_csv(map):
+    return pd.read_csv(name_csv_path(map)).split_columns('color', '|', int)
+    
 def generate_labelbox_csv(map):
     """Generate a label bounding box csv, for use in map_chart."""
     img = Image.open(labelbox_img_path(map))
@@ -424,9 +429,12 @@ def generate_labelbox_csv(map):
             xmax[c] = max(xmax.get(c,0), x)
             ymin[c] = min(ymin.get(c,img.height), y)
             ymax[c] = max(ymax.get(c,0), y)
-    rs = [{ 'color': c[:3], 'bbox': (xmin[c], ymin[c], xmax[c], ymax[c]) } for c in xmin if ImageColor.getrgba(c).alpha == 255 ]
-    RecordCSV.save_file(labelbox_csv_path(map), rs)
+    rs = [{ 'color': "|".join(str(x) for x in c[:3]), 'bbox': "|".join(str(x) for x in (xmin[c], ymin[c], xmax[c], ymax[c])) } for c in xmin if ImageColor.getrgba(c).alpha == 255 ]
+    pd.DataFrame(rs).to_csv(labelbox_csv_path(map), index=False)
 
+def load_labelbox_csv(map):
+    return pd.read_csv(labelbox_csv_path(map)).split_columns(('bbox', 'color'), '|', int)
+    
 def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"):
     """Generate a map chart from a map image and color mapping. If present, this will use a name csv file with image names
     and a label csv file with label bounding boxes.
@@ -440,9 +448,9 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
     # read image and name csv
     img = Image.open(map)
     try:
-        rs = RecordCSV.load_file(name_csv_path(map))
+        df = load_name_csv(map)
         logger.info("Using color name file {}".format(name_csv_path(map)))
-        namemap = { tuple(d['color']) : d['name'] for d in rs }
+        namemap = { tuple(d['color']) : d['name'] for _,d in df.iterrows() }
     except FileNotFoundError:
         logger.warning("No color name file found at {}".format(name_csv_path(map)))
         namemap = {}
@@ -462,9 +470,9 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
             
     # generate labels
     if label_fn is not None:
-        rs = RecordCSV.load_file(labelbox_csv_path(map))
+        df = load_labelbox_csv(map)
         logger.info("Using label bounding box file {}".format(labelbox_csv_path(map)))
-        labelboxes = { tuple(d["color"]) : BoundingBox(d['bbox']) for d in rs }
+        labelboxes = { tuple(d["color"]) : BoundingBox(d['bbox']) for _,d in df.iterrows() }
         for c,name in colors:
             label = label_fn(name) if callable(label_fn) else label_fn.get(name)
             if label is None:

@@ -1,4 +1,4 @@
-age_i,category_s,cause_s,image_url_s,name_s
+age,category,cause,image_url,name
 27,artists,heroin,https://upload.wikimedia.org/wikipedia/en/9/9e/Basquiat.jpg,Jean-Michel Basquiat
 28,artists,Spanish flu,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Egon_Schiele_-_Self-Portrait_with_Physalis_-_Google_Art_Project.jpg/1200px-Egon_Schiele_-_Self-Portrait_with_Physalis_-_Google_Art_Project.jpg,Egon Schiele
 31,artists,meningitis(?),https://static.standard.co.uk/s3fs-public/styles/story_medium/public/thumbnails/image/2014/03/28/14/GeorgesSeurat2.jpg,Georges Seurat

@@ -1,4 +1,4 @@
-code_s,continent_s,country_as,flag_s,nationality_as,population_i,tld_as
+code,continent,country,flag,nationality,population,tld
 ABW,North America,Aruba,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Aruba.svg/1024px-Flag_of_Aruba.svg.png,Aruban,103889,.aw
 AFG,Asia,Afghanistan,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Afghanistan.svg/1024px-Flag_of_Afghanistan.svg.png,Afghan,32526562,.af
 AGO,Africa,Angola,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Angola.svg/1024px-Flag_of_Angola.svg.png,Angolan,25021974,.ao

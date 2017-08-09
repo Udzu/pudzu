@@ -4,9 +4,9 @@
 Pillow-based charting.
  
 ## Dependencies
-*Required*: [pillow](http://pillow.readthedocs.io/en/4.2.x/index.html), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [pillar](pillar.md), [utils](utils.md).
+*Required*: [pillow](http://pillow.readthedocs.io/en/4.2.x/index.html), [pandas](http://pandas.pydata.org/), [toolz](http://toolz.readthedocs.io/en/latest/index.html),  [bamboo](bamboo.md), [pillar](pillar.md), [utils](utils.md).
 
-*Optional*: [pandas](http://pandas.pydata.org/) (for dataframe-based charts), [dates](dates.md) (for flexible time charts).
+*Optional*: [dates](dates.md) (for flexible time charts).
 
 ## Documentation
 
@@ -36,6 +36,6 @@ Three chart types are currently supported: **bar charts**, **time charts** and *
 
 ### Map charts
 
-**map_chart**: generate a map chart; essentially a convenient wrapper for Image.replace_color/select_color. Input is a map template with each region having a unique color. Regions can be named (see generate_name_csv) and label bounding boxes can be defined (see generate_labelbox_csv).
+**map_chart**: generate a map chart; essentially a convenient wrapper for Image.replace_color/select_color. Input is a map template with each region having a unique color. Regions can be named (see generate_name_csv) and label bounding boxes can be defined (see generate_labelbox_csv). Sample scripts: [femaleleaders.py](dataviz/femaleleaders.py).
 
 ![grid chart example](images/chart_femaleleaders.png)

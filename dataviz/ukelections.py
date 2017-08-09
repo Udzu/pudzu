@@ -1,25 +1,24 @@
 import sys
 sys.path.append('..')
 from charts import *
-from records import *
+from bamboo import *
 
 # ------------
 # UK elections
 # ------------
 
-records = RecordCSV.load_file("datasets/ukelections.csv")
-records = sorted(records, key=lambda d: d["year"])
-records = filter_records(records, lambda d: int(d["year"][:4]) >= 1966)
+df = pd.read_csv("datasets/ukelections.csv").sort_values("year").filter_rows(lambda d: int(d["year"][:4]) >= 1966)
 
 groups = OrderedDict()
 for i in map(str, range(1,4)):
-    groups[i] = [{ "year": d["year"], "votes": d["votes"+i], "seats": d["seats"+i], "party": d["party"+i] } for d in records]
+    groups[i] = [{ "year": d["year"], "votes": d["votes"+i], "seats": d["seats"+i], "party": d["party"+i] } for _,d in df.iterrows()]
 groups["rest"] = [{ "year": d["year"], "votes": d["votestotal"] - d["votes1"] - d["votes2"] - d["votes3"],
-                    "seats": d["seatstotal"] - d["seats1"] - d["seats2"] - d["seats3"], "party": "other" } for d in records]
-groups["noshow"] = [{ "year": d["year"], "votes": int(d["votestotal"] / (d["turnout"]/100)) - d["votestotal"], "seats": 0, "party": "noshow" } for d in records]
-vote_data = tabulate_groups(groups, "year", fn=lambda r: r[0]['votes'], transpose=True)
-seat_data = tabulate_groups(groups, "year", fn=lambda r: r[0]['seats'], transpose=True)
-party_data = tabulate_groups(groups, "year", fn=lambda r: r[0]['party'], transpose=True)
+                    "seats": d["seatstotal"] - d["seats1"] - d["seats2"] - d["seats3"], "party": "other" } for _,d in df.iterrows()]
+groups["noshow"] = [{ "year": d["year"], "votes": int(d["votestotal"] / (d["turnout"]/100)) - d["votestotal"], "seats": 0, "party": "noshow" } for _,d in df.iterrows()]
+
+vote_data = pd.DataFrame(groups, index=df['year']).applymap(lambda d: d['votes'])
+seat_data = pd.DataFrame(groups, index=df['year']).applymap(lambda d: d['seats'])
+party_data = pd.DataFrame(groups, index=df['year']).applymap(lambda d: d['party'])
 
 def colorfn(c,r,v):
     return {"L": "#d62728", "C": "#393b79", "LD": "#e7ba52", "LB": "#e7ba52", "SLA": "#e7ba52", "UKIP": "#7b4173", "other": "grey", "noshow": "#bdbdbd"}[party_data[party_data.columns[c]][party_data.index[r]]]

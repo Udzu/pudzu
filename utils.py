@@ -252,6 +252,15 @@ def update_sequence(s, n, x):
 
 # Mappings
     
+def none_or_nan(x):
+    """Whether the object is None or a float nan."""
+    return x is None or isinstance(x, float) and math.isnan(x)
+    
+def get_non(d, k, default=None):
+    """Like get but treats None and nan as missing values."""
+    v = d.get(k, default)
+    return default if none_or_nan(v) else v
+    
 def make_mapping(v, key_fn=identity):
     """Return a mapping from an object, using a function to generate keys if needed.
     Mappings are left as is, iterables are split into elements, everything else is

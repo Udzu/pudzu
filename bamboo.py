@@ -2,6 +2,7 @@ import fnmatch
 import math
 import operator
 import pandas as pd
+import numpy as np
 import re
 
 from utils import *

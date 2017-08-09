@@ -14,41 +14,41 @@ logger = logging.getLogger('bamboo')
 def _make_filter(filter):
     return (lambda x: True) if filter is None else filter if callable(filter) else FilterExpression.make_filter(filter) 
 
-def _key_filter(df, filter):
-    """Filter rows using either a list of keys or a key predicate."""
+def _filter_columns(df, filter):
+    """Filter columns using a name, list of names or name predicate."""
     return df.select(filter, axis=1) if callable(filter) else df.filter(make_iterable(filter), axis=1)
 
-def _row_filter(df, filter):
+def _filter_rows(df, filter):
     """Filter rows using either a row predicate or a RecordFilter expression."""
     return df[df.apply(_make_filter(filter), axis=1)]
 
-def _row_assign(df, assign_if=None, **kwargs):
+def _assign_rows(df, assign_if=None, **kwargs):
     """Assign or update columns using row function, with an optional row predicate condition."""
     return df.assign(**{k : (lambda df: [fn(r) if _make_filter(assign_if)(r) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
 
-def _row_groupby(df, by):
-    """Group rows using a row function, map, list or column name."""
-    return df.groupby(lambda i: by(df.ix[i]) if callable(by) else by[i] if non_string_iterable(by) else df.ix[i].get(by))
-
-def _row_split(df, by):
-    """Split rows by column, making one copy for each item in the column value."""
-    return pd.DataFrame(pd.Series(assoc_in(row, [by], v)) for _, row in df.iterrows() for v in make_iterable(row[by]))
-
-def _column_update(df, update_if=None, **kwargs):
+def _update_columns(df, update_if=None, **kwargs):
     """Update columns using a value function, with an optional value predicate condition, or True to update just non-nans."""
     return df.assign(**{k : (lambda df, k=k, fn=fn: [fn(r[k]) if (update_if is None or callable(update_if) and update_if(r[k]) or update_if is True and not none_or_nan(r[k])) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
     
-def _column_split(df, columns, delimiter, converter=identity):
+def _groupby_rows(df, by):
+    """Group rows using a row function, map, list or column name."""
+    return df.groupby(lambda i: by(df.ix[i]) if callable(by) else by[i] if non_string_iterable(by) else df.ix[i].get(by))
+
+def _split_rows(df, by):
+    """Split rows by column, making one copy for each item in the column value."""
+    return pd.DataFrame(pd.Series(assoc_in(row, [by], v)) for _, row in df.iterrows() for v in make_iterable(row[by]))
+
+def _split_columns(df, columns, delimiter, converter=identity):
     """Split column values into lists with the given delimiter."""
     return df.update_columns(**{column : ignoring_exceptions(lambda s: tuple(converter(x) for x in s.split(delimiter)), (), (AttributeError)) for column in make_iterable(columns) })
     
-pd.DataFrame.filter_keys = _key_filter
-pd.DataFrame.filter_rows = _row_filter
-pd.DataFrame.assign_rows = _row_assign
-pd.DataFrame.groupby_rows = _row_groupby
-pd.DataFrame.split_rows = _row_split
-pd.DataFrame.update_columns = _column_update
-pd.DataFrame.split_columns = _column_split
+pd.DataFrame.filter_columns = _filter_columns
+pd.DataFrame.filter_rows = _filter_rows
+pd.DataFrame.assign_rows = _assign_rows
+pd.DataFrame.update_columns = _update_columns
+pd.DataFrame.groupby_rows = _groupby_rows
+pd.DataFrame.split_rows = _split_rows
+pd.DataFrame.split_columns = _split_columns
 
 # filter expressions
 

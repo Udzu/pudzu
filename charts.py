@@ -222,12 +222,12 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
 
 # Time charts
 
-def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_height,
+def time_chart(groups, start_key, end_key, color_key, chart_width, timeline_height,
                fg="white", bg="black", xmin=None, xmax=None, title=None,
-               group_labels=None, group_info=None, element_images=None,
+               group_order=None, group_labels=None, group_info=None, element_images=None,
                grid_interval=None, label_interval=Ellipsis, grid_labels=None, label_format=str):
     """Plot a time chart. Times can be numeric, dates or anything that supports arithmetic.
-    - group_map (group map): group map containing time series
+    - groups (pandas groupby): group map containing time series
     - start_key (key or row->time): start time for a given record
     - end_key (key or row->time): end time for a given record
     - color_key (key or row->color): color for a given record
@@ -238,6 +238,7 @@ def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_h
     - xmin (time): chart start time [auto]
     - xmax (time): chart end time [auto]
     - title (image): image to use for title [none]
+    - group_order (key sequence): optional group key ordering
     - group_labels (group->font/image): timeline labels on the left [none]
     - group_info (group->font/image): timeline info on the right [none]
     - element_images (record->image): element label, only used if it fits [none]
@@ -249,18 +250,17 @@ def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_h
     constants.
     """
 
-    group_map = make_group_map(group_map)
-    start_fn = start_key if callable(start_key) else lambda d: d.get(start_key)
-    end_fn = end_key if callable(end_key) else lambda d: d.get(end_key)
-    color_fn = color_key if callable(color_key) else lambda d: d.get(color_key)
+    start_fn = start_key if callable(start_key) else lambda d: get_non(d, start_key)
+    end_fn = end_key if callable(end_key) else lambda d: get_non(d, end_key)
+    color_fn = color_key if callable(color_key) else lambda d: get_non(d, color_key)
     group_label_fn = group_labels if callable(group_labels) else lambda g: group_labels
     group_info_fn = group_info if callable(group_info) else lambda g, r: group_info
     grid_label_fn = grid_labels if callable(grid_labels) else lambda v: grid_labels
     
     if xmin is None:
-        xmin = min(start_fn(d) for r in group_map.values() for d in r)
+        xmin = min(start_fn(d) for _,df in groups for _,d in df.iterrows())
     if xmax is None:
-        xmax = max(end_fn(d) for r in group_map.values() for d in r)
+        xmax = max(end_fn(d) for _,df in groups for _,d in df.iterrows())
     if xmin >= xmax:
         raise ValueError("Mininum x value {0:.3g} must be smaller than maximum x vaue {0:.3g}".format(xmin, xmax))
     def xvalue(x):
@@ -272,9 +272,10 @@ def time_chart(group_map, start_key, end_key, color_key, chart_width, timeline_h
     
     # chart
     timelines = []
-    for g,r in group_map.items():
+    for g in group_order or groups.groups:
+        r = groups.get_group(g)
         timeline = Image.new("RGBA", (chart_width, timeline_height), bg)
-        for d in r:
+        for _,d in r.iterrows():
             start, end = xvalue(start_fn(d)), xvalue(end_fn(d))
             bar = Image.new("RGBA", (end-start, timeline_height), color_fn(d)).pad((1,0,0,0), bg)
             if element_images is not None:

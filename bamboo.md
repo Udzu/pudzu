@@ -90,7 +90,7 @@ A handful of utilities monkey-patched onto the pandas DataFrame class.
 **split_rows**: split rows by column, making one copy for each item in the column value.
 
 ```python
->> df.assign(children=[["Pebbles", "Stony"],["Pebbles", "Stony"], math.nan])
+>> df.assign(children=[["Pebbles", "Stony"],["Pebbles", "Stony"], np.nan])
            children   name     surname
 0  [Pebbles, Stony]   Fred  Flintstone
 1  [Pebbles, Stony]  Wilma  Flintstone
@@ -107,7 +107,7 @@ A handful of utilities monkey-patched onto the pandas DataFrame class.
 **split_columns**: split column string values on a given delimiter.
 
 ```python
->> df.assign(children=["Pebbles,Stony","Pebbles,Stony", math.nan])
+>> df.assign(children=["Pebbles,Stony","Pebbles,Stony", np.nan])
         children   name     surname
 0  Pebbles,Stony   Fred  Flintstone
 1  Pebbles,Stony  Wilma  Flintstone

@@ -169,7 +169,7 @@ False
 
 ### Generators
 
-**generate_batches**: generator 
+**generate_batches**: generator that yields items fron an iterable n at a time.
 
 ```python
 >> list(generate_batches(range(5), 3))
@@ -183,7 +183,7 @@ False
 [('n', 'g'), ('g', 'r'), ('r', 'a'), ('a', 'm')]
 ```
 
-**generate_leafs**: generator that yields all the non-string iterables inside an iterable.
+**generate_leafs**: generator that yields all the non-iterables (plus strings) inside an iterable.
 
 ```python
 >> list(generate_leafs([(1,[2],3),"four"]))

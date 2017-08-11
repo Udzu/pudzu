@@ -198,30 +198,6 @@ def make_sequence(v):
     """Return a sequence from an object, wrapping it in a tuple if needed."""
     return v if non_string_sequence(v) else () if v is None else (v,)
     
-def batch_iterable(iterable, batch_size):
-    """Generator that yields the elements of an iterable n at a time."""
-    sourceiter = iter(iterable)
-    while True:
-        slice = list(islice(sourceiter, batch_size))
-        if len(slice) == 0: break
-        yield slice
-
-def repeat_each(iterable, repeats):
-    """Generator that yields the elements of an iterable, repeated n times each."""
-    return (p[0] for p in itertools.product(iterable, range(repeats)))
-      
-def generate_ngrams(iterable, n):
-    """Generator that yields n-grams from a sequence."""
-    return zip(*[itertools.islice(it,i,None) for i,it in enumerate(itertools.tee(iterable, n))])
-
-def leafs(iterable):
-    """Generator that yields all the leaf nodes of an iterable."""
-    for x in iterable:
-        if non_string_iterable(x):
-            yield from leafs(x)
-        else:
-            yield x
-            
 def remove_duplicates(seq, key=lambda v:v, keep_last=False):
     """Return an order preserving tuple copy containing items from an iterable, deduplicated
     based on the given key function."""
@@ -249,6 +225,55 @@ def update_sequence(s, n, x):
         return t[0:n] + (x,) + t[n+1:0 if n ==-1 else None]
     else:
         raise IndexError("sequence index out of range")
+
+# Generators
+
+def generate_leafs(iterable):
+    """Generator that yields all the leaf nodes of an iterable."""
+    for x in iterable:
+        if non_string_iterable(x):
+            yield from leafs(x)
+        else:
+            yield x
+            
+def generate_batches(iterable, batch_size):
+    """Generator that yields the elements of an iterable n at a time."""
+    sourceiter = iter(iterable)
+    while True:
+        slice = list(itertools.islice(sourceiter, batch_size))
+        if len(slice) == 0: break
+        yield slice
+
+def generate_ngrams(iterable, n):
+    """Generator that yields n-grams from a iterable."""
+    return zip(*[itertools.islice(it,i,None) for i,it in enumerate(itertools.tee(iterable, n))])
+
+def repeat_each(iterable, repeats):
+    """Generator that yields the elements of an iterable, repeated n times each."""
+    return (p[0] for p in itertools.product(iterable, range(repeats)))
+
+def filter_proportion(iterable, proportion):
+    """Generator that yields 0 < proportion <= 1 of the elements of an iterable."""
+    if not 0 < proportion <= 1:
+        raise ValueError("Filter proportion must be between 0 and 1")
+    sourceiter, p = iter(iterable), 0
+    while True:
+        v = next(sourceiter)
+        p += proportion
+        if p >= 1:
+            p -= 1
+            yield v
+
+def generate_subsequences(iterable, start_if, end_if):
+    """Generator that returns subsequences based on start and end condition functions. Both functions get passed the current element, while the end function optionally gets passed the current subsequence too."""
+    sourceiter = iter(iterable)
+    while True:
+        start = next(x for x in sourceiter if start_if(x))
+        x, subseq = start, [start]
+        while not ignoring_extra_args(end_if)(x, subseq):
+            x = next(sourceiter)
+            subseq.append(x)
+        yield subseq
 
 # Mappings
     

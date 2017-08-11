@@ -169,7 +169,7 @@ False
 
 ### Generators
 
-**generate_batches**: generator that yields items fron an iterable n at a time.
+**generate_batches**: generator that yields items from an iterable n at a time.
 
 ```python
 >> list(generate_batches(range(5), 3))

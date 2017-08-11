@@ -167,11 +167,52 @@ False
 (0, "bob", 2, 3)
 ```
 
-**leafs**: generator returning all the non-string iterables inside an iterable.
+### Generators
+
+**generate_batches**: generator 
 
 ```python
->> list(leafs([(1,[2],3),"four"]))
+>> list(generate_batches(range(5), 3))
+[[0, 1, 2], [3, 4]]
+```
+
+**generate_ngrams**: generator that yields n-grams from an iterable.
+
+```python
+>> list(generate_ngrams("ngram", 2))
+[('n', 'g'), ('g', 'r'), ('r', 'a'), ('a', 'm')]
+```
+
+**generate_leafs**: generator that yields all the non-string iterables inside an iterable.
+
+```python
+>> list(generate_leafs([(1,[2],3),"four"]))
 [1, 2, 3, 'four']
+```
+
+**generate_subsequences**: generator that returns subsequences based on start and end condition functions. Both functions get passed the current element, while the end function optionally gets passed the current subsequence too.
+
+```python
+>>  list(islice(generate_subsequences(count(), lambda n: n % 2 == 0, lambda n: n % 3 == 0), 3))
+[[0], [2, 3], [4, 5, 6]]
+>> list(islice(generate_subsequences(count(), lambda n: n % 2 == 0, lambda _,l: len(l) == 3), 3))
+[[0, 1, 2], [4, 5, 6], [8, 9, 10]]
+```
+
+**repeat_each**: generator that repeats each element in an iterable a certain number of times.
+
+```python
+>> list(repeat_each("ab", 3))
+['a', 'a', 'a', 'b', 'b', 'b']
+```
+
+**filter_proportion**: generator that returns a certain proportion of an iterable's elements.
+
+```python
+>> list(filter_proportion(range(10), 1/3))
+[2, 5, 8]
+>> list(filter_proportion(range(10), 1/2))
+[1, 3, 5, 7, 9]
 ```
 
 ### Functions

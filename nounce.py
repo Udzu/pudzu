@@ -35,18 +35,29 @@ class Nouncer(object):
         
     # TODO: basic prototype, need work!
     def ipa_to_phonemes(self, pronunciation):
-        phonemes, stress = [], ""
+        phonemes, stress, vowels = [], "", 0
         for p in re.findall(self.UNIT_PATTERN, pronunciation):
             if p in IPA_STRESS:
                 stress = p
             elif p[0] in IPA_VOWELS:
                 phonemes.append(stress+p)
                 stress = ""
+                vowels += 1
             else:
                 phonemes.append(p)
+                
+        # add stress mark for monosyllabic words if there isn't one already
+        if vowels == 1:
+            try:
+                i = next(i for i in range(len(phonemes)) if phonemes[i][0] in IPA_VOWELS)
+                if phonemes[i] != 'ə':
+                    phonemes[i] = 'ˈ' + phonemes[i]
+            except StopIteration:
+                pass
+                
         return phonemes
         
-    UNIT_PATTERN = re.compile("([{STRESS}]|(?:[{VOWEL}][ː]?[ʊɪə]?[̯]?)|.)[.]?".format(STRESS=IPA_STRESS, VOWEL=IPA_VOWELS))
+    UNIT_PATTERN = re.compile("([{stress}]|(?:[{vowel}][ː]?[ʊɪə]?[̯]?)|.)[.]?".format(stress=IPA_STRESS, vowel=IPA_VOWELS))
 
     def arpabet_to_phonemes(self, pronunciation):
         phonemes = []
@@ -79,7 +90,7 @@ class Nouncer(object):
     def syllables(self, word):
         return [sum(1 for phoneme in pronunciation if phoneme[-1] in IPA_VOWELS + "ː̯̩") for pronunciation in self.pdict[word]]
         
-    def rhymes(self, pronunciation):
+    def rhymes(self, word):
         raise NotImplementedError
         
 pd = Nouncer()

@@ -79,7 +79,7 @@ class Nouncer(object):
     def _is_vowel(self, phoneme): return phoneme[-1] in self.IPA_VOWELENDINGS
     
     @classmethod
-    def _is_stressed(self, phoneme, secondary=False): return phoneme[0] == 'ˈ' or secondary and phoneme[0] = 'ˌ'
+    def _is_stressed(self, phoneme, secondary=False): return phoneme[0] == 'ˈ' or secondary and phoneme[0] == 'ˌ'
     
     @classmethod
     def _is_consonant(self, phoneme): return phoneme[-1] not in self.IPA_VOWELENDINGS
@@ -122,6 +122,5 @@ class Nouncer(object):
                         d.setdefault("".join(p1), []).append(w2)
         return d
         
-pd = Nouncer()
-pd.import_cmudict("corpora/cmudict.0.7a")
+pd = Nouncer("corpora/nouncedict")
 

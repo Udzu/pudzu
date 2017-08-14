@@ -79,6 +79,9 @@ class Nouncer(object):
     def _is_vowel(self, phoneme): return phoneme[-1] in self.IPA_VOWELENDINGS
     
     @classmethod
+    def _is_stressed(self, phoneme, secondary=False): return phoneme[0] == 'ˈ' or secondary and phoneme[0] = 'ˌ'
+    
+    @classmethod
     def _is_consonant(self, phoneme): return phoneme[-1] not in self.IPA_VOWELENDINGS
     
     IPA_VOWELENDINGS = IPA_VOWELS + "ː̯̩"
@@ -96,12 +99,12 @@ class Nouncer(object):
         return [sum(1 for phoneme in pronunciation if self._is_vowel(phoneme)) for pronunciation in self.pdict[word]]
        
     @classmethod
-    def _rhymeswith(self, phonemes1, phonemes2, identirhyme, enjambment, multirhyme):
-        i1 = first_or_default((i for i in range(len(phonemes1)) if phonemes1[i][0] == 'ˈ'), 0)
-        i2 = first_or_default((i for i in range(len(phonemes2)) if phonemes2[i][0] == 'ˈ'), 0)
-        same_consonant = i1 == i2 == 0 or i1 > 0 and i2 > 0 and phonemes1[i1-1] == phonemes2[i2-1]
-        pattern1 = phonemes1[i1:]
-        pattern2 = phonemes2[i2:len(phonemes1)-i1+i2 if enjambment else None]
+    def _rhymeswith(self, phonemes1, phonemes2, identirhyme=False, enjambment=False, multirhyme=False):
+        stress1 = first_or_default((i for i in range(len(phonemes1)) if self._is_stressed(phonemes1[i])), 0)
+        stress2 = first_or_default((i for i in range(len(phonemes2)) if self._is_stressed(phonemes2[i])), 0)
+        same_consonant = stress1 == stress2 == 0 or stress1 > 0 and stress2 > 0 and phonemes1[stress1-1] == phonemes2[stress2-1]
+        pattern1 = phonemes1[stress1:]
+        pattern2 = phonemes2[stress2:len(phonemes1)-stress1+stress2 if enjambment else None]
         if multirhyme:
             def strip_consonants(p):
                 lv = first_or_default((i for i in reversed(range(len(p))) if self._is_vowel(p[i])), 0)

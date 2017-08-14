@@ -210,12 +210,12 @@ def remove_duplicates(seq, key=lambda v:v, keep_last=False):
             d[k] = x
     return tuple(d.values())
 
-def first_or_none(iterable, filter=None):
-    """Return the first element of an iterable (optionally matching a filter), or None if there aren't any."""
+def first_or_default(iterable, default=None):
+    """Return the first element of an iterable, or None if there aren't any."""
     try:
-        return next(x for x in iter(iterable) if filter is None or filter(x))
+        return next(x for x in iter(iterable))
     except StopIteration:
-        return None
+        return default
     
 def is_in(x, l):
     """Whether x is the same object as any member of l"""

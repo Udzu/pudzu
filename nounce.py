@@ -102,7 +102,7 @@ class Nouncer(object):
     def _rhymeswith(self, phonemes1, phonemes2, identirhyme=False, enjambment=False, multirhyme=False):
         stress1 = first_or_default((i for i in range(len(phonemes1)) if self._is_stressed(phonemes1[i])), 0)
         stress2 = first_or_default((i for i in range(len(phonemes2)) if self._is_stressed(phonemes2[i])), 0)
-        same_consonant = stress1 == stress2 == 0 or stress1 > 0 and stress2 > 0 and phonemes1[stress1-1] == phonemes2[stress2-1]
+        same_consonant = stress1==stress2==0 or stress1>0 and stress2>0 and phonemes1[stress1-1]==phonemes2[stress2-1]
         pattern1 = phonemes1[stress1:]
         pattern2 = phonemes2[stress2:len(phonemes1)-stress1+stress2 if enjambment else None]
         if multirhyme:

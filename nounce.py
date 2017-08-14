@@ -3,7 +3,7 @@ from utils import *
 
 # Pronouncing dictionary class
 
-IPA_VOWELS = "ɔɑiuɛɪʊʌəæeaoyʏø"
+IPA_VOWELS = "ɔɑiuɛɪʊʌəæeaoyʏøɝɚ"
 IPA_STRESS = "ˈˌ"
 
 class Nouncer(object):
@@ -28,12 +28,12 @@ class Nouncer(object):
             for entry in f:
                 m = re.match("([^(]*)(?:[(][0-9][)])?  (.*)", entry)
                 if m:
-                    self.pdict.setdefault(m.group(1), []).append(self.arpabet_to_phonemes(m.group(2)))
+                    self.pdict.setdefault(m.group(1).lower(), []).append(self.arpabet_to_phonemes(m.group(2)))
         
     def import_wiktionary(self, filename):
         raise NotImplementedError
         
-    # TODO: basic prototype, need work!
+    # TODO: basic prototype, needs work!
     def ipa_to_phonemes(self, pronunciation):
         phonemes, stress, vowels = [], "", 0
         for p in re.findall(self.UNIT_PATTERN, pronunciation):
@@ -45,16 +45,13 @@ class Nouncer(object):
                 vowels += 1
             else:
                 phonemes.append(p)
-                
-        # add stress mark for monosyllabic words if there isn't one already
-        if vowels == 1:
+        if vowels == 1: # autoadd stress mark for monosyllabic words
             try:
                 i = next(i for i in range(len(phonemes)) if phonemes[i][0] in IPA_VOWELS)
                 if phonemes[i] != 'ə':
                     phonemes[i] = 'ˈ' + phonemes[i]
             except StopIteration:
                 pass
-                
         return phonemes
         
     UNIT_PATTERN = re.compile("([{stress}]|(?:[{vowel}][ː]?[ʊɪə]?[̯]?)|.)[.]?".format(stress=IPA_STRESS, vowel=IPA_VOWELS))
@@ -78,6 +75,14 @@ class Nouncer(object):
                        'N': 'n', 'EN': 'n̩', 'NG': 'ŋ', 'ENG': 'ŋ̍', 'L': 'l', 'EL': 'ɫ̩', 'R': 'r', 'DX': 'ɾ', 'NX': 'ɾ̃',
                        'Y': 'j', 'W': 'w', 'Q': 'ʔ' }
 
+    @classmethod
+    def _is_vowel(self, phoneme): return phoneme[-1] in self.IPA_VOWELENDINGS
+    
+    @classmethod
+    def _is_consonant(self, phoneme): return phoneme[-1] not in self.IPA_VOWELENDINGS
+    
+    IPA_VOWELENDINGS = IPA_VOWELS + "ː̯̩"
+    
     # API
     
     def __getitem__(self, word):
@@ -88,10 +93,32 @@ class Nouncer(object):
         self.pdict[word] = self.ipa_to_phonemes(pronunciation)
         
     def syllables(self, word):
-        return [sum(1 for phoneme in pronunciation if phoneme[-1] in IPA_VOWELS + "ː̯̩") for pronunciation in self.pdict[word]]
+        return [sum(1 for phoneme in pronunciation if self._is_vowel(phoneme)) for pronunciation in self.pdict[word]]
+       
+    @classmethod
+    def _rhymeswith(self, phonemes1, phonemes2, identirhyme, enjambment, multirhyme):
+        i1 = first_or_default((i for i in range(len(phonemes1)) if phonemes1[i][0] == 'ˈ'), 0)
+        i2 = first_or_default((i for i in range(len(phonemes2)) if phonemes2[i][0] == 'ˈ'), 0)
+        same_consonant = i1 == i2 == 0 or i1 > 0 and i2 > 0 and phonemes1[i1-1] == phonemes2[i2-1]
+        pattern1 = phonemes1[i1:]
+        pattern2 = phonemes2[i2:len(phonemes1)-i1+i2 if enjambment else None]
+        if multirhyme:
+            def strip_consonants(p):
+                lv = first_or_default((i for i in reversed(range(len(p))) if self._is_vowel(p[i])), 0)
+                return [x for i,x in enumerate(p) if self._is_vowel(x) or i >= lv]
+            pattern1 = strip_consonants(pattern1)
+            pattern2 = strip_consonants(pattern2)
+        return pattern1 == pattern2 and (not same_consonant or identirhyme)
         
-    def rhymes(self, word):
-        raise NotImplementedError
+    def rhymes(self, word, identirhyme=False, enjambment=False, multirhyme=False):
+        d = {}
+        for p1 in self.pdict[word]:
+            for w2, ps2 in self.pdict.items():
+                for p2 in ps2:
+                    if self._rhymeswith(p1, p2, identirhyme, enjambment, multirhyme):
+                        d.setdefault("".join(p1), []).append(w2)
+        return d
         
 pd = Nouncer()
 pd.import_cmudict("corpora/cmudict.0.7a")
+

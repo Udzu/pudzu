@@ -49,7 +49,7 @@ def table_cell(d):
     return Image.from_column([year, flag, name]).pad(1, "black")
   
 # df.x.max()
-table = pd.DataFrame([[first_or_none([dict(d) for _,d in df[(df.x == x) & (df.y == y)].iterrows()]) for x in range(1,df.x.max()+1)] for y in range(1,df.y.max()+1)])
+table = pd.DataFrame([[first_or_default([dict(d) for _,d in df[(df.x == x) & (df.y == y)].iterrows()]) for x in range(1,df.x.max()+1)] for y in range(1,df.y.max()+1)])
 
 grid = grid_chart(table, table_cell, bg="white")
     

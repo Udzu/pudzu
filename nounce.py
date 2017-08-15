@@ -3,11 +3,27 @@ from utils import *
 
 # Pronouncing dictionary class
 
-IPA_VOWELS = "ɔɑiuɛɪʊʌəæeaoyʏøɝɚ"
+IPA_VOWELS = "ɔɑiuɛɪʊʌəæeaoyʏøɝɚɒɜ"
+IPA_VOWELENDINGS = IPA_VOWELS + "ː̯̩"
+IPA_CONSONANTS = "pbtdkɡfvθðszʃʒhmnŋlrɾɹjwʔʍ"
 IPA_STRESS = "ˈˌ"
 
 class Nouncer(object):
 
+    PHONEME_PATTERN = ("("
+        "[{stress}]|"
+        "[{vowel}][ː]?[ʊɪə]?[̯]?|"
+        "(?:t͡?ʃ|d͡?ʒ|[{consonant}])[̩]?"
+    ")[.ˑ ]?".format(stress=IPA_STRESS, vowel=IPA_VOWELS, consonant=IPA_CONSONANTS))
+
+    ARPABET_TO_IPA = {
+        'AO': 'ɔ', 'AA': 'ɑ', 'IY': 'i', 'UW': 'u', 'EH': 'ɛ', 'IH': 'ɪ', 'UH': 'ʊ', 'AH': 'ʌ', 'AX': 'ə', 'AE': 'æ',
+        'EY': 'eɪ', 'AY': 'aɪ', 'OW': 'oʊ', 'AW': 'aʊ', 'OY': 'ɔɪ', 'ER': 'ɝ', 'AXR': 'ɚ',
+        'P': 'p', 'B': 'b', 'T': 't', 'D': 'd', 'K': 'k', 'G': 'ɡ', 'CH': 't͡ʃ', 'JH': 'd͡ʒ', 'F': 'f', 'V': 'v',
+        'TH': 'θ', 'DH': 'ð', 'S': 's', 'Z': 'z', 'SH': 'ʃ', 'ZH': 'ʒ', 'HH': 'h', 'M': 'm', 'EM': 'm̩',
+        'N': 'n', 'EN': 'n̩', 'NG': 'ŋ', 'ENG': 'ŋ̍', 'L': 'l', 'EL': 'ɫ̩', 'R': 'r', 'DX': 'ɾ', 'NX': 'ɾ̃',
+        'Y': 'j', 'W': 'w', 'Q': 'ʔ' }
+    
     def __init__(self, filename=None, normalize=str.lower):
         self.pdict = CaseInsensitiveDict(normalize=normalize)
         if filename is not None:
@@ -15,28 +31,65 @@ class Nouncer(object):
                 for entry in f:
                     m = re.match("(.*)\t(.*)", entry)
                     if m:
-                        self.pdict.setdefault(m.group(1), []).append(m.group(2).split(" "))
+                        self.pdict.setdefault(m.group(1), set()).add(tuple(m.group(2).split(" ")))
         
     def save(self, filename):
+        """Save pronuncing dictionary to file."""
         with open(filename, 'w', encoding='utf-8') as f:
             for word in sorted(self.pdict.keys()):
                 for pronunciation in self.pdict[word]:
                     print("{}\t{}".format(word, " ".join(pronunciation)), file=f)
      
     def import_cmudict(self, filename):
+        """Import pronunciations from CMUDict."""
         with open(filename, "r", encoding="latin-1") as f:
             for entry in f:
                 m = re.match("([^(]*)(?:[(][0-9][)])?  (.*)", entry)
                 if m:
-                    self.pdict.setdefault(m.group(1).lower(), []).append(self.arpabet_to_phonemes(m.group(2)))
+                    self.pdict.setdefault(m.group(1).lower(), set()).add(self.arpabet_to_phonemes(m.group(2)))
         
-    def import_wiktionary(self, filename):
-        raise NotImplementedError
+    def import_csv(self, filename, delimiters="\t", ignore_errors=True):
+        """Import pronunciations from a CSV list."""
+        errors = []
+        with open(filename, "r", encoding="utf-8") as f:
+            for entry in f:
+                m = re.match("(.*)[{}](.*)".format(delimiters), entry)
+                if m:
+                    try:
+                        self.pdict.setdefault(m.group(1), set()).update(self.ipa_to_phonemes(m.group(2)))
+                    except ValueError as e:
+                        if not ignore_errors:
+                            raise ValueError("Error reading {}: {}".format(m.group(1), str(e)))
+                        errors.append((m.group(1), str(e)))
+        return errors
         
-    # TODO: basic prototype, needs work!
+    # TODO: prototype, needs work!
+    
+    PHONEME_REGEX = re.compile(PHONEME_PATTERN)
+    PRONUNCIATION_REGEX = re.compile("(?:{phoneme})*".format(phoneme=PHONEME_PATTERN))
+    PARENTHESES_REGEX = re.compile("[(]([^)]+)[)]")
+    BRACKETS_REGEX = re.compile("\[([^\]]+)\]")
+
     def ipa_to_phonemes(self, pronunciation):
+        def normalise(string):
+            return string.replace('ĭ','i').replace('̈','').replace('ᵻ','[ɪ,ə]').replace('ɨ','ɪ').replace('ɘ','ə').replace('ɵ','ʊ')
+        def expand_parentheses(string):
+            m = re.search(PARENTHESES_REGEX, string)
+            if not m: return expand_brackets(string)
+            else: return [x for s in (re.sub(PARENTHESES_REGEX, "", string, count=1), re.sub(PARENTHESES_REGEX, r"\1", string, count=1)) for x in expand_parentheses(s)]
+        def expand_brackets(string):
+            m = re.search(BRACKETS_REGEX, string)
+            if not m: return [string]
+            else: return [x for s in (re.sub(BRACKETS_REGEX, v, string, count=1) for v in m.group(1).split(",")) for x in expand_brackets(s)]
+        pronunciations = expand_parentheses(normalise(pronunciation))
+        return [self.ipa_to_phonemes_no_parentheses(p) for p in pronunciations]
+        
+    def ipa_to_phonemes_no_parentheses(self, pronunciation):
+        m = re.match(self.PRONUNCIATION_REGEX, pronunciation)
+        if m.end() < len(pronunciation):
+            raise ValueError("Invalid pronunciation: /{}**{}/".format(pronunciation[:m.end()], pronunciation[m.end():]))
         phonemes, stress, vowels = [], "", 0
-        for p in re.findall(self.UNIT_PATTERN, pronunciation):
+        for p in re.findall(self.PHONEME_REGEX, pronunciation):
             if p in IPA_STRESS:
                 stress = p
             elif p[0] in IPA_VOWELS:
@@ -44,17 +97,17 @@ class Nouncer(object):
                 stress = ""
                 vowels += 1
             else:
+                if p == "tʃ": p = "t͡?ʃ"
+                elif p == "dʒ": p = "d͡?ʒ"
                 phonemes.append(p)
-        if vowels == 1: # autoadd stress mark for monosyllabic words
-            try:
+        if vowels == 1: 
+            try: # autoadd stress mark for monosyllabic words
                 i = next(i for i in range(len(phonemes)) if phonemes[i][0] in IPA_VOWELS)
                 if phonemes[i] != 'ə':
                     phonemes[i] = 'ˈ' + phonemes[i]
             except StopIteration:
                 pass
-        return phonemes
-        
-    UNIT_PATTERN = re.compile("([{stress}]|(?:[{vowel}][ː]?[ʊɪə]?[̯]?)|.)[.]?".format(stress=IPA_STRESS, vowel=IPA_VOWELS))
+        return tuple(phonemes)
 
     def arpabet_to_phonemes(self, pronunciation):
         phonemes = []
@@ -66,37 +119,34 @@ class Nouncer(object):
                 l = l[:-1]
             phoneme += self.ARPABET_TO_IPA[l]
             phonemes.append(phoneme)
-        return phonemes
-        
-    ARPABET_TO_IPA = { 'AO': 'ɔ', 'AA': 'ɑ', 'IY': 'i', 'UW': 'u', 'EH': 'ɛ', 'IH': 'ɪ', 'UH': 'ʊ', 'AH': 'ʌ', 'AX': 'ə', 'AE': 'æ',
-                       'EY': 'eɪ', 'AY': 'aɪ', 'OW': 'oʊ', 'AW': 'aʊ', 'OY': 'ɔɪ', 'ER': 'ɝ', 'AXR': 'ɚ',
-                       'P': 'p', 'B': 'b', 'T': 't', 'D': 'd', 'K': 'k', 'G': 'ɡ', 'CH': 'tʃ', 'JH': 'dʒ', 'F': 'f', 'V': 'v',
-                       'TH': 'θ', 'DH': 'ð', 'S': 's', 'Z': 'z', 'SH': 'ʃ', 'ZH': 'ʒ', 'HH': 'h', 'M': 'm', 'EM': 'm̩',
-                       'N': 'n', 'EN': 'n̩', 'NG': 'ŋ', 'ENG': 'ŋ̍', 'L': 'l', 'EL': 'ɫ̩', 'R': 'r', 'DX': 'ɾ', 'NX': 'ɾ̃',
-                       'Y': 'j', 'W': 'w', 'Q': 'ʔ' }
+        return tuple(phonemes)
 
     @classmethod
-    def _is_vowel(self, phoneme): return phoneme[-1] in self.IPA_VOWELENDINGS
+    def _is_vowel(self, phoneme): return phoneme[-1] in IPA_VOWELENDINGS
     
     @classmethod
     def _is_stressed(self, phoneme, secondary=False): return phoneme[0] == 'ˈ' or secondary and phoneme[0] == 'ˌ'
     
     @classmethod
-    def _is_consonant(self, phoneme): return phoneme[-1] not in self.IPA_VOWELENDINGS
-    
-    IPA_VOWELENDINGS = IPA_VOWELS + "ː̯̩"
+    def _is_consonant(self, phoneme): return phoneme[-1] not in IPA_VOWELENDINGS
     
     # API
     
     def __getitem__(self, word):
-        """Return the pronunciation of a word in IPA. Syllable boundaries aren't marked and stress marks go before the stressed vowel."""
-        return ["".join(pronunciation) for pronunciation in self.pdict[word]]
+        """Return the pronunciations of a word in IPA. Syllable boundaries aren't marked and stress marks go before the stressed vowel."""
+        return {"".join(pronunciation) for pronunciation in self.pdict[word]}
         
     def __setitem__(self, word, pronunciation):
-        self.pdict[word] = self.ipa_to_phonemes(pronunciation)
+        """Set a pronunciation of a word in IPA."""
+        self.pdict.setdefault(word, set()).update(self.ipa_to_phonemes(pronunciation))
+        
+    def __delitem__(self, word):
+        """Delete all pronunciations of a word."""
+        del self.pdict[word]
         
     def syllables(self, word):
-        return [sum(1 for phoneme in pronunciation if self._is_vowel(phoneme)) for pronunciation in self.pdict[word]]
+        """Number of syllables in a word."""
+        return {"".join(pronunciation) : sum(1 for phoneme in pronunciation if self._is_vowel(phoneme)) for pronunciation in self.pdict[word]}
        
     @classmethod
     def _rhymeswith(self, phonemes1, phonemes2, identirhyme=False, enjambment=False, multirhyme=False):
@@ -114,6 +164,7 @@ class Nouncer(object):
         return pattern1 == pattern2 and (not same_consonant or identirhyme)
         
     def rhymes(self, word, identirhyme=False, enjambment=False, multirhyme=False):
+        """Rhymes for a word."""
         d = {}
         for p1 in self.pdict[word]:
             for w2, ps2 in self.pdict.items():
@@ -124,3 +175,22 @@ class Nouncer(object):
         
 pd = Nouncer("corpora/nouncedict")
 
+def wiktionary_to_csv(input, output, language="en", accents=("US", "USA", "GA", "GenAm", None)):
+    """Extract IPA pronunciations from wiktionary dump."""
+    title_regex = re.compile("<title>(.*)</title>")
+    ipa_regex_1 = re.compile("{{{{IPA[|]/([^|]+)/[|]lang={lang}}}}}".format(lang=language))
+    ipa_regex_2 = re.compile("{{{{IPA[|]lang={lang}[|]/([^|]+)/}}}}".format(lang=language))
+    accent_regex = re.compile("{{{{a(ccent)?[|]([^}}]+[|])?({accents})[|}}]".format(accents="|".join(a for a in make_iterable(accents) if a)))
+    any_accent_regex = re.compile("{{a(ccent)?[|]")
+    match = ValueCache()
+    with open(input, "r", encoding="utf-8") as i:
+        with open(output, "w", encoding="utf-8") as o:
+            for line in i:
+                if match.set(re.search(title_regex, line)):
+                    title = match.value.group(1)
+                elif match.set(re.search(ipa_regex_1, line) or re.search(ipa_regex_2, line)):
+                    if accents and not re.search(accent_regex, line) and (None not in accents or re.search(any_accent_regex, line)):
+                        continue
+                    print("{}\t{}".format(title, match.value.group(1)), file=o)
+
+             

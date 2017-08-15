@@ -48,12 +48,12 @@ class Nouncer(object):
                 if m:
                     self.pdict.setdefault(m.group(1).lower(), set()).add(self.arpabet_to_phonemes(m.group(2)))
         
-    def import_csv(self, filename, delimiters="\t", ignore_errors=True):
-        """Import pronunciations from a CSV list."""
+    def import_list(self, filename, delimiter="\t", ignore_errors=True):
+        """Import pronunciations from a list file."""
         errors = []
         with open(filename, "r", encoding="utf-8") as f:
             for entry in f:
-                m = re.match("(.*)[{}](.*)".format(delimiters), entry)
+                m = re.match("(.*)[{}](.*)".format(delimiter), entry)
                 if m:
                     try:
                         self.pdict.setdefault(m.group(1), set()).update(self.ipa_to_phonemes(m.group(2)))
@@ -63,8 +63,6 @@ class Nouncer(object):
                         errors.append((m.group(1), str(e)))
         return errors
         
-    # TODO: prototype, needs work!
-    
     PHONEME_REGEX = re.compile(PHONEME_PATTERN)
     PRONUNCIATION_REGEX = re.compile("(?:{phoneme})*".format(phoneme=PHONEME_PATTERN))
     PARENTHESES_REGEX = re.compile("[(]([^)]+)[)]")
@@ -74,13 +72,13 @@ class Nouncer(object):
         def normalise(string):
             return string.replace('ĭ','i').replace('̈','').replace('ᵻ','[ɪ,ə]').replace('ɨ','ɪ').replace('ɘ','ə').replace('ɵ','ʊ')
         def expand_parentheses(string):
-            m = re.search(PARENTHESES_REGEX, string)
+            m = re.search(self.PARENTHESES_REGEX, string)
             if not m: return expand_brackets(string)
-            else: return [x for s in (re.sub(PARENTHESES_REGEX, "", string, count=1), re.sub(PARENTHESES_REGEX, r"\1", string, count=1)) for x in expand_parentheses(s)]
+            else: return [x for s in (re.sub(self.PARENTHESES_REGEX, "", string, count=1), re.sub(self.PARENTHESES_REGEX, r"\1", string, count=1)) for x in expand_parentheses(s)]
         def expand_brackets(string):
-            m = re.search(BRACKETS_REGEX, string)
+            m = re.search(self.BRACKETS_REGEX, string)
             if not m: return [string]
-            else: return [x for s in (re.sub(BRACKETS_REGEX, v, string, count=1) for v in m.group(1).split(",")) for x in expand_brackets(s)]
+            else: return [x for s in (re.sub(self.BRACKETS_REGEX, v, string, count=1) for v in m.group(1).split(",")) for x in expand_brackets(s)]
         pronunciations = expand_parentheses(normalise(pronunciation))
         return [self.ipa_to_phonemes_no_parentheses(p) for p in pronunciations]
         
@@ -173,10 +171,8 @@ class Nouncer(object):
                         d.setdefault("".join(p1), []).append(w2)
         return d
         
-pd = Nouncer("corpora/nouncedict")
-
 def wiktionary_to_csv(input, output, language="en", accents=("US", "USA", "GA", "GenAm", None)):
-    """Extract IPA pronunciations from wiktionary dump."""
+    """Extract IPA pronunciations from wiktionary xml dump."""
     title_regex = re.compile("<title>(.*)</title>")
     ipa_regex_1 = re.compile("{{{{IPA[|]/([^|]+)/[|]lang={lang}}}}}".format(lang=language))
     ipa_regex_2 = re.compile("{{{{IPA[|]lang={lang}[|]/([^|]+)/}}}}".format(lang=language))
@@ -191,6 +187,8 @@ def wiktionary_to_csv(input, output, language="en", accents=("US", "USA", "GA", 
                 elif match.set(re.search(ipa_regex_1, line) or re.search(ipa_regex_2, line)):
                     if accents and not re.search(accent_regex, line) and (None not in accents or re.search(any_accent_regex, line)):
                         continue
-                    print("{}\t{}".format(title, match.value.group(1)), file=o)
+                    elif ":" in title:
+                        continue
+                    for pronunciation in match.value.group(1).split(", "):
+                        print("{}\t{}".format(title, pronunciation), file=o)
 
-             

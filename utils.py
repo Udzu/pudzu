@@ -210,9 +210,12 @@ def remove_duplicates(seq, key=lambda v:v, keep_last=False):
             d[k] = x
     return tuple(d.values())
 
-def first_or_none(seq):
-    """Return the first element of a sequence, or None if it's empty."""
-    return seq[0] if len(seq) > 0 else None
+def first_or_default(iterable, default=None):
+    """Return the first element of an iterable, or None if there aren't any."""
+    try:
+        return next(x for x in iter(iterable))
+    except StopIteration:
+        return default
     
 def is_in(x, l):
     """Whether x is the same object as any member of l"""
@@ -338,7 +341,8 @@ def artial(func, *args, **kwargs):
 class CaseInsensitiveDict(abc.MutableMapping):
     """Case-insensitive dict."""
     
-    def __init__(self, d={}, base_factory=dict):
+    def __init__(self, d={}, normalize=str.lower, base_factory=dict):
+        self.normalize = normalize
         self._d = base_factory()
         self._k = {}
         if isinstance(d, abc.Mapping):
@@ -349,20 +353,20 @@ class CaseInsensitiveDict(abc.MutableMapping):
                 self.__setitem__(k, v)
     
     def __getitem__(self, k):
-        was_missing = k.lower() not in self._d
-        v = self._d[k.lower()]
+        was_missing = self.normalize(k) not in self._d
+        v = self._d[self.normalize(k)]
         if was_missing and k.lower() in self._d:
             # must be using a defaultdict of some kind
-            self._k[k.lower()] = k
+            self._k[self.normalize(k)] = k
         return v
     
     def __setitem__(self, k, v):
-        self._d[k.lower()] = v
-        self._k[k.lower()] = k
+        self._d[self.normalize(k)] = v
+        self._k[self.normalize(k)] = k
         
     def __delitem__(self, k):
-        del self._d[k.lower()]
-        del self._k[k.lower()]
+        del self._d[self.normalize(k)]
+        del self._k[self.normalize(k)]
 
     def __iter__(self):
         return (self._k[k] for k in self._d)

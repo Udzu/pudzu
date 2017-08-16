@@ -168,7 +168,7 @@ class WDPage(CachedPage):
         results = cls.api_call(parameters).get('search',[])
         if precise: results = [ d for d in results if d['match']['text'].lower() == name.lower() ]
         ids = [ d['id'] for d in results ]    
-        return first_or_none(ids) if precise else ids
+        return first_or_default(ids) if precise else ids
         
     # methods
     

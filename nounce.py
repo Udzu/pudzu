@@ -196,6 +196,18 @@ class Nouncer(abc.MutableMapping):
                         d.setdefault("".join(p1), []).append(w2)
         return d
         
+def english_syllables(word):
+    """Simple heuristic for the number of syllables in an English word. 91% agreement with CMUDict."""
+    pos = ["[aeiouy]+",
+           "[^cgj]eo|[^cgst]ia|ii|[^cgstx]io|io$|[^g]iu|[^qg]ua|[^g]uo",
+           "^mc|(s|th)ms?$",
+           "[aeiouy]ing"]
+    neg = ["[aeiouy]n?[^aeiouy]h?e$",
+           "[aeiouy]([^aeiouytd]|tc?h)+ed$",
+           "[aeiouy]r?[^aeiouycszxh]h?es$",
+           "cally$|[^ei]ely$"]
+    return sum(len(re.findall(r, word)) for r in pos) - sum(len(re.findall(r, word)) for r in neg)
+
 def wiktionary_to_csv(input, output, language="en", accents=("US", "USA", "GA", "GenAm", None)):
     """Extract IPA pronunciations from wiktionary xml dump."""
     title_regex = re.compile("<title>(.*)</title>")
@@ -216,4 +228,3 @@ def wiktionary_to_csv(input, output, language="en", accents=("US", "USA", "GA", 
                         continue
                     for pronunciation in match.value.group(1).split(", "):
                         print("{}\t{}".format(title, pronunciation), file=o)
-

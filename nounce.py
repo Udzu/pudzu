@@ -1,18 +1,20 @@
+from collections import abc
 import re
+
 from utils import *
 
-# Pronouncing dictionary class
+# Pronouncing dictionary class, largely targeted at English
 
-IPA_VOWELS = "ɔɑiuɛɪʊʌəæeaoyʏøɝɚɒɜ"
-IPA_VOWELENDINGS = IPA_VOWELS + "ː̯̩"
-IPA_CONSONANTS = "pbtdkɡfvθðszʃʒhmnŋlrɾɹjwʔʍ"
+IPA_VOWELS = "ɔɑiuɛɪʊʌəæeaoyʏøɝɚɒɜʁ"
+IPA_VOWELENDINGS = IPA_VOWELS + "ː̯̩̃"
+IPA_CONSONANTS = "pbtdkɡfvθðszʃʒhmnŋlrɾɹjwʔʍχ"
 IPA_STRESS = "ˈˌ"
 
-class Nouncer(object):
+class Nouncer(abc.MutableMapping):
 
     PHONEME_PATTERN = ("("
         "[{stress}]|"
-        "[{vowel}][ː]?[ʊɪə]?[̯]?|"
+        "[{vowel}][ː̃]*[ʊɪə]?[̯]?|"
         "(?:t͡?ʃ|d͡?ʒ|[{consonant}])[̩]?"
     ")[.ˑ ]?".format(stress=IPA_STRESS, vowel=IPA_VOWELS, consonant=IPA_CONSONANTS))
 
@@ -70,7 +72,10 @@ class Nouncer(object):
 
     def ipa_to_phonemes(self, pronunciation):
         def normalise(string):
-            return string.replace('ĭ','i').replace('̈','').replace('ᵻ','[ɪ,ə]').replace('ɨ','ɪ').replace('ɘ','ə').replace('ɵ','ʊ')
+            string = re.sub("(?<=.)-(?=.)", "", string)
+            return (string.replace('ĭ','i').replace('̈','').replace('ᵻ','[ɪ,ə]')
+                          .replace('ɨ','ɪ').replace('ɘ','ə').replace('ɵ','ʊ')
+                          .replace('ɱ','m'))
         def expand_parentheses(string):
             m = re.search(self.PARENTHESES_REGEX, string)
             if not m: return expand_brackets(string)
@@ -128,24 +133,44 @@ class Nouncer(object):
     @classmethod
     def _is_consonant(self, phoneme): return phoneme[-1] not in IPA_VOWELENDINGS
     
-    # API
+    # MutableMapping
     
     def __getitem__(self, word):
         """Return the pronunciations of a word in IPA. Syllable boundaries aren't marked and stress marks go before the stressed vowel."""
         return {"".join(pronunciation) for pronunciation in self.pdict[word]}
         
-    def __setitem__(self, word, pronunciation):
-        """Set a pronunciation of a word in IPA."""
-        self.pdict.setdefault(word, set()).update(self.ipa_to_phonemes(pronunciation))
+    def __setitem__(self, word, pronunciations):
+        """Set pronunciations of a word in IPA. If a single pronunciation is given then it is appended to existing ones."""
+        if non_string_iterable(pronunciations):
+            self.pdict[word] = { q for p in pronunciations for q in self.ipa_to_phonemes(p) }
+        else:
+            self.pdict.setdefault(word, set()).update(self.ipa_to_phonemes(pronunciations))
         
     def __delitem__(self, word):
         """Delete all pronunciations of a word."""
         del self.pdict[word]
         
+    def __iter__(self):
+        return iter(self.pdict)
+        
+    def __len__(self):
+        return len(self.pdict)
+        
+    def __repr__(self):
+        return "<Nouncer: {} entries>".format(len(self))
+        
+    # rest of API
+    
     def syllables(self, word):
         """Number of syllables in a word."""
         return {"".join(pronunciation) : sum(1 for phoneme in pronunciation if self._is_vowel(phoneme)) for pronunciation in self.pdict[word]}
        
+    def pronunciations(self, word_filter=None, pronunciation_filter=None):
+        """Generator returning matching pronunciations."""
+        def match(pattern, string):
+            return pattern is None or callable(pattern) and pattern(string) or re.search(pattern, string)
+        return ((w, p) for w,ps in self.items() if match(word_filter,w) for p in ps if match(pronunciation_filter, p))
+        
     @classmethod
     def _rhymeswith(self, phonemes1, phonemes2, identirhyme=False, enjambment=False, multirhyme=False):
         stress1 = first_or_default((i for i in range(len(phonemes1)) if self._is_stressed(phonemes1[i])), 0)

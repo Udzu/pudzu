@@ -109,4 +109,4 @@ def find_tags(tags, *fns):
 
 def find_tag(tags, *fns):
     """Same as find_tags but returns the first result only (or None if there are none)."""
-    return first_or_none(find_tags(tags, *fns))
+    return first_or_default(find_tags(tags, *fns))

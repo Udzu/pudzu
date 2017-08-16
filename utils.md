@@ -39,7 +39,7 @@ ImportError: Missing module: module
        bar(match.value.group(1)
 ```
 
-**CaseInsensitiveDict**: case-insensitive dictionary. Remembers the original case, and supports custom base dictionary containers such as OrderedDict and defaultdict.
+**CaseInsensitiveDict**: case-insensitive dictionary. Remembers the original case, and supports custom base dictionary containers such as OrderedDict and defaultdict. Accepts a custom normalizer, so can be used for 'other'-insensitive dictionaries too.
 
 ```python
 >> d = CaseInsensitiveDict({'Bob': 4098, 'Hope': 4139})

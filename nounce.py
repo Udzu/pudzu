@@ -161,23 +161,28 @@ class Nouncer(abc.MutableMapping):
         
     # rest of API
     
-    def syllables(self, word):
-        """Number of syllables in a word."""
-        return {"".join(pronunciation) : sum(1 for phoneme in pronunciation if self._is_vowel(phoneme)) for pronunciation in self.pdict[word]}
-       
     def pronunciations(self, word_filter=None, pronunciation_filter=None):
         """Generator returning matching pronunciations."""
         def match(pattern, string):
-            return pattern is None or callable(pattern) and pattern(string) or re.search(pattern, string)
+            return True if pattern is None else pattern(string) if callable(pattern) else re.search(pattern, string)
         return ((w, p) for w,ps in self.items() if match(word_filter,w) for p in ps if match(pronunciation_filter, p))
-        
+    
+    def syllables(self, word, default_counter=None):
+        """Number of syllables in a word."""
+        try:
+            return {"".join(pronunciation) : sum(1 for phoneme in pronunciation if self._is_vowel(phoneme)) for pronunciation in self.pdict[word]}
+        except KeyError:
+            if default_counter is not None:
+                return { "({})".format(word): default_counter(word) }
+            raise
+       
     @classmethod
     def _rhymeswith(self, phonemes1, phonemes2, identirhyme=False, enjambment=False, multirhyme=False):
         stress1 = first_or_default((i for i in range(len(phonemes1)) if self._is_stressed(phonemes1[i])), 0)
         stress2 = first_or_default((i for i in range(len(phonemes2)) if self._is_stressed(phonemes2[i])), 0)
         same_consonant = stress1==stress2==0 or stress1>0 and stress2>0 and phonemes1[stress1-1]==phonemes2[stress2-1]
-        pattern1 = phonemes1[stress1:]
-        pattern2 = phonemes2[stress2:len(phonemes1)-stress1+stress2 if enjambment else None]
+        pattern1 = phonemes1[stress1:len(phonemes2)-stress2+stress1 if enjambment else None]
+        pattern2 = phonemes2[stress2:]
         if multirhyme:
             def strip_consonants(p):
                 lv = first_or_default((i for i in reversed(range(len(p))) if self._is_vowel(p[i])), 0)

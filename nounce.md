@@ -1,7 +1,7 @@
 # [nounce.py](nounce.py)
 
 ## Summary 
-Simple pronouncing dictionary. 
+Simple IPA-based pronouncing and rhyming dictionary. 
 
 ## Dependencies
 *Required*: [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).

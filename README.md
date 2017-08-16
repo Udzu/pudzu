@@ -8,9 +8,13 @@ The modules aren't properly packaged up or pip-able (yet) but are reasonably sim
 
 ## Modules
 
+### General modules
 - [utils.py](utils.md) - various utility functions and data structures.
 - [dates.py](dates.md) - date classes supporting flexible calendars, deltas and ranges.
 - [markov.py](markov.md) - simple Markov Chain n-gram based generator.
+- [nounce.py](nounce.md) - simple IPA-based pronouncing and rhyming dictionary.
+
+### Dataviz modules
 - [bamboo.py](bamboo.md) - various monkey-patched pandas utilities.
 - [pillar.py](pillar.md) - various monkey-patched Pillow utilities.
 - [charts.py](charts.md) - Pillow-based charting tools.

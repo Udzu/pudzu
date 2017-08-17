@@ -23,8 +23,18 @@ class Nouncer(abc.MutableMapping):
         'EY': 'eɪ', 'AY': 'aɪ', 'OW': 'oʊ', 'AW': 'aʊ', 'OY': 'ɔɪ', 'ER': 'ɝ', 'AXR': 'ɚ',
         'P': 'p', 'B': 'b', 'T': 't', 'D': 'd', 'K': 'k', 'G': 'ɡ', 'CH': 't͡ʃ', 'JH': 'd͡ʒ', 'F': 'f', 'V': 'v',
         'TH': 'θ', 'DH': 'ð', 'S': 's', 'Z': 'z', 'SH': 'ʃ', 'ZH': 'ʒ', 'HH': 'h', 'M': 'm', 'EM': 'm̩',
-        'N': 'n', 'EN': 'n̩', 'NG': 'ŋ', 'ENG': 'ŋ̍', 'L': 'l', 'EL': 'ɫ̩', 'R': 'r', 'DX': 'ɾ', 'NX': 'ɾ̃',
+        'N': 'n', 'EN': 'n̩', 'NG': 'ŋ', 'ENG': 'ŋ̍', 'L': 'l', 'EL': 'ɫ̩', 'R': 'r', 'DX': 'ɾ',
         'Y': 'j', 'W': 'w', 'Q': 'ʔ' }
+    
+    ENPR_TO_IPA = { 
+        "GenAm": { 'ä': 'ɑ', 'ă': 'æ', 'ǎ': 'æ', 'ā': 'eɪ', 'ĕ': 'ɛ', 'ē': 'i', 'i': 'ɪ', 'ĭ': 'ɪ', 'ī': 'aɪ',
+        'ŏ': 'ɑ', 'ō': 'oʊ', 'ô': 'ɔ', 'ŭ': 'ʌ', 'ə': 'ə',
+        'oi': 'ɔɪ', 'ŏŏ': 'ʊ', 'o͝o': 'ʊ', 'ōō': 'u', 'o͞o': 'u', 'ou': 'aʊ',
+        'ăr': 'æɹ', 'är': 'ɑɹ', 'âr': 'ɛɹ', 'ĕr': 'ɛɹ', 'ĭr': 'ɪɹ', 'îr': 'iɹ',
+        'ōr': 'ɔɹ', 'ôr': 'ɔɹ', 'ŏŏr': 'ʊɹ', 'o͝or': 'ʊɹ', 'ûr': 'ɝ', 'ər': 'ɚ',
+        'b': 'b', 'ch': 't͡ʃ', 'd': 'd', 'f': 'f', 'g': 'ɡ', 'h': 'h', 'hw': 'ʍ', 'j': 'd͡ʒ', 'k': 'k',
+        'l': 'l', 'm': 'm', 'n': 'n', 'ng': 'ŋ', 'p': 'p', 'r': 'r', 's': 's', 'sh': 'ʃ', 't': 't', 'th': 'θ',
+        'v': 'v', 'w': 'w', 'y': 'j', 'z': 'z', 'zh': 'ʒ' } }
     
     def __init__(self, filename=None, normalize=str.lower):
         self.pdict = CaseInsensitiveDict(normalize=normalize)
@@ -50,20 +60,20 @@ class Nouncer(abc.MutableMapping):
                 if m:
                     self.pdict.setdefault(m.group(1).lower(), set()).add(self.arpabet_to_phonemes(m.group(2)))
         
-    def import_list(self, filename, delimiter="\t", ignore_errors=True):
-        """Import pronunciations from a list file."""
-        errors = []
+    def import_list(self, filename, delimiter="\t", error_cache=None, enpr=False):
+        """Import pronunciations from a file, either in IPA or enPR format."""
+        if error_cache: error_cache.set([])
+        to_phonemes = partial(self.enpr_to_phonemes, dialect=enpr) if enpr else self.ipa_to_phonemes
         with open(filename, "r", encoding="utf-8") as f:
             for entry in f:
                 m = re.match("(.*)[{}](.*)".format(delimiter), entry)
                 if m:
                     try:
-                        self.pdict.setdefault(m.group(1), set()).update(self.ipa_to_phonemes(m.group(2)))
+                        self.pdict.setdefault(m.group(1), set()).update(to_phonemes(m.group(2)))
                     except ValueError as e:
-                        if not ignore_errors:
+                        if not error_cache: 
                             raise ValueError("Error reading {}: {}".format(m.group(1), str(e)))
-                        errors.append((m.group(1), str(e)))
-        return errors
+                        error_cache.value.append((m.group(1), str(e)))
         
     PHONEME_REGEX = re.compile(PHONEME_PATTERN)
     PRONUNCIATION_REGEX = re.compile("(?:{phoneme})*".format(phoneme=PHONEME_PATTERN))
@@ -123,7 +133,27 @@ class Nouncer(abc.MutableMapping):
             phoneme += self.ARPABET_TO_IPA[l]
             phonemes.append(phoneme)
         return tuple(phonemes)
-
+        
+    def enpr_to_phonemes(self, pronunciation, dialect):
+        i, vi, phonemes, tdict = 0, 0, [], self.ENPR_TO_IPA[dialect]
+        while i < len(pronunciation):
+            for l in (3, 2, 1):
+                if pronunciation[i:i+l] in tdict:
+                    phonemes.append(tdict[pronunciation[i:i+l]])
+                    if self._is_vowel(phonemes[-1]): vi = len(phonemes) - 1
+                    i += len(pronunciation[i:i+l])
+                    break
+            else:
+                if pronunciation[i] in " -'ʹ′":
+                    if pronunciation[i] in "'ʹ′": phonemes.insert(vi, 'ˈ')
+                    i += 1
+                elif pronunciation[i] in "()":
+                    phonemes.append(pronunciation[i])
+                    i += 1
+                else:
+                    raise ValueError("Unrecognised enPR character {} in {}".format(pronunciation[i], pronunciation))
+        return self.ipa_to_phonemes("".join(phonemes))
+        
     @classmethod
     def _is_vowel(self, phoneme): return phoneme[-1] in IPA_VOWELENDINGS
     
@@ -213,11 +243,12 @@ def english_syllables(word):
            "cally$|[^ei]ely$"]
     return sum(len(re.findall(r, word)) for r in pos) - sum(len(re.findall(r, word)) for r in neg)
 
-def wiktionary_to_csv(input, output, language="en", accents=("US", "USA", "GA", "GenAm", None)):
-    """Extract IPA pronunciations from wiktionary xml dump."""
+def extract_from_wiktionary(input, output, language="en", accents=("US", "USA", "GA", "GenAm", None), enpr=False):
+    """Extract pronunciations from wiktionary xml dump."""
     title_regex = re.compile("<title>(.*)</title>")
     ipa_regex_1 = re.compile("{{{{IPA[|]/([^|]+)/[|]lang={lang}}}}}".format(lang=language))
     ipa_regex_2 = re.compile("{{{{IPA[|]lang={lang}[|]/([^|]+)/}}}}".format(lang=language))
+    enpr_regex = re.compile("{{enPR[|]([^}]+)}}")
     accent_regex = re.compile("{{{{a(ccent)?[|]([^}}]+[|])?({accents})[|}}]".format(accents="|".join(a for a in make_iterable(accents) if a)))
     any_accent_regex = re.compile("{{a(ccent)?[|]")
     match = ValueCache()
@@ -226,10 +257,11 @@ def wiktionary_to_csv(input, output, language="en", accents=("US", "USA", "GA", 
             for line in i:
                 if match.set(re.search(title_regex, line)):
                     title = match.value.group(1)
-                elif match.set(re.search(ipa_regex_1, line) or re.search(ipa_regex_2, line)):
+                elif ((enpr and match.set(re.search(enpr_regex, line))) or 
+                      (not enpr and (match.set(re.search(ipa_regex_1, line) or re.search(ipa_regex_2, line))))):
                     if accents and not re.search(accent_regex, line) and (None not in accents or re.search(any_accent_regex, line)):
                         continue
                     elif ":" in title:
                         continue
-                    for pronunciation in match.value.group(1).split(", "):
+                    for pronunciation in match.value.group(1).split("|" if enpr else ", "):
                         print("{}\t{}".format(title, pronunciation), file=o)

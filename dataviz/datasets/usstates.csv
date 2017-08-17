@@ -1,0 +1,53 @@
+code,name,population,grid_x,grid_y
+AL,Alabama,4863300,7,6
+AK,Alaska,741894,0,0
+AZ,Arizona,6931071,2,5
+AR,Arkansas,2988248,5,5
+CA,California,39250017,1,4
+CO,Colorado,5540545,3,4
+CT,Connecticut,3576452,10,3
+DE,Delaware,952065,10,4
+DC,District of Columbia,681170,9,5
+FL,Florida,20612439,9,7
+GA,Georgia,10310371,8,6
+HI,Hawaii,1428557,0,7
+ID,Idaho,1683140,2,2
+IL,Illinois,12801539,6,2
+IN,Indiana,6633053,6,3
+IA,Iowa,3134693,5,3
+KS,Kansas,2907289,4,5
+KY,Kentucky,4436974,6,4
+LA,Louisiana,4681666,5,6
+ME,Maine,1331479,11,0
+MD,Maryland,6016447,9,4
+MA,Massachusetts,6811779,11,2
+MI,Michigan,9928300,8,2
+MN,Minnesota,5519952,5,2
+MS,Mississippi,2988726,6,6
+MO,Missouri,6093000,5,4
+MT,Montana,1042520,3,2
+NE,Nebraska,1907116,4,4
+NV,Nevada,2940058,2,3
+NH,New Hampshire,1334795,11,1
+NJ,New Jersey,8944469,9,3
+NM,New Mexico,2081015,3,5
+NY,New York,19745289,9,2
+NC,North Carolina,10146788,7,5
+ND,North Dakota,757952,4,2
+OH,Ohio,11614373,7,3
+OK,Oklahoma,3923561,4,6
+OR,Oregon,4093465,1,3
+PA,Pennsylvania,12784227,8,3
+PR,Puerto Rico,3411307,11,7
+RI,Rhode Island,1056426,10,2
+SC,South Carolina,4961119,8,5
+SD,South Dakota,865454,4,3
+TN,Tennessee,6651194,6,5
+TX,Texas,27862596,4,7
+UT,Utah,3051217,2,4
+VT,Vermont,624594,10,1
+VA,Virginia,8411808,8,4
+WA,Washington,7288000,1,2
+WV,West Virginia,1831102,7,4
+WI,Wisconsin,5778708,7,2
+WY,Wyoming,585501,3,3

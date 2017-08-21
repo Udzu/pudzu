@@ -435,6 +435,21 @@ def generate_labelbox_csv(map):
 def load_labelbox_csv(map):
     return pd.read_csv(labelbox_csv_path(map)).split_columns(('bbox', 'color'), '|', int)
     
+def generate_tile_map(array, filename, size, border=0, bg="white"):
+    """Generate a map image and related files from an array of labels."""
+    # TODO: border, namefile, lboxfile
+    if isinstance(size, Integral): size = (size, size)
+    labels = { l for row in array for l in row if not none_or_nan(l) }
+    colmap = lambda i: ((i%40)*5+(i//40), (i%40)*5+(i//40), 200-(i//100)*5)
+    palette = { l : colmap(i) for i,l in enumerate(labels) }
+    imgarray = [ [ None if none_or_nan(l) else Image.new("RGB", size, palette[l]) for l in row ] for row in array ]
+    img = Image.from_array(imgarray, bg=bg).convert("RGB")
+    img.save(filename)
+    names = [{ 'color': "|".join(str(x) for x in c), 'name': l } for l,c in palette.items()]
+    pd.DataFrame(names).to_csv(name_csv_path(filename), index=False)
+    img.save(labelbox_img_path(filename))
+    generate_labelbox_csv(filename)
+    
 def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"):
     """Generate a map chart from a map image and color mapping. If present, this will use a name csv file with image names
     and a label csv file with label bounding boxes.

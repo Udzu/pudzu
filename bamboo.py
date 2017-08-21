@@ -136,8 +136,3 @@ class FilterExpression:
         """Generates a filter function from a filter expression."""
         parse = cls.expr.parseString(string, parseAll=True).asList()
         return lambda d: cls._eval_parse(parse, d)
-
-rs = [ { "name": "Fred", "surname": "Flintstone", "children": 2 },
-       { "name": "Wilma", "surname": "Flintstone", "children": 2 },
-       { "name": "Dino", "children": 15 } ]
-df = pd.DataFrame(rs)

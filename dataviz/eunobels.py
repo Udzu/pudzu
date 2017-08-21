@@ -64,7 +64,7 @@ for i in range(0,6):
     label = Image.from_text("{}{} per million".format(i, "" if i < 5 else "+"), arial(14), fg="black", bg="white", padding=(5,0,0,0))
     gradimg = gradimg.pin(label, (GW, GH * (5-i) // 5), align=(0,0.5), bg="white")
 gradimg = Image.from_column([gradimg, 
-Image.from_row([Image.new("RGBA", (GW,GW), NONNATIVE), Image.from_text("local-born\nforeign nationals", arial(14), fg="black", bg="white", padding=(5,0,0,0))], bg="white")
+Image.from_row([Image.new("RGBA", (GW,GW), NONNATIVE), Image.from_text("local-born\nforeign nationals", arial(14), fg="black", bg="white", padding=(5,0,0,3))], bg="white")
 ], bg="white", xalign=0)
 gradleg = Image.from_column([Image.from_text("Prizes per capita", arial(16, bold=True)), gradimg], bg="white", xalign=0, padding=(0,5))
 

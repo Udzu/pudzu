@@ -112,7 +112,7 @@ class BoundingBox():
     @property
     def size(self): return (self.width, self.height)
     @property
-    def center(self): return ((self.l + self.r) // 2, (self.u + self.d) // 2)
+    def center(self): return ((self.l + self.r + 1) // 2, (self.u + self.d + 1) // 2)
     
 def whitespace_span_tokenize(text):
     """Whitespace span tokenizer."""

@@ -278,6 +278,10 @@ def generate_subsequences(iterable, start_if, end_if):
             subseq.append(x)
         yield subseq
 
+def riffle_shuffle(iterable, n=2):
+    """Generator that performs a perfect riffle shuffle on the input, using a given number of subdecks."""
+    return itertools.filterfalse(none_or_nan, itertools.chain.from_iterable(zip(*list(itertools.zip_longest(*[iter(iterable)]*n)))))
+
 # Mappings
     
 def none_or_nan(x):

@@ -3,6 +3,7 @@ sys.path.append('..')
 from charts import *
 from scipy import ndimage
 import seaborn as sns
+import tqdm
 
 MAP = "maps/Europe.png"
 BACKGROUND = 'Sea'
@@ -11,7 +12,8 @@ MERGE = { 'Gibraltar': 'UK', 'Jersey': 'UK', 'Guernsey': 'UK', 'Faroe Islands': 
 mapnames = load_name_csv(MAP)
 names = [d['name'] for _,d in mapnames.iterrows() if d['name'] not in MERGE and d['name'] != BACKGROUND]
 bgcolor = mapnames[mapnames['name']==BACKGROUND].color.loc[0]
-palette = ImageColor.from_floats(sns.color_palette("hls", len(names)))
+palette = ImageColor.from_floats(sns.color_palette("hls", len(names) * 2)[len(names):])
+palette = list(riffle_shuffle(palette, 4))
 colorfn = lambda n: None if n == BACKGROUND else palette[names.index(MERGE[n])] if n in MERGE else palette[names.index(n)]
 map = map_chart(MAP, colorfn).convert("RGBA")
 maparray = np.array(map)
@@ -40,8 +42,8 @@ def all_countries():
     
 all = all_countries()
 
-maps = Image.from_array([[Image.from_text("Closest country".upper(), arial(60, bold=True), "black", "white"),
-                          Image.from_text("Closest foreign country".upper(), arial(60, bold=True), "black", "white")],
+maps = Image.from_array([[Image.from_text("Original map".upper(), arial(60, bold=True), "black", "white"),
+                          Image.from_text("Closest country".upper(), arial(60, bold=True), "black", "white")],
                          [map, all]], bg="white", padding=10)
 footer = Image.from_text("Blank map from Wikipedia. Dependencies counted under parent state. Calculations based on Euclidean distance and low resolution map, so not 100% accurate. Not for use in pub quizzes or planning escape routes.", arial(24), "black", "white", padding=10)
 chart = Image.from_column([maps, footer], bg="white")

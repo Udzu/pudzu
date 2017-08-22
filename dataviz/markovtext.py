@@ -26,16 +26,16 @@ LETTERS = string.ascii_lowercase + ' '
 
 def load_generator(n):
     try:
-        logger.info("Loading datasets/{}_{}.p".format(CORPUS, n))
-        with open("datasets/{}_{}.p".format(CORPUS, n), "rb") as f:
+        logger.info("Loading ../corpora/{}_{}.p".format(CORPUS, n))
+        with open("../corpora/{}_{}.p".format(CORPUS, n), "rb") as f:
             return pickle.load(f)
     except:
         logger.info("Training {} {}-grams".format(CORPUS, n))
         markov = MarkovGenerator(n)
         for f in tqdm.tqdm(CORPUS.split("-")):
-            markov.train_file("datasets/"+f, encoding=ENCODING, normalise=partial(latin_normalise, letters=LETTERS))
-        logger.info("Saving to datasets/{}_{}.p".format(CORPUS, n))
-        with open("datasets/{}_{}.p".format(CORPUS, n), "wb") as f:
+            markov.train_file("../corpora/"+f, encoding=ENCODING, normalise=partial(latin_normalise, letters=LETTERS))
+        logger.info("Saving to ../corpora/{}_{}.p".format(CORPUS, n))
+        with open("../corpora/{}_{}.p".format(CORPUS, n), "wb") as f:
             pickle.dump(markov, f, pickle.HIGHEST_PROTOCOL)
         return markov
 

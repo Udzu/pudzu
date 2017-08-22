@@ -7,11 +7,16 @@ import re
 
 from utils import *
 
+tqdm = optional_import("tqdm")
 if optional_import("pyparsing"): from pyparsing import *
 
 logger = logging.getLogger('bamboo')
 
 # Various pandas utility functions
+
+def _tqdm_wrapper(t, func, *args, **kwargs):
+    t.update(1)
+    return func(*args, **kwargs)
 
 def _make_filter(filter):
     return (lambda x: True) if filter is None else filter if callable(filter) else FilterExpression.make_filter(filter) 
@@ -24,13 +29,27 @@ def _filter_rows(df, filter):
     """Filter rows using either a row predicate or a RecordFilter expression."""
     return df[df.apply(_make_filter(filter), axis=1)]
 
-def _assign_rows(df, assign_if=None, **kwargs):
-    """Assign or update columns using row function, with an optional row predicate condition."""
-    return df.assign(**{k : (lambda df, k=k, fn=fn: [(fn(r) if callable(fn) else fn) if _make_filter(assign_if)(r) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
+def _assign_rows(df, progressbar=False, assign_if=None, **kwargs):
+    """Assign or update columns using row function, with an optional row predicate condition. Progress bars require tqdm."""
+    filter_fn = _make_filter(assign_if)
+    if progressbar and tqdm:
+        t = tqdm.tqdm(total = len(df) * len(kwargs))
+        filter_fn = partial(_tqdm_wrapper, t, filter_fn)
+    results = df.assign(**{k : (lambda df, k=k, fn=fn: [(fn(r) if callable(fn) else fn) if filter_fn(r) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
+    if progressbar and tqdm:
+        t.close()
+    return results
 
-def _update_columns(df, update_if=None, **kwargs):
-    """Update columns using a value function, with an optional value predicate condition, or True to update just non-nans."""
-    return df.assign(**{k : (lambda df, k=k, fn=fn: [(fn(r[k]) if callable(fn) else fn) if (update_if is None or callable(update_if) and update_if(r[k]) or isinstance(update_if, bool) and update_if != none_or_nan(r[k])) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
+def _update_columns(df, progressbar=False, update_if=None, **kwargs):
+    """Update columns using a value function, with an optional value predicate condition, or True to update just non-nans. Progress bars require tqdm."""
+    filter_fn = lambda v: (update_if is None or callable(update_if) and update_if(v) or isinstance(update_if, bool) and update_if != none_or_nan(v))
+    if progressbar and tqdm:
+        t = tqdm.tqdm(total = len(df) * len(kwargs))
+        filter_fn = partial(_tqdm_wrapper, t, filter_fn)
+    results = df.assign(**{k : (lambda df, k=k, fn=fn: [(fn(r[k]) if callable(fn) else fn) if filter_fn(r[k]) else r.get(k) for _,r in df.iterrows()]) for k,fn in kwargs.items()})
+    if progressbar and tqdm:
+        t.close()
+    return results
     
 def _groupby_rows(df, by):
     """Group rows using a row function, map, list or column name."""
@@ -43,7 +62,7 @@ def _split_rows(df, by):
 def _split_columns(df, columns, delimiter, converter=identity):
     """Split column string values into tuples with the given delimiter."""
     return df.update_columns(**{column : ignoring_exceptions(lambda s: tuple(converter(x) for x in s.split(delimiter)), (), (AttributeError)) for column in make_iterable(columns) })
-    
+
 pd.DataFrame.filter_columns = _filter_columns
 pd.DataFrame.filter_rows = _filter_rows
 pd.DataFrame.assign_rows = _assign_rows
@@ -57,14 +76,14 @@ pd.DataFrame.split_columns = _split_columns
 def prompt_for_value(default=np.nan, prompt=lambda r: r.to_dict()):
     """Row update function for a new field value.
     - default is either a value or a function on rows, used when no value is provided.
-    - prompt is either a value or function on rows."""
+    - prompt is either a function on rows."""
     defaulter = default if callable(default) else lambda r: default
     def updater(r):
         v = input('[{}] = '.format(prompt(r)))
         if v == '': v = defaulter(r)
         return v
     return updater
-
+  
 # filter expressions
 
 class FilterExpression:

@@ -40,5 +40,5 @@ def score_births(years):
     
 def score_births_by_decade(decades):
     for d in tqdm.tqdm(decades):
-        ignoring_exceptions(score_births)(range(d*10,d*10+10))
+        score_births(range(d*10,d*10+10))
             

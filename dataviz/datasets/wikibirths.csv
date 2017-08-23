@@ -1,18 +1,18 @@
-year,name,score
-1003,Edward the Confessor,0.8002055126089173
-1015,Harald Hardrada,0.7741863187408504
-1028,William the Conqueror,0.8720369547903531
-1033,Anselm of Canterbury,0.7756117487924854
-1044,El Cid,0.7883466159492355
-1058,Al-Ghazali,0.7835799135626438
-1068,Henry I of England,0.8109170277638643
-1079,Peter Abelard,0.7452135199208348
-1084,David I of Scotland,0.7364412125399137
-1098,Hildegard of Bingen,0.7938493406549428
-1102,Empress Matilda,0.7821595925245455
-1114,Bhāskara II,0.7296017828431808
-1124,Eleanor of Aquitaine,0.8154529895971648
-1137,Saladin,0.860118524033684
+year,name,score,description,region
+1003,Edward the Confessor,0.8002055126089173,King of England,europe
+1015,Harald Hardrada,0.7741863187408504,King of Norway,europe
+1028,William the Conqueror,0.8720369547903531,King of England,europe
+1033,Anselm of Canterbury,0.7756117487924854,archbishop and philosopher,europe
+1044,El Cid,0.7883466159492355,Castilian military leader,europe
+1058,Al-Ghazali,0.7835799135626438,Persian theologian,middle east
+1068,Henry I of England,0.8109170277638643,King of England,europe
+1079,Peter Abelard,0.7452135199208348,French theologian,europe
+1084,David I of Scotland,0.7364412125399137,King of Scotland,europe
+1098,Hildegard of Bingen,0.7938493406549428,German mystic,europe
+1102,Empress Matilda,0.7821595925245455,English throne claimant,europe
+1114,Bhāskara II,0.7296017828431808,Indian mathematician,south asia
+1124,Eleanor of Aquitaine,0.8154529895971648,Queen of France and England,europe
+1137,Saladin,0.860118524033684,military leader and Sultan,middle east
 1141,Nizami Ganjavi,0.7291914671290195
 1157,Richard I of England,0.8707592442763348
 1162,Genghis Khan,0.9163863099693412

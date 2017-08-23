@@ -1,11 +1,35 @@
 import sys
+import seaborn as sns
 sys.path.append('..')
+
 from charts import *
 from wikipage import *
 
 harmonic_mean = optional_import_from('statistics', 'harmonic_mean', lambda data: len(data) / sum(1/x for x in data))
 
-# collect data
+# data visualisation (WIP)
+
+CMAP = sns.cubehelix_palette(start=.5, rot=-.75, as_cmap=True)
+DEFAULT_IMG = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
+
+df = pd.read_csv("datasets/wikibirths.csv")
+table = pd.DataFrame([[df.iloc[century*10+decade]['name'] if century*10+decade < len(df) else None for decade in range(0,10)] for century in range(0,10)],
+                     index=["{}00s".format(c) for c in range(10,20)], columns=["'{}0s".format(d) for d in range(0,10)])
+df = df.set_index('name')
+df = df.assign_rows(image_url=lambda d: WikiPage(d.name).image_url, progressbar=True)
+
+def process(img, name):
+    bg = ImageColor.from_floats(CMAP((1 - df['score'][name]) * 2))
+    box = Image.new("RGB", (180,200), bg)
+    box = box.place(Image.from_column([
+      img.crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=160),
+      Image.from_text(name, arial(12, bold=True), padding=(3, 5, 3, 0), fg="white", bg=bg)
+      ], bg=bg))
+    return box
+    
+grid = grid_chart(data, lambda d: d['image_url'] or DEFAULT_IMG, image_process=process, row_label=arial(20, bold=True), col_label=arial(20, bold=True), bg="black")
+
+# data collection (would need more cleanup/corroboration to be used in larger quantities)
 
 def extract_births(year):
     DATE_PATTERN = re.compile(r"^[_ 0-9]*(January|February|March|April|May|June|July|August|September|October|November|December)[ 0-9]*$")
@@ -41,4 +65,3 @@ def score_births(years):
 def score_births_by_decade(decades):
     for d in tqdm.tqdm(decades):
         score_births(range(d*10,d*10+10))
-            

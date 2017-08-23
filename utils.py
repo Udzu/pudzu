@@ -118,14 +118,15 @@ def ignoring_extra_args(fn):
         return fn(*args[0:n], **keyfilter(lambda k: kwa is None or k in kwa, kwargs))
     return wrapper
 
-def ignoring_exceptions(fn, value_on_throw=None, exceptions=Exception):
+def ignoring_exceptions(fn, handler=None, exceptions=Exception):
     """Function decorator that catches exceptions, returning instead."""
+    handler_fn = ignoring_extra_args(handler if callable(handler) else lambda: handler)
     @wraps(fn)
     def wrapper(*args, **kwargs):
         try:
             return fn(*args, **kwargs)
         except exceptions:
-            return value_on_throw
+            return handler_fn(*args, **kwargs)
     return wrapper
 
 def with_retries(fn, max_retries=None, max_duration=None, interval=0.5, exceptions=Exception):

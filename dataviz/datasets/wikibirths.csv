@@ -7,21 +7,21 @@ year,name,score,description,region,image_url
 1058,Al-Ghazali,0.7835799135626438,Persian theologian,middle east,http://www.durango.net.mx/biografias/uploadImagenes/200px-Algazel.jpg
 1068,Henry I,0.8109170277638643,King of England,europe,https://www.wikitree.com/photo.php/1/11/King_of_England-68.jpg
 1079,Peter Abelard,0.7452135199208348,French theologian,europe,http://www.greatthoughtstreasury.com/sites/default/files/wpid-abelard[1].jpeg
-1084,David I,0.7364412125399137,King of Scotland,europe,http://www.royaldescent.net/wp-content/uploads/2013/03/DavidIIScotland2.jpg
-1098,Hildegard of Bingen,0.7938493406549428,German mystic,europe
-1102,Empress Matilda,0.7821595925245455,English throne claimant,europe
-1114,Bhāskara II,0.7296017828431808,Indian mathematician,south asia
-1124,Eleanor of Aquitaine,0.8154529895971648,Queen of France and England,europe
-1137,Saladin,0.860118524033684,military leader & Sultan,middle east
-1141,Nizami Ganjavi,0.7291914671290195,Persian poet,middle east
-1157,Richard I,0.8707592442763348,King of England,europe
-1162,Genghis Khan,0.9163863099693412,Mongol ruler,east asia
-1170,Fibonacci,0.7927173597150562,Italian mathematician,europe
-1182,Francis of Assisi,0.854271879776407,Italian saint,europe
-1195,Anthony of Padua,0.7990381950124069,Portuguese friar,europe
-1207,Rumi,0.8505940830657364,Persian poet & mystic,middle east
-1215,Kublai Khan,0.8495879069007621,Mongol ruler,east asia
-1225,Thomas Aquinas,0.8617518184504322,Italian theologian,europe
+1084,David I,0.7364412125399137,King of Scotland,europe,https://www.britroyals.com/images/david1.jpg
+1098,Hildegard of Bingen,0.7938493406549428,German mystic,europe,http://www.feministezine.com/feminist/images/HidegardvonBingen-01.jpg
+1102,Empress Matilda,0.7821595925245455,English throne claimant,europe,http://nicolatallis.com/wp-content/uploads/2016/04/thumb_Empress_Mathilda.png
+1114,Bhāskara II,0.7296017828431808,Indian mathematician,south asia,https://www.biphoo.com/product-images/celebrities-images/1Bhaskara%20II-2.jpg
+1124,Eleanor of Aquitaine,0.8154529895971648,Queen of France and England,europe,http://nebula.wsimg.com/74a1f8e8644a74a0d0bd114b7649c26d?AccessKeyId=BDCD2A10AE82DD67CC3E&disposition=0&alloworigin=1
+1137,Saladin,0.860118524033684,military leader & Sultan,middle east,https://upload.wikimedia.org/wikipedia/commons/a/ae/Portrait_of_Saladin_%28before_A.D._1185%3B_short%29.jpg
+1141,Nizami Ganjavi,0.7291914671290195,Persian poet,middle east,https://upload.wikimedia.org/wikipedia/commons/a/ab/Nizami_Rug_Crop.jpg
+1157,Richard I,0.8707592442763348,King of England,europe,https://www.angus-donald.com/wp-content/uploads/lionheart.jpg
+1162,Genghis Khan,0.9163863099693412,Mongol ruler,east asia,https://upload.wikimedia.org/wikipedia/commons/3/35/YuanEmperorAlbumGenghisPortrait.jpg
+1170,Fibonacci,0.7927173597150562,Italian mathematician,europe,http://www.mathstimes.com/wp-content/uploads/2014/10/leonardo-fibonacci-granger.jpg
+1182,Francis of Assisi,0.854271879776407,Italian saint,europe,http://www.paginainizio.com/frasi/fonti/francescodassisi.jpg
+1195,Anthony of Padua,0.7990381950124069,Portuguese friar,europe,https://www.passionistnuns.org/Saints/StAnthonyPadua/StAnthony_Padua.jpg
+1207,Rumi,0.8505940830657364,Persian poet & mystic,middle east,https://images.gr-assets.com/authors/1217355543p5/875661.jpg
+1215,Kublai Khan,0.8495879069007621,Mongol ruler,east asia,http://cdn-ak.f.st-hatena.com/images/fotolife/t/tokdaru/20160515/20160515171151.jpg
+1225,Thomas Aquinas,0.8617518184504322,Italian theologian,europe,https://media1.britannica.com/eb-media/00/131500-004-4E3E4827.jpg
 1239,Edward I,0.843266658833407,King of England,europe
 1241,Eleanor of Castile,0.7007426599133505,Queen of England,europe
 1254,Marco Polo,0.8706328971383273,Italian explorer,europe
@@ -39,37 +39,37 @@ year,name,score,description,region,image_url
 1371,Zheng He,0.8279342087157643,Chinese explorer,east asia
 1386,Henry V,0.8066275175715993,King of England,europe
 1398,Johannes Gutenberg,0.8153533890107547,German printer
-1405,Skanderbeg,0.8193203936867104
-1412,Joan of Arc,0.8823690292812761
-1421,Henry VI of England,0.798543211389885
-1431,Vlad the Impaler,0.8837524640709095
-1445,Sandro Botticelli,0.8145137348139885
-1452,Leonardo da Vinci,0.9116355696737033
-1469,Niccolò Machiavelli,0.8696885662656608
-1473,Nicolaus Copernicus,0.8767486841423973
-1483,Martin Luther,0.902386178454995
-1491,Henry VIII of England,0.9194938298981462
-1501,Anne Boleyn,0.8827911917841905
-1516,Mary I of England,0.8773511547545334
-1527,Philip II of Spain,0.8593931924248821
-1533,Elizabeth I of England,0.9159267719939401
-1542,"Mary, Queen of Scots",0.9002049875315218
-1554,Walter Raleigh,0.81853192304552
-1564,William Shakespeare,0.9437549248959148
-1570,Guy Fawkes,0.8467935271326018
-1588,Thomas Hobbes,0.8290523722101975
-1599,Oliver Cromwell,0.8824871847302747
-1600,Charles I of England,0.8891381912469444
-1618,Aurangzeb,0.8554508272632806
-1623,Blaise Pascal,0.8360683201628718
-1638,Louis XIV of France,0.9037852858729202
-1642,Isaac Newton,0.9114815465296718
-1650,William III of England,0.8494458463743502
-1665,"Anne, Queen of Great Britain",0.835502513246522
-1672,Peter the Great,0.8257276824594787
-1685,Johann Sebastian Bach,0.881024579975079
-1694,Voltaire,0.8852337747049739
-1706,Benjamin Franklin,0.9109658647735503
+1405,Skanderbeg,0.8193203936867104,Albanian hero,europe
+1412,Joan of Arc,0.8823690292812761,French hero,europe
+1421,Henry VI,0.798543211389885,King of England,europe
+1431,Vlad the Impaler,0.8837524640709095,ruler of Wallachia,europe
+1445,Sandro Botticelli,0.8145137348139885,Italian painter,europe
+1452,Leonardo da Vinci,0.9116355696737033,Italian polymath,europe
+1469,Niccolò Machiavelli,0.8696885662656608,Italian political writer,europe
+1473,Nicolaus Copernicus,0.8767486841423973,Polish astronomer,europe
+1483,Martin Luther,0.902386178454995,German religious leader,europe
+1491,Henry VIII,0.9194938298981462,King of England,europe
+1501,Anne Boleyn,0.8827911917841905,Queen of England,europe
+1516,Mary I,0.8773511547545334,Queen of England,europe
+1527,Philip II,0.8593931924248821,King of Spain,europe
+1533,Elizabeth I,0.9159267719939401,Queen of England,europe
+1542,Mary,0.9002049875315218,Queen of Scots,europe
+1554,Walter Raleigh,0.81853192304552,English explorer,europe
+1564,William Shakespeare,0.9437549248959148,English playwright,europe
+1570,Guy Fawkes,0.8467935271326018,English conspirator,europe
+1588,Thomas Hobbes,0.8290523722101975,English philosopher,europe
+1599,Oliver Cromwell,0.8824871847302747,English statesman,europe
+1600,Charles I,0.8891381912469444,King of Great Britain,europe
+1618,Aurangzeb,0.8554508272632806,Mughal Emperor,south asia
+1623,Blaise Pascal,0.8360683201628718,French philosopher,europe
+1638,Louis XIV,0.9037852858729202,King of France,europe
+1642,Isaac Newton,0.9114815465296718,English scientist,europe
+1650,William III,0.8494458463743502,King of Great Britain,europe
+1665,Anne,0.835502513246522,Queen of Great Britain,europe
+1672,Peter the Great,0.8257276824594787,Russian Tsar
+1685,Johann Sebastian Bach,0.881024579975079,German composer
+1694,Voltaire,0.8852337747049739,French philosopher & author
+1706,Benjamin Franklin,0.9109658647735503,American scientist & statesman
 1712,Jean-Jacques Rousseau,0.8761440914445683
 1724,Immanuel Kant,0.8809027992455508
 1732,George Washington,0.9437612352731154
@@ -94,3 +94,4 @@ year,name,score,description,region,image_url
 1926,Elizabeth II,0.947442618978537
 1935,Elvis Presley,0.9533963367598803
 1946,Donald Trump,1.0227113677647837
+1958,Michael Jackson,0.9818569866393215

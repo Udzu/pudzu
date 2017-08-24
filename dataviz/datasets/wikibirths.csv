@@ -29,26 +29,26 @@ year,name,score,description,region,image_url
 1270,William Wallace,0.8537243449246831,Scottish hero,europe,https://uagenealogies.as.ua.edu/wp-content/uploads/2015/04/portrait_sir_william.jpg
 1284,Edward II,0.831047329790259,King of England,europe,http://www.historytoday.com/sites/default/files/edwardii.jpg
 1295,Isabella of France,0.758531126979296,Queen of England,europe,https://s-media-cache-ak0.pinimg.com/736x/90/3b/76/903b76ad409319895e792fe069adec77--queen-of-england-frances-oconnor.jpg
-1304,Ibn Battuta,0.8246241728248896,Moroccan explorer,middle east
-1312,Edward III,0.8188133069063348,King of England,europe
-1325,John Wycliffe,0.7759533675263584,English theologian,europe
-1336,Timur,0.8304854189315554,Turkic conqueror,middle east
-1343,Geoffrey Chaucer,0.8109852959945832,English writer,europe
-1359,Owain Glyndŵr,0.7460582864538214,Welsh hero,europe
-1367,Richard II,0.8023452652746957,King of England,europe
-1371,Zheng He,0.8279342087157643,Chinese explorer,east asia
-1386,Henry V,0.8066275175715993,King of England,europe
-1398,Johannes Gutenberg,0.8153533890107547,German printer
-1405,Skanderbeg,0.8193203936867104,Albanian hero,europe
-1412,Joan of Arc,0.8823690292812761,French hero,europe
-1421,Henry VI,0.798543211389885,King of England,europe
-1431,Vlad the Impaler,0.8837524640709095,ruler of Wallachia,europe
-1445,Sandro Botticelli,0.8145137348139885,Italian painter,europe
-1452,Leonardo da Vinci,0.9116355696737033,Italian polymath,europe
-1469,Niccolò Machiavelli,0.8696885662656608,Italian political writer,europe
-1473,Nicolaus Copernicus,0.8767486841423973,Polish astronomer,europe
-1483,Martin Luther,0.902386178454995,German religious leader,europe
-1491,Henry VIII,0.9194938298981462,King of England,europe
+1304,Ibn Battuta,0.8246241728248896,Moroccan explorer,middle east,http://apworldhistory2012-2013.weebly.com/uploads/9/9/9/6/9996001/8331677.jpg
+1312,Edward III,0.8188133069063348,King of England,europe,"http://3.bp.blogspot.com/-ndvfiR4EGdc/U6kj0nhQpeI/AAAAAAAALgM/Xjz71wqTz0o/s1600/EDWARD+III,+king+of+england.jpg"
+1325,John Wycliffe,0.7759533675263584,English theologian,europe,https://charliuss.files.wordpress.com/2012/06/john-wycliffe.jpg
+1336,Timur,0.8304854189315554,Turkic conqueror,middle east,http://100leaders.org/sites/default/files/Tamerlane-Rijksmuseum.jpg
+1343,Geoffrey Chaucer,0.8109852959945832,English writer,europe,https://www.biography.com/.image/t_share/MTE5NDg0MDU0OTIxMzgxMzkx/geoffrey-chaucer-9245691-1-402.jpg
+1359,Owain Glyndŵr,0.7460582864538214,Welsh hero,europe,http://www.bbc.co.uk/staticarchive/0b987f24ad6c777dd2e393cabb42d1b80fd013e0.jpg
+1367,Richard II,0.8023452652746957,King of England,europe,https://faculty.history.wisc.edu/sommerville/123/123images/richard2.jpg
+1371,Zheng He,0.8279342087157643,Chinese explorer,east asia,http://4.bp.blogspot.com/-ZG5hwkwZhxk/UzPh5GrP1qI/AAAAAAAALzs/fdQokWaSTZY/w1200-h630-p-k-no-nu/zhenghe+(2).jpg
+1386,Henry V,0.8066275175715993,King of England,europe,http://2.bp.blogspot.com/-DBJAdko0JE4/VEuuQf-8FAI/AAAAAAAAB2E/GzjVe6X5tvU/s1600/215px-King_Henry_V_from_NPG.jpg
+1398,Johannes Gutenberg,0.8153533890107547,German printer,eurrope,https://upload.wikimedia.org/wikipedia/commons/3/33/Gutenberg.jpg
+1405,Skanderbeg,0.8193203936867104,Albanian hero,europe,https://lh3.googleusercontent.com/-D_ohGBVeG5s/VOiIHhzKm8I/AAAAAAAAAnA/gGb0M8w8TPA/w784-h960/10553324_839986702700001_5466115901254661993_n.jpg
+1412,Joan of Arc,0.8823690292812761,French hero,europe,https://upload.wikimedia.org/wikipedia/commons/c/c3/Joan_of_Arc_miniature_graded.jpg
+1421,Henry VI,0.798543211389885,King of England,europe,https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/King_Henry_VI_from_NPG_%282%29.jpg/220px-King_Henry_VI_from_NPG_%282%29.jpg
+1431,Vlad the Impaler,0.8837524640709095,ruler of Wallachia,europe,https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Vlad_Tepes_002.jpg/220px-Vlad_Tepes_002.jpg
+1445,Sandro Botticelli,0.8145137348139885,Italian painter,europe,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Sandro_Botticelli_083.jpg/1200px-Sandro_Botticelli_083.jpg
+1452,Leonardo da Vinci,0.9116355696737033,Italian polymath,europe,https://www.biography.com/.image/t_share/MTIwNjA4NjMzNTM4NDQ2ODYw/leonardo-da-vinci-40396-2-raw.jpg
+1469,Niccolò Machiavelli,0.8696885662656608,Italian political writer,europe,https://www.biography.com/.image/c_fill%2Ccs_srgb%2Cg_face%2Ch_300%2Cq_80%2Cw_300/MTE5NDg0MDU1MDQ5MzA3NjYz/niccolo-machiavelli-9392446-1-402.jpg
+1473,Nicolaus Copernicus,0.8767486841423973,Polish astronomer,europe,https://upload.wikimedia.org/wikipedia/commons/f/f2/Nikolaus_Kopernikus.jpg
+1483,Martin Luther,0.902386178454995,German religious leader,europe,https://s3.amazonaws.com/cli-website/Lucas_Cranach_d.%C3%84._-_Martin_Luther_1528_Veste_Coburg_cropped.jpg
+1491,Henry VIII,0.9194938298981462,King of England,europe,https://englishhistory.net/wp-content/uploads/2015/01/Henry-VIII.jpg
 1501,Anne Boleyn,0.8827911917841905,Queen of England,europe
 1516,Mary I,0.8773511547545334,Queen of England,europe
 1527,Philip II,0.8593931924248821,King of Spain,europe

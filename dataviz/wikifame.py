@@ -25,7 +25,7 @@ def process(img, name):
     return box
     
 title = Image.from_column([
-Image.from_text("100 famous people of the second millennium", arial(60, bold=True), fg=fg, bg=bg).pad((10,0), bg=bg),
+Image.from_text("100 famous people from the previous millennium", arial(60, bold=True), fg=fg, bg=bg).pad((10,0), bg=bg),
 Image.from_text("the most famous person born each decade, according to English Wikipedia", arial(36, bold=True), fg=fg, bg=bg).pad((10,0,10,2), bg=bg)
 ], bg=bg).pad((0,10),bg=bg)
 

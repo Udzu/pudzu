@@ -1,44 +1,44 @@
-year,name,score,description,region
-1003,Edward the Confessor,0.8002055126089173,King of England,europe
-1015,Harald Hardrada,0.7741863187408504,King of Norway,europe
-1028,William the Conqueror,0.8720369547903531,King of England,europe
-1033,Anselm of Canterbury,0.7756117487924854,archbishop and philosopher,europe
-1044,El Cid,0.7883466159492355,Castilian military leader,europe
-1058,Al-Ghazali,0.7835799135626438,Persian theologian,middle east
-1068,Henry I of England,0.8109170277638643,King of England,europe
-1079,Peter Abelard,0.7452135199208348,French theologian,europe
-1084,David I of Scotland,0.7364412125399137,King of Scotland,europe
+year,name,score,description,region,image_url
+1003,Edward the Confessor,0.8002055126089173,King of England,europe,http://www.socialstudiesforkids.com/graphics/edwardtheconfessor-color.jpg
+1015,Harald Hardrada,0.7741863187408504,King of Norway,europe,https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Harald_Hardrada_window_in_Kirkwall_Cathedral_detail.jpg/240px-Harald_Hardrada_window_in_Kirkwall_Cathedral_detail.jpg
+1028,William the Conqueror,0.8720369547903531,King of England,europe,https://i.guim.co.uk/img/media/c108b53db7cfa2b268a4a3b5fa6c8cf6910f4536/0_782_3339_2003/master/3339.jpg?w=300&q=55&auto=format&usm=12&fit=max&s=168c98b0c959f488ed75fd4e484feca1
+1033,Anselm of Canterbury,0.7756117487924854,archbishop & philosopher,europe,https://upload.wikimedia.org/wikipedia/commons/5/59/Anselm_of_Canterbury.jpg
+1044,El Cid,0.7883466159492355,Castilian military leader,europe,http://www.badassoftheweek.com/elcid.jpg
+1058,Al-Ghazali,0.7835799135626438,Persian theologian,middle east,http://www.durango.net.mx/biografias/uploadImagenes/200px-Algazel.jpg
+1068,Henry I,0.8109170277638643,King of England,europe,https://www.wikitree.com/photo.php/1/11/King_of_England-68.jpg
+1079,Peter Abelard,0.7452135199208348,French theologian,europe,http://www.greatthoughtstreasury.com/sites/default/files/wpid-abelard[1].jpeg
+1084,David I,0.7364412125399137,King of Scotland,europe,http://www.royaldescent.net/wp-content/uploads/2013/03/DavidIIScotland2.jpg
 1098,Hildegard of Bingen,0.7938493406549428,German mystic,europe
 1102,Empress Matilda,0.7821595925245455,English throne claimant,europe
 1114,Bhāskara II,0.7296017828431808,Indian mathematician,south asia
 1124,Eleanor of Aquitaine,0.8154529895971648,Queen of France and England,europe
-1137,Saladin,0.860118524033684,military leader and Sultan,middle east
-1141,Nizami Ganjavi,0.7291914671290195
-1157,Richard I of England,0.8707592442763348
-1162,Genghis Khan,0.9163863099693412
-1170,Fibonacci,0.7927173597150562
-1182,Francis of Assisi,0.854271879776407
-1195,Anthony of Padua,0.7990381950124069
-1207,Rumi,0.8505940830657364
-1215,Kublai Khan,0.8495879069007621
-1225,Thomas Aquinas,0.8617518184504322
-1239,Edward I of England,0.843266658833407
-1241,Eleanor of Castile,0.7007426599133505
-1254,Marco Polo,0.8706328971383273
-1265,Dante Alighieri,0.8410907715977094
-1270,William Wallace,0.8537243449246831
-1284,Edward II of England,0.831047329790259
-1295,Isabella of France,0.758531126979296
-1304,Ibn Battuta,0.8246241728248896
-1312,Edward III of England,0.8188133069063348
-1325,John Wycliffe,0.7759533675263584
-1336,Timur,0.8304854189315554
-1343,Geoffrey Chaucer,0.8109852959945832
-1359,Owain Glyndŵr,0.7460582864538214
-1367,Richard II of England,0.8023452652746957
-1371,Zheng He,0.8279342087157643
-1386,Henry V of England,0.8066275175715993
-1398,Johannes Gutenberg,0.8153533890107547
+1137,Saladin,0.860118524033684,military leader & Sultan,middle east
+1141,Nizami Ganjavi,0.7291914671290195,Persian poet,middle east
+1157,Richard I,0.8707592442763348,King of England,europe
+1162,Genghis Khan,0.9163863099693412,Mongol ruler,east asia
+1170,Fibonacci,0.7927173597150562,Italian mathematician,europe
+1182,Francis of Assisi,0.854271879776407,Italian saint,europe
+1195,Anthony of Padua,0.7990381950124069,Portuguese friar,europe
+1207,Rumi,0.8505940830657364,Persian poet & mystic,middle east
+1215,Kublai Khan,0.8495879069007621,Mongol ruler,east asia
+1225,Thomas Aquinas,0.8617518184504322,Italian theologian,europe
+1239,Edward I,0.843266658833407,King of England,europe
+1241,Eleanor of Castile,0.7007426599133505,Queen of England,europe
+1254,Marco Polo,0.8706328971383273,Italian explorer,europe
+1265,Dante Alighieri,0.8410907715977094,Italian poet,europe
+1270,William Wallace,0.8537243449246831,Scottish hero,europe
+1284,Edward II,0.831047329790259,King of England,europe
+1295,Isabella of France,0.758531126979296,Queen of England,europe
+1304,Ibn Battuta,0.8246241728248896,Moroccan explorer,middle east
+1312,Edward III,0.8188133069063348,King of England,europe
+1325,John Wycliffe,0.7759533675263584,English theologian,europe
+1336,Timur,0.8304854189315554,Turkic conqueror,middle east
+1343,Geoffrey Chaucer,0.8109852959945832,English writer,europe
+1359,Owain Glyndŵr,0.7460582864538214,Welsh hero,europe
+1367,Richard II,0.8023452652746957,King of England,europe
+1371,Zheng He,0.8279342087157643,Chinese explorer,east asia
+1386,Henry V,0.8066275175715993,King of England,europe
+1398,Johannes Gutenberg,0.8153533890107547,German printer
 1405,Skanderbeg,0.8193203936867104
 1412,Joan of Arc,0.8823690292812761
 1421,Henry VI of England,0.798543211389885
@@ -89,3 +89,8 @@ year,name,score,description,region
 1878,Joseph Stalin,0.9520428603758191
 1889,Adolf Hitler,0.9829901995579612
 1890,Dwight D. Eisenhower,0.9265587724149598
+1908,Lyndon B. Johnson,0.9235446944648479
+1911,Ronald Reagan,0.967670562513872
+1926,Elizabeth II,0.947442618978537
+1935,Elvis Presley,0.9533963367598803
+1946,Donald Trump,1.0227113677647837

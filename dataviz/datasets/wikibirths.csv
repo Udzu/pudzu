@@ -22,13 +22,13 @@ year,name,score,description,region,image_url
 1207,Rumi,0.8505940830657364,Persian poet & mystic,middle east,https://images.gr-assets.com/authors/1217355543p5/875661.jpg
 1215,Kublai Khan,0.8495879069007621,Mongol ruler,east asia,http://cdn-ak.f.st-hatena.com/images/fotolife/t/tokdaru/20160515/20160515171151.jpg
 1225,Thomas Aquinas,0.8617518184504322,Italian theologian,europe,https://media1.britannica.com/eb-media/00/131500-004-4E3E4827.jpg
-1239,Edward I,0.843266658833407,King of England,europe
-1241,Eleanor of Castile,0.7007426599133505,Queen of England,europe
-1254,Marco Polo,0.8706328971383273,Italian explorer,europe
-1265,Dante Alighieri,0.8410907715977094,Italian poet,europe
-1270,William Wallace,0.8537243449246831,Scottish hero,europe
-1284,Edward II,0.831047329790259,King of England,europe
-1295,Isabella of France,0.758531126979296,Queen of England,europe
+1239,Edward I,0.843266658833407,King of England,europe,https://s3.amazonaws.com/photos.geni.com/p13/3b/3b/4e/c4/53444842981a3909/edward_i_original.jpg
+1241,Eleanor of Castile,0.7007426599133505,Queen of England,europe,https://s-media-cache-ak0.pinimg.com/originals/56/f0/91/56f091d7e58f11c172a9b6fad4bdc488.jpg
+1254,Marco Polo,0.8706328971383273,Italian explorer,europe,http://kg-portal.ru/img/33499/33499_big.jpg
+1265,Dante Alighieri,0.8410907715977094,Italian poet,europe,https://upload.wikimedia.org/wikipedia/commons/1/15/British_School_-_Dante_Alighieri.jpg
+1270,William Wallace,0.8537243449246831,Scottish hero,europe,https://uagenealogies.as.ua.edu/wp-content/uploads/2015/04/portrait_sir_william.jpg
+1284,Edward II,0.831047329790259,King of England,europe,http://www.historytoday.com/sites/default/files/edwardii.jpg
+1295,Isabella of France,0.758531126979296,Queen of England,europe,https://s-media-cache-ak0.pinimg.com/736x/90/3b/76/903b76ad409319895e792fe069adec77--queen-of-england-frances-oconnor.jpg
 1304,Ibn Battuta,0.8246241728248896,Moroccan explorer,middle east
 1312,Edward III,0.8188133069063348,King of England,europe
 1325,John Wycliffe,0.7759533675263584,English theologian,europe

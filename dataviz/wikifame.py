@@ -7,6 +7,8 @@ from wikipage import *
 
 # data visualisation 
 
+fg, bg = "white", "black"
+
 DEFAULT_IMG = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 df = pd.read_csv("datasets/wikibirths.csv")
 table = pd.DataFrame([[df.iloc[century*10+decade]['name'] if century*10+decade < len(df) else None for decade in range(0,10)] for century in range(0,10)],
@@ -14,21 +16,20 @@ table = pd.DataFrame([[df.iloc[century*10+decade]['name'] if century*10+decade <
 df = df.set_index('name')
 
 def process(img, name):
-    bg = "black"
     box = Image.new("RGB", (180,200), bg)
     box = box.place(Image.from_column([
       img.crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=160),
-      Image.from_text(name, arial(12, bold=True), padding=(3, 5, 3, 2), fg="white", bg=bg),
-      Image.from_text(get_non(df['description'], name, ""), arial(12), padding=(3,0,3,0), fg="white", bg=bg)
+      Image.from_text(name, arial(12, bold=True), padding=(3, 5, 3, 2), fg=fg, bg=bg),
+      Image.from_text(get_non(df['description'], name, ""), arial(12), padding=(3,0,3,0), fg=fg, bg=bg)
       ], bg=bg))
     return box
     
 title = Image.from_column([
-Image.from_text("100 famous people of the second millennium", arial(60, bold=True), fg="white", bg="black").pad((10,0)),
-Image.from_text("the most famous person born each decade, according to English Wikipedia", arial(36, bold=True), fg="white", bg="black").pad((10,0,10,2))
-], bg="black").pad((0,10))
+Image.from_text("100 famous people of the second millennium", arial(60, bold=True), fg=fg, bg=bg).pad((10,0), bg=bg),
+Image.from_text("the most famous person born each decade, according to English Wikipedia", arial(36, bold=True), fg=fg, bg=bg).pad((10,0,10,2), bg=bg)
+], bg=bg).pad((0,10),bg=bg)
 
-grid = grid_chart(table, lambda n: n and get_non(df['image_url'], n, DEFAULT_IMG), image_process=process, row_label=arial(20, bold=True), col_label=arial(20, bold=True), bg="black", title=title)
+grid = grid_chart(table, lambda n: n and get_non(df['image_url'], n, DEFAULT_IMG), image_process=process, row_label=arial(20, bold=True), col_label=arial(20, bold=True), bg=bg, title=title)
 grid.show()
 
 # data collection (would need more cleanup/corroboration to be used in larger quantities)

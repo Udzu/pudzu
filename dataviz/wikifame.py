@@ -16,15 +16,6 @@ COLFORMAT = "'{}0s"
 ROWRANGE = range(10,20)
 COLRANGE = range(0,10)
 
-# DATASET = "datasets/wikibirths_f.csv"
-# OUTPUT = "output/wikibirths_f.png"
-# TITLE = "100 famous women from the previous millennium"
-# SUBTITLE = "the most famous woman born each decade, according to English Wikipedia"
-# ROWFORMAT = "{}00s"
-# COLFORMAT = "'{}0s"
-# ROWRANGE = range(10,20)
-# COLRANGE = range(0,10)
-
 # DATASET = "datasets/wikibirths_20c.csv"
 # OUTPUT = "output/wikibirths_20c.png"
 # TITLE = "100 famous people from the previous century"
@@ -32,6 +23,15 @@ COLRANGE = range(0,10)
 # ROWFORMAT = "19{}0s"
 # COLFORMAT = "'{}"
 # ROWRANGE = range(0,10)
+# COLRANGE = range(0,10)
+
+# DATASET = "datasets/wikibirths_f.csv"
+# OUTPUT = "output/wikibirths_f.png"
+# TITLE = "100 famous women from the previous millennium"
+# SUBTITLE = "the most famous woman born each decade, according to English Wikipedia"
+# ROWFORMAT = "{}00s"
+# COLFORMAT = "'{}0s"
+# ROWRANGE = range(10,20)
 # COLRANGE = range(0,10)
 
 fg, bg = "white", "black"
@@ -68,6 +68,7 @@ def extract_births(year):
     DATE_PATTERN = re.compile(r"^[_ 0-9]*(January|February|March|April|May|June|July|August|September|October|November|December)[ 0-9]*$")
     wp = WikiPage.from_year(year)
     h2_start = find_tags(wp.bs4, all_(string='Births'), parents_("h2"))
+    if len(h2_start) == 0: return pd.DataFrame(columns=("link", "year"))
     h2_end = find_tags(h2_start, next_siblings_('h2', limit=1))
     links = find_tags(wp.bs4, select_("#mw-content-text ul li"),
                               all_("a", href=re.compile(r"^/wiki"), title=re_exclude(DATE_PATTERN), limit=1),

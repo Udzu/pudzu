@@ -7,13 +7,43 @@ from wikipage import *
 
 # data visualisation 
 
-fg, bg = "white", "black"
+DATASET = "datasets/wikibirths.csv"
+OUTPUT = "output/wikibirths.png"
+TITLE = "100 famous people from the previous millennium"
+SUBTITLE = "the most famous person born each decade, according to English Wikipedia"
+ROWFORMAT = "{}00s"
+COLFORMAT = "'{}0s"
+ROWRANGE = range(10,20)
+COLRANGE = range(0,10)
 
+# DATASET = "datasets/wikibirths_f.csv"
+# OUTPUT = "output/wikibirths_f.png"
+# TITLE = "100 famous women from the previous millennium"
+# SUBTITLE = "the most famous woman born each decade, according to English Wikipedia"
+# ROWFORMAT = "{}00s"
+# COLFORMAT = "'{}0s"
+# ROWRANGE = range(10,20)
+# COLRANGE = range(0,10)
+
+# DATASET = "datasets/wikibirths_20c.csv"
+# OUTPUT = "output/wikibirths_20c.png"
+# TITLE = "100 famous people from the previous century"
+# SUBTITLE = "the most famous person born each year, according to English Wikipedia"
+# ROWFORMAT = "19{}0s"
+# COLFORMAT = "'{}"
+# ROWRANGE = range(0,10)
+# COLRANGE = range(0,10)
+
+fg, bg = "white", "black"
 DEFAULT_IMG = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
-df = pd.read_csv("datasets/wikibirths.csv")
+
+df = pd.read_csv(DATASET)
 table = pd.DataFrame([[df.iloc[century*10+decade]['name'] if century*10+decade < len(df) else None for decade in range(0,10)] for century in range(0,10)],
-                     index=["{}00s".format(c) for c in range(10,20)], columns=["'{}0s".format(d) for d in range(0,10)])
+                     index=[ROWFORMAT.format(c) for c in ROWRANGE], columns=[COLFORMAT.format(d) for d in COLRANGE])
 df = df.set_index('name')
+
+if "description" not in df: df = df.assign_rows(description="some person")
+if "image_url" not in df: df = df.assign_rows(image_url=None)
 
 def process(img, name):
     box = Image.new("RGB", (180,200), bg)
@@ -25,12 +55,12 @@ def process(img, name):
     return box
     
 title = Image.from_column([
-Image.from_text("100 famous people from the previous millennium", arial(60, bold=True), fg=fg, bg=bg).pad((10,0), bg=bg),
-Image.from_text("the most famous person born each decade, according to English Wikipedia", arial(36, bold=True), fg=fg, bg=bg).pad((10,0,10,2), bg=bg)
+Image.from_text(TITLE, arial(60, bold=True), fg=fg, bg=bg).pad((10,0), bg=bg),
+Image.from_text(SUBTITLE, arial(36, bold=True), fg=fg, bg=bg).pad((10,0,10,2), bg=bg)
 ], bg=bg).pad((0,10),bg=bg)
 
 grid = grid_chart(table, lambda n: n and get_non(df['image_url'], n, DEFAULT_IMG), image_process=process, row_label=arial(20, bold=True), col_label=arial(20, bold=True), bg=bg, title=title)
-grid.save("output/wikibirths.png")
+grid.save(OUTPUT)
 
 # data collection (would need more cleanup/corroboration to be used in larger quantities)
 

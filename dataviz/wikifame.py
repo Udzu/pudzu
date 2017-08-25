@@ -30,7 +30,7 @@ Image.from_text("the most famous person born each decade, according to English W
 ], bg=bg).pad((0,10),bg=bg)
 
 grid = grid_chart(table, lambda n: n and get_non(df['image_url'], n, DEFAULT_IMG), image_process=process, row_label=arial(20, bold=True), col_label=arial(20, bold=True), bg=bg, title=title)
-grid.show()
+grid.save("output/wikibirths.png")
 
 # data collection (would need more cleanup/corroboration to be used in larger quantities)
 

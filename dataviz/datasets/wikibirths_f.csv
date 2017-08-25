@@ -66,7 +66,7 @@ year,name,score
 1641,"Françoise-Athénaïs, marquise de Montespan",0.7220178535522747
 1656,Kateri Tekakwitha,0.7387251258567488
 1665,"Anne, Queen of Great Britain",0.835502513246522
-1674,Abigail Williams (Salem witch trials),0.7507965135673096
+1674,Abigail Williams,0.7507965135673096
 1683,Caroline of Ansbach,0.7165901401451572
 1693,Anna of Russia,0.7103248416310455
 1702,Anne Bonny,0.7764337339005184
@@ -94,7 +94,7 @@ year,name,score
 1926,Elizabeth II,0.947442618978537
 1939,Tina Turner,0.8795260920845123
 1947,Hillary Clinton,0.980952950756174
-1958,Madonna (entertainer),0.9423702182998195
+1958,Madonna,0.9423702182998195
 1961,"Diana, Princess of Wales",0.9432064561953717
 1970,Mariah Carey,0.9417651776898939
 1981,Beyoncé,0.9640746462066921

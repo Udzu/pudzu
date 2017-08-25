@@ -49,49 +49,53 @@ year,name,score,description,region,image_url
 1473,Nicolaus Copernicus,0.8767486841423973,Polish astronomer,europe,https://upload.wikimedia.org/wikipedia/commons/f/f2/Nikolaus_Kopernikus.jpg
 1483,Martin Luther,0.902386178454995,German religious leader,europe,https://s3.amazonaws.com/cli-website/Lucas_Cranach_d.%C3%84._-_Martin_Luther_1528_Veste_Coburg_cropped.jpg
 1491,Henry VIII,0.9194938298981462,King of England,europe,https://englishhistory.net/wp-content/uploads/2015/01/Henry-VIII.jpg
-1501,Anne Boleyn,0.8827911917841905,Queen of England,europe
-1516,Mary I,0.8773511547545334,Queen of England,europe
-1527,Philip II,0.8593931924248821,King of Spain,europe
-1533,Elizabeth I,0.9159267719939401,Queen of England,europe
-1542,Mary,0.9002049875315218,Queen of Scots,europe
-1554,Walter Raleigh,0.81853192304552,English explorer,europe
-1564,William Shakespeare,0.9437549248959148,English playwright,europe
-1570,Guy Fawkes,0.8467935271326018,English conspirator,europe
-1588,Thomas Hobbes,0.8290523722101975,English philosopher,europe
-1599,Oliver Cromwell,0.8824871847302747,English statesman,europe
-1600,Charles I,0.8891381912469444,King of Great Britain,europe
-1618,Aurangzeb,0.8554508272632806,Mughal Emperor,south asia
-1623,Blaise Pascal,0.8360683201628718,French philosopher,europe
-1638,Louis XIV,0.9037852858729202,King of France,europe
-1642,Isaac Newton,0.9114815465296718,English scientist,europe
-1650,William III,0.8494458463743502,King of Great Britain,europe
-1665,Anne,0.835502513246522,Queen of Great Britain,europe
-1672,Peter the Great,0.8257276824594787,Russian Tsar
-1685,Johann Sebastian Bach,0.881024579975079,German composer
-1694,Voltaire,0.8852337747049739,French philosopher & author
-1706,Benjamin Franklin,0.9109658647735503,American scientist & statesman
-1712,Jean-Jacques Rousseau,0.8761440914445683
-1724,Immanuel Kant,0.8809027992455508
-1732,George Washington,0.9437612352731154
-1743,Thomas Jefferson,0.9417507597383276
-1755,Alexander Hamilton,0.9381669499216309
-1769,Napoleon,0.9304217168181171
-1770,Ludwig van Beethoven,0.8877157025819635
-1782,Martin Van Buren,0.8645963587888241
-1791,James Buchanan,0.8617752139677862
-1809,Abraham Lincoln,0.9558113849268867
-1818,Karl Marx,0.9197705120383236
-1822,Ulysses S. Grant,0.9280881003006753
-1835,Mark Twain,0.880672571981959
-1844,Friedrich Nietzsche,0.9072881813959148
-1858,Theodore Roosevelt,0.93766771903761
-1869,Mahatma Gandhi,0.9522419289318652
-1878,Joseph Stalin,0.9520428603758191
-1889,Adolf Hitler,0.9829901995579612
-1890,Dwight D. Eisenhower,0.9265587724149598
-1908,Lyndon B. Johnson,0.9235446944648479
-1911,Ronald Reagan,0.967670562513872
-1926,Elizabeth II,0.947442618978537
-1935,Elvis Presley,0.9533963367598803
-1946,Donald Trump,1.0227113677647837
-1958,Michael Jackson,0.9818569866393215
+1501,Anne Boleyn,0.8827911917841905,Queen of England,europe,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Anne_boleyn.jpg/170px-Anne_boleyn.jpg
+1516,Mary I,0.8773511547545334,Queen of England,europe,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mary_I_by_Master_John.jpg/220px-Mary_I_by_Master_John.jpg
+1527,Philip II,0.8593931924248821,King of Spain,europe,https://weaponsandwarfare.files.wordpress.com/2017/01/philip_ii_of_spain_by_antonio_moro.jpg
+1533,Elizabeth I,0.9159267719939401,Queen of England,europe,https://media1.britannica.com/eb-media/85/285-004-1108CDAD.jpg
+1542,Mary,0.9002049875315218,Queen of Scots,europe,http://www.edinburghmusicaltour.co.uk/images/edinburgh/2017_05_14-14_36_34.jpg
+1554,Walter Raleigh,0.81853192304552,English explorer,europe,https://www.repro-tableaux.com/kunst/french_school/thm_sir-walter-raleigh.jpg
+1564,William Shakespeare,0.9437549248959148,English playwright,europe,https://upload.wikimedia.org/wikipedia/commons/a/a2/Shakespeare.jpg
+1570,Guy Fawkes,0.8467935271326018,English conspirator,europe,http://www.reformation.org/en-guy-fawkes.jpg
+1588,Thomas Hobbes,0.8290523722101975,English philosopher,europe,http://yalebooksnetwork.org/yupblog/wp-content/uploads/sites/4/2013/04/hobbes.jpg
+1599,Oliver Cromwell,0.8824871847302747,English statesman,europe,https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Oliver_Cromwell_by_Samuel_Cooper.jpg/1200px-Oliver_Cromwell_by_Samuel_Cooper.jpg
+1600,Charles I,0.8891381912469444,King of Great Britain,europe,http://i.telegraph.co.uk/multimedia/archive/03105/charles_portrait_3105782b.jpg
+1618,Aurangzeb,0.8554508272632806,Mughal Emperor,south asia,http://cdn.historydiscussion.net/wp-content/uploads/2015/07/LI_118_88-a-L.jpg
+1623,Blaise Pascal,0.8360683201628718,French philosopher,europe,https://bgstrialofgod.files.wordpress.com/2012/04/blase-pascal1.jpg
+1638,Louis XIV,0.9037852858729202,King of France,europe,https://www.biography.com/.image/t_share/MTE1ODA0OTcxNzA1MDA5Njc3/louis-xiv-9386885-2-sized.jpg
+1642,Isaac Newton,0.9114815465296718,English scientist,europe,http://www.fredsakademiet.dk/library/science/_gifs/newton.jpg
+1650,William III,0.8494458463743502,King of Great Britain,europe,http://static.bbc.co.uk/history/img/ic/640/images/resources/people/william_iii_of_orange.jpg
+1665,Anne,0.835502513246522,Queen of Great Britain,europe,http://www.timothylangston.com/lg/641835/studio-of-sir-godfrey-kneller-portrait-of-queen-anne.jpg
+1672,Peter the Great,0.8257276824594787,Russian Tsar,europe,https://upload.wikimedia.org/wikipedia/commons/7/72/Peter_der-Grosse_1838.jpg
+1685,Johann Sebastian Bach,0.881024579975079,German composer,europe,https://upload.wikimedia.org/wikipedia/commons/6/6a/Johann_Sebastian_Bach.jpg
+1694,Voltaire,0.8852337747049739,French philosopher & author,europe,https://www.kent.ac.uk/ewto/images/anthology/Voltaire_portrait.jpg
+1706,Benjamin Franklin,0.9109658647735503,American scientist & statesman,americas,https://www.biography.com/.image/t_share/MTE1ODA0OTcxNjMyNzg5MDA1/benjamin-franklin-9301234-2-402.jpg
+1712,Jean-Jacques Rousseau,0.8761440914445683,Swiss-French philosopher,europe,http://www.iep.utm.edu/wp-content/media/rousseau.jpg
+1724,Immanuel Kant,0.8809027992455508,German philosopher,europe,http://kdfrases.com/imagens/immanuel-kant.jpg
+1732,George Washington,0.9437612352731154,US president & general,americas,http://s3.amazonaws.com/mtv-main-assets/files/callouts/washington-portrait-f1.jpg
+1743,Thomas Jefferson,0.9417507597383276,US president,americas,https://images.newrepublic.com/546c8688bc6fa8cb0c57e9a6624c17fc9a5180e5.jpeg
+1755,Alexander Hamilton,0.9381669499216309,US statesman,americas,https://upload.wikimedia.org/wikipedia/commons/0/05/Alexander_Hamilton_portrait_by_John_Trumbull_1806.jpg
+1769,Napoleon,0.9304217168181171,Emperor of France,europe,https://static.independent.co.uk/s3fs-public/thumbnails/image/2013/09/29/23/24-Napoleonv2.jpg
+1770,Ludwig van Beethoven,0.8877157025819635,German composer,europe,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Beethoven.jpg/1200px-Beethoven.jpg
+1782,Martin Van Buren,0.8645963587888241,US president,americas,http://cdn.history.com/sites/2/2013/11/Martin_Van_Buren-AB.jpeg
+1791,James Buchanan,0.8617752139677862,US president,americas,http://www.historyrocket.com/images/James-Buchanan-And-Political-Party.jpg
+1809,Abraham Lincoln,0.9558113849268867,US president,americas,https://i.pinimg.com/736x/71/5f/a5/715fa5b3b1b2614540c48cd68dd5342c--colorized-historical-photos-abraham-lincoln.jpg
+1818,Karl Marx,0.9197705120383236,German philosopher,europe,http://socialistappeal.org/images/stories/KarlMarxPortrait.jpg
+1822,Ulysses S. Grant,0.9280881003006753,US president & general,americas,https://intriguinghistory.files.wordpress.com/2014/09/usgrant-1.jpg
+1835,Mark Twain,0.880672571981959,US author,americas,http://www.lib.berkeley.edu/give/bene-legere/bene62/MarkTwain.jpg
+1844,Friedrich Nietzsche,0.9072881813959148,German philosopher,europe,https://upload.wikimedia.org/wikipedia/commons/1/1d/Portrait_of_Friedrich_Nietzsche.jpg
+1858,Theodore Roosevelt,0.93766771903761,US president,americas,http://vignette4.wikia.nocookie.net/althistory/images/7/77/1-theodore-roosevelt--president-of-the-united-states-international-images.jpg/revision/latest?cb=20140324061151
+1869,Mahatma Gandhi,0.9522419289318652,Indian leader,south asia,http://www.elparana.com/wp-content/uploads/2016/10/gandhi.jpg
+1878,Joseph Stalin,0.9520428603758191,Soviet leader,europe,https://static.giantbomb.com/uploads/scale_small/3/32849/2163825-jstalin.jpg
+1889,Adolf Hitler,0.9829901995579612,German leader,europe,http://cdn.images.express.co.uk/img/dynamic/20/590x/secondary/Adolf-Hitler-789141.jpg
+1890,Dwight D. Eisenhower,0.9265587724149598,US president & general,americas,https://upload.wikimedia.org/wikipedia/commons/6/63/Dwight_D._Eisenhower%2C_official_photo_portrait%2C_May_29%2C_1959.jpg
+1908,Lyndon B. Johnson,0.9235446944648479,US president,americas,https://upload.wikimedia.org/wikipedia/commons/c/c3/37_Lyndon_Johnson_3x4.jpg
+1911,Ronald Reagan,0.967670562513872,US president,americas,https://images.forbes.com/media/2010/07/21/0721_fc-ronald-reagan_400x400.jpg
+1926,Elizabeth II,0.947442618978537,Queen of the United Kingdom,europe,http://d3i6fh83elv35t.cloudfront.net/newshour/wp-content/uploads/2015/09/GettyImages-487366160.jpg
+1935,Elvis Presley,0.9533963367598803,US singer & actor,americas,https://www.graceland.com/!userfiles/Biography/Bio3_VerticalResponsive.jpg
+1946,Donald Trump,1.0227113677647837,US embarrassment,americas,https://foreignpolicymag.files.wordpress.com/2017/06/gettyimages-488226322.jpg
+1958,Michael Jackson,0.9818569866393215,US singer,americas,https://ichef.bbci.co.uk/images/ic/960x540/p01bqlx8.jpg
+1961,Barack Obama,1.0036136236066928,US president,americas,http://www.eurweb.com/wp-content/uploads/2017/01/President-Obama_0.jpg
+1977,John Cena,0.9670832751376038,US wrestler,americas,http://www.wwe.com/f/styles/wwe_large/public/all/2016/07/John_Cena_bio--b51ea9d0b6f475af953923ac7791391b.jpg
+1985,Cristiano Ronaldo,0.9747400864446555,Portuguese soccer player,europe,https://i.pinimg.com/originals/5f/35/88/5f3588777d05bf89a05685175e234aaa.jpg
+1992,Miley Cyrus,0.9280195597785413,US singer,americas,"https://images-na.ssl-images-amazon.com/images/M/MV5BMTc3MzE1MzcxNl5BMl5BanBnXkFtZTcwNTM1MTA2OA@@._V1_UY1200_CR108,0,630,1200_AL_.jpg"

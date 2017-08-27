@@ -1,41 +1,41 @@
 year,name,score,description,region,image_url
-1900,Heinrich Himmler,0.8737380082556351
-1901,Walt Disney,0.9037193720425004
-1902,Charles Lindbergh,0.8688263380319584
-1903,George Orwell,0.8935101084136828
-1904,Cary Grant,0.8814411253284421
-1905,Ayn Rand,0.8941980173374988
-1906,Adolf Eichmann,0.8503952453044041
-1907,Frida Kahlo,0.8991043414072128
+1900,Heinrich Himmler,0.8737380082556351,German Nazi,europe,http://www.ww2incolor.com/d/9097-11/pt_2323_heinrich_himmler_75dpi.jpg
+1901,Walt Disney,0.9037193720425004,US film producer,americas,http://www.trbimg.com/img-5481f641/turbine/os-walt-disney-birthday-2014
+1902,Charles Lindbergh,0.8688263380319584,US aviator,americas,https://www.henrymakow.com/upload_images/charles-lindbergh-color.jpg
+1903,George Orwell,0.8935101084136828,British novelist,europe,https://images.gr-assets.com/authors/1450573063p5/3706.jpg
+1904,Cary Grant,0.8814411253284421,British-American actor,americas,https://thenypost.files.wordpress.com/2016/08/carygrant.jpg
+1905,Ayn Rand,0.8941980173374988,US author,americas,http://4.bp.blogspot.com/-_KZTEEye_o8/Td7FFN-PQHI/AAAAAAAAAQk/WAFrZf9WuAM/s320/PAPAL+CRITICS+%2528AYN+RAND%2529.jpg
+1906,Adolf Eichmann,0.8503952453044041,German Nazi,europe,https://upload.wikimedia.org/wikipedia/commons/e/eb/Adolf_Eichmann_at_Trial1961.jpg
+1907,Frida Kahlo,0.8991043414072128,Mexican painter,americas,https://d3h6k4kfl8m9p0.cloudfront.net/uploads/2013/01/Frida-Kahlo.jpg
 1908,Lyndon B. Johnson,0.9235446944648479,US president,americas,https://upload.wikimedia.org/wikipedia/commons/c/c3/37_Lyndon_Johnson_3x4.jpg
-1909,Barry Goldwater,0.8423676834232232
-1910,Mother Teresa,0.9063874118072145
+1909,Barry Goldwater,0.8423676834232232,US politician,americas,http://media.washtimes.com.s3.amazonaws.com/media/image/2014/11/17/11172014_ap0709100211728201.jpg
+1910,Mother Teresa,0.9063874118072145,Albanian-Indian missionary,south asia,http://68.media.tumblr.com/tumblr_lrk0e1Jkff1qcqvito1_500.jpg
 1911,Ronald Reagan,0.967670562513872,US president,americas,https://images.forbes.com/media/2010/07/21/0721_fc-ronald-reagan_400x400.jpg
-1912,Alan Turing,0.9029487168459706
-1913,Richard Nixon,0.9335064994795428
-1914,Joe DiMaggio,0.8451066702518397
-1915,Frank Sinatra,0.930441685788046
-1916,Roald Dahl,0.8779734239071133
-1917,John F. Kennedy,0.9589840674519489
-1918,Nelson Mandela,0.9276708800703928
-1919,Jackie Robinson,0.8878716192030458
-1920,Pope John Paul II,0.9239002273452644
-1921,Prince Philip,0.8879628992986321
-1922,Stan Lee,0.9002894354405225
-1923,Henry Kissinger,0.8791992026618239
-1924,Jimmy Carter,0.9297367296373059
-1925,Margaret Thatcher,0.9264151454528193
+1912,Alan Turing,0.9029487168459706,British computer scientist,europe,https://i.pinimg.com/236x/68/41/40/684140b42a313f01da0de85af999175d--alan-turing-inspiring-people.jpg
+1913,Richard Nixon,0.9335064994795428,US president,americas,http://i35.tinypic.com/13ytqv.jpg
+1914,Joe DiMaggio,0.8451066702518397,US baseball player,americas,http://mlbfancave.mlb.com/assets/images/custom/Screen_Shot_2012_11_24_at_11.33.49_AM_tyxhu5nx.png
+1915,Frank Sinatra,0.930441685788046,US singer,americas,http://assets.nydailynews.com/polopoly_fs/1.2043031.1449871161!/img/httpImage/image.jpg_gen/derivatives/gallery_1200/frank-sinatra.jpg
+1916,Roald Dahl,0.8779734239071133,British author,europe,https://www.biography.com/.image/c_fill%2Ccs_srgb%2Cg_face%2Ch_300%2Cq_80%2Cw_300/MTQxNDAyNjQ0MzAzMzI1MDc0/roald_dahl_getty_images_tony_evansgetty_images_108874289_croppedjpg.jpg
+1917,John F. Kennedy,0.9589840674519489,US president,americas,https://www.biography.com/.image/c_fill%2Ccs_srgb%2Cg_face%2Ch_170%2Cq_80%2Cw_300/MTQ1NDY3OTIxMzExNzM3NjE3/john-f-kennedy---debating-richard-nixon.jpg
+1918,Nelson Mandela,0.9276708800703928,South African leader,africa,http://a2.cdn.whatstrending.com/posts/promo_images/000/012/713/original/nelson-mandela-400.jpg
+1919,Jackie Robinson,0.8878716192030458,US basebal player,americas,http://apps.startribune.com/blogs/user_images/soozeblb_1397592319_jackie%20robinson.jpg
+1920,John Paul II,0.9239002273452644,pope,europe,http://d3i6fh83elv35t.cloudfront.net/newshour/wp-content/uploads/2014/04/John-Paul-II-Final.jpg
+1921,Prince Philip,0.8879628992986321,British royal,europe,https://www.thesun.co.uk/wp-content/uploads/2017/05/nintchdbpict000321444934.jpg
+1922,Stan Lee,0.9002894354405225,US comic book writer,americas,http://www.syfy.com/sites/syfy/files/wire/legacy/stan-lee_0.jpg
+1923,Henry Kissinger,0.8791992026618239,US statesman,americas,http://cdn.history.com/sites/2/2013/12/henry-kissinger-speaking-to-senate.jpg
+1924,Jimmy Carter,0.9297367296373059,US president,americas,http://cms.kienthuc.net.vn/uploaded/bichhanh/2016_09_21/muc-do-tin-nhiem-cua-cac-doi-tong-thong-my-hinh-10.png
+1925,Margaret Thatcher,0.9264151454528193,British prime minister,europe,http://i.telegraph.co.uk/multimedia/archive/03150/thatcher-bbc_3150455b.jpg
 1926,Elizabeth II,0.947442618978537,Queen of the United Kingdom,europe,http://d3i6fh83elv35t.cloudfront.net/newshour/wp-content/uploads/2015/09/GettyImages-487366160.jpg
-1927,Pope Benedict XVI,0.9049769293963776
-1928,Che Guevara,0.9230629241728837
-1929,Audrey Hepburn,0.9024669691754049
-1930,Clint Eastwood,0.9280295270773556
-1931,A. P. J. Abdul Kalam,0.8894410729462928
-1932,Johnny Cash,0.9212575940410287
-1933,Yoko Ono,0.8820731519356725
-1934,Charles Manson,0.9002359863104133
+1927,Benedict XVI,0.9049769293963776,pope,europe,https://upload.wikimedia.org/wikipedia/commons/a/a4/Benedykt_XVI_%282010-10-17%29_4.jpg
+1928,Che Guevara,0.9230629241728837,Argentine revolutionary,americas,https://s-media-cache-ak0.pinimg.com/736x/44/41/26/4441263c7442f3a956ceef5632bb706a--ernesto-che-che-guevara.jpg
+1929,Audrey Hepburn,0.9024669691754049,British actress,europe,"https://images-na.ssl-images-amazon.com/images/M/MV5BMTM4MTY3NTQyMF5BMl5BanBnXkFtZTYwMTk2MzQ2._V1_UX214_CR0,0,214,317_AL_.jpg"
+1930,Clint Eastwood,0.9280295270773556,US actor & filmmaker,americas,http://esq.h-cdn.co/assets/16/31/1470229981-screen-shot-2016-08-03-at-85624-am.png
+1931,A. P. J. Abdul Kalam,0.8894410729462928,Indian president,south asia,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/A._P._J._Abdul_Kalam_in_2008.jpg/230px-A._P._J._Abdul_Kalam_in_2008.jpg
+1932,Johnny Cash,0.9212575940410287,US singer,americas,https://jrbenjamin.files.wordpress.com/2014/06/johnny-cash-2733.jpg
+1933,Yoko Ono,0.8820731519356725,Japanese artist,east asia,https://i.pinimg.com/736x/5f/86/b0/5f86b04af36faca3759235ae9e95ee07--s-hair-great-hair.jpg
+1934,Charles Manson,0.9002359863104133,US cult leader,americas,http://www.trbimg.com/img-586d563b/turbine/la-me-charles-manson-hospitalized-20170103
 1935,Elvis Presley,0.9533963367598803,US singer & actor,americas,https://www.graceland.com/!userfiles/Biography/Bio3_VerticalResponsive.jpg
-1936,John McCain,0.9174713295291118
+1936,John McCain,0.9174713295291118,US politician,americas,https://upload.wikimedia.org/wikipedia/commons/e/e1/John_McCain_official_portrait_2009.jpg
 1937,Saddam Hussein,0.9115219864552473
 1938,Bernard Madoff,0.8563811901714993
 1939,Lee Harvey Oswald,0.8900675483720336

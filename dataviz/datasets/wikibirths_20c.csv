@@ -39,18 +39,18 @@ year,name,score,description,region,image_url
 1937,Saddam Hussein,0.9115219864552473,Iraqi dictator,middle east,http://looklex.com/e.o/slides/saddam_hussein01.jpg
 1938,Bernard Madoff,0.8563811901714993,US fraudster,americas,http://s3-origin-images.politico.com/2014/03/19/090115_bernie_madoff_gty_605.jpg
 1939,Lee Harvey Oswald,0.8900675483720336,US assassin,americas,https://cbsnews3.cbsistatic.com/hub/i/r/2013/11/15/2abe2ab2-3eca-4c35-b716-48701d9dfff7/resize/620x465/985e77f98c103ee89753f95967c2c27f/LHO_slide_vert_crop.jpg
-1940,John Lennon,0.9289602350532558
-1941,Bob Dylan,0.9411365623862032
-1942,Paul McCartney,0.9406573143555789
-1943,John Kerry,0.9161013626444879
-1944,Jimmy Page,0.8779815310889191
-1945,Eric Clapton,0.9006571848835782
+1940,John Lennon,0.9289602350532558,British musician,europe,http://i.dailymail.co.uk/i/pix/2014/10/08/1412786766612_wps_41_John_Lennon_of_The_Beatle.jpg
+1941,Bob Dylan,0.9411365623862032,US musician,americas,http://cps-static.rovicorp.com/3/JPG_500/MI0003/364/MI0003364124.jpg
+1942,Paul McCartney,0.9406573143555789,British musician,europe,https://media.npr.org/assets/img/2013/10/10/paul2013_s10_0119rt_wide-bebc780953fce18fd827235fa86c88dc44c7d405.jpg
+1943,John Kerry,0.9161013626444879,US politician,americas,https://upload.wikimedia.org/wikipedia/commons/2/2c/John_Kerry_official_Secretary_of_State_portrait.jpg
+1944,Jimmy Page,0.8779815310889191,British musician,europe,https://i.pinimg.com/originals/e5/99/52/e599526c5b9aa42d1f58b556586fccfe.jpg
+1945,Eric Clapton,0.9006571848835782,British musician,europe,https://stat.ameba.jp/user_images/20130913/04/rockcont/20/00/j/t02200277_0468059012681736070.jpg
 1946,Donald Trump,1.0227113677647837,US embarrassment,americas,https://foreignpolicymag.files.wordpress.com/2017/06/gettyimages-488226322.jpg
-1947,Hillary Clinton,0.980952950756174
-1948,Al Gore,0.908480888910412
-1949,Meryl Streep,0.9113124117994739
-1950,Narendra Modi,0.9169835625482335
-1951,Robin Williams,0.9098504941866119
+1947,Hillary Clinton,0.980952950756174,US politician,americas,https://www.biography.com/.image/t_share/MTE4MDAzNDEwMDU4NTc3NDIy/hillary-clinton-9251306-2-402.jpg
+1948,Al Gore,0.908480888910412,US politician,americas,https://upload.wikimedia.org/wikipedia/commons/c/c5/Al_Gore%2C_Vice_President_of_the_United_States%2C_official_portrait_1994.jpg
+1949,Meryl Streep,0.9113124117994739,US actor,americas,https://media1.s-nbcnews.com/j/newscms/2017_02/1858841/170109-meryl-streep-mn-0725_9c4f82e1491a2bdc485bb239e2bad476.nbcnews-fp-1200-800.jpg
+1950,Narendra Modi,0.9169835625482335,Indian prime minister,south asia,https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/PM_Modi_2015.jpg/450px-PM_Modi_2015.jpg
+1951,Robin Williams,0.9098504941866119,US actor,americas,http://pulseradio.fm/wp-content/uploads/2015/08/robin-williams-portrait-by-brigitte-lacombe.jpg
 1952,Vladimir Putin,0.9443753144734149
 1953,Hulk Hogan,0.9195714821903457
 1954,Hugo Chávez,0.8985852982153528

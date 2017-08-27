@@ -12,7 +12,7 @@ SPECS = [["datasets/wikibirths.csv", "output/wikibirths.png",
           "{}00s", "'{}0s", range(10,20), range(0,10)],
          ["datasets/wikibirths_20c.csv", "output/wikibirths_20c.png",
           "100 famous people from the 20th century", "the most famous person born each year, according to English Wikipedia",
-          "19{}0s", "—{}", range(0,10), range(0,10)],
+          "19{}0s", "'{}", range(0,10), range(0,10)],
          ["datasets/wikibirths_f.csv", "output/wikibirths_f.png",
           "100 famous women from the second millennium", "the most famous woman born each decade, according to English Wikipedia",
           "{}00s", "'{}0s", range(10,20), range(0,10)]]

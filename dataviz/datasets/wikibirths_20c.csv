@@ -29,16 +29,16 @@ year,name,score,description,region,image_url
 1927,Benedict XVI,0.9049769293963776,pope,europe,https://upload.wikimedia.org/wikipedia/commons/a/a4/Benedykt_XVI_%282010-10-17%29_4.jpg
 1928,Che Guevara,0.9230629241728837,Argentine revolutionary,americas,https://s-media-cache-ak0.pinimg.com/736x/44/41/26/4441263c7442f3a956ceef5632bb706a--ernesto-che-che-guevara.jpg
 1929,Audrey Hepburn,0.9024669691754049,British actress,europe,"https://images-na.ssl-images-amazon.com/images/M/MV5BMTM4MTY3NTQyMF5BMl5BanBnXkFtZTYwMTk2MzQ2._V1_UX214_CR0,0,214,317_AL_.jpg"
-1930,Clint Eastwood,0.9280295270773556,US actor & filmmaker,americas,http://esq.h-cdn.co/assets/16/31/1470229981-screen-shot-2016-08-03-at-85624-am.png
+1930,Clint Eastwood,0.9280295270773556,US actor & filmmaker,americas,http://i2.cdn.cnn.com/cnnnext/dam/assets/150115102445-clint-eastwood-0214-exlarge-169.jpg
 1931,A. P. J. Abdul Kalam,0.8894410729462928,Indian president,south asia,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/A._P._J._Abdul_Kalam_in_2008.jpg/230px-A._P._J._Abdul_Kalam_in_2008.jpg
 1932,Johnny Cash,0.9212575940410287,US singer,americas,https://jrbenjamin.files.wordpress.com/2014/06/johnny-cash-2733.jpg
 1933,Yoko Ono,0.8820731519356725,Japanese artist,east asia,https://i.pinimg.com/736x/5f/86/b0/5f86b04af36faca3759235ae9e95ee07--s-hair-great-hair.jpg
 1934,Charles Manson,0.9002359863104133,US cult leader,americas,http://www.trbimg.com/img-586d563b/turbine/la-me-charles-manson-hospitalized-20170103
 1935,Elvis Presley,0.9533963367598803,US singer & actor,americas,https://www.graceland.com/!userfiles/Biography/Bio3_VerticalResponsive.jpg
 1936,John McCain,0.9174713295291118,US politician,americas,https://upload.wikimedia.org/wikipedia/commons/e/e1/John_McCain_official_portrait_2009.jpg
-1937,Saddam Hussein,0.9115219864552473
-1938,Bernard Madoff,0.8563811901714993
-1939,Lee Harvey Oswald,0.8900675483720336
+1937,Saddam Hussein,0.9115219864552473,Iraqi dictator,middle east,http://looklex.com/e.o/slides/saddam_hussein01.jpg
+1938,Bernard Madoff,0.8563811901714993,US fraudster,americas,http://s3-origin-images.politico.com/2014/03/19/090115_bernie_madoff_gty_605.jpg
+1939,Lee Harvey Oswald,0.8900675483720336,US assassin,americas,https://cbsnews3.cbsistatic.com/hub/i/r/2013/11/15/2abe2ab2-3eca-4c35-b716-48701d9dfff7/resize/620x465/985e77f98c103ee89753f95967c2c27f/LHO_slide_vert_crop.jpg
 1940,John Lennon,0.9289602350532558
 1941,Bob Dylan,0.9411365623862032
 1942,Paul McCartney,0.9406573143555789

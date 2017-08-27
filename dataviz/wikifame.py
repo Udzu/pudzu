@@ -12,12 +12,12 @@ SPECS = [["datasets/wikibirths.csv", "output/wikibirths.png",
           "{}00s", "'{}0s", range(10,20), range(0,10)],
          ["datasets/wikibirths_20c.csv", "output/wikibirths_20c.png",
           "100 famous people from the 20th century", "the most famous person born each year, according to English Wikipedia",
-          "19{}0s", "'{}", range(0,10), range(0,10)],
+          "19{}0s", "—{}", range(0,10), range(0,10)],
          ["datasets/wikibirths_f.csv", "output/wikibirths_f.png",
           "100 famous women from the second millennium", "the most famous woman born each decade, according to English Wikipedia",
           "{}00s", "'{}0s", range(10,20), range(0,10)]]
 
-for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE in SPECS:
+for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE in SPECS[1:2]:
 
     fg, bg = "white", "black"
     DEFAULT_IMG = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"

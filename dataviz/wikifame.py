@@ -7,60 +7,45 @@ from wikipage import *
 
 # data visualisation 
 
-DATASET = "datasets/wikibirths.csv"
-OUTPUT = "output/wikibirths.png"
-TITLE = "100 famous people from the previous millennium"
-SUBTITLE = "the most famous person born each decade, according to English Wikipedia"
-ROWFORMAT = "{}00s"
-COLFORMAT = "'{}0s"
-ROWRANGE = range(10,20)
-COLRANGE = range(0,10)
+SPECS = [["datasets/wikibirths.csv", "output/wikibirths.png",
+          "100 famous people from the second millennium", "the most famous person born each decade, according to English Wikipedia",
+          "{}00s", "'{}0s", range(10,20), range(0,10)],
+         ["datasets/wikibirths_20c.csv", "output/wikibirths_20c.png",
+          "100 famous people from the 20th century", "the most famous person born each year, according to English Wikipedia",
+          "19{}0s", "'{}", range(0,10), range(0,10)],
+         ["datasets/wikibirths_f.csv", "output/wikibirths_f.png",
+          "100 famous women from the second millennium", "the most famous woman born each decade, according to English Wikipedia",
+          "{}00s", "'{}0s", range(10,20), range(0,10)]]
 
-# DATASET = "datasets/wikibirths_20c.csv"
-# OUTPUT = "output/wikibirths_20c.png"
-# TITLE = "100 famous people from the previous century"
-# SUBTITLE = "the most famous person born each year, according to English Wikipedia"
-# ROWFORMAT = "19{}0s"
-# COLFORMAT = "'{}"
-# ROWRANGE = range(0,10)
-# COLRANGE = range(0,10)
+for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE in SPECS:
 
-# DATASET = "datasets/wikibirths_f.csv"
-# OUTPUT = "output/wikibirths_f.png"
-# TITLE = "100 famous women from the previous millennium"
-# SUBTITLE = "the most famous woman born each decade, according to English Wikipedia"
-# ROWFORMAT = "{}00s"
-# COLFORMAT = "'{}0s"
-# ROWRANGE = range(10,20)
-# COLRANGE = range(0,10)
+    fg, bg = "white", "black"
+    DEFAULT_IMG = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 
-fg, bg = "white", "black"
-DEFAULT_IMG = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
+    df = pd.read_csv(DATASET)
+    table = pd.DataFrame([[df.iloc[century*10+decade]['name'] if century*10+decade < len(df) else None for decade in range(0,10)] for century in range(0,10)],
+                         index=[ROWFORMAT.format(c) for c in ROWRANGE], columns=[COLFORMAT.format(d) for d in COLRANGE])
+    df = df.set_index('name')
 
-df = pd.read_csv(DATASET)
-table = pd.DataFrame([[df.iloc[century*10+decade]['name'] if century*10+decade < len(df) else None for decade in range(0,10)] for century in range(0,10)],
-                     index=[ROWFORMAT.format(c) for c in ROWRANGE], columns=[COLFORMAT.format(d) for d in COLRANGE])
-df = df.set_index('name')
+    if "description" not in df: df = df.assign_rows(description="some person")
+    if "image_url" not in df: df = df.assign_rows(image_url=None)
 
-if "description" not in df: df = df.assign_rows(description="some person")
-if "image_url" not in df: df = df.assign_rows(image_url=None)
+    def process(img, name):
+        box = Image.new("RGB", (180,200), bg)
+        box = box.place(Image.from_column([
+          img.crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=160),
+          Image.from_text(name, arial(12, bold=True), padding=(3, 5, 3, 2), fg=fg, bg=bg),
+          Image.from_text(get_non(df['description'], name, ""), arial(12), padding=(3,0,3,0), fg=fg, bg=bg)
+          ], bg=bg))
+        return box
+        
+    title = Image.from_column([
+    Image.from_text(TITLE, arial(60, bold=True), fg=fg, bg=bg).pad((10,0), bg=bg),
+    Image.from_text(SUBTITLE, arial(36, bold=True), fg=fg, bg=bg).pad((10,0,10,2), bg=bg)
+    ], bg=bg).pad((0,10),bg=bg)
 
-def process(img, name):
-    box = Image.new("RGB", (180,200), bg)
-    box = box.place(Image.from_column([
-      img.crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=160),
-      Image.from_text(name, arial(12, bold=True), padding=(3, 5, 3, 2), fg=fg, bg=bg),
-      Image.from_text(get_non(df['description'], name, ""), arial(12), padding=(3,0,3,0), fg=fg, bg=bg)
-      ], bg=bg))
-    return box
-    
-title = Image.from_column([
-Image.from_text(TITLE, arial(60, bold=True), fg=fg, bg=bg).pad((10,0), bg=bg),
-Image.from_text(SUBTITLE, arial(36, bold=True), fg=fg, bg=bg).pad((10,0,10,2), bg=bg)
-], bg=bg).pad((0,10),bg=bg)
-
-grid = grid_chart(table, lambda n: n and get_non(df['image_url'], n, DEFAULT_IMG), image_process=process, row_label=arial(20, bold=True), col_label=arial(20, bold=True), bg=bg, title=title)
-grid.save(OUTPUT)
+    grid = grid_chart(table, lambda n: n and get_non(df['image_url'], n, DEFAULT_IMG), image_process=process, row_label=arial(20, bold=True), col_label=arial(20, bold=True), bg=bg, title=title)
+    grid.save(OUTPUT)
 
 # data collection (would need more cleanup/corroboration to be used in larger quantities)
 

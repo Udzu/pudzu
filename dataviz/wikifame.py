@@ -8,16 +8,16 @@ from wikipage import *
 # data visualisation 
 
 SPECS = [["datasets/wikibirths.csv", "output/wikibirths.png",
-          "100 famous people from the second millennium", "the most famous person born each decade, according to English Wikipedia",
+          "100 famous people from the second millennium", "the most famous person born each decade, according to English Wikipedia*",
           "{}00s", "'{}0s", range(10,20), range(0,10)],
          ["datasets/wikibirths_20c.csv", "output/wikibirths_20c.png",
-          "100 famous people from the 20th century", "the most famous person born each year, according to English Wikipedia",
+          "100 famous people from the 20th century", "the most famous person born each year, according to English Wikipedia*",
           "19{}0s", "'{}", range(0,10), range(0,10)],
          ["datasets/wikibirths_f.csv", "output/wikibirths_f.png",
-          "100 famous women from the second millennium", "the most famous woman born each decade, according to English Wikipedia",
+          "100 famous women from the second millennium", "the most famous woman born each decade, according to English Wikipedia*",
           "{}00s", "'{}0s", range(10,20), range(0,10)]]
 
-for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE in SPECS[1:2]:
+for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE in SPECS[:2]:
 
     fg, bg = "white", "black"
     DEFAULT_IMG = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
@@ -39,13 +39,18 @@ for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE i
           ], bg=bg))
         return box
         
+    grid = grid_chart(table, lambda n: n and get_non(df['image_url'], n, DEFAULT_IMG), image_process=process, row_label=arial(20, bold=True), col_label=arial(20, bold=True), bg=bg)
+    
     title = Image.from_column([
     Image.from_text(TITLE, arial(60, bold=True), fg=fg, bg=bg).pad((10,0), bg=bg),
     Image.from_text(SUBTITLE, arial(36, bold=True), fg=fg, bg=bg).pad((10,0,10,2), bg=bg)
     ], bg=bg).pad((0,10),bg=bg)
+    comment = Image.from_text("*fame measure is a combination of article length, number of edits, and typical number of pageviews during 2016", arial(24), fg=fg, bg=bg).pad((0,20,0,5),bg=bg)
 
-    grid = grid_chart(table, lambda n: n and get_non(df['image_url'], n, DEFAULT_IMG), image_process=process, row_label=arial(20, bold=True), col_label=arial(20, bold=True), bg=bg, title=title)
-    grid.save(OUTPUT)
+    chart = Image.from_column([title, grid, comment], bg=bg)
+    chart.place(Image.from_text("/u/Udzu", font("arial", 24), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=0, copy=False)
+
+    chart.save(OUTPUT)
 
 # data collection (would need more cleanup/corroboration to be used in larger quantities)
 

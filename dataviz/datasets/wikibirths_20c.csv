@@ -24,7 +24,7 @@ year,name,score,description,region,image_url
 1922,Stan Lee,0.9002894354405225,US comic book writer,americas,http://www.syfy.com/sites/syfy/files/wire/legacy/stan-lee_0.jpg
 1923,Henry Kissinger,0.8791992026618239,US statesman,americas,http://cdn.history.com/sites/2/2013/12/henry-kissinger-speaking-to-senate.jpg
 1924,Jimmy Carter,0.9297367296373059,US president,americas,http://cms.kienthuc.net.vn/uploaded/bichhanh/2016_09_21/muc-do-tin-nhiem-cua-cac-doi-tong-thong-my-hinh-10.png
-1925,Margaret Thatcher,0.9264151454528193,British prime minister,europe,http://i.telegraph.co.uk/multimedia/archive/03150/thatcher-bbc_3150455b.jpg
+1925,Margaret Thatcher,0.9264151454528193,British prime minister,europe,http://thelegacyproject.co.za/wp-content/uploads/2015/04/margaret-thatcher.jpg
 1926,Elizabeth II,0.947442618978537,Queen of the United Kingdom,europe,http://d3i6fh83elv35t.cloudfront.net/newshour/wp-content/uploads/2015/09/GettyImages-487366160.jpg
 1927,Benedict XVI,0.9049769293963776,pope,europe,https://upload.wikimedia.org/wikipedia/commons/a/a4/Benedykt_XVI_%282010-10-17%29_4.jpg
 1928,Che Guevara,0.9230629241728837,Argentine revolutionary,americas,https://s-media-cache-ak0.pinimg.com/736x/44/41/26/4441263c7442f3a956ceef5632bb706a--ernesto-che-che-guevara.jpg
@@ -51,51 +51,51 @@ year,name,score,description,region,image_url
 1949,Meryl Streep,0.9113124117994739,US actor,americas,https://media1.s-nbcnews.com/j/newscms/2017_02/1858841/170109-meryl-streep-mn-0725_9c4f82e1491a2bdc485bb239e2bad476.nbcnews-fp-1200-800.jpg
 1950,Narendra Modi,0.9169835625482335,Indian prime minister,south asia,https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/PM_Modi_2015.jpg/450px-PM_Modi_2015.jpg
 1951,Robin Williams,0.9098504941866119,US actor,americas,http://pulseradio.fm/wp-content/uploads/2015/08/robin-williams-portrait-by-brigitte-lacombe.jpg
-1952,Vladimir Putin,0.9443753144734149
-1953,Hulk Hogan,0.9195714821903457
-1954,Hugo Chávez,0.8985852982153528
-1955,Steve Jobs,0.9417505280426495
-1956,Tom Hanks,0.910923034422503
-1957,Osama bin Laden,0.9179149567758256
+1952,Vladimir Putin,0.9443753144734149,Russian leader,europe,https://upload.wikimedia.org/wikipedia/commons/9/98/Vladimir_Putin_%282017-07-08%29.jpg
+1953,Hulk Hogan,0.9195714821903457,US wrestler,americas,http://crossfitflagstaff.com/wp-content/uploads/2015/08/hulk.jpg
+1954,Hugo Chávez,0.8985852982153528,Venezuelan leader,americas,https://upload.wikimedia.org/wikipedia/commons/b/b4/Hugo_Chavez.jpg
+1955,Steve Jobs,0.9417505280426495,US business executive,americas,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Steve_Jobs_Headshot_2010-CROP.jpg/1200px-Steve_Jobs_Headshot_2010-CROP.jpg
+1956,Tom Hanks,0.910923034422503,US actor,americas,http://www.microgiving.com/blog/wp-content/uploads/2014/03/la-oscar-nominations.jpg
+1957,Osama bin Laden,0.9179149567758256,Saudi terrorist,middle east,http://media.washtimes.com.s3.amazonaws.com/media/image/2016/03/09/OsamaBinLaden.jpg
 1958,Michael Jackson,0.9818569866393215,US singer,americas,https://ichef.bbci.co.uk/images/ic/960x540/p01bqlx8.jpg
-1959,Magic Johnson,0.8962296049161499
-1960,Diego Maradona,0.887508494365709
+1959,Magic Johnson,0.8962296049161499,US basketball player,americas,http://www.howard.edu/newsroom/images/Magic%20Johnson%20Player.jpg
+1960,Diego Maradona,0.887508494365709,Argentine football player,americas,https://iffhs.com/dev/wp-content/uploads/2015/11/maradona-1.jpg
 1961,Barack Obama,1.0036136236066928,US president,americas,http://www.eurweb.com/wp-content/uploads/2017/01/President-Obama_0.jpg
-1962,Tom Cruise,0.9079632324536492
-1963,Michael Jordan,0.9474381695140274
-1964,Sarah Palin,0.9157287595792845
-1965,The Undertaker,0.9503206034605086
-1966,Mike Tyson,0.9185821372751943
-1967,Kane,0.9283113745345863
-1968,Kurt Angle,0.9186305774324188
-1969,Jennifer Lopez,0.9356178243059569
-1970,Mariah Carey,0.9417651776898939
-1971,Tupac Shakur,0.9326959397190828
-1972,Dwayne Johnson,0.9630964635075286
-1973,Aishwarya Rai,0.9144103560409479
-1974,Leonardo DiCaprio,0.9198493767864594
-1975,David Beckham,0.9243792330703603
-1976,Peyton Manning,0.915965272850736
+1962,Tom Cruise,0.9079632324536492,US actor,americas,https://s-media-cache-ak0.pinimg.com/736x/27/e3/09/27e309063413c18940f8218973b7b708.jpg
+1963,Michael Jordan,0.9474381695140274,US basketball player,americas,http://www.trendingtoplists.com/wp-content/uploads/2015/04/michael-jordan-basketball-sport-wallpapers-hd-wallpapers-hd-celebrities-sports-photo-michael-jordan-wallpaper.jpg
+1964,Sarah Palin,0.9157287595792845,US comedian,americas,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Sarah_Palin_by_Gage_Skidmore_2.jpg/1200px-Sarah_Palin_by_Gage_Skidmore_2.jpg
+1965,The Undertaker,0.9503206034605086,US wrestler,americas,https://static.sportskeeda.com/wp-content/uploads/2015/08/undertaker_wwe_picture-3-1439546947-800.jpg
+1966,Mike Tyson,0.9185821372751943,US boxer,americas,http://www.ringnews24.com/wp-content/uploads/2017/05/021115-BOXING-Mike-Tyson-OH-NO-IN-TOKYO-SS-PI.vresize.1200.675.high_.51.jpg
+1967,Kane,0.9283113745345863,US wrestler,americas,http://www.wwe.com/f/2017/05/kaneimposters_raw_06301998_0047--a1502aa3aa54b1df8ef342c48cf6d21a.jpg
+1968,Kurt Angle,0.9186305774324188,US wrestler,americas,http://gazettereview.com/wp-content/uploads/2016/12/what-happened-to-kurt-angle.png
+1969,Jennifer Lopez,0.9356178243059569,US actor & singer,americas,https://www.celebritysizes.com/wp-content/uploads/2016/10/Jennifer-Lopez.jpg
+1970,Mariah Carey,0.9417651776898939,US singer,americas,http://www.billboard.com/files/styles/article_main_image/public/media/mariah-carey-july-2014-billboard-650.jpg
+1971,Tupac Shakur,0.9326959397190828,US rapper,americas,http://www.hdwallpaper.nu/wp-content/uploads/2015/06/img_flipped_2pac_tupac_shakur_marijuan.jpg
+1972,Dwayne Johnson,0.9630964635075286,US wrestler & actor,americas,https://upload.wikimedia.org/wikipedia/commons/f/f1/Dwayne_Johnson_2%2C_2013.jpg
+1973,Aishwarya Rai,0.9144103560409479,Indian actor,south asia,http://images.indianexpress.com/2017/05/aishwarya-cannes-final-9-new.jpg
+1974,Leonardo DiCaprio,0.9198493767864594,US actor,americas,http://cdn4.thr.com/sites/default/files/2014/11/leonardo_dicaprio.jpg
+1975,David Beckham,0.9243792330703603,British soccer player,europe,http://cdn.images.express.co.uk/img/dynamic/67/590x/400125_1.jpg
+1976,Peyton Manning,0.915965272850736,US football player,americas,https://media2.s-nbcnews.com/i/MSNBC/Components/Video/151229/tdy_melvin_peyton_151229.jpg
 1977,John Cena,0.9670832751376038,US wrestler,americas,http://www.wwe.com/f/styles/wwe_large/public/all/2016/07/John_Cena_bio--b51ea9d0b6f475af953923ac7791391b.jpg
-1978,Kobe Bryant,0.9392093787300849
-1979,Aaliyah,0.9050983942423297
-1980,Christina Aguilera,0.9258665441745145
-1981,Beyoncé,0.9640746462066921
-1982,Priyanka Chopra,0.9347466289639297
-1983,Edward Snowden,0.9407944613706777
-1984,LeBron James,0.9494266542750758
+1978,Kobe Bryant,0.9392093787300849,US basketball player,americas,https://radnorite.files.wordpress.com/2016/01/kobe_bryant_con_competencia.jpg
+1979,Aaliyah,0.9050983942423297,US singer,americas,https://upload.wikimedia.org/wikipedia/commons/1/14/Aaliyah-02.jpg
+1980,Christina Aguilera,0.9258665441745145,US singer,americas,http://www.billboard.com/files/media/christina-aguilera-east-hampton-performance-2016-billboard-1548.jpg
+1981,Beyoncé,0.9640746462066921,US singer,americas,http://rotana.net/assets/uploads/2016/06/OPI-Beyonce-super-bowl-4.jpg
+1982,Priyanka Chopra,0.9347466289639297,Indian actor,americas,"https://images-na.ssl-images-amazon.com/images/M/MV5BMjAxNzUwNjExOV5BMl5BanBnXkFtZTcwNDUyMTUxNw@@._V1_SY1000_CR0,0,1339,1000_AL_.jpg"
+1983,Edward Snowden,0.9407944613706777,US leaker,americas,https://i.pinimg.com/736x/77/1c/45/771c45dfa4cc100c96e594072f66b9b5--real-life-heros-edward-snowden.jpg
+1984,LeBron James,0.9494266542750758,US basketball player,americas,https://espntheundefeated.files.wordpress.com/2017/05/gettyimages-684321920.jpg
 1985,Cristiano Ronaldo,0.9747400864446555,Portuguese soccer player,europe,https://i.pinimg.com/originals/5f/35/88/5f3588777d05bf89a05685175e234aaa.jpg
-1986,Lady Gaga,0.9429076440938646
-1987,Lionel Messi,0.9733270198909403
-1988,Rihanna,0.9491010438925691
-1989,Taylor Swift,0.9359356950053423
-1990,Emma Watson,0.9097191086163089
-1991,Emma Roberts,0.8721256206201575
+1986,Lady Gaga,0.9429076440938646,US singer,americas,https://hips.hearstapps.com/hbz.h-cdn.co/assets/cm/15/06/54d115a645d98_-_hbz-march-2014-lady-gaga-03-carolina-herrera-md.jpg
+1987,Lionel Messi,0.9733270198909403,Argentine football player,americas,http://images.performgroup.com/di/library/GOAL/ef/94/lionel-messi_u5wvbzye3uht1fsql8vco4ooz.jpg
+1988,Rihanna,0.9491010438925691,Barbadian singer,americas,https://i.pinimg.com/736x/26/5a/ea/265aea78b16ccdcfd610f6cf36c71606--fenty-rihanna-rihanna-makeup.jpg
+1989,Taylor Swift,0.9359356950053423,US singer,americas,https://www.zetizen.com/uploads/post/2016/06/05/Taylor_Swift_Syndrome_-_ambwallpapers.jpg
+1990,Emma Watson,0.9097191086163089,British actor,europe,https://static.independent.co.uk/s3fs-public/thumbnails/image/2014/05/19/18/emma-watson-v3.jpg
+1991,Emma Roberts,0.8721256206201575,US actor,americas,https://st.kp.yandex.net/images/kadr/sm_1175520.jpg
 1992,Miley Cyrus,0.9280195597785413,US singer,americas,http://az616578.vo.msecnd.net/files/2016/01/28/635895433663621926652550534_Miley-Cyrus-Love-Money-Party.jpg
-1993,Ariana Grande,0.9107421758297967
-1994,Justin Bieber,0.9214468388017484
-1995,Kendall Jenner,0.8845815406790328
-1996,Hailee Steinfeld,0.8376486884850497
-1997,Malala Yousafzai,0.8758552149984236
-1998,Jaden Smith,0.8255163528052651
-1999,Sabrina Carpenter,0.794979217968752
+1993,Ariana Grande,0.9107421758297967,US singer,americas,http://akns-images.eonline.com/eol_images/Entire_Site/201754/rs_634x1024-170604125700-634.ariana-grande.cm.6417.jpg
+1994,Justin Bieber,0.9214468388017484,Canadian singer,americas,http://esq.h-cdn.co/assets/15/12/1600x800/landscape-1426526635-justin-bieber-roast-1242.jpg
+1995,Kendall Jenner,0.8845815406790328,US model,americas,http://assets.vogue.com/photos/587713bd71b368a625a09929/master/pass/kendall-jenner-vogue-02.jpg
+1996,Hailee Steinfeld,0.8376486884850497,US actor,americas,http://cps-static.rovicorp.com/3/JPG_500/MI0004/090/MI0004090701.jpg
+1997,Malala Yousafzai,0.8758552149984236,Pakistani activist,south asia,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Malala_Yousafzai_2015.jpg/1200px-Malala_Yousafzai_2015.jpg
+1998,Jaden Smith,0.8255163528052651,US actor,americas,http://akns-images.eonline.com/eol_images/Entire_Site/201667/rs_300x300-160707191549-300.jaden-smith.tt.070716.jpg
+1999,Sabrina Carpenter,0.794979217968752,US singer,americas,https://nine9.com/wp-content/uploads/2015/10/01_SABRINA_837.jpg

@@ -1,0 +1,787 @@
+link,year,disambiguation,length,pageviews,revisions,title,score
+James_Buchanan,1791,False,437322,101404,5044,James Buchanan,0.8617752139677862
+John_Tyler,1790,False,425069,77176,4774,John Tyler,0.8521811391580668
+James_K._Polk,1795,False,413846,81159,4586,James K. Polk,0.8515758668642956
+Charles_Babbage,1791,False,386850,68798,5245,Charles Babbage,0.8503532101526828
+Mary_Shelley,1797,False,390817,70273,4287,Mary Shelley,0.8443034172471736
+Michael_Faraday,1791,False,242564,76894,4120,Michael Faraday,0.8352859671918226
+Sam_Houston,1793,False,302907,48635,4342,Sam Houston,0.8296694613572234
+Percy_Bysshe_Shelley,1792,False,305773,64548,3185,Percy Bysshe Shelley,0.826722939356578
+Sojourner_Truth,1797,False,276834,41324,4666,Sojourner Truth,0.8256931368572135
+John_Keats,1795,False,233081,61935,3599,John Keats,0.824300239334387
+Franz_Schubert,1797,False,344464,50992,3254,Franz Schubert,0.8237082493575738
+Antonio_López_de_Santa_Anna,1794,False,190924,51338,3738,Antonio López de Santa Anna,0.8164829005860634
+Jedediah_Smith,1799,False,308103,35369,2775,Jedediah Smith,0.8061095899619494
+Samuel_Morse,1791,False,225906,27169,4164,Samuel Morse,0.8060648409092085
+Alexander_Pushkin,1799,False,247148,41533,2205,Alexander Pushkin,0.7979204217595655
+Stephen_F._Austin,1793,False,185861,29469,3091,Stephen F. Austin,0.7947639223598248
+Cornelius_Vanderbilt,1794,False,118439,64415,1906,Cornelius Vanderbilt,0.7882759203970212
+Horace_Mann,1796,False,182325,25352,2488,Horace Mann,0.7829914615993876
+Honoré_de_Balzac,1799,False,246205,27486,1916,Honoré de Balzac,0.7818515492001865
+Pedro_I_of_Brazil,1798,False,475893,14623,2186,Pedro I of Brazil,0.7801798792025282
+Pope_Pius_IX,1792,False,333383,20576,1891,Pope Pius IX,0.778922023575975
+Mary_Anning,1799,False,228060,19067,2339,Mary Anning,0.7772313874605753
+Thaddeus_Stevens,1792,False,326037,22354,1653,Thaddeus Stevens,0.7759374131452574
+Gioachino_Rossini,1792,False,191398,24508,1909,Gioachino Rossini,0.7738442078821335
+Nicholas_I_of_Russia,1796,False,232244,31491,1161,Nicholas I of Russia,0.7653413647663135
+Matthew_Calbraith_Perry,1794,False,127999,25832,1640,Matthew C. Perry,0.7619669354944216
+Auguste_Comte,1798,False,179708,28835,1160,Auguste Comte,0.7583732184352008
+Ghalib,1796,False,158676,21686,1337,Ghalib,0.7541229547275266
+Eugène_Delacroix,1798,False,191858,26647,1055,Eugène Delacroix,0.7538648988277321
+Wilhelm_I_of_Germany,1797,False,249712,23099,978,"William I, German Emperor",0.7518810047754771
+Thomas_Carlyle,1795,False,214122,22070,1063,Thomas Carlyle,0.7513140808033906
+Lucretia_Mott,1793,False,194475,11830,1731,Lucretia Mott,0.7501917201856871
+Princess_Charlotte_Augusta_of_Wales,1796,False,238610,20461,932,Princess Charlotte of Wales,0.7460168342673107
+Adam_Mickiewicz,1798,False,313673,6879,1917,Adam Mickiewicz,0.7449867360454635
+Johns_Hopkins,1795,False,112705,11578,2044,Johns Hopkins,0.7448754762185149
+Léopold_I_of_Belgium,1790,False,239885,20445,859,Leopold I of Belgium,0.7427849577512221
+Charles_Lyell,1797,False,176664,14369,1194,Charles Lyell,0.7408265343628
+Heinrich_Heine,1797,False,219960,13495,1067,Heinrich Heine,0.7387101311105053
+Jean-François_Champollion,1790,False,232901,9399,1246,Jean-François Champollion,0.7350016583550625
+Adolphe_Thiers,1797,False,367096,6504,901,Adolphe Thiers,0.7191163762286585
+"John_Russell,_1st_Earl_Russell",1792,False,337231,7399,830,"John Russell, 1st Earl Russell",0.7186332642172005
+William_Lyon_Mackenzie,1795,False,176228,5362,1306,William Lyon Mackenzie,0.7146976255816193
+William_II_of_the_Netherlands,1792,False,201859,11369,595,William II of the Netherlands,0.7094375903388279
+Ferdinand_I_of_Austria,1793,False,236202,12669,506,Ferdinand I of Austria,0.707845947713731
+Giacomo_Meyerbeer,1791,False,267132,4344,992,Giacomo Meyerbeer,0.7050392406592783
+John_Herschel,1792,False,150686,9761,635,John Herschel,0.7032632692259998
+William_Cullen_Bryant,1794,False,132988,7580,798,William Cullen Bryant,0.7030077543260693
+Adelaide_of_Saxe-Meiningen,1792,False,201765,9315,575,Adelaide of Saxe-Meiningen,0.7026534149870655
+Gaetano_Donizetti,1797,False,211356,8552,562,Gaetano Donizetti,0.7000929683553067
+Giacomo_Leopardi,1798,False,203593,6622,679,Giacomo Leopardi,0.6998444095286896
+Joseph_Henry,1797,False,116986,6367,659,Joseph Henry,0.6886899914596489
+Edward_Everett,1794,False,321717,4577,557,Edward Everett,0.687734125339242
+Oscar_I_of_Sweden,1799,False,220968,7896,418,Oscar I of Sweden,0.6860327179289402
+Charles_Barry,1795,False,173950,4302,706,Charles Barry,0.6859408137273022
+Peter_Cooper,1791,False,99421,5414,742,Peter Cooper,0.6857029247583669
+"Edward_Smith-Stanley,_14th_Earl_of_Derby",1799,False,198673,5670,512,"Edward Smith-Stanley, 14th Earl of Derby",0.6837644766541687
+Carl_Czerny,1791,False,93949,5033,755,Carl Czerny,0.6832273754525985
+Frederick_William_IV_of_Prussia,1795,False,175749,11323,343,Frederick William IV of Prussia,0.6830190636307211
+"James_Brudenell,_7th_Earl_of_Cardigan",1797,False,160911,6575,489,"James Brudenell, 7th Earl of Cardigan",0.6828897043855878
+Jean-Baptiste-Camille_Corot,1796,False,160071,7310,452,Jean-Baptiste-Camille Corot,0.6824475712220637
+Théodore_Géricault,1791,False,128095,9309,420,Théodore Géricault,0.6822075069877405
+Leopold_von_Ranke,1795,False,171741,6674,436,Leopold von Ranke,0.6795190636135179
+George_M._Dallas,1792,False,240883,5025,455,George M. Dallas,0.6782253096546126
+Nicolas_Léonard_Sadi_Carnot,1796,False,96502,6641,492,Nicolas Léonard Sadi Carnot,0.6752891198643284
+Nikolai_Lobachevsky,1792,False,97954,3860,720,Nikolai Lobachevsky,0.6742305645435324
+Amos_Bronson_Alcott,1799,False,168309,4238,525,Amos Bronson Alcott,0.6737397497610162
+Thomas_Mitchell_(explorer),1792,False,137095,2835,652,Thomas Mitchell (explorer),0.6662437945852067
+William_Whewell,1794,False,173747,4224,401,William Whewell,0.663280091731176
+Antonio_José_de_Sucre,1795,False,115925,4378,423,Antonio José de Sucre,0.6605180620495263
+Charles_Albert_of_Sardinia,1798,False,302170,3667,330,Charles Albert of Sardinia,0.6583898059380171
+Maria_Leopoldina_of_Austria,1797,False,207659,3337,386,Maria Leopoldina of Austria,0.657216436240917
+Sylvester_Graham,1794,False,70722,5002,428,Sylvester Graham,0.6569096726678101
+George_Peabody,1795,False,133067,4270,374,George Peabody,0.6568348533522373
+Imam_Shamil,1797,False,80475,5324,382,Imam Shamil,0.6561046794365549
+Anson_Jones,1798,False,73684,3898,481,Anson Jones,0.6550929255655981
+Rowland_Hill,1795,False,119926,2268,578,Rowland Hill,0.6526842488189218
+Charles_Wilkes,1798,False,157156,2644,432,Charles Wilkes,0.6506863564278705
+Anna_Pavlovna_of_Russia,1795,False,149773,3751,277,Anna Pavlovna of Russia,0.642030626598464
+Utagawa_Kuniyoshi,1797,False,98166,5456,251,Utagawa Kuniyoshi,0.6416355355058094
+Karl_Ernst_von_Baer,1792,False,115697,2432,401,Karl Ernst von Baer,0.6408525318045996
+Philipp_Franz_von_Siebold,1796,False,135029,2159,387,Philipp Franz von Siebold,0.637908569810988
+Franz_Xaver_Wolfgang_Mozart,1791,False,74037,6181,236,Franz Xaver Wolfgang Mozart,0.6377009102458484
+Thomas_Arnold,1795,False,96892,3183,320,Thomas Arnold,0.6373388697904244
+Anna_Atkins,1799,False,112176,3269,296,Anna Atkins,0.636959072390512
+Jules_Dumont_d'Urville,1790,False,171586,1851,382,Jules Dumont d'Urville,0.6356645365336839
+James_Braid_(surgeon),1795,False,173538,1659,407,James Braid (surgeon),0.6345823419080503
+Charles_Hodge,1797,False,118363,2541,326,Charles Hodge,0.6343261863438688
+William_S._Hamilton,1797,False,95196,10553,158,William S. Hamilton,0.6339689906137304
+William_Hobson,1792,False,74798,2089,435,William Hobson,0.632740300262142
+August_Ferdinand_Möbius,1790,False,63903,3210,331,August Ferdinand Möbius,0.6326916504964103
+Simon_Cameron,1799,False,148592,2818,246,Simon Cameron,0.6285719052516778
+James_Mayer_de_Rothschild,1792,False,79584,7478,165,James Mayer de Rothschild,0.6259926128564324
+István_Széchenyi,1791,False,99792,1982,338,István Széchenyi,0.6257454798900549
+Junius_Brutus_Booth,1796,False,67024,3585,250,Junius Brutus Booth,0.6247724661458122
+"Leopold_II,_Grand_Duke_of_Tuscany",1797,False,181479,2554,219,"Leopold II, Grand Duke of Tuscany",0.6231183468090391
+Frederick_Marryat,1792,False,88144,2450,279,Frederick Marryat,0.6227219833600232
+Adolphe_Quetelet,1796,False,82140,3499,219,Adolphe Quetelet,0.6212687749756705
+Paul_Delaroche,1797,False,91223,3495,212,Paul Delaroche,0.6212568284463683
+José_Antonio_Páez,1790,False,86085,2240,283,José Antonio Páez,0.6203233076212166
+Letitia_Christian_Tyler,1790,False,69611,3552,217,Letitia Christian Tyler,0.6188666007614797
+Manuela_Sáenz,1797,False,65957,4661,186,Manuela Sáenz,0.6179282336403382
+Thomas_Hodgkin,1798,False,98666,2102,263,Thomas Hodgkin,0.6173066143891612
+Francisco_de_Paula_Santander,1792,False,86735,2566,235,Francisco de Paula Santander,0.6165953402687644
+John_Austin_(legal_philosopher),1790,False,66436,4324,186,John Austin (legal philosopher),0.6161734053115678
+"William_Backhouse_Astor,_Sr.",1792,False,61610,2850,237,William Backhouse Astor Sr.,0.6149912987257985
+Annette_von_Droste-Hülshoff,1797,False,116752,1396,297,Annette von Droste-Hülshoff,0.6115910005211711
+Gerrit_Smith,1797,False,88273,1959,243,Gerrit Smith,0.6103937527009031
+William_Edward_Parry,1790,False,149394,1521,243,William Parry (explorer),0.6094262722535638
+Feargus_O'Connor,1794,False,100785,1053,368,Feargus O'Connor,0.6080791162537807
+Policarpa_Salavarrieta,1795,False,75422,1806,252,Policarpa Salavarrieta,0.6072882289921374
+Alfred_de_Vigny,1797,False,86127,2324,199,Alfred de Vigny,0.6064330120742769
+Paweł_Strzelecki,1797,False,74261,1120,359,Paweł Strzelecki,0.6052103327851238
+Almeida_Garrett,1799,False,85421,1603,246,Almeida Garrett,0.6043640316885263
+Abigail_Fillmore,1798,False,73995,3170,163,Abigail Fillmore,0.6035954715460176
+George_Tupou_I,1797,False,50703,1916,248,George Tupou I,0.6027351460242015
+John_Hughes_(archbishop_of_New_York),1797,False,159939,1263,230,John Hughes (archbishop of New York),0.6019761708183076
+Franz_Grillparzer,1791,False,125877,1533,206,Franz Grillparzer,0.6005754701995839
+Margaret_Ann_Neve,1792,False,44239,2203,223,Margaret Ann Neve,0.6003610614364708
+Thomas_Baldwin_Marsh,1799,False,99631,913,341,Thomas B. Marsh,0.6001505800120855
+George_Bush_(biblical_scholar),1796,False,51417,713,582,George Bush (biblical scholar),0.5994524881086726
+Frederic_Baraga,1797,False,129573,993,280,Frederic Baraga,0.5991333984745808
+Obadiah_Bush,1797,False,46077,4924,135,Obadiah Bush,0.5983504917999458
+John_Keble,1792,False,67864,1701,218,John Keble,0.5980691669048865
+Felicia_Hemans,1793,False,71324,1717,212,Felicia Hemans,0.597857453986441
+Saverio_Mercadante,1795,False,86684,1292,239,Saverio Mercadante,0.5966184853905669
+Floride_Calhoun,1792,False,54160,2149,187,Floride Calhoun,0.5951019128146022
+Franz_Berwald,1796,False,88704,1713,180,Franz Berwald,0.5936231850964526
+Frederick_Augustus_II_of_Saxony,1797,False,128634,1679,163,Frederick Augustus II of Saxony,0.593205789898903
+Victor_Cousin,1792,False,127176,1334,185,Victor Cousin,0.5917518248616699
+David_Douglas_(botanist),1799,False,66496,1284,218,David Douglas (botanist),0.5892222844488783
+Ernst_Heinrich_Weber,1795,False,89622,2334,135,Ernst Heinrich Weber,0.5890503453887486
+Gaspard-Gustave_Coriolis,1792,False,66780,1093,246,Gaspard-Gustave de Coriolis,0.5889147680730451
+Innocent_of_Alaska,1797,False,81748,1319,194,Innocent of Alaska,0.5879477004310972
+John_Elliotson,1791,False,89950,1871,144,John Elliotson,0.5861647488445424
+Henry_Engelhard_Steinway,1797,False,61926,1614,174,Henry E. Steinway,0.5856934881625545
+William_Austin_Burt,1792,False,71932,1202,201,William Austin Burt,0.5848850754601232
+Antoine-Louis_Barye,1796,False,71717,1593,159,Antoine-Louis Barye,0.5832667807388487
+Mary_Anne_Evans,1792,False,43447,2116,152,Mary Anne Disraeli,0.5823467216646421
+Rodolphe_Töpffer,1799,False,65748,1291,179,Rodolphe Töpffer,0.5810844740493243
+James_Lick,1796,False,56470,1404,174,James Lick,0.5803861487048612
+Richard_Hawes,1797,False,90481,709,262,Richard Hawes,0.5803339246384669
+Carl_Loewe,1796,False,93574,1404,150,Carl Loewe,0.5802968095608677
+Hamilton_Hume,1797,False,59269,1035,210,Hamilton Hume,0.579379619393366
+Daniel_Drew,1797,False,48232,1523,167,Daniel Drew,0.5788642079592226
+Edwin_Vose_Sumner,1797,False,81235,1030,185,Edwin Vose Sumner,0.5781194226542281
+Edward_Belcher,1799,False,121179,1020,159,Edward Belcher,0.576144819686072
+Lone_Horn,1790,False,61513,1205,170,Lone Horn,0.5759427178704344
+Thurlow_Weed,1797,False,56718,1567,146,Thurlow Weed,0.5759158695148118
+John_Brown_Russwurm,1799,False,53504,764,252,John Brown Russwurm,0.5748582852078948
+Thomas_Chandler_Haliburton,1796,False,60562,960,196,Thomas Chandler Haliburton,0.5744956207500611
+František_Palacký,1798,False,65822,1295,152,František Palacký,0.574126155941281
+Ramón_Castilla,1797,False,65051,938,193,Ramón Castilla,0.5740442157668804
+August_Heinrich_Hoffmann_von_Fallersleben,1798,False,69888,1335,143,August Heinrich Hoffmann von Fallersleben,0.5730565065190949
+Matteo_Carcassi,1792,False,41693,1188,181,Matteo Carcassi,0.5729426563846509
+Edwin_Beard_Budding,1796,False,35209,1161,190,Edwin Beard Budding,0.5718587574822749
+James_Moore_Wayne,1790,False,115854,763,182,James Moore Wayne,0.5717479742238936
+John_Pascoe_Fawkner,1792,False,63566,997,174,John Pascoe Fawkner,0.5714746325748795
+Basil_Moreau,1799,False,56629,808,212,Basil Moreau,0.5710380058891535
+John_Septimus_Roe,1797,False,86571,617,225,John Septimus Roe,0.5691593649895477
+Charles_Longley,1794,False,104170,849,155,Charles Longley,0.5673991212542003
+Johann_Arfvedson,1792,False,41059,879,199,Johan August Arfwedson,0.5671206867307315
+Antonio_Rosmini-Serbati,1797,False,80752,936,153,Antonio Rosmini-Serbati,0.5670010529211164
+Ferdinand_Christian_Baur,1792,False,73384,1101,140,Ferdinand Christian Baur,0.5669891865890165
+Jakob_Steiner,1796,False,54930,1218,139,Jakob Steiner,0.5660662678205323
+Maria_Antonia_Koháry_de_Csábrág,1797,False,116178,1122,120,Maria Antonia Koháry de Csábrág,0.5658475642695093
+William_Smith_(Virginia_governor),1797,False,101638,863,145,William Smith (Virginia governor),0.5647737733223613
+Barthélemy_Thimonnier,1793,False,51644,1192,137,Barthélemy Thimonnier,0.5640043221300314
+George_Willison_Adams,1799,False,84941,1259,115,Prospect Place,0.5636291954825406
+Theodor_Körner_(author),1791,False,79711,807,156,Theodor Körner (author),0.5629108917117828
+Ida_Laura_Pfeiffer,1797,False,63361,718,181,Ida Laura Pfeiffer,0.5623307723050457
+Samuel_Nelson,1792,False,86168,848,145,Samuel Nelson,0.5623139646928467
+Robert_Cooper_Grier,1794,False,75143,1083,126,Robert Cooper Grier,0.5620371843001434
+"Edmund_Lyons,_1st_Baron_Lyons",1790,False,102841,439,246,"Edmund Lyons, 1st Baron Lyons",0.5615611286227338
+Willie_Person_Mangum,1792,False,98704,959,126,Willie Person Mangum,0.5615136397347503
+Matthias_W._Baldwin,1795,False,61915,633,199,Matthias W. Baldwin,0.5614010007805198
+Richard_Ryan_(biographer),1797,False,111311,229,604,Richard Ryan (biographer),0.5609804015331363
+Charles_Anthon,1797,False,73245,860,145,Charles Anthon,0.5608535873295565
+"Richard_Temple-Nugent-Brydges-Chandos-Grenville,_2nd_Duke_of_Buckingham_and_Chandos",1797,False,61470,743,164,"Richard Temple-Nugent-Brydges-Chandos-Grenville, 2nd Duke of Buckingham and Chandos",0.5591517236770824
+Josef_Ressel,1793,False,48952,742,176,Josef Ressel,0.5590993659210117
+Frederick_William_Beechey,1796,False,134807,917,111,Frederick William Beechey,0.5576589612911216
+Anthony_Panizzi,1797,False,72807,649,168,Anthony Panizzi,0.5576117770663047
+Andrew_Smith_(zoologist),1797,False,51688,823,152,Andrew Smith (zoologist),0.5571998333041047
+Hartley_Coleridge,1796,False,141823,875,111,Hartley Coleridge,0.5567411963087059
+Samuel_Joseph_May,1797,False,78955,717,147,Samuel Joseph May,0.5564309698372463
+Christian_Friedrich_Schönbein,1799,False,58968,1050,118,Christian Friedrich Schönbein,0.5552201182380238
+Ferdinand_Hérold,1791,False,53910,767,149,Ferdinand Hérold,0.5546449026213749
+Carlos_Antonio_López,1792,False,69069,984,116,Carlos Antonio López,0.5544021956975809
+Charles_Lock_Eastlake,1793,False,62857,862,130,Charles Lock Eastlake,0.5543738617176095
+Adolphe_Crémieux,1796,False,75568,763,135,Adolphe Crémieux,0.5543268520875408
+Jeremias_Gotthelf,1797,False,83674,815,125,Jeremias Gotthelf,0.5542191176386397
+Manuel_Blanco_Encalada,1790,False,56722,643,159,Manuel Blanco Encalada,0.5521211404024581
+Eliza_Acton,1799,False,74391,1047,102,Eliza Acton,0.5510512020926313
+Richard_Carlile,1790,False,72721,750,128,Richard Carlile,0.5510279073473513
+Johan_Rudolph_Thorbecke,1798,False,99622,777,114,Johan Rudolph Thorbecke,0.5505009628899218
+Franz_Ernst_Neumann,1798,False,62212,985,109,Franz Ernst Neumann,0.5503283189801632
+William_Macready,1793,False,60606,781,125,William Macready,0.5491533679941366
+James_Gordon_Bennett_Sr.,1795,False,51395,698,142,James Gordon Bennett Sr.,0.5490275937339202
+Margaret_O'Neill_Eaton,1799,False,51327,619,156,Peggy Eaton,0.5488733603180324
+Richard_Barnes_Mason,1797,False,127229,642,117,Richard Barnes Mason,0.5480965065965213
+Archibald_Yell,1797,False,89205,634,128,Archibald Yell,0.547850342806827
+William_Carleton,1794,False,68264,750,120,William Carleton,0.5474728296503875
+John_Crenshaw,1797,False,40245,1423,91,John Crenshaw,0.546545104485639
+Princess_Henrietta_of_Nassau-Weilburg,1797,False,139866,869,88,Princess Henrietta of Nassau-Weilburg,0.5451085933402904
+Leo_Dupont,1797,False,65646,531,150,Leo Dupont,0.5449714842638103
+Dong_Haichuan,1797,False,55296,922,103,Dong Haichuan,0.5443686878643956
+January_Suchodolski,1797,False,53043,717,123,January Suchodolski,0.5441901135133398
+Adhémar_Jean_Claude_Barré_de_Saint-Venant,1797,False,46064,683,128,Adhémar Jean Claude Barré de Saint-Venant,0.5426610995095207
+"Francis_Conyngham,_2nd_Marquess_Conyngham",1797,False,83923,804,94,"Francis Conyngham, 2nd Marquess Conyngham",0.5406911521912106
+James_Bowman_Lindsay,1799,False,50464,828,100,James Bowman Lindsay,0.5387562994623417
+James_Turner_Morehead_(Kentucky),1797,False,108211,520,111,James Turner Morehead (Kentucky),0.5370396207727768
+Joseph_Young,1797,False,81941,576,109,Joseph Young,0.5367571510813913
+Anselme_Payen,1795,False,41567,821,101,Anselme Payen,0.5366543533070374
+Anna_Brownell_Jameson,1794,False,56437,589,116,Anna Brownell Jameson,0.5360887057181437
+John_Torrey,1796,False,77399,541,114,John Torrey,0.5360304304792464
+Nikolaos_Mantzaros,1795,False,49674,550,120,Nikolaos Mantzaros,0.5338208264471701
+Manuel_Oribe,1792,False,56133,645,102,Manuel Oribe,0.533279823071227
+Juan_Lavalle,1797,False,64038,533,112,Juan Lavalle,0.5327122928348916
+John_Linnell_(painter),1792,False,58682,685,94,John Linnell (painter),0.5319159668267233
+Friedrich_Wilhelm_Argelander,1799,False,65166,358,152,Friedrich Wilhelm Argelander,0.5311613933203128
+Eilhard_Mitscherlich,1794,False,71273,486,113,Eilhard Mitscherlich,0.5311568612534981
+John_Fairfield,1797,False,73080,574,99,John Fairfield,0.5311277917923005
+Philippe_Suchard,1797,False,44581,1565,62,Philippe Suchard,0.5300048456887808
+Karl_Otfried_Müller,1797,False,65221,513,107,Karl Otfried Müller,0.5296705994709947
+Karl_Ernst_Claus,1796,False,57562,470,117,Karl Ernst Claus,0.5291602388833314
+Pierre_Leroux,1797,False,56511,589,98,Pierre Leroux,0.5287014137346157
+Henry_Collen,1797,False,72973,277,180,Henry Collen,0.5284886640590344
+Augustus_Earle,1793,False,57540,467,115,Augustus Earle,0.5282181308787179
+Friedlieb_Ferdinand_Runge,1795,False,51316,719,83,Friedlieb Ferdinand Runge,0.526020470611425
+Maria_Isabel_of_Portugal,1797,False,126922,257,152,Maria Isabel of Braganza,0.5248835293156902
+Henry_George_Ward,1797,False,87129,331,128,Henry George Ward,0.5246235449967538
+Wilhelm_Beer,1797,False,44746,486,108,Wilhelm Beer,0.5241019371642859
+James_W._Parker,1797,False,62053,463,103,James W. Parker,0.5240640874115781
+Kondraty_Ryleyev,1795,False,80272,422,102,Kondraty Ryleyev,0.5231720902432225
+John_M._Patton,1797,False,62123,528,91,John M. Patton,0.5229040482354275
+Thomas_Haynes_Bayly,1797,False,56333,545,91,Thomas Haynes Bayly,0.5228639194163998
+David_Salomons,1797,False,55148,491,96,David Salomons,0.5216687100509181
+Karl_Lachmann,1793,False,52766,549,89,Karl Lachmann,0.5213742552727421
+"Domitila_de_Castro,_Marchioness_of_Santos",1797,False,97636,570,75,"Domitila de Castro, Marchioness of Santos",0.5207927522307598
+Sarah_Ann_Gill,1795,False,37943,686,82,Sarah Ann Gill,0.5206381719993118
+Joseph_Brackett,1797,False,44540,604,85,Joseph Brackett,0.5203428868936298
+James_McDowell,1795,False,57669,553,84,James McDowell,0.5198994586894469
+Félix_Savart,1791,False,42973,759,73,Félix Savart,0.519351496426338
+James_Syme,1799,False,55731,568,81,James Syme,0.5186644007585305
+George_Julius_Poulett_Scrope,1797,False,98322,296,118,George Julius Poulett Scrope,0.5183499840078603
+Barthélemy_Charles_Joseph_Dumortier,1797,False,52050,420,101,Barthélemy Charles Joseph Dumortier,0.5180492133887485
+José_Mariano_Salas,1797,False,56628,570,78,José Mariano Salas,0.5171572091463547
+Prosper_Ménière,1799,False,42869,559,82,Prosper Ménière,0.5158908906209078
+William_MacGillivray,1796,False,56234,325,112,William MacGillivray,0.5141360676967579
+Robert_Christison,1797,False,66685,311,111,Robert Christison,0.5139195708944808
+Joseph_Fielding,1797,False,79051,300,110,Joseph Fielding,0.5139174032183533
+Robert_Crittenden,1797,False,48167,621,71,Robert Crittenden,0.5134604532933672
+Robert_Towns,1794,False,49240,310,117,Robert Towns,0.512732241902331
+Sheldon_Peck,1797,False,76178,248,129,Sheldon Peck,0.5124122963373221
+Carl_Gustaf_Mosander,1797,False,39816,489,80,Carl Gustaf Mosander,0.509803940619775
+Antoine_Claudet,1797,False,46092,472,79,Antoine Claudet,0.5097022681274496
+Thomas_Drummond,1797,False,54004,379,89,Thomas Drummond,0.5095172362615205
+Connop_Thirlwall,1797,False,75874,338,90,Connop Thirlwall,0.5094603910047163
+Hiram_Paulding,1797,False,52737,330,100,Hiram Paulding,0.5094040222252024
+Qishan_(Manchu_official),1790,False,51552,519,70,Qishan (Manchu official),0.5081269512735337
+Ferdinand_Raimund,1790,False,56115,358,88,Ferdinand Raimund,0.5074769259218196
+Timothy_Gilbert,1797,False,89122,212,128,Timothy Gilbert,0.5072748482473667
+Charles_de_Rémusat,1797,False,94606,398,72,Charles de Rémusat,0.5070246554460662
+George_Shillibeer,1797,False,35161,486,77,George Shillibeer,0.50649019457601
+"George_Anson_(British_Army_officer,_born_1797)",1797,False,56908,234,125,"George Anson (British Army officer, born 1797)",0.5060180841289788
+François_Chouteau,1797,False,40413,331,96,François Chouteau,0.5050097267761939
+Gotthilf_Hagen,1797,False,62358,282,99,Gotthilf Hagen,0.5050023437037394
+Samuel_Lover,1797,False,46198,441,74,Samuel Lover,0.5045623614139088
+William_Henry_Smith_(1792–1865),1792,False,31884,329,101,William Henry Smith (1792–1865),0.5042686690946018
+John_Gardner_Wilkinson,1797,False,50462,384,79,John Gardner Wilkinson,0.5039884633227549
+"George_Chichester,_3rd_Marquess_of_Donegall",1797,False,64283,264,101,"George Chichester, 3rd Marquess of Donegall",0.5036561469628252
+John_Braithwaite_(engineer),1797,False,52964,315,89,John Braithwaite (engineer),0.5029275558483591
+Mirza_Shafi_Vazeh,1794,False,64692,292,90,Mirza Shafi Vazeh,0.5026859870078595
+Alois_Negrelli,1799,False,50700,361,79,Alois Negrelli,0.50198304532889
+"Henry_Lascelles,_3rd_Earl_of_Harewood",1797,False,47024,458,68,"Henry Lascelles, 3rd Earl of Harewood",0.501948569338096
+Karl_Ludwig_Hencke,1793,False,42180,359,82,Karl Ludwig Hencke,0.5015390650478377
+Pierre_Bossier,1797,False,62312,352,75,Pierre Bossier,0.5008540000594979
+Emily_Eden,1797,False,38280,662,56,Emily Eden,0.5008060566220008
+William_Siborne,1797,False,51471,233,112,William Siborne,0.5007122189469849
+Thomas_Romney_Robinson,1792,False,51042,270,96,Thomas Romney Robinson,0.5001469661861369
+Giuseppe_Ferlini,1797,False,39253,463,67,Giuseppe Ferlini,0.4996879077801021
+Stanislas_Julien,1797,False,69997,277,86,Stanislas Julien,0.49961192991065145
+William_Buell_Sprague,1795,False,39225,326,86,William Buell Sprague,0.4995575331019112
+Benjamin_F._Hallett,1797,False,66420,766,46,Benjamin F. Hallett,0.4995020001115247
+Jean_Victoire_Audouin,1797,False,50774,243,104,Jean Victoire Audouin,0.4993366490802464
+George_Evans_(American_politician),1797,False,62088,342,74,George Evans (American politician),0.49923928049336835
+John_Capron,1797,False,43526,207,127,John Capron,0.49895297887795637
+Nikolai_Brashman,1796,False,39518,392,73,Nikolai Brashman,0.49854600677279987
+Charles_Allen_(Massachusetts_politician),1797,False,97912,397,60,Charles Allen (Massachusetts politician),0.4983741108034727
+Jeronis_de_Soysa,1797,False,79410,226,96,Jeronis de Soysa,0.4976914292549668
+Alexei_Lvov,1799,False,45093,395,69,Alexei Lvov,0.4975605957041004
+Andreas_von_Ettingshausen,1796,False,41756,499,60,Andreas von Ettingshausen,0.4972059814822327
+Catherine_Gore,1799,False,47285,346,74,Catherine Gore,0.4969324614514849
+"Henry_Paget,_2nd_Marquess_of_Anglesey",1797,False,48533,469,59,"Henry Paget, 2nd Marquess of Anglesey",0.4960565019634801
+Gotthard_Fritzsche,1797,False,53654,323,73,Gotthard Fritzsche,0.4952699521463597
+Jeanne_Villepreux-Power,1794,False,59230,394,62,Jeanne Villepreux-Power,0.4950939134507325
+Joseph-Nicolas_Robert-Fleury,1797,False,50974,438,59,Joseph-Nicolas Robert-Fleury,0.49447947361155514
+"George_Agar-Ellis,_1st_Baron_Dover",1797,False,61511,305,72,"George Agar-Ellis, 1st Baron Dover",0.49401411512754384
+Walenty_Wańkowicz,1799,False,45529,272,84,Walenty Wańkowicz,0.4937596680237799
+Christoph_Gudermann,1798,False,36569,537,55,Christoph Gudermann,0.4935566302255701
+Heinrich_Kuhl,1797,False,49421,291,77,Heinrich Kuhl,0.49324110510574476
+Joseph_Méry,1797,False,60800,283,75,Joseph Méry,0.49312083566354115
+Addison_Gardiner,1797,False,62410,393,57,Addison Gardiner,0.49137317914217904
+Charles_I._du_Pont,1797,False,63235,370,59,Charles I. du Pont,0.49130307318819066
+J._G._M._Ramsey,1797,False,65242,337,61,J. G. M. Ramsey,0.49020046387413213
+Piotr_Wysocki,1797,False,34904,437,58,Piotr Wysocki,0.4897322403568056
+William_Thomas_Knollys,1797,False,46813,289,72,William Thomas Knollys,0.4895230653094473
+Franz_Graf_von_Wimpffen,1797,False,55341,189,101,Franz Graf von Wimpffen,0.4892340908740422
+Hopkins_L._Turney,1797,False,49209,290,70,Hopkins L. Turney,0.4888764469715091
+Edwin_James_(scientist),1797,False,52654,381,57,Edwin James (scientist),0.48879476286304724
+Andrew_Combe,1797,False,48614,178,110,Andrew Combe,0.48873268035529427
+Henry_Perrine,1797,False,45089,306,68,Henry Perrine,0.48853794331857114
+George_Keats,1797,False,67183,405,52,George Keats,0.48832804387200635
+John_M._Read,1797,False,48400,309,66,John M. Read,0.4881980010168085
+William_Hale_(British_inventor),1797,False,35560,686,44,William Hale (British inventor),0.4879201674906813
+James_Kānehoa,1797,False,122248,162,94,James Kānehoa,0.4871330863305577
+John_P._Bigelow,1797,False,97633,206,77,John P. Bigelow,0.48684415589363395
+Marie_Ellenrieder,1791,False,50205,296,65,Marie Ellenrieder,0.48641052607517504
+Stefano_Franscini,1796,False,56631,271,67,Stefano Franscini,0.48591428789188723
+Isaac_Lea,1792,False,51196,221,81,Isaac Lea,0.48581441120285285
+Edward_Turner_Bennett,1797,False,43747,345,59,Edward Turner Bennett,0.48555213015850895
+Eduard_Gans,1797,False,42427,333,60,Eduard Gans,0.4849209373916889
+Carlo_Blasis,1797,False,40774,362,57,Carlo Blasis,0.48471234993183954
+Duncan_Forbes_(linguist),1798,False,45993,223,80,Duncan Forbes (linguist),0.4846089927913721
+Joseph_Stannard,1797,False,44612,245,74,Joseph Stannard,0.4844577069574312
+"Charlotte_Lyon-Bowes,_Lady_Glamis",1797,False,31428,725,41,"Charlotte Lyon-Bowes, Lady Glamis",0.48403785190874443
+Almira_Hart_Lincoln_Phelps,1793,False,71129,306,56,Almira Hart Lincoln Phelps,0.48368504008490626
+Maria_Quitéria,1792,False,57606,332,55,Maria Quitéria,0.48353769693884124
+Joseph_von_Radowitz,1797,False,51245,284,62,Joseph von Radowitz,0.4830367586293824
+Johann_Andreas_Wagner,1797,False,47689,345,55,Johann Andreas Wagner,0.4829841847070132
+"Sir_William_Miles,_1st_Baronet",1797,False,59137,160,99,"Sir William Miles, 1st Baronet",0.48229743767891214
+Carl_Rottmann,1797,False,45071,396,50,Carl Rottmann,0.48189588165155156
+Daniel_D._Barnard,1797,False,64227,272,59,Daniel D. Barnard,0.4813370666534475
+Colm_de_Bhailís,1796,False,35950,211,81,Colm de Bhailís,0.48065055022614595
+William_Abbot,1798,False,35444,255,68,William Abbot,0.47994774016198005
+Lucius_Quintus_Cincinnatus_Lamar_I,1797,False,34062,246,70,Lucius Quintus Cincinnatus Lamar I,0.47955867407976444
+Mary_Buckland,1797,False,48379,201,75,Mary Buckland,0.47855035247722383
+Mary_Buckland,1797,False,48379,201,75,Mary Buckland,0.47855035247722383
+Samuel_Slocum,1792,False,24778,228,78,Samuel Slocum,0.4781235709141334
+Henrik_Hertz,1797,False,58822,323,50,Henrik Hertz,0.47811105102281964
+Benjamin_Nottingham_Webster,1797,False,48158,177,82,Benjamin Nottingham Webster,0.4772514687559961
+Alexandre_Vinet,1797,False,46620,322,51,Alexandre Vinet,0.47687593699940656
+Charles_Fox_(scientist),1797,False,38565,167,90,Charles Fox (scientist),0.4764530721763669
+Joseph_Gerhard_Zuccarini,1797,False,42474,276,57,Joseph Gerhard Zuccarini,0.4763968650303653
+Eugénie_Niboyet,1796,False,67329,152,85,Eugénie Niboyet,0.4755451219757148
+Carl_Gustaf_Mannerheim_(naturalist),1797,False,40902,183,79,Carl Gustaf Mannerheim (naturalist),0.47552624416628414
+Henri_Druey,1799,False,57657,257,55,Henri Druey,0.4751356308012236
+Adrien-Henri_de_Jussieu,1797,False,48816,272,54,Adrien-Henri de Jussieu,0.4746520869344783
+James_Ferguson_(American_astronomer),1797,False,40855,182,76,James Ferguson (American astronomer),0.4737498681328502
+Ludwig_Förster,1797,False,41324,313,49,Ludwig Förster,0.47287057937583915
+José_Trinidad_Reyes,1797,False,52592,323,46,José Trinidad Reyes,0.4728576381800849
+Hazen_Aldrich,1797,False,55637,165,76,Hazen Aldrich,0.47276948243446293
+Clement_Finley,1797,False,57309,222,58,Clement Finley,0.4725068155988586
+Walter_Colton,1797,False,38554,243,58,Walter Colton,0.4720125812901673
+Wilhelm_Meinhold,1797,False,41151,203,65,Wilhelm Meinhold,0.4713600169661578
+Achille_Baraguey_d'Hilliers,1795,False,40425,215,62,Achille Baraguey d'Hilliers,0.47119603976309565
+Johann_Karl_Ludwig_Gieseler,1792,False,37390,163,81,Johann Karl Ludwig Gieseler,0.47115809542994747
+Eduard_Vogel_von_Falckenstein,1797,False,51002,241,54,Eduard Vogel von Falckenstein,0.47099702735111365
+"William_FitzGerald-de_Ros,_23rd_Baron_de_Ros",1797,False,60198,270,48,"William FitzGerald-de Ros, 23rd Baron de Ros",0.4705275747827825
+Étienne_Mulsant,1797,False,42664,213,60,Étienne Mulsant,0.4699150720934847
+Eugenio_Kincaid,1797,False,56399,159,72,Eugenio Kincaid,0.4692409864800794
+Joseph_Barclay_Pentland,1797,False,41414,235,55,Joseph Barclay Pentland,0.469103832300407
+Josef_Munzinger,1791,False,54334,199,59,Josef Munzinger,0.4689080698521492
+Frances_Stackhouse_Acton,1794,False,82049,149,70,Frances Stackhouse Acton,0.4686532840675968
+Benson_Leavitt,1797,False,56633,118,98,Benson Leavitt,0.46845961672265984
+Nicholas_Marcellus_Hentz,1797,False,55604,150,75,Nicholas Marcellus Hentz,0.46843531157624796
+Augustin-Magloire_Blanchet,1797,False,69417,197,56,Augustin-Magloire Blanchet,0.46828418701616453
+David_Canabarro,1796,False,40559,190,64,David Canabarro,0.46814794587591396
+John_Mercer_(scientist),1791,False,38528,249,52,John Mercer (scientist),0.46775198402522417
+John_Timon,1797,False,67568,195,56,John Timon,0.4676886746478834
+Alaric_Alexander_Watts,1797,False,45557,188,62,Alaric Alexander Watts,0.46745259249382753
+Manuel_Bretón_de_los_Herreros,1796,False,44085,201,59,Manuel Bretón de los Herreros,0.4674050087623712
+George_Webster_(architect),1797,False,56217,167,65,George Webster (architect),0.466885231363564
+Maria_Abdy,1797,False,40726,185,63,Maria Abdy,0.4665326595270324
+Guillermo_Miller,1795,False,52850,131,83,Guillermo Miller,0.46633231272339437
+"Henry_Thynne,_3rd_Marquess_of_Bath",1797,False,142390,243,41,"Henry Thynne, 3rd Marquess of Bath",0.46580669290444116
+Heinrich_Berghaus,1797,False,58072,213,51,Heinrich Berghaus,0.4651976592663863
+Peter_Georg_Bang,1797,False,47767,212,53,Peter Georg Bang,0.4651387804963497
+Tilghman_Howard,1797,False,81503,181,54,Tilghman Howard,0.4648420284024658
+William_Beresford,1797,False,39200,210,55,William Beresford,0.46473070833891783
+Karl_Adolph_von_Basedow,1799,False,34787,437,36,Karl Adolph von Basedow,0.46452923119044975
+Levi_Silliman_Ives,1797,False,53559,143,71,Levi Silliman Ives,0.46400213067305507
+John_Bathurst_Deane,1797,False,39301,148,73,John Bathurst Deane,0.463737662562601
+Francis_Close,1797,False,51191,179,56,Francis Close,0.462214038893793
+Francesco_Zantedeschi,1797,False,44432,198,53,Francesco Zantedeschi,0.46211184887333073
+Zina_Pitcher,1797,False,57870,185,53,Zina Pitcher,0.4619720038904335
+Thaddeus_William_Harris,1795,False,42120,204,52,Thaddeus William Harris,0.46180599335553746
+Joseph_Othmar_Rauscher,1797,False,52834,196,51,Joseph Othmar Rauscher,0.4614852270824682
+Jonathan_Leavitt_(publisher),1797,False,64620,159,58,Jonathan Leavitt (publisher),0.46129528484457283
+Charles_Robert_Malden,1797,False,37042,191,55,Charles Robert Malden,0.4608832806659602
+John_C._Clark,1793,False,44810,205,50,John C. Clark,0.46070048358942556
+Franz_Krüger,1797,False,43154,486,31,Franz Krüger,0.4604968571087144
+José_María_Pinedo,1795,False,106612,186,46,José María Pinedo,0.46032792474085266
+Antoinette_Henriette_Clémence_Robert,1797,False,55861,174,54,Antoinette Henriette Clémence Robert,0.46029314537778665
+August_Meineke,1790,False,42896,149,65,August Meineke,0.4601189942100969
+Gabriel_Andral,1797,False,33323,176,59,Gabriel Andral,0.460046858704355
+Frederick_William_Hope,1797,False,43369,225,46,Frederick William Hope,0.45958321897270676
+Christopher_Jacob_Boström,1797,False,52385,162,57,Christopher Jacob Boström,0.4594925182644484
+John_Henderson_(Mississippi_politician),1797,False,53544,205,47,John Henderson (Mississippi politician),0.45929790047544605
+Priscilla_Susan_Bury,1799,False,41791,151,63,Priscilla Susan Bury,0.4591168438272448
+John_Dix_Fisher,1797,False,44880,140,65,John Dix Fisher,0.4580687998874777
+William_Gore_Ouseley,1797,False,46159,175,53,William Gore Ouseley,0.45803787895060677
+John_Peter_Gassiot,1797,False,48543,155,58,John Peter Gassiot,0.4579288973235726
+Patrick_MacDowell,1799,False,39734,154,60,Patrick MacDowell,0.45738498979462183
+George_Peck_(clergyman),1797,False,38606,161,58,George Peck (clergyman),0.45736280532285556
+Peter_Broun,1797,False,45438,196,48,Peter Broun,0.4573537996899883
+Samuel_Bogart,1797,False,49228,132,65,Samuel Bogart,0.4565124655512317
+"George_Glyn,_1st_Baron_Wolverton",1797,False,39796,136,66,"George Glyn, 1st Baron Wolverton",0.45648477886028527
+Prince_Adolf_zu_Hohenlohe-Ingelfingen,1797,False,41104,444,30,Prince Adolf zu Hohenlohe-Ingelfingen,0.45576429227302045
+Adele_Schopenhauer,1797,False,64228,484,27,Adele Schopenhauer,0.45510148688395446
+Charles_Jackson_(Rhode_Island),1797,False,58030,173,48,Charles Jackson (Rhode Island),0.4550072214914017
+"Heinrich_LXXII,_Prince_Reuss_of_Lobenstein_and_Ebersdorf",1797,False,32818,129,70,"Heinrich LXXII, Prince Reuss of Lobenstein and Ebersdorf",0.4549620737224023
+Thomas_Shuldham_O'Halloran,1797,False,49357,121,67,Thomas Shuldham O'Halloran,0.45419492180883025
+Maria_Foote,1797,False,45581,187,46,Maria Foote,0.4537422012049835
+Charlotta_Eriksson,1794,False,38000,96,92,Charlotta Eriksson,0.4535212401776085
+José_Antonio_Saco,1797,False,48211,176,47,José Antonio Saco,0.4531051547601523
+Eliakim_Littell,1797,False,39328,183,47,Eliakim Littell,0.4527372012750521
+Karl_Gottlob_Zumpt,1792,False,43767,127,63,Karl Gottlob Zumpt,0.45270050736705303
+Mary_Ann_Aldersey,1797,False,41634,191,45,Mary Ann Aldersey,0.45265243961459206
+John_Winebrenner,1797,False,33515,190,47,John Winebrenner,0.45262378001710674
+Knud_Ibsen,1797,False,37706,306,34,Knud Ibsen,0.45214564450438904
+Dirk_van_Hogendorp_(1797–1845),1797,False,31745,304,35,Dirk van Hogendorp (1797–1845),0.45202575764714087
+Henry_Piddington,1797,False,71149,163,44,Henry Piddington,0.4503736328940792
+John_Ogilvie_(lexicographer),1797,False,42112,163,48,John Ogilvie (lexicographer),0.4502017751544676
+Therese_Albertine_Luise_Robinson,1797,False,89958,114,57,Therese Albertine Luise Robinson,0.44988424015068645
+Mathilda_Berwald,1798,False,28506,175,47,Mathilda Berwald,0.44833102490834675
+John_Cobbold_(1797–1882),1797,False,112459,136,45,John Cobbold (1797–1882),0.44808117716047347
+Christoffel_Brand,1797,False,46050,131,54,Christoffel Brand,0.44796786500373476
+"Harriet_Windsor-Clive,_13th_Baroness_Windsor",1797,False,55438,170,42,"Harriet Windsor-Clive, 13th Baroness Windsor",0.4476735294394319
+William_H._DeLancey,1797,False,51582,123,54,William H. DeLancey,0.44641728947980436
+James_Townsend_Saward,1799,False,30634,210,39,James Townsend Saward,0.4461251817483547
+Richard_Pakenham,1797,False,33924,257,34,Richard Pakenham,0.4461223013633295
+John_Green_Crosse,1790,False,40797,121,57,John Green Crosse,0.44609722387221895
+"Joseph_Blake,_3rd_Baron_Wallscourt",1797,False,34078,166,45,"Joseph Blake, 3rd Baron Wallscourt",0.44606738822716396
+Manuel_Aguilar_Chacón,1797,False,46179,239,33,Manuel Aguilar Chacón,0.4449059396377902
+James_Scott_Bowerbank,1797,False,39814,159,44,James Scott Bowerbank,0.44482687443390917
+William_Bulkeley_Hughes,1797,False,43478,103,64,William Bulkeley Hughes,0.4446184853272368
+George_Barrell_Emerson,1797,False,43526,154,44,George Barrell Emerson,0.44442592677823267
+Daniel_Parkhurst_Leadbetter,1797,False,46617,143,46,Daniel Parkhurst Leadbetter,0.4443343978813286
+Abraham_Hoagland,1797,False,33787,124,55,Abraham Hoagland,0.44399071643708615
+Philipp_von_Brunnow,1797,False,35592,202,37,Philipp von Brunnow,0.44352012347723074
+William_Motherwell,1797,False,47286,129,49,William Motherwell,0.44339334208235337
+Joseph-Désiré_Court,1797,False,49855,573,22,Joseph-Désiré Court,0.4433808510514092
+Judson_Allen,1797,False,40161,130,50,Judson Allen,0.4432356683346915
+William_Gibson-Craig,1797,False,42477,107,59,William Gibson-Craig,0.44283449440055545
+Nodira,1792,False,43381,227,33,Nodira,0.4428237915733335
+Gideon_Brecher,1797,False,40343,137,47,Gideon Brecher,0.4425313001865923
+Baron_du_Potet,1798,False,48390,160,40,Baron du Potet,0.44210678418176247
+Alexandre_Jacques_François_Brière_de_Boismont,1797,False,36405,180,38,Alexandre Jacques François Brière de Boismont,0.44128151996121706
+John_J._Allen_(judge),1797,False,41734,105,58,John J. Allen (judge),0.44122865488616336
+John_Shaw-Lefevre,1797,False,39029,140,45,John Shaw-Lefevre,0.44110392455112074
+John_Gaylord,1797,False,53054,133,44,John Gaylord,0.4406399120167385
+William_B._Slaughter,1797,False,44895,125,47,William B. Slaughter,0.43994009501162945
+Georg_Amadeus_Carl_Friedrich_Naumann,1797,False,39718,147,42,Georg Amadeus Carl Friedrich Naumann,0.43983967391329043
+Lavinia_Ryves,1797,False,30291,214,34,Lavinia Ryves,0.4395905477603588
+Luther_Severance,1797,False,39487,140,43,Luther Severance,0.43912354048091934
+Joseph_Thompson_(doctor),1797,False,27901,156,42,Joseph Thompson (doctor),0.43895462564158816
+Pier_Alessandro_Paravia,1797,False,52386,102,54,Pier Alessandro Paravia,0.438948441599503
+Peter_I._Borst,1797,False,39737,135,44,Peter I. Borst,0.43889418932635266
+Andrew_W._Loomis,1797,False,44760,176,35,Andrew W. Loomis,0.43807040240719036
+Michael_Loam,1797,False,34932,114,51,Michael Loam,0.4378305463339455
+Sara_Torsslow,1795,False,38786,96,59,Sara Torsslow,0.43755444789067843
+George_Dromgoole,1797,False,43314,121,46,George Dromgoole,0.43746145576517137
+María_de_los_Remedios_de_Escalada,1797,False,45434,361,24,María de los Remedios de Escalada,0.4374104627311368
+Antonie_Adamberger,1790,False,46744,175,34,Antonie Adamberger,0.43673084774167203
+Andrew_Tracy,1797,False,52381,139,39,Andrew Tracy,0.4365118131364258
+Charles_Gray_Round,1797,False,39538,157,37,Charles Gray Round,0.4360266358141468
+William_Ruggles,1797,False,40134,77,70,William Ruggles,0.43442415245251587
+"Sir_Thomas_Bazley,_1st_Baronet",1797,False,46591,109,46,"Sir Thomas Bazley, 1st Baronet",0.4339748326116843
+Eugène_Soubeiran,1797,False,35889,179,33,Eugène Soubeiran,0.43381395164515396
+Isaac_Funk,1797,False,39441,142,38,Isaac Funk,0.4338124736506515
+Lansdown_Guilding,1797,False,41201,126,41,Lansdown Guilding,0.433409842539551
+Thomas_J._Drake,1797,False,53682,147,35,Thomas J. Drake,0.43337223676956405
+Gideon_Hard,1797,False,34148,139,39,Gideon Hard,0.4331312666752304
+Alfred_Dockery,1797,False,39610,133,39,Alfred Dockery,0.43274588903724853
+Horatio_Chriesman,1797,False,49286,129,38,Horatio Chriesman,0.4321026623305386
+Henri-Bernard_Dabadie,1797,False,31122,166,34,Henri-Bernard Dabadie,0.4317262221595529
+William_Benjamin_Robinson,1797,False,42310,169,32,William Benjamin Robinson,0.4316535696547042
+George_Hamilton_Seymour,1797,False,42860,228,27,George Hamilton Seymour,0.4316242527810207
+"Jacob_Astley,_16th_Baron_Hastings",1797,False,91735,105,40,"Jacob Astley, 16th Baron Hastings",0.4311415889094782
+Jacquette_Löwenhielm,1797,False,28958,117,44,Jacquette Löwenhielm,0.4309505801055045
+Michel_Goudchaux,1797,False,101822,277,22,Michel Goudchaux,0.4306678243172521
+Eli_Kirk_Price,1797,False,38471,115,42,Eli Kirk Price,0.4305420588440729
+Helena_Ekblom,1790,False,33308,102,48,Helena Ekblom,0.43049848810692726
+Friedrich_August_Kummer,1797,False,39122,238,26,Friedrich August Kummer,0.42994558830628216
+Charles_Brown_(congressman),1797,False,40477,112,42,Charles Brown (congressman),0.42993385258919786
+Jean-Baptiste_Marc_Bourgery,1797,False,32950,229,27,Jean-Baptiste Marc Bourgery,0.4296675167312588
+Michel_Garicoïts,1797,False,52395,86,51,Michel Garicoïts,0.42944108326256547
+Laufilitonga,1797,False,29461,303,24,Laufilitonga,0.4294129468931187
+"Manuel_Alves_Branco,_2nd_Viscount_of_Caravelas",1797,False,44482,187,28,"Manuel Alves Branco, 2nd Viscount of Caravelas",0.4280358841921629
+Karl_August_Nicander,1799,False,35317,124,37,Karl August Nicander,0.4268303631861384
+William_Greene_(lieutenant_governor),1797,False,56047,126,34,William Greene (lieutenant governor),0.42680569052079587
+Lott_Warren,1797,False,38864,96,45,Lott Warren,0.4265752959114085
+François_Leuret,1797,False,33154,139,34,François Leuret,0.4262744992161752
+Steen_Andersen_Bille_(1797–1883),1797,False,48233,81,51,Steen Andersen Bille (1797–1883),0.4262486987723519
+Cayetano_Heredia,1797,False,31499,117,39,Cayetano Heredia,0.4262437205602754
+Margaretta_Morris,1797,False,41261,86,48,Margaretta Morris,0.4251956195900426
+Hugh_Andrew_Johnstone_Munro_of_Novar,1797,False,43829,117,36,Hugh Andrew Johnstone Munro of Novar,0.4250777476010947
+Thomas_Patterson_Brockman,1797,False,33498,97,44,Thomas Patterson Brockman,0.42487575206214384
+William_Jessup,1797,False,32209,245,24,William Jessup,0.42446035847952845
+Stephen_Olin,1797,False,36338,105,40,Stephen Olin,0.42444664870993026
+Rehuel_Lobatto,1797,False,39501,196,26,Rehuel Lobatto,0.4243718901304887
+Edward_C._Delavan,1793,False,28808,113,39,Edward C. Delavan,0.42423724250519085
+Johan_Coenraad_van_Hasselt,1797,False,40249,120,35,Johan Coenraad van Hasselt,0.42401181174898034
+John_Montagu_(colonial_secretary),1797,False,42518,114,36,John Montagu (colonial secretary),0.423894379520017
+John_Hodgetts-Foley,1797,False,33784,90,46,John Hodgetts-Foley,0.4237902180679144
+Pierre_Carmouche,1797,False,35247,132,33,Pierre Carmouche,0.42349687171858286
+John_Allen_Wakefield,1797,False,45824,119,34,John Allen Wakefield,0.42327864793489495
+Andrew_Fernando_Holmes,1797,False,34000,158,29,Andrew Fernando Holmes,0.4225817950828024
+Penina_Moise,1797,False,31141,152,30,Penina Moise,0.4224256419802999
+Amédée_Thierry,1797,False,41743,83,46,Amédée Thierry,0.4220527693832075
+Littleton_Kirkpatrick,1797,False,38231,113,35,Littleton Kirkpatrick,0.42143694727603054
+José_Bernardo_Escobar,1797,False,43270,152,28,José Bernardo Escobar,0.4212811367955436
+John_Roberton_(1797),1797,False,41735,96,39,John Roberton (1797),0.4208959857105702
+Raynold_Kaufgetz,1797,False,32253,95,41,Raynold Kaufgetz,0.4207236428911473
+Raynold_Kaufgetz,1798,False,32253,95,41,Raynold Kaufgetz,0.4207236428911473
+Leonard_Jones_(American_politician),1797,False,28896,175,27,Leonard Jones (American politician),0.42063880942078674
+Pierre_Nicolas_Gerdy,1797,False,30423,172,27,Pierre Nicolas Gerdy,0.420516222777351
+Jacob_Bailey_Moore,1797,False,45157,91,40,Jacob Bailey Moore,0.4204775995321462
+Benjamin_Nicolas_Marie_Appert,1797,False,35775,95,40,Benjamin Nicolas Marie Appert,0.4204457321896536
+Alvan_Cullom,1797,False,39057,99,38,Alvan Cullom,0.4204327534612032
+Edwin_Croswell,1797,False,35181,79,48,Edwin Croswell,0.4203907891338013
+Sámuel_Brassai,1797,False,38658,123,32,Sámuel Brassai,0.42021307552298437
+Enriqueta_Favez,1791,False,34614,49,94,Enriqueta Favez,0.42020345778407775
+Pascual_Echagüe,1797,False,45787,124,31,Pascual Echagüe,0.4201566467397716
+Walter_Calverley_Trevelyan,1797,False,43097,114,33,Walter Calverley Trevelyan,0.4198231363864112
+"Henry_Liddell,_1st_Earl_of_Ravensworth",1797,False,41995,113,33,"Henry Liddell, 1st Earl of Ravensworth",0.41931384611429445
+Andrew_Trumbo,1797,False,33832,128,31,Andrew Trumbo,0.4190009994944412
+John_Davis_Pierce,1797,False,49991,130,29,John Davis Pierce,0.4189933876970236
+"Auguste-Arthur,_Comte_de_Beugnot",1797,False,42203,85,41,"Auguste-Arthur, Comte de Beugnot",0.4182967959752424
+George_O._Belden,1797,False,38616,107,34,George O. Belden,0.4181324954002538
+Bernard_Donald_Macdonald,1797,False,36037,87,41,Bernard Donald Macdonald,0.4180691074470059
+James_Wilson_II_(New_Hampshire),1797,False,38634,121,31,James Wilson II (New Hampshire),0.41805187790981063
+Louis_Thomas_Jérôme_Auzoux,1797,False,33332,131,30,Louis Thomas Jérôme Auzoux,0.41801732846917405
+Charles_J._McCurdy,1797,False,40381,89,39,Charles J. McCurdy,0.41766074925966057
+John_H._McHenry,1797,False,36462,93,38,John H. McHenry,0.4174912312654001
+Eugène_Defacqz,1797,False,33924,82,43,Eugène Defacqz,0.4172045298975355
+Thomas_Dale_(priest),1797,False,63897,110,30,Thomas Dale (priest),0.41656480711831023
+Francisco_Freire_Allemão_e_Cysneiro,1797,False,37841,96,36,Francisco Freire Allemão e Cysneiro,0.41656178073561617
+Charles_Knapp_(congressman),1797,False,33846,94,37,Charles Knapp (congressman),0.4161563603797359
+Micajah_Thomas_Hawkins,1790,False,32039,138,28,Micajah Thomas Hawkins,0.41587822512111833
+Thomas_B._Jackson,1797,False,29604,106,34,Thomas B. Jackson,0.4157733957118168
+Sackville_Lane-Fox,1797,False,39436,128,28,Sackville Lane-Fox,0.41492548918730787
+Otto_Vincent_Lange,1797,False,38290,106,32,Otto Vincent Lange,0.41482144220240846
+Sophie_von_Knorring,1797,False,40287,73,44,Sophie von Knorring,0.4145241819230048
+Thomas_Davee,1797,False,30572,119,30,Thomas Davee,0.41407112449855576
+Rodolphus_Dickinson,1797,False,46368,169,23,Rodolphus Dickinson,0.4139994380540668
+"Bertram_Ashburnham,_4th_Earl_of_Ashburnham",1797,False,43361,103,31,"Bertram Ashburnham, 4th Earl of Ashburnham",0.41312661116631294
+Ralph_Randolph_Gurley,1797,False,33122,106,31,Ralph Randolph Gurley,0.4122116483596869
+Francesco_Puccinotti,1794,False,34507,90,35,Francesco Puccinotti,0.41211483350562655
+"John_Marshall_(MP_for_Leeds,_died_1836)",1797,False,38430,85,36,"John Marshall (MP for Leeds, died 1836)",0.41193215819233514
+William_K._Clowney,1797,False,38380,111,29,William K. Clowney,0.4116268542712771
+"Sir_Hedworth_Williamson,_7th_Baronet",1797,False,45722,77,38,"Sir Hedworth Williamson, 7th Baronet",0.4115394509710229
+Erik_Røring_Møinichen,1797,False,48835,83,35,Erik Røring Møinichen,0.41140961741500076
+Emil_Huschke,1797,False,34335,140,25,Emil Huschke,0.410767674016845
+Lucy_Anderson,1797,False,39930,157,23,Lucy Anderson,0.41071748562318644
+Yelizaveta_Golitsyna,1797,False,32434,132,26,Yelizaveta Golitsyna,0.41058297421756723
+"David_Barker,_Jr.",1797,False,43558,92,31,"David Barker, Jr.",0.40896539092481055
+Elias_Florence,1797,False,40538,147,23,Elias Florence,0.4088077217724392
+William_Ranwell,1797,False,28801,78,38,William Ranwell,0.4087230090722157
+Thomas_Moore-Lane,1797,False,32909,78,37,Thomas Moore-Lane,0.40856678444685507
+Jesse_Crowell,1797,False,29455,90,33,Jesse Crowell,0.4082525624341185
+Selah_R._Hobbie,1797,False,33345,103,29,Selah R. Hobbie,0.4079583710479085
+Narcisse_Girard,1797,False,34599,127,25,Narcisse Girard,0.4076837458739521
+Joseph-Marie_Quérard,1797,False,36680,79,35,Joseph-Marie Quérard,0.407430641867597
+George_Strange_Boulton,1797,False,28220,123,26,George Strange Boulton,0.40723249960087693
+"David_Robertson,_1st_Baron_Marjoribanks",1797,False,41119,85,32,"David Robertson, 1st Baron Marjoribanks",0.4070437575805352
+Lewis_Ruffner,1797,False,29139,106,28,Lewis Ruffner,0.4062332498367854
+Abby_Hadassah_Smith,1797,False,38155,78,34,Abby Hadassah Smith,0.40590903562469205
+Alexis-François_Rio,1797,False,34606,127,24,Alexis-François Rio,0.4054585960119399
+Charles_Frederick_(Royal_Navy_officer),1797,False,32544,74,36,Charles Frederick (Royal Navy officer),0.40516248171192826
+Nathan_Ryno_Smith,1797,False,35605,83,32,Nathan Ryno Smith,0.40511189674971665
+Jacob_Barit,1797,False,37720,92,29,Jacob Barit,0.40473978355298273
+John_Iltyd_Nicholl,1797,False,35711,72,36,John Iltyd Nicholl,0.4047011777374828
+August_Heinrich_Hermann_von_Dönhoff,1797,False,35209,143,22,August Heinrich Hermann von Dönhoff,0.4044057569425962
+"Ernest_Edgcumbe,_3rd_Earl_of_Mount_Edgcumbe",1797,False,40300,111,25,"Ernest Edgcumbe, 3rd Earl of Mount Edgcumbe",0.40427895515279144
+Friedrich_von_Gerolt,1797,False,36888,105,26,Friedrich von Gerolt,0.4038197759817064
+Samuel_McLean_(U.S._Consul),1797,False,30690,92,29,Samuel McLean (U.S. Consul),0.40327403863215694
+Philip_Dorsheimer,1797,False,37584,88,29,Philip Dorsheimer,0.40306510838035264
+Štefan_Moyses,1797,False,34719,104,26,Štefan Moyses,0.40306264758840094
+Alexander_Kazarsky,1797,False,29794,131,23,Alexander Kazarsky,0.4030138310298119
+North_Ludlow_Beamish,1797,False,32715,105,26,North Ludlow Beamish,0.40297263051331045
+Thomas_H._Rochester,1797,False,30780,140,22,Thomas H. Rochester,0.40279776591536604
+Charles-Séraphin_Rodier_(mayor),1797,False,41579,105,25,Charles-Séraphin Rodier (mayor),0.4025923582992214
+Karl_Wilhelm_Ludwig_Heyse,1797,False,34380,108,25,Karl Wilhelm Ludwig Heyse,0.4022427105687704
+Sarah_Booth,1793,False,35943,275,16,Sarah Booth,0.4017242506399765
+Baltazar_Mathias_Keilhau,1797,False,44541,107,24,Baltazar Mathias Keilhau,0.4015239836325957
+Antoine_Louis_Dugès,1797,False,34513,130,22,Antoine Louis Dugès,0.4013165137863235
+Caroline_LeRoy,1797,False,31846,202,18,Caroline LeRoy,0.40119032142990396
+Annestine_Beyer,1795,False,29616,115,24,Annestine Beyer,0.4011089560581178
+Archibald_Randall,1797,False,26914,132,22,Archibald Randall,0.40001585592381816
+Pierre_Léonard_Vander_Linden,1797,False,33140,83,29,Pierre Léonard Vander Linden,0.39999281321257557
+Frederick_Henry_Yates,1797,False,42586,87,27,Frederick Henry Yates,0.39998705880320434
+Théophile_Bra,1797,False,36765,94,26,Théophile Bra,0.3999043288129667
+Jasper_Ewing_Brady,1797,False,41472,83,28,Jasper Ewing Brady,0.3998408143824842
+William_Thomasson,1797,False,37139,93,26,William Thomasson,0.39959143877704734
+Vincenz_Kollar,1797,False,29949,79,30,Vincenz Kollar,0.3989933735605439
+Jonathan_Pitney,1797,False,28412,260,16,Jonathan Pitney,0.39873977159848667
+Édouard_Frère,1797,False,42858,84,27,Édouard Frère,0.3987269103896175
+María_Santos_Corrales,1797,False,29788,81,29,María Santos Corrales,0.3983200996942562
+Gallus_Jacob_Baumgartner,1797,False,35044,85,27,Gallus Jacob Baumgartner,0.397810012192028
+William_Chapman_(doctor),1797,False,30936,78,29,William Chapman (doctor),0.39715024731606724
+François_Bourdon,1797,False,57725,151,18,François Bourdon,0.39712554132845007
+Lewis_Jones_(Royal_Navy_officer),1797,False,38086,72,30,Lewis Jones (Royal Navy officer),0.39703137204794275
+Ferenc_Novák_(writer),1791,False,41733,116,21,Ferenc Novák (writer),0.39634360577439637
+Richard_Samuel_Guinness,1797,False,34297,131,20,Richard Samuel Guinness,0.39598815645154295
+Joseph_Lecompte,1797,False,39319,89,24,Joseph Lecompte,0.3942949733983357
+Ebenezer_Childs,1797,False,35219,123,20,Ebenezer Childs,0.3942367256699827
+John_Day_(judge),1797,False,40207,132,19,John Day (judge),0.39421624663052
+Karl_August_Devrient,1797,False,37059,76,27,Karl August Devrient,0.39398874990639055
+Eleazer_Parmly,1797,False,33668,60,33,Eleazer Parmly,0.3929418308758558
+Carlo_Emanuele_Muzzarelli,1797,False,34807,92,23,Carlo Emanuele Muzzarelli,0.3924200441830696
+Albrecht_Elof_Ihre,1797,False,32710,85,24,Albrecht Elof Ihre,0.391431732624148
+Benjamin_Hale_(educator),1797,False,69273,108,19,Benjamin Hale (educator),0.39134699043242543
+Henry_Noble_Shipton,1797,False,43731,85,23,Henry Noble Shipton,0.39112161699101144
+F._W._P._Greenwood,1797,False,40319,86,23,F. W. P. Greenwood,0.3910181752812992
+Camille-Melchior_Gibert,1797,False,34709,83,24,Camille-Melchior Gibert,0.3909728753275735
+Francis_H._Cone,1797,False,39541,150,17,Francis H. Cone,0.39088026436962897
+"Henry_Powlett,_3rd_Baron_Bayning",1797,False,36423,82,24,"Henry Powlett, 3rd Baron Bayning",0.3908527977113676
+Bertha_Zück,1797,False,26598,82,25,Bertha Zück,0.39078322365208396
+Thomas_M._Allen,1797,False,28538,73,27,Thomas M. Allen,0.39068592335950125
+Ernst_Ferdinand_Oehme,1797,False,46553,237,14,Ernst Ferdinand Oehme,0.39027518938085365
+Enoch_Cobb,1797,False,45061,95,21,Enoch Cobb,0.3902653075976828
+"Robert_Irwin,_Jr.",1797,False,48312,111,19,"Robert Irwin, Jr.",0.39005126016180675
+Margaret_Agnes_Bunn,1799,False,32908,120,19,Margaret Agnes Bunn,0.3900055101238058
+Johann_Christian_Lobe,1797,False,32325,91,22,Johann Christian Lobe,0.3891855317750366
+Martin_Martens,1797,False,37814,95,21,Martin Martens,0.3891477344674122
+Calvin_Pollard,1797,False,34946,96,21,Calvin Pollard,0.38898565176634825
+Christian_Wilhelm_Niedner,1797,False,32954,53,33,Christian Wilhelm Niedner,0.38744876424050284
+Antonio_Maria_Cagiano_de_Azevedo,1797,False,40077,89,21,Antonio Maria Cagiano de Azevedo,0.3873041494031898
+James_Kingsley,1797,False,25833,124,18,James Kingsley,0.3861262830950329
+Giuseppe_Avezzana,1797,False,35961,148,16,Giuseppe Avezzana,0.38596632611157367
+Félix_Tanco,1797,False,44656,90,20,Félix Tanco,0.38566251670679275
+Justin_von_Linde,1797,False,34023,76,23,Justin von Linde,0.38547393925016293
+Dunning_R._McNair,1797,False,33266,128,17,Dunning R. McNair,0.38523715910595085
+John_Richardson_(convict),1797,False,37271,74,23,John Richardson (convict),0.3850800432212234
+Lambert_Blackwell_Larking,1797,False,36900,54,30,Lambert Blackwell Larking,0.384955406827757
+Károly_Nagy,1797,False,33007,85,21,Károly Nagy,0.3844804011250135
+Leopold_von_Sonnleithner,1797,False,36774,68,24,Leopold von Sonnleithner,0.38395639968104756
+Henry_Acton,1797,False,31273,84,21,Henry Acton,0.38372148359205815
+Jehiel_Brooks,1797,False,26773,93,20,Jehiel Brooks,0.38347177016991274
+Karl_Friedrich_Theodor_Krause,1797,False,29511,78,22,Karl Friedrich Theodor Krause,0.38319602094781685
+Domnița_Rallou_Caragea,1799,False,38021,49,31,Rallou Karatza,0.38229655095302717
+Ulrik_Frederik_Cappelen,1797,False,37537,68,23,Ulrik Frederik Cappelen,0.38197093917517827
+Johann_Friedrich_Ludwig_Wöhlert,1797,False,32104,69,23,Johann Friedrich Ludwig Wöhlert,0.38153115217029165
+Hedworth_Lambton_(MP),1797,False,33669,58,26,Hedworth Lambton (MP),0.38096123963829726
+William_Ryerson,1797,False,29891,83,20,William Ryerson,0.3803814852786562
+Jean_Baptiste_Hippolyte_Dance,1797,False,30892,97,18,Jean Baptiste Hippolyte Dance,0.37978928334155077
+João_Mouzinho_de_Albuquerque,1797,False,29431,41,37,João Mouzinho de Albuquerque,0.379421753486575
+Christodoulos_Hatzipetros,1798,False,34944,201,13,Christodoulos Hatzipetros,0.37914593034831384
+Pierre-Chéri_Lafont,1797,False,34969,67,22,Pierre-Chéri Lafont,0.3787339579762462
+Józef_Zaliwski,1797,False,31967,67,22,Józef Zaliwski,0.37817239418783033
+Nicolas_Roret,1797,False,25620,61,24,Nicolas Roret,0.3774499137791831
+Heinrich_Halfeld,1797,False,34550,72,20,Heinrich Halfeld,0.3763345963908856
+Percy_Nugent,1797,False,33164,54,24,Percy Nugent,0.3742500294075195
+Daniel_Lynn_Carroll,1797,False,43190,93,16,Daniel Lynn Carroll,0.3734677326368173
+John_Hampden_Pleasants,1797,False,45635,118,14,John Hampden Pleasants,0.3722696706518489
+Benjamin_F._H._Witherell,1797,False,46938,78,17,Benjamin F. H. Witherell,0.3718662305140803
+Johanna_Stegen,1793,False,27549,109,15,Johanna Stegen,0.37150209333324635
+Thomas_Icely,1797,False,29469,75,18,Thomas Icely,0.3710418441134506
+"John_Stuart,_12th_Earl_of_Moray",1797,False,33389,100,15,"John Stuart, 12th Earl of Moray",0.37015293294034235
+Marguerite_Beaubien,1797,False,29914,67,19,Marguerite Beaubien,0.37014927608958514
+Wincenty_Smokowski,1797,False,34947,75,17,Wincenty Smokowski,0.3688447441443484
+Beverly_R._Wellford,1797,False,34868,75,17,Beverly R. Wellford,0.36883140626130945
+Elisha_H._Groves,1797,False,29689,60,20,Elisha H. Groves,0.3687534223545757
+Albert_Day_(politician),1797,False,27076,86,16,Albert Day (politician),0.3682188867424296
+Honoratus_Bonnevie_(politician),1797,False,35100,54,21,Honoratus Bonnevie (politician),0.36817132057547586
+Achille_Rémy_Percheron,1797,False,27668,69,18,Achille Rémy Percheron,0.3677878359787073
+Giacomo_Luigi_Brignole,1797,False,34854,55,20,Giacomo Luigi Brignole,0.36640739700511354
+Thomas_M._Pettit,1797,False,35863,145,12,Thomas M. Pettit,0.3655294214283961
+Johann_Gottlieb_Fleischer,1797,False,33349,50,21,Johann Gottlieb Fleischer,0.3648218127662681
+Pierre_Sylvain_Dumon,1797,False,87943,212,10,Pierre Sylvain Dumon,0.3646856939756883
+György_Andrássy,1797,False,30182,68,17,György Andrássy,0.3646474122535164
+Crispino_Agostinucci,1797,False,29367,68,17,Crispino Agostinucci,0.3644848886012949
+"Sir_William_Alexander,_3rd_Baronet",1797,False,32823,81,15,"Sir William Alexander, 3rd Baronet",0.3635985588955592
+Carl_Peter_Wilhelm_Gramberg,1797,False,30377,65,17,Carl Peter Wilhelm Gramberg,0.3631233413209931
+Chauncey_J._Fox,1797,False,30303,80,15,Chauncey J. Fox,0.36274129953634854
+John_Hill_(North_Carolina_politician),1797,False,32369,70,16,John Hill (North Carolina politician),0.3625968248354047
+Gaspard_Thémistocle_Lestiboudois,1797,False,37247,88,14,Gaspard Thémistocle Lestiboudois,0.36258208279760584
+Johann_Fischbach,1797,False,43741,100,13,Johann Fischbach,0.36236778916251783
+John_Blennerhassett_Martin,1797,False,31065,63,17,John Blennerhassett Martin,0.362159743862393
+George_Bacon_Wood,1797,False,44500,219,10,George Bacon Wood,0.3618723440604848
+John_Talbot_(Reformer),1797,False,26516,51,20,John Talbot (Reformer),0.36186803872200546
+Per_Erik_Wallqvist,1797,False,25839,51,20,Per Erik Wallqvist,0.361712962108506
+Lars_Rasch,1797,False,31532,67,16,Lars Rasch,0.360967745273819
+Moses_M._Haarbleicher,1797,False,32665,66,16,Moses M. Haarbleicher,0.36065829884264405
+Claus_Winter_Hjelm,1797,False,34441,73,15,Claus Winter Hjelm,0.36054407929779936
+Johann_Gustav_Heckscher,1797,False,37104,72,15,Johann Gustav Heckscher,0.36051159376711095
+Jules_Lefèvre-Deumier,1797,False,35342,62,16,Jules Lefèvre-Deumier,0.35894676072373916
+Eliphaz_Fay,1797,False,40358,51,18,Eliphaz Fay,0.3589272908246604
+Jacob_von_der_Lippe,1797,False,42284,65,15,Jacob von der Lippe,0.3578211680382399
+George_Stephen_Benjamin_Jarvis,1797,False,25043,79,14,George Stephen Benjamin Jarvis,0.35700961016752725
+Jean-Bernard_Rousseau,1797,False,40558,101,12,Jean-Bernard Rousseau,0.3567579244189352
+Robert_Benson_(barrister),1797,False,31885,74,14,Robert Benson (barrister),0.3563596315505069
+Armine_Simcoe_Henry_Mountain,1797,False,38164,50,17,Armine Simcoe Henry Mountain,0.3548694668091271
+Stoddard_Judd,1797,False,39182,67,14,Stoddard Judd,0.35429161699775863
+Elizabeth_Grant_(diarist),1797,False,31389,76,13,Elizabeth Grant (diarist),0.352458542347193
+Hans_Skramstad,1797,False,27648,49,17,Hans Skramstad,0.35233470642581066
+Aimée_Caroillon_des_Tillières,1797,False,42283,70,13,Aimée Caroillon des Tillières,0.3514948137424014
+Thomas_Boutillier,1797,False,27740,52,16,Thomas Boutillier,0.3513314253613082
+Antoine-Charles_Taschereau,1797,False,28917,50,16,Antoine-Charles Taschereau,0.35012463257716153
+Kloka_Anna,1797,False,28100,71,13,Kloka Anna,0.3497559173661457
+James_C._Curtis,1797,False,30783,60,14,James C. Curtis,0.3493431275315785
+Pierre_Joseph_Michel_Lorquin,1797,False,26732,49,16,Pierre Joseph Michel Lorquin,0.3489434958465748
+Alonzo_C._Paige,1797,False,30978,75,12,Alonzo C. Paige,0.3468067603108208
+Henry_Wilson_(Suffolk_politician),1797,False,33072,41,17,Henry Wilson (Suffolk politician),0.34637685466739
+Ferenc_Duschek,1797,False,41944,82,11,Ferenc Duschek,0.34505450766874735
+James_Rider,1797,False,28106,88,11,James Rider,0.3449446633751864
+George_Rykert,1797,False,27779,48,15,George Rykert,0.34490312026801323
+Jean_Crespon,1797,False,30394,51,14,Jean Crespon,0.34369321927320967
+William_Stephenson_(junior),1797,False,37363,56,13,William Stephenson (junior),0.343606087240652
+Michael_Aikman_(politician),1797,False,26003,58,13,Michael Aikman (politician),0.3428796019024592
+Nehemiah_Platt,1797,False,26476,66,12,Nehemiah Platt,0.34210684096946825
+Edmund_Murray_Dodd,1797,False,24070,50,13,Edmund Murray Dodd,0.3374872313793178
+Du_Bois_Agett,1796,False,27571,86,10,Du Bois Agett,0.3374430554546526
+Johannes_Henrik_Berg,1797,False,26892,43,14,Johannes Henrik Berg,0.3369025939535106
+Carl_Reinhold_Roth,1797,False,30166,65,11,Carl Reinhold Roth,0.336645043287911
+Ranulph_Dacre,1797,False,28352,53,12,Ranulph Dacre,0.3354932356587487
+William_Walker_(Quebec_politician),1797,False,30111,45,13,William Walker (Quebec politician),0.33495735722781333
+Richard_Cheslyn,1797,False,29173,45,13,Richard Cheslyn,0.33479868257222484
+María_Trinidad_Sánchez,1794,False,33794,74,10,María Trinidad Sánchez,0.3343907585052247
+Benjamin_Caesar,1797,False,29268,60,11,Benjamin Caesar,0.33406768736151854
+Justus_Radius,1797,False,33495,49,12,Justus Radius,0.33370306815883743
+John_Beard_(politician),1797,False,28827,74,10,John Beard (politician),0.3336057403532987
+John_Sinclair_(Archdeacon_of_Middlesex),1797,False,56055,45,12,John Sinclair (Archdeacon of Middlesex),0.33314222933670706
+Henry_Bliss_(author),1797,False,27456,56,11,Henry Bliss (author),0.3316127462185763
+Jean-Baptiste_Boucho,1797,False,36995,50,11,Jean-Baptiste Boucho,0.3294286411973359
+Joseph-François_Deblois,1797,False,26533,62,10,Joseph-François Deblois,0.3281725515423601
+Thomas_Ainslie_Young,1797,False,26852,47,11,Thomas Ainslie Young,0.32587748894451346
+Johann_Hermann_Kufferath,1797,False,32635,52,10,Johann Hermann Kufferath,0.3238782241730774
+Charles_Panet,1797,False,25017,53,10,Charles Panet,0.32321031686392954
+Asa_Wentworth_Jr.,1797,False,33275,42,11,Asa Wentworth Jr.,0.32309568764939767
+James_Black_(clergyman),1797,False,33091,50,10,James Black (clergyman),0.3227204544051582
+August_Friedrich_Wilhelm_Forchhammer,1797,False,31786,50,10,August Friedrich Wilhelm Forchhammer,0.32253644010695104
+Karolina_Gerhardinger,1797,False,43416,80,8,Karolina Gerhardinger,0.3207055110231472
+Johann_Adam_Pupikofer,1797,False,28045,39,11,Johann Adam Pupikofer,0.3197357540861015
+Fortunato_José_Barreiros,1797,False,66020,41,10,Fortunato José Barreiros,0.3191608761284027
+George_Meads,1797,False,28495,55,9,George Meads,0.31770285838631407
+Carl_Georg_Christian_Schumacher,1797,False,31263,71,8,Carl Georg Christian Schumacher,0.3162921819355107
+William_Matthew_Harries,1797,False,37298,33,11,William Matthew Harries,0.31495042470995616
+Joseph_Gensoul,1797,False,27416,62,8,Joseph Gensoul,0.3122073092872575
+Friederike_Lienig,1790,False,23303,47,9,Friederike Lienig,0.3121337017463872
+Pierre-Martial_Bardy,1797,False,26995,48,8,Pierre-Martial Bardy,0.3051130924611871
+Robert_Radcliffe_(cricketer),1797,False,33535,34,9,Robert Radcliffe (cricketer),0.3032955536888989
+Ludwig_Titze,1797,False,31920,41,8,Ludwig Titze,0.3011630257706274
+Joseph_Louis_Corbin,1797,False,34881,55,7,Joseph Louis Corbin,0.29966397480962337
+Gustafva_Lindskog,1794,False,24787,56,7,Gustafva Lindskog,0.2987546058734079
+Raffaele_Fidanza,1797,False,28137,38,8,Raffaele Fidanza,0.2983299590464015
+Édouard_Thibaudeau,1797,False,25053,38,8,Édouard Thibaudeau,0.2978587039704055
+Cornelia_Aletta_van_Hulst,1797,False,27026,50,7,Cornelia Aletta van Hulst,0.2961733978331856
+Frederick_Sullivan_(cricketer),1797,False,30786,31,8,Frederick Sullivan (cricketer),0.29213925787795264
+Anders_Josef_Europaeus,1797,False,46903,35,7,Anders Josef Europaeus,0.2881273767954207
+John_Brown_(geographer),1797,False,30359,110,5,John Brown (geographer),0.2827764307919566
+Samuel_Milford,1797,False,30374,46,6,Samuel Milford,0.2820061552173536
+Albert_Seerig,1797,False,32024,45,6,Albert Seerig,0.2816405654991479
+August_Wilhelm_Stiehler,1797,False,30546,40,6,August Wilhelm Stiehler,0.27844740619709335
+Thomas_Thorp_(priest),1797,False,34049,64,5,Thomas Thorp (priest),0.27330617804672414
+Richard_Ely_Selden,1797,False,27104,31,6,Richard Ely Selden,0.2710480832620344
+Théodore_Anne,1797,False,36168,41,5,Théodore Anne,0.2639170306586296
+Johan_Frederik_Møller,1797,False,28709,53,4,Johan Frederik Møller,0.24650919745923974
+Guillaume_Louis_Cottrau,1797,False,33473,16,4,Guillaume Louis Cottrau,0.2197369720206634
+Jenny_Vertpré,1797,False,32676,59,3,Jenny Vertpré,0.21468448881564392
+Saint-Amand_(writer),1797,False,26499,32,3,Saint-Amand (writer),0.20547584788125842
+Joseph_Dresser_Wickham,1797,False,30548,31,3,Joseph Dresser Wickham,0.20522803410596202
+Anne_Isabella_Milbanke,1792,False,105702,0,316,"Annabella Byron, Baroness Byron",0.13088855639009647
+Thomas_Manders,1797,False,35952,0,55,Thomas Manders,0.1259748825402804
+Linus_Yale_Sr.,1797,False,37399,0,54,Linus Yale Sr.,0.1259402763171232
+Niklas_Westring,1797,False,40626,0,31,Niklas Westring,0.12386163465546027
+Ernst_August_Hagen,1797,False,50653,0,29,Ernst August Hagen,0.12370270669876061
+Sophie_Frémiet,1797,False,35326,0,24,Sophie Frémiet,0.12256932133263429
+Lydia_Irving,1797,False,36849,0,19,Lydia Irving,0.12134298402834393
+Ernst_Meyer_(painter),1797,False,42909,0,16,Ernst Meyer (painter),0.12039888689157423
+William_Dick_(veterinarian),1793,False,38989,0,16,William Dick (veterinary surgeon),0.1203405337638448
+Ann_Freeman,1797,False,35312,0,14,Ann Freeman,0.11939449487202326
+Benjamin_H._Smith,1797,False,36716,0,9,Benjamin H. Smith,0.1158598082411693
+José_Xavier_de_Cerveira_e_Sousa,1797,False,36240,0,8,José Xavier de Cerveira e Sousa,0.11469601636059833
+Johann_Adam_Philipp_Hepp,1797,False,29288,0,8,Johann Adam Philipp Hepp,0.11457313533081628
+Benjamin_Guérard,1797,False,37635,0,6,Benjamin Guérard,0.11138693956261767
+Elisabetta_Fiorini_Mazzanti,1799,False,32670,0,6,Elisabetta Fiorini Mazzanti,0.11131100971026361
+Olry_Terquem_(paleontologist),1797,False,31940,0,6,Olry Terquem (paleontologist),0.1112986993718563
+Charles_Alexandre,1797,False,35488,0,5,Charles Alexandre,0.10877070152473237
+Mario_Aspa,1797,False,31420,0,5,Mario Aspa,0.10870780070345301
+Louis_Vulliemin,1797,False,28549,0,5,Louis Vulliemin,0.10865729775026642
+Vaast_Barthélemy_Henry,1797,False,37535,0,4,Vaast Barthélemy Henry,0.10494456670956578
+John_Wedderburn_Dunbar_Moodie,1797,False,32630,0,4,John Wedderburn Dunbar Moodie,0.10487782220546714
+Johann_Jakob_Stähelin,1797,False,26937,0,4,Johann Jakob Stähelin,0.10478361499306305
+Auguste_Bottée_de_Toulmon_(the_younger),1797,False,36951,0,1,Auguste Bottée de Toulmon (the younger),0.08358093330564492

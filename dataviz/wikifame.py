@@ -13,6 +13,7 @@ SPECS = [["datasets/wikibirths.csv", "output/wikibirths.png",
          ["datasets/wikibirths_20c.csv", "output/wikibirths_20c.png",
           "100 famous people from the 20th century", "the most famous person born each year, according to English Wikipedia*",
           "19{}0s", "'{}", range(0,10), range(0,10)],
+         # NOT READY:
          ["datasets/wikibirths_f.csv", "output/wikibirths_f.png",
           "100 famous women from the second millennium", "the most famous woman born each decade, according to English Wikipedia*",
           "{}00s", "'{}0s", range(10,20), range(0,10)]]
@@ -27,7 +28,7 @@ for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE i
                          index=[ROWFORMAT.format(c) for c in ROWRANGE], columns=[COLFORMAT.format(d) for d in COLRANGE])
     df = df.set_index('name')
 
-    if "description" not in df: df = df.assign_rows(description="some person")
+    if "description" not in df: df = df.assign_rows(description="")
     if "image_url" not in df: df = df.assign_rows(image_url=None)
 
     def process(img, name):

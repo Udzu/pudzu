@@ -45,7 +45,7 @@ year,name,score,description,region,image_url
 1943,John Kerry,0.9161013626444879,US politician,americas,https://upload.wikimedia.org/wikipedia/commons/2/2c/John_Kerry_official_Secretary_of_State_portrait.jpg
 1944,Jimmy Page,0.8779815310889191,British musician,europe,https://i.pinimg.com/originals/e5/99/52/e599526c5b9aa42d1f58b556586fccfe.jpg
 1945,Eric Clapton,0.9006571848835782,British musician,europe,https://stat.ameba.jp/user_images/20130913/04/rockcont/20/00/j/t02200277_0468059012681736070.jpg
-1946,Donald Trump,1.0227113677647837,US embarrassment,americas,https://foreignpolicymag.files.wordpress.com/2017/06/gettyimages-488226322.jpg
+1946,Donald Trump,1.0227113677647837,US president,americas,https://foreignpolicymag.files.wordpress.com/2017/06/gettyimages-488226322.jpg
 1947,Hillary Clinton,0.980952950756174,US politician,americas,https://www.biography.com/.image/t_share/MTE4MDAzNDEwMDU4NTc3NDIy/hillary-clinton-9251306-2-402.jpg
 1948,Al Gore,0.908480888910412,US politician,americas,https://upload.wikimedia.org/wikipedia/commons/c/c5/Al_Gore%2C_Vice_President_of_the_United_States%2C_official_portrait_1994.jpg
 1949,Meryl Streep,0.9113124117994739,US actor,americas,https://media1.s-nbcnews.com/j/newscms/2017_02/1858841/170109-meryl-streep-mn-0725_9c4f82e1491a2bdc485bb239e2bad476.nbcnews-fp-1200-800.jpg
@@ -63,7 +63,7 @@ year,name,score,description,region,image_url
 1961,Barack Obama,1.0036136236066928,US president,americas,http://www.eurweb.com/wp-content/uploads/2017/01/President-Obama_0.jpg
 1962,Tom Cruise,0.9079632324536492,US actor,americas,https://s-media-cache-ak0.pinimg.com/736x/27/e3/09/27e309063413c18940f8218973b7b708.jpg
 1963,Michael Jordan,0.9474381695140274,US basketball player,americas,http://www.trendingtoplists.com/wp-content/uploads/2015/04/michael-jordan-basketball-sport-wallpapers-hd-wallpapers-hd-celebrities-sports-photo-michael-jordan-wallpaper.jpg
-1964,Sarah Palin,0.9157287595792845,US comedian,americas,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Sarah_Palin_by_Gage_Skidmore_2.jpg/1200px-Sarah_Palin_by_Gage_Skidmore_2.jpg
+1964,Sarah Palin,0.9157287595792845,US politician,americas,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Sarah_Palin_by_Gage_Skidmore_2.jpg/1200px-Sarah_Palin_by_Gage_Skidmore_2.jpg
 1965,The Undertaker,0.9503206034605086,US wrestler,americas,https://static.sportskeeda.com/wp-content/uploads/2015/08/undertaker_wwe_picture-3-1439546947-800.jpg
 1966,Mike Tyson,0.9185821372751943,US boxer,americas,http://www.ringnews24.com/wp-content/uploads/2017/05/021115-BOXING-Mike-Tyson-OH-NO-IN-TOKYO-SS-PI.vresize.1200.675.high_.51.jpg
 1967,Kane,0.9283113745345863,US wrestler,americas,http://www.wwe.com/f/2017/05/kaneimposters_raw_06301998_0047--a1502aa3aa54b1df8ef342c48cf6d21a.jpg

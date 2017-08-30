@@ -1,0 +1,760 @@
+link,year,disambiguation,length,pageviews,revisions,title,score
+Jean-Jacques_Rousseau,1712,False,588370,104529,6267,Jean-Jacques Rousseau,0.8761440914445683
+David_Hume,1711,False,653298,61481,4435,David Hume,0.8520411917745911
+Frederick_the_Great,1712,False,447382,58222,3934,Frederick the Great,0.8390326443276597
+Louis_XV_of_France,1710,False,323453,79080,2075,Louis XV of France,0.8170444600796127
+Maria_Theresa_of_Austria,1717,False,353893,38257,3113,Maria Theresa,0.8149268435279581
+Denis_Diderot,1713,False,332291,25026,2134,Denis Diderot,0.7887043355278152
+Junípero_Serra,1713,False,251341,17605,2017,Junípero Serra,0.7716660746589405
+Qianlong_Emperor,1711,False,325689,20882,1374,Qianlong Emperor,0.7671071845845377
+George_Whitefield,1714,False,215102,14242,1387,George Whitefield,0.7495504430561721
+Charles_III_of_Spain,1716,False,291447,15441,933,Charles III of Spain,0.7419335034794037
+Carl_Philipp_Emanuel_Bach,1714,False,152834,10429,783,Carl Philipp Emanuel Bach,0.7135525495437234
+"John_Montagu,_4th_Earl_of_Sandwich",1718,False,138075,11818,724,"John Montagu, 4th Earl of Sandwich",0.7121307204816949
+Capability_Brown,1716,False,134185,13521,668,Capability Brown,0.7119462338917713
+Roger_Joseph_Boscovich,1711,False,148857,2864,2492,Roger Joseph Boscovich,0.7101581572501484
+Louis-Joseph_de_Montcalm,1712,False,116110,6224,1080,Louis-Joseph de Montcalm,0.7057760097678994
+"Jeffrey_Amherst,_1st_Baron_Amherst",1717,False,172586,5126,962,"Jeffery Amherst, 1st Baron Amherst",0.702425998497122
+Maria_Gaetana_Agnesi,1718,False,119917,5487,940,Maria Gaetana Agnesi,0.6977024331479832
+Christoph_Willibald_Gluck,1714,False,111525,8560,659,Christoph Willibald Gluck,0.6961280298135065
+Horace_Walpole,1717,False,130144,9584,555,Horace Walpole,0.6949090607351275
+Thomas_Gray,1716,False,92702,8711,667,Thomas Gray,0.6938832811360142
+Leopold_Mozart,1719,False,114920,9171,585,Leopold Mozart,0.6937957396621585
+George_Grenville,1712,False,161460,5419,734,George Grenville,0.6932495390972533
+Thomas_Hutchinson_(governor),1711,False,202376,5506,636,Thomas Hutchinson (governor),0.6917825156267119
+Mikhail_Lomonosov,1711,False,151429,7055,586,Mikhail Lomonosov,0.6912111742951029
+Israel_Putnam,1718,False,109059,6311,699,Israel Putnam,0.689492969003724
+Jean_le_Rond_d'Alembert,1717,False,150014,6346,543,Jean le Rond d'Alembert,0.6850510760403554
+Peter_II_of_Russia,1715,False,153987,10489,380,Peter II of Russia,0.6837433570971448
+Pope_Pius_VI,1717,False,192519,7321,431,Pope Pius VI,0.6832672552800859
+Laurence_Sterne,1713,False,106067,7515,489,Laurence Sterne,0.6799191901561151
+Johann_Joachim_Winckelmann,1717,False,115382,5425,508,Johann Joachim Winckelmann,0.6738428477423968
+David_Garrick,1717,False,131844,5044,453,David Garrick,0.6692769105662961
+Ferdinand_VI_of_Spain,1713,False,167232,6722,290,Ferdinand VI of Spain,0.6613683262858743
+Princess_Augusta_of_Saxe-Gotha,1719,False,159780,5338,317,Princess Augusta of Saxe-Gotha,0.6586100803010461
+Joseph_I_of_Portugal,1714,False,212699,3393,379,Joseph I of Portugal,0.6572907186503253
+Thomas_Reid,1710,False,125813,4383,373,Thomas Reid,0.6566366266546816
+Thomas_Chippendale,1718,False,66846,6706,356,Thomas Chippendale,0.6562069324472442
+"Adolf_Frederick,_King_of_Sweden",1710,False,159805,5995,275,"Adolf Frederick, King of Sweden",0.6553010715112478
+"John_Stuart,_3rd_Earl_of_Bute",1713,False,118977,4148,381,"John Stuart, 3rd Earl of Bute",0.6551193188014273
+Edward_Cornwallis,1713,False,159642,1891,617,Edward Cornwallis,0.6529875567306929
+"William_IV,_Prince_of_Orange",1711,False,139134,5999,238,"William IV, Prince of Orange",0.6466330642739982
+James_Lind,1716,False,75194,4106,363,James Lind,0.6458462552948631
+Giovanni_Battista_Pergolesi,1710,False,74284,5063,317,Giovanni Battista Pergolesi,0.6457054733886164
+Infanta_Mariana_Victoria_of_Spain,1718,False,176031,3082,325,Mariana Victoria of Spain,0.6454369438689934
+Devasahayam_Pillai,1712,False,111100,1534,682,Devasahayam Pillai,0.6438684758674186
+Robert-François_Damiens,1715,False,74966,5489,278,Robert-François Damiens,0.6422782582559304
+Sayat-Nova,1712,False,76716,2256,475,Sayat-Nova,0.63875486625786
+Mustafa_III,1717,False,102721,4409,250,Mustafa III,0.6365666229196195
+Wilhelm_Friedemann_Bach,1710,False,94099,2622,318,Wilhelm Friedemann Bach,0.6310029438829176
+"Charles_Gravier,_comte_de_Vergennes",1717,False,146783,1801,341,"Charles Gravier, comte de Vergennes",0.6282955037660359
+William_Cullen,1710,False,115651,2297,286,William Cullen,0.6256080136684057
+Claude_Adrien_Helvétius,1715,False,103022,2280,267,Claude Adrien Helvétius,0.6209510471871434
+David_Brainerd,1718,False,69096,3030,249,David Brainerd,0.620475546460487
+Giovanni_Battista_Guadagnini,1711,False,67170,1572,411,Giovanni Battista Guadagnini,0.6199524507269983
+Barbara_of_Portugal,1711,False,205610,1800,246,Barbara of Portugal,0.6191917864613437
+Alaungpaya,1714,False,198896,1635,262,Alaungpaya,0.618388103361763
+Marie-Angélique_Memmie_Le_Blanc,1712,False,57372,3785,214,Marie-Angélique Memmie Le Blanc,0.617039041312468
+"George_Germain,_1st_Viscount_Sackville",1716,False,105495,1767,276,"George Germain, 1st Viscount Sackville",0.6148809050585693
+Peter_III_of_Portugal,1717,False,171918,1761,232,Peter III of Portugal,0.6138141288076702
+Francis_Lewis,1713,False,60086,1959,299,Francis Lewis,0.6133155898035564
+Étienne_Bonnot_de_Condillac,1714,False,110462,2021,232,Étienne Bonnot de Condillac,0.6123742643176715
+Jeanne-Marie_Leprince_de_Beaumont,1711,False,57741,4219,178,Jeanne-Marie Leprince de Beaumont,0.6114405856039905
+Laura_Bassi,1711,False,70905,1946,267,Laura Bassi,0.6110128162475835
+Charles-Michel_de_l'Épée,1712,False,129360,1646,246,Charles-Michel de l'Épée,0.6106189406609673
+"James_Burnett,_Lord_Monboddo",1714,False,104956,1099,373,"James Burnett, Lord Monboddo",0.6105987049380946
+Princess_Amelia_of_Great_Britain,1711,False,128404,2798,171,Princess Amelia of Great Britain,0.6098540304058091
+Philip_Livingston,1716,False,69031,1976,251,Philip Livingston,0.6085767749946741
+Antonio_de_Ulloa,1716,False,95077,1962,224,Antonio de Ulloa,0.6080089260261103
+"Étienne_François,_duc_de_Choiseul",1719,False,115866,1627,240,"Étienne François, duc de Choiseul",0.6078190949551292
+Alexander_Gottlieb_Baumgarten,1714,False,80581,2604,195,Alexander Gottlieb Baumgarten,0.6077895161419224
+Allan_Ramsay_(artist),1713,False,72876,2282,218,Allan Ramsay (artist),0.6076026623702624
+John_Newbery,1713,False,71010,1695,269,John Newbery,0.6071432020058162
+Elisabeth_Christine_of_Brunswick-Wolfenbüttel-Bevern,1715,False,152759,1399,231,Elisabeth Christine of Brunswick-Wolfenbüttel-Bevern,0.6049174435702313
+John_Needham,1713,False,36281,2136,262,John Needham,0.6029998053423572
+Johann_Stamitz,1717,False,54018,2154,224,Johann Stamitz,0.6028525996139871
+Edward_Boscawen,1711,False,150769,1077,270,Edward Boscawen,0.6023767371666036
+Lydia_Taft,1712,False,51921,926,452,Lydia Taft,0.6013609659272534
+Alexis_Clairaut,1713,False,76960,1653,227,Alexis Clairaut,0.600600467402167
+"Charles_Pratt,_1st_Earl_Camden",1714,False,136348,1362,219,"Charles Pratt, 1st Earl Camden",0.6004431957586176
+Daniel_Parke_Custis,1711,False,57682,5104,129,Daniel Parke Custis,0.6001048982563286
+Jonathan_Trumbull,1710,False,63448,2040,206,Jonathan Trumbull,0.6000459173345185
+Prince_Charles_Alexander_of_Lorraine,1712,False,119628,1657,191,Prince Charles Alexander of Lorraine,0.5990321740393272
+Francesco_Guardi,1712,False,66937,1846,197,Francesco Guardi,0.5959971617559721
+Henry_Middleton,1717,False,50010,1653,232,Henry Middleton,0.5954873707833147
+William_Hunter_(anatomist),1718,False,90635,1786,178,William Hunter (anatomist),0.5946222586810621
+Empress_Xiaoxianchun,1712,False,53860,1281,255,Empress Xiaoxianchun,0.5924574220857832
+"Aaron_Burr,_Sr.",1716,False,61238,2076,173,Aaron Burr Sr.,0.5924177773430508
+Francesco_Algarotti,1712,False,85142,1312,208,Francesco Algarotti,0.5912123208488738
+John_Elwes_(politician),1714,False,63297,1266,234,John Elwes (politician),0.5909506929949875
+Esek_Hopkins,1718,False,63489,1549,196,Esek Hopkins,0.5899220320578465
+"George_Augustus_Eliott,_1st_Baron_Heathfield",1717,False,115457,954,230,"George Augustus Eliott, 1st Baron Heathfield",0.5887101401978955
+William_Williams_Pantycelyn,1717,False,71967,1185,221,William Williams Pantycelyn,0.5882901877642159
+Claude_Joseph_Vernet,1714,False,66031,2224,148,Claude Joseph Vernet,0.588183652496471
+John_Wayles,1715,False,67297,4146,104,John Wayles,0.5861470402927182
+Richard_Wilson_(painter),1714,False,60023,1706,168,Richard Wilson (painter),0.5853316559155698
+Princess_Caroline_of_Great_Britain,1713,False,116579,1717,133,Princess Caroline of Great Britain,0.5831402306830074
+"John_Russell,_4th_Duke_of_Bedford",1710,False,78743,1380,168,"John Russell, 4th Duke of Bedford",0.5826791530830384
+"Sir_Francis_Bernard,_1st_Baronet",1712,False,129001,958,191,"Sir Francis Bernard, 1st Baronet",0.5826333302044128
+"Wenzel_Anton,_Prince_of_Kaunitz-Rietberg",1711,False,137010,1025,167,"Wenzel Anton, Prince of Kaunitz-Rietberg",0.579839779317432
+Emer_de_Vattel,1714,False,67615,1152,177,Emer de Vattel,0.5774851526482897
+Tokugawa_Ieshige,1712,False,193421,1005,147,Tokugawa Ieshige,0.5773626150999166
+András_Hadik,1710,False,61309,597,328,András Hadik,0.5769765094816144
+Pehr_Kalm,1716,False,66267,700,269,Pehr Kalm,0.5769309824989667
+Thomas_Walker_(explorer),1715,False,44501,1360,174,Thomas Walker (explorer),0.576223824291771
+Robert_Lowth,1710,False,78432,1223,156,Robert Lowth,0.5757558796820652
+Hugh_Blair,1718,False,79850,893,191,Hugh Blair,0.5745804993266153
+Eleazar_Wheelock,1711,False,63803,1019,184,Eleazar Wheelock,0.5745138542494669
+Percivall_Pott,1714,False,70664,1546,134,Percivall Pott,0.5744324374152541
+"William_Barrington,_2nd_Viscount_Barrington",1717,False,164241,816,161,"William Barrington, 2nd Viscount Barrington",0.5727679234280683
+Sarah_Fielding,1710,False,59514,1004,179,Sarah Fielding,0.5720240301951274
+John_Metcalf_(civil_engineer),1717,False,52433,1002,186,John Metcalf (civil engineer),0.5718795957266725
+Henry_Muhlenberg,1711,False,65084,1029,170,Henry Muhlenberg,0.571797292674707
+Jupiter_Hammon,1711,False,39826,1360,157,Jupiter Hammon,0.5703265575942997
+Elimelech_of_Lizhensk,1717,False,54071,1016,171,Elimelech of Lizhensk,0.5692763045743356
+Wilhelm_von_Knyphausen,1716,False,46616,2219,109,Wilhelm von Knyphausen,0.5687639270015628
+Nicolas_Louis_de_Lacaille,1713,False,82311,616,218,Nicolas-Louis de Lacaille,0.56731944741312
+"Ludwig_IX,_Landgrave_of_Hesse-Darmstadt",1719,False,75821,1406,114,"Louis IX, Landgrave of Hesse-Darmstadt",0.5649969818727762
+"George_Montagu-Dunk,_2nd_Earl_of_Halifax",1716,False,79435,961,142,"George Montagu-Dunk, 2nd Earl of Halifax",0.5643991879327118
+Princess_Philippine_Charlotte_of_Prussia,1716,False,133073,1137,110,Princess Philippine Charlotte of Prussia,0.5635716456062567
+Frederick_Haldimand,1718,False,78620,789,156,Frederick Haldimand,0.5620123983584624
+Ernst_Gideon_Freiherr_von_Laudon,1717,False,64590,795,164,Ernst Gideon von Laudon,0.5619728577174337
+Kristijonas_Donelaitis,1714,False,59625,700,186,Kristijonas Donelaitis,0.5617944983025579
+Prince_George_William_of_Great_Britain,1717,False,111910,1739,87,Prince George William of Great Britain,0.5615365126514361
+John_Stanley_(composer),1712,False,48736,1024,146,John Stanley (composer),0.5615229739207449
+Elizabeth_Carter,1717,False,59654,914,147,Elizabeth Carter,0.5608695468998809
+Thomas_Simpson,1710,False,57650,905,147,Thomas Simpson,0.5601389337553431
+Marie-Anne_de_Mailly-Nesle_duchess_de_Châteauroux,1717,False,53393,1567,104,Marie Anne de Mailly,0.55920943607286
+"Louis_François,_Prince_of_Conti",1717,False,126128,785,128,"Louis François, Prince of Conti",0.5586041587383648
+Charlotte_Charke,1713,False,68253,552,202,Charlotte Charke,0.5582906415858147
+Anthony_Benezet,1713,False,54372,857,145,Anthony Benezet,0.5571299247583953
+Mariot_Arbuthnot,1711,False,76219,787,140,Mariot Arbuthnot,0.5569848514592471
+Niccolò_Jommelli,1714,False,65549,871,133,Niccolò Jommelli,0.5561939584043424
+Elisabeth_Therese_of_Lorraine,1711,False,125855,742,126,Elisabeth Therese of Lorraine,0.556048288199179
+Hedvig_Taube,1714,False,85284,563,171,Hedvig Taube,0.5551982143868895
+James_Steuart_(economist),1712,False,64015,788,137,James Steuart (economist),0.5540455614920221
+Louise_Diane_d'Orléans,1716,False,122413,668,129,Louise Diane d'Orléans,0.5533312844934393
+"Wills_Hill,_1st_Marquess_of_Downshire",1718,False,73849,1115,103,"Wills Hill, 1st Marquess of Downshire",0.5532462141293543
+James_Wright_(governor),1716,False,44232,726,150,James Wright (governor),0.5506958465507544
+"John_Armstrong,_Sr.",1717,False,66019,693,138,"John Armstrong, Sr.",0.5505805737252708
+Christian_Fürchtegott_Gellert,1715,False,68406,734,130,Christian Fürchtegott Gellert,0.5503049908117188
+Thomas_Wright_(astronomer),1711,False,53903,858,121,Thomas Wright (astronomer),0.5492296278343911
+Joanna_Elisabeth_of_Holstein-Gottorp,1712,False,108768,809,105,Joanna Elisabeth of Holstein-Gottorp,0.5488982926063585
+Gottfried_Achenwall,1719,False,46052,733,139,Gottfried Achenwall,0.5483654617651827
+Guillaume_Thomas_François_Raynal,1713,False,64445,944,106,Guillaume Thomas François Raynal,0.5481908081598577
+Jacques_Cazotte,1719,False,75035,927,103,Jacques Cazotte,0.548049512692926
+John_Fothergill_(physician),1712,False,59661,565,157,John Fothergill (physician),0.5478225480665555
+"Francis_Seymour-Conway,_1st_Marquess_of_Hertford",1718,False,69202,806,114,"Francis Seymour-Conway, 1st Marquess of Hertford",0.5475840267346841
+Georg_Wilhelm_Richmann,1711,False,42498,941,110,Georg Wilhelm Richmann,0.5448062578150752
+Étienne_Maurice_Falconet,1716,False,54750,990,99,Étienne Maurice Falconet,0.5444536588584057
+Alban_Butler,1710,False,51865,874,108,Alban Butler,0.5442167760460498
+"Luc_de_Clapiers,_marquis_de_Vauvenargues",1715,False,54250,784,112,"Luc de Clapiers, marquis de Vauvenargues",0.543114417255393
+Princess_Elisabeth_Albertine_of_Saxe-Hildburghausen,1713,False,102776,546,124,Princess Elisabeth Albertine of Saxe-Hildburghausen,0.542971440995647
+Duke_Anthony_Ulrich_of_Brunswick,1714,False,103908,925,86,Duke Anthony Ulrich of Brunswick,0.5427530959724053
+Jean-Joseph_de_Mondonville,1711,False,56798,602,133,Jean-Joseph de Mondonville,0.5426555006075563
+Thomas_Sheridan_(actor),1719,False,48848,580,140,Thomas Sheridan (actor),0.5417462405410066
+Lewis_Nicola,1717,False,104331,404,152,Lewis Nicola,0.5406937556082515
+"Nikolaus_I,_Prince_Esterházy",1714,False,53039,834,102,"Nikolaus I, Prince Esterházy",0.5404674799363413
+"Margaret_Bentinck,_Duchess_of_Portland",1715,False,50215,604,129,"Margaret Bentinck, Duchess of Portland",0.540049434688692
+Meshech_Weare,1713,False,54774,599,126,Meshech Weare,0.5398085950235103
+"Charles_I,_Duke_of_Brunswick-Wolfenbüttel",1713,False,111982,788,87,"Charles I, Duke of Brunswick-Wolfenbüttel",0.5393565996913893
+Princess_Anne_Charlotte_of_Lorraine,1714,False,124632,604,100,Princess Anne Charlotte of Lorraine,0.5387470864521644
+Landgravine_Caroline_of_Hesse-Rotenburg,1714,False,117499,584,102,Landgravine Caroline of Hesse-Rotenburg,0.5379637279241036
+Jean-Baptiste_Vaquette_de_Gribeauval,1715,False,54992,487,141,Jean-Baptiste Vaquette de Gribeauval,0.5374686113902323
+William_Shippen,1712,False,49941,634,117,William Shippen,0.537420096133873
+John_Winthrop_(educator),1714,False,58674,489,135,John Winthrop (educator),0.5366060434105138
+Pieter_van_Reede_van_Oudtshoorn,1714,False,103356,263,214,Pieter van Reede van Oudtshoorn,0.5358804298342588
+Richard_Graves,1715,False,65493,472,131,Richard Graves,0.5353881951189231
+William_Shenstone,1714,False,61793,637,105,William Shenstone,0.5352621900787929
+Pierre_Simon_Fournier,1712,False,50536,746,95,Pierre Simon Fournier,0.5332960149606688
+John_Canton,1718,False,51556,539,118,John Canton,0.5328747773768997
+Philippine_Élisabeth_d'Orléans,1714,False,123980,683,81,Philippine Élisabeth d'Orléans,0.5324976304357785
+René_Nicolas_Charles_Augustin_de_Maupeou,1714,False,58332,720,92,René Nicolas Charles Augustin de Maupeou,0.532361397996572
+"John_Griffin,_4th_Baron_Howard_de_Walden",1719,False,69156,309,180,"John Griffin, 4th Baron Howard de Walden",0.532306966003101
+Joseph-Marie_Vien,1716,False,52467,868,84,Joseph-Marie Vien,0.5323047143732248
+Yechezkel_Landau,1713,False,39485,624,111,Yechezkel Landau,0.5318713462007902
+"Richard_Grenville-Temple,_2nd_Earl_Temple",1711,False,64279,486,115,"Richard Grenville-Temple, 2nd Earl Temple",0.5307854167699477
+"Victor-François,_2nd_duc_de_Broglie",1718,False,57810,624,98,"Victor-François, 2nd duc de Broglie",0.5307704921689693
+Jonas_Hanway,1712,False,44382,755,92,Jonas Hanway,0.5306608394082125
+Georg_Matthias_Monn,1717,False,51365,712,91,Georg Matthias Monn,0.5300855345242877
+Nicholas_Cooke,1717,False,113982,435,106,Nicholas Cooke,0.5293939040871627
+Samuel_Graves,1713,False,46293,726,90,Samuel Graves,0.528965474395194
+Ephraim_Williams,1715,False,38945,924,81,Ephraim Williams,0.5288220612970899
+Arthur_Devis_(1712–1787),1712,False,100666,441,106,Arthur Devis (1712–1787),0.5286424373626898
+Constantine_Mavrocordatos,1711,False,70398,420,120,Constantine Mavrocordatos,0.528492031494572
+"Victor_de_Riqueti,_marquis_de_Mirabeau",1715,False,50162,817,81,"Victor de Riqueti, marquis de Mirabeau",0.5282942193549863
+Abraham_Darby_II,1711,False,33762,645,103,Abraham Darby II,0.5277638624132591
+Jacques-Germain_Soufflot,1713,False,41872,920,78,Jacques-Germain Soufflot,0.5276977385791891
+Baron_Franz_von_der_Trenck,1711,False,55535,545,101,Baron Franz von der Trenck,0.52736938569997
+Giuseppe_Marc'Antonio_Baretti,1719,False,73922,365,130,Giuseppe Marc'Antonio Baretti,0.5271845357173081
+George_Howard_(British_Army_officer),1718,False,61226,258,199,George Howard (British Army officer),0.5271246505508507
+Lorenz_Christoph_Mizler,1711,False,66424,408,120,Lorenz Christoph Mizler,0.5268495654026524
+Hedvig_Charlotta_Nordenflycht,1718,False,65997,339,140,Hedvig Charlotta Nordenflycht,0.5261245787657081
+Nikita_Ivanovich_Panin,1718,False,61392,576,90,Nikita Ivanovich Panin,0.525033756663977
+James_Paine_(architect),1717,False,64607,478,101,James Paine (architect),0.5247095352555479
+Princess_Friederike_Luise_of_Prussia,1714,False,116381,739,67,Princess Friederike Luise of Prussia,0.5245538270796622
+"Frederick,_Margrave_of_Brandenburg-Bayreuth",1711,False,100684,820,65,"Frederick, Margrave of Brandenburg-Bayreuth",0.5245176446316062
+John_Whitehurst,1713,False,75314,462,99,John Whitehurst,0.5243020629004599
+François-Joachim_de_Pierre_de_Bernis,1715,False,85468,441,99,François-Joachim de Pierre de Bernis,0.5240183052494553
+Alexander_Sumarokov,1717,False,49561,446,111,Alexander Sumarokov,0.5235251389905815
+Jean_François_de_Saint-Lambert,1716,False,58373,704,77,Jean François de Saint-Lambert,0.5231816718661116
+"John_Perceval,_2nd_Earl_of_Egmont",1711,False,63304,417,108,"John Perceval, 2nd Earl of Egmont",0.5227314370562265
+"Frederick_August_I,_Duke_of_Oldenburg",1711,False,106549,395,97,"Frederick August I, Duke of Oldenburg",0.521487241693712
+Giuseppe_Bonno,1711,False,45265,583,87,Giuseppe Bonno,0.5205128563736919
+William_Bradford_(American_Revolutionary_printer),1719,False,49683,689,76,William Bradford (American Revolutionary printer),0.5201612289833321
+Marc-Antoine_Laugier,1713,False,43553,1209,58,Marc-Antoine Laugier,0.5197661495612277
+William_Watson_(scientist),1715,False,46389,646,79,William Watson (scientist),0.5193749479507989
+Dorothea_Erxleben,1715,False,43554,602,83,Dorothea Erxleben,0.5188862615374622
+Louis-Jean-Marie_Daubenton,1716,False,52552,446,97,Louis-Jean-Marie Daubenton,0.518433680182277
+John_Bradstreet,1714,False,43119,455,100,John Bradstreet,0.5182347864025716
+Jacques_Duphly,1715,False,41608,433,104,Jacques Duphly,0.5178476558740167
+Abraham_Gotthelf_Kästner,1719,False,50344,433,98,Abraham Gotthelf Kästner,0.5174258905103185
+Samuel_Finley,1715,False,49678,407,101,Samuel Finley,0.5164780473055364
+John_Forbes_(Royal_Navy_officer),1714,False,85721,210,169,John Forbes (Royal Navy officer),0.5163734001174942
+John_Zephaniah_Holwell,1711,False,41673,500,90,John Zephaniah Holwell,0.5163167942936301
+Frederick_Cornwallis,1713,False,73210,686,65,Frederick Cornwallis,0.5162696157387817
+Mikhail_Illarionovich_Vorontsov,1714,False,51970,476,88,Mikhail Illarionovich Vorontsov,0.5161527846651037
+Molla_Panah_Vagif,1717,False,62494,465,85,Molla Panah Vagif,0.5157695990033792
+"Henry_Bathurst,_2nd_Earl_Bathurst",1714,False,75925,409,89,"Henry Bathurst, 2nd Earl Bathurst",0.5155626026164565
+Ewald_Christian_von_Kleist,1715,False,53241,342,111,Ewald Christian von Kleist,0.5150408697283655
+Giuseppe_Maria_Buonaparte,1713,False,31423,1350,54,Giuseppe Maria Buonaparte,0.5146960840692018
+"Charles,_Prince_of_Soubise",1715,False,105126,698,58,"Charles, Prince of Soubise",0.5142567427149163
+"Robert_Darcy,_4th_Earl_of_Holderness",1718,False,53440,548,76,"Robert Darcy, 4th Earl of Holderness",0.514104398049466
+"George_Pigot,_1st_Baron_Pigot",1719,False,73895,287,117,"George Pigot, 1st Baron Pigot",0.5140374590161075
+Benjamin_Ingham,1712,False,78204,268,123,Benjamin Ingham,0.5139118972956863
+"Welbore_Ellis,_1st_Baron_Mendip",1713,False,64208,333,105,"Welbore Ellis, 1st Baron Mendip",0.5137675376436639
+Pierre_Gaultier_de_La_Vérendrye,1714,False,31105,493,92,Pierre Gaultier de La Vérendrye,0.5134964811339554
+Kitty_Clive,1711,False,50697,422,91,Kitty Clive,0.513429815184763
+Abraham_Trembley,1710,False,52894,395,94,Abraham Trembley,0.5130674202302777
+James_Ferguson_(Scottish_astronomer),1710,False,74413,345,95,James Ferguson (Scottish astronomer),0.5123182519244254
+Thomas_Bond_(physician),1712,False,39407,401,98,Thomas Bond (physician),0.5121651228068032
+Nathaniel_Hone_the_Elder,1718,False,42969,415,93,Nathaniel Hone the Elder,0.5120343750167813
+Count_Johann_Hartwig_Ernst_von_Bernstorff,1712,False,54818,398,90,Count Johann Hartwig Ernst von Bernstorff,0.5118124036346655
+"Elizabeth_Percy,_Duchess_of_Northumberland",1716,False,96186,701,56,"Elizabeth Percy, Duchess of Northumberland",0.511635543320515
+Maruyama_Gondazaemon,1713,False,38772,526,79,Maruyama Gondazaemon,0.5111889800057242
+Johann_Gottfried_Bernhard_Bach,1715,False,42472,476,82,Johann Gottfried Bernhard Bach,0.5107877971302264
+Khawaja_Muhammad_Zaman_of_Luari,1713,False,52871,241,140,Khawaja Muhammad Zaman of Luari,0.5105757064759449
+Joseph_Foullon_de_Doué,1715,False,40696,598,71,Joseph Foullon de Doué,0.5105224758353343
+Isaac_de_Pinto,1717,False,49143,474,78,Isaac de Pinto,0.5099293342892078
+John_Collins_(Continental_Congress),1717,False,60075,590,65,John Collins (Continental Congress),0.5098816917418035
+Johann_Phillip_Fabricius,1711,False,64610,394,83,Johann Phillip Fabricius,0.5095695927578142
+Peter_Oliver_(loyalist),1713,False,61332,513,70,Peter Oliver (loyalist),0.5095539954345509
+Georg_Christoph_Wagenseil,1715,False,39488,571,72,Georg Christoph Wagenseil,0.5095016396761447
+Jean-Baptiste_Pigalle,1714,False,49682,636,64,Jean-Baptiste Pigalle,0.5093136268020076
+John_Mitchell_(geographer),1711,False,73771,672,57,John Mitchell (geographer),0.508857838607956
+Matthew_Tilghman,1718,False,42470,642,65,Matthew Tilghman,0.5086914885907907
+Agustín_de_Jáuregui,1711,False,69859,309,97,Agustín de Jáuregui,0.5086272052046785
+Jeremiah_Theus,1716,False,61295,326,93,Jeremiah Theus,0.5074750610017977
+Diane_Adélaïde_de_Mailly,1713,False,53818,853,52,Diane Adélaïde de Mailly,0.50714335504217
+Adam_Gottlob_Moltke,1710,False,74014,318,90,Adam Gottlob Moltke,0.5070565541085786
+César-François_Cassini_de_Thury,1714,False,46544,432,79,César-François Cassini de Thury,0.5069853840681302
+"William_Nassau_de_Zuylestein,_4th_Earl_of_Rochford",1717,False,105375,249,103,"William Nassau de Zuylestein, 4th Earl of Rochford",0.5068819804423845
+Claude_Bourgelat,1712,False,42955,613,63,Claude Bourgelat,0.5059232102658282
+Jorge_Juan_y_Santacilia,1713,False,49791,392,81,Jorge Juan y Santacilia,0.5056514893350538
+Gioacchino_Conti,1714,False,45032,310,98,Gioacchino Conti,0.504696411532427
+Pierre_Charles_Le_Monnier,1715,False,50405,293,100,Pierre Charles Le Monnier,0.5046618110689248
+Granville_Elliott,1713,False,49262,189,160,Granville Elliott,0.5044428900389614
+Benjamin_Kennicott,1718,False,46848,463,71,Benjamin Kennicott,0.5042971833601113
+Antonio_María_de_Bucareli_y_Ursúa,1717,False,65408,383,75,Antonio María de Bucareli y Ursúa,0.5041421772281628
+Louis_Carrogis_Carmontelle,1717,False,49027,434,73,Louis Carrogis Carmontelle,0.5040407890841329
+Matthew_Stewart_(mathematician),1717,False,44728,219,135,Matthew Stewart (mathematician),0.5036870519936307
+Charles_Batteux,1713,False,46919,449,71,Charles Batteux,0.5033553734926713
+Richard_Gridley,1710,False,34881,570,65,Richard Gridley,0.5031310934370934
+Jacob_Christian_Schäffer,1718,False,55640,369,78,Jacob Christian Schäffer,0.5030851848558787
+Jacob_Rodrigues_Pereira,1715,False,37704,397,80,Jacob Rodrigues Pereira,0.5025740748003008
+Louis_de_Noailles,1713,False,59530,301,89,Louis de Noailles,0.5024866825003688
+Timothy_Ruggles,1711,False,51492,390,75,Timothy Ruggles,0.5023501863906022
+"James_Waldegrave,_2nd_Earl_Waldegrave",1715,False,45072,613,58,"James Waldegrave, 2nd Earl Waldegrave",0.5022142997756615
+Johann_David_Michaelis,1717,False,51032,459,67,Johann David Michaelis,0.5021435087580295
+Johann_Gottlob_Leidenfrost,1715,False,38565,514,65,Johann Gottlob Leidenfrost,0.5011859330125472
+Benjamin_Waller,1716,False,36372,310,94,Benjamin Waller,0.5007162257792863
+Jean-Jacques_Barthélemy,1716,False,60150,407,68,Jean-Jacques Barthélemy,0.5007144020154425
+Martin_Knutzen,1713,False,55511,383,72,Martin Knutzen,0.5006381820037694
+Ignaz_Holzbauer,1711,False,45033,375,76,Ignaz Holzbauer,0.5002938582738389
+Charles-Nicolas_Cochin,1715,False,70469,441,62,Charles-Nicolas Cochin,0.5002892856885276
+Robert_Hay_Drummond,1711,False,102237,315,72,Robert Hay Drummond,0.49980408507068935
+Grand_Duchess_Natalya_Alexeyevna_of_Russia_(1714–1728),1714,False,101228,616,47,Grand Duchess Natalya Alexeyevna of Russia (1714–1728),0.498756104556836
+Charles_Guillaume_Le_Normant_d'Étiolles,1717,False,32818,726,53,Charles Guillaume Le Normant d'Étiolles,0.49872122758252
+Tanuma_Okitsugu,1719,False,40395,315,86,Tanuma Okitsugu,0.4986840026646987
+Felice_Giardini,1716,False,46122,383,71,Felice Giardini,0.49812526334756235
+Giovanni_Arduino_(geologist),1714,False,46076,407,68,Giovanni Arduino (geologist),0.4980478669742747
+Daniel_Liénard_de_Beaujeu,1711,False,41179,511,60,Daniel Liénard de Beaujeu,0.4977606329317761
+Pasquale_Cafaro,1716,False,38906,159,173,Pasquale Cafaro,0.49700382810753774
+Gottfried_August_Homilius,1714,False,42423,433,65,Gottfried August Homilius,0.49699552693821597
+Stepan_Krasheninnikov,1711,False,58220,288,81,Stepan Krasheninnikov,0.4966757390477181
+"James_Hewitt,_1st_Viscount_Lifford",1712,False,44540,188,132,"James Hewitt, 1st Viscount Lifford",0.49662077908706087
+Carl_Gustaf_Pilo,1711,False,59038,291,79,Carl Gustaf Pilo,0.4960939750335748
+Thomas_Lewis_(Virginia),1718,False,45229,334,75,Thomas Lewis (Virginia),0.49590420651594563
+Louis_Jules_Mancini_Mazarini,1716,False,51566,248,93,Louis Jules Mancini Mazarini,0.495819857705492
+Joseph_Marie_Terray,1715,False,79522,367,62,Joseph Marie Terray,0.4955844585395367
+Antonio_Genovesi,1713,False,42457,744,47,Antonio Genovesi,0.4955270243305601
+"Sir_Hyde_Parker,_5th_Baronet",1714,False,41700,393,67,"Sir Hyde Parker, 5th Baronet",0.4952236698251896
+Anna_Morandi_Manzolini,1714,False,55394,287,79,Anna Morandi Manzolini,0.49498843767942435
+"Fletcher_Norton,_1st_Baron_Grantley",1716,False,74734,324,67,"Fletcher Norton, 1st Baron Grantley",0.4945919040721322
+"George_Montagu,_1st_Duke_of_Montagu",1712,False,45345,411,63,"George Montagu, 1st Duke of Montagu",0.49456013013578237
+Michel-Jean_Sedaine,1719,False,53291,277,81,Michel-Jean Sedaine,0.49443057323062445
+Mary_Palmer,1716,False,53826,344,68,Mary Palmer,0.4941672586329206
+"Fernando_de_Silva,_12th_Duke_of_Alba",1714,False,95978,259,75,"Fernando de Silva, 12th Duke of Alba",0.49412386428381305
+Jacques_Saly,1717,False,61314,305,72,Jacques Saly,0.49398358815701776
+Johann_Wilhelm_Ludwig_Gleim,1719,False,57633,253,85,Johann Wilhelm Ludwig Gleim,0.49395070358317067
+Mary_Frances_of_the_Five_Wounds,1715,False,45128,434,60,Mary Frances of the Five Wounds,0.4938161889988277
+Charles_Humphreys,1714,False,30964,595,54,Charles Humphreys,0.49370958848899144
+James_Short_(mathematician),1710,False,39402,237,98,James Short (mathematician),0.493487548944102
+"Charles-François_de_Broglie,_marquis_de_Ruffec",1719,False,52651,318,70,"Charles-François de Broglie, marquis de Ruffec",0.4926628570303228
+William_Brownrigg,1711,False,56490,388,60,William Brownrigg,0.4925574824841666
+Jacques_Claude_Marie_Vincent_de_Gournay,1712,False,48345,430,58,Jacques Claude Marie Vincent de Gournay,0.4925471232187814
+Matthew_Griswold_(governor),1714,False,54353,392,60,Matthew Griswold (governor),0.4925076715537484
+Luise_Gottsched,1713,False,43427,201,109,Luise Gottsched,0.49217856191534215
+Charles_Simon_Favart,1710,False,48684,313,71,Charles Simon Favart,0.49200232496715707
+Anne_Steele,1717,False,46784,424,57,Anne Steele,0.4909315022359745
+John_Ponsonby_(politician),1713,False,53430,282,73,John Ponsonby (politician),0.4905698460193696
+Agui,1717,False,48433,303,70,Agui,0.4902154304922041
+César_Gabriel_de_Choiseul,1712,False,65929,413,53,César Gabriel de Choiseul,0.48973073758968105
+Johann_Heinrich_Gottlob_Justi,1717,False,45114,398,58,Johann Heinrich Gottlob Justi,0.48949786985413285
+Jean-Étienne_Guettard,1715,False,43580,324,67,Jean-Étienne Guettard,0.48942916920994095
+Ignacije_Szentmartony,1718,False,37329,199,106,Ignacije Szentmartony,0.4892105586392866
+James_Nares,1715,False,45493,295,70,James Nares,0.48869232568388554
+"Sir_Danvers_Osborn,_3rd_Baronet",1715,False,41860,175,116,"Sir Danvers Osborn, 3rd Baronet",0.4884759135118278
+Christian_Mayer_(astronomer),1719,False,46568,247,80,Christian Mayer (astronomer),0.48847024631530683
+Catherine_Théot,1716,False,37100,725,43,Catherine Théot,0.4884660747850791
+Giovanni_Battista_Beccaria,1716,False,44357,349,62,Giovanni Battista Beccaria,0.48841549980558147
+"Charles_Sackville,_2nd_Duke_of_Dorset",1711,False,54864,304,65,"Charles Sackville, 2nd Duke of Dorset",0.4881525444060488
+Josef_Seger,1716,False,50276,243,79,Josef Seger,0.4880933463057701
+Johann_Jakob_Reiske,1716,False,54721,210,88,Johann Jakob Reiske,0.4878866651291073
+Charles_Lucas_(politician),1713,False,71300,206,84,Charles Lucas (politician),0.4877119711762482
+Charles_Lucas_(politician),1713,False,71300,206,84,Charles Lucas (politician),0.4877119711762482
+Angelique_du_Coudray,1712,False,58521,267,69,Angélique du Coudray,0.48702288917820113
+Christian_August_Crusius,1715,False,40473,279,72,Christian August Crusius,0.48687059413314615
+"William_Talbot,_1st_Earl_Talbot",1710,False,54959,383,54,"William Talbot, 1st Earl Talbot",0.48667223878616034
+Nasir_Jang_Mir_Ahmad,1712,False,43682,629,43,Nasir Jung,0.4864403707878885
+Nasir_Jung,1712,False,43358,629,43,Nasir Jung,0.48636718295462583
+Edward_Moore_(dramatist),1712,False,40752,340,61,Edward Moore (dramatist),0.4859711781830934
+Adam_Friedrich_Oeser,1717,False,46862,220,83,Adam Friedrich Oeser,0.48579724657154494
+Richard_Jago,1715,False,47487,218,83,Richard Jago,0.4855835633647612
+Joseph_Spencer,1714,False,35318,447,52,Joseph Spencer,0.4850628055040007
+Count_Karl-Wilhelm_Finck_von_Finckenstein,1714,False,35276,382,57,Count Karl-Wilhelm Finck von Finckenstein,0.48492229268462167
+Lord_John_Sackville,1713,False,44338,200,88,Lord John Sackville,0.48399631110999847
+Edward_Wortley_Montagu_(traveller),1713,False,47786,211,81,Edward Wortley Montagu (traveller),0.4834241192800313
+"Charles_William_Frederick,_Margrave_of_Brandenburg-Ansbach",1712,False,97104,330,50,"Charles William Frederick, Margrave of Brandenburg-Ansbach",0.4831440314590854
+Joseph_Frye,1712,False,36506,272,68,Joseph Frye,0.48245769876291383
+Jean_Baptiste_de_La_Vérendrye,1713,False,35232,422,51,Jean Baptiste de La Vérendrye,0.48236988554238996
+Charles-Amédée-Philippe_van_Loo,1719,False,39564,432,49,Charles-Amédée-Philippe van Loo,0.48215477911298416
+Jean-François-Marie_de_Surville,1717,False,41753,226,76,Jean-François-Marie de Surville,0.48203063710763405
+"Marc_René,_marquis_de_Montalembert",1714,False,51470,310,57,"Marc René, marquis de Montalembert",0.48201589354988206
+Dominic_Serres,1719,False,46015,338,55,Dominic Serres,0.48199741715403654
+William_Strahan_(publisher),1715,False,43277,304,59,William Strahan (publisher),0.4813709538580231
+Roger_Newdigate,1719,False,46170,238,70,Roger Newdigate,0.48136146083566017
+William_Cole_(antiquary),1714,False,67035,166,90,William Cole (antiquary),0.48133213681941267
+Thomas_Dimsdale,1712,False,43723,511,43,Thomas Dimsdale,0.48088042620310584
+Charles_Roe,1715,False,51802,226,68,Charles Roe,0.4793286131713569
+Girolamo_Abos,1715,False,46715,260,62,Girolamo Abos,0.4791698322868332
+Gottlieb_Heinrich_Totleben,1715,False,43135,333,53,Gottlieb Heinrich Totleben,0.47909658845254605
+Johann_Gottlob_Lehmann_(scientist),1719,False,47111,305,54,Johann Gottlob Lehmann (scientist),0.47805439887785334
+Antoine_Dauvergne,1713,False,37537,295,57,Antoine Dauvergne,0.4773915487238084
+"James_Brudenell,_5th_Earl_of_Cardigan",1715,False,51213,222,66,"James Brudenell, 5th Earl of Cardigan",0.4772767850732628
+Johann_Heinrich_Samuel_Formey,1711,False,49224,182,79,Johann Heinrich Samuel Formey,0.4770509873391649
+James_Hervey,1714,False,42741,320,52,James Hervey,0.47682253255024387
+Gowin_Knight,1713,False,41974,217,69,Gowin Knight,0.47652154542266695
+"Luc_Urbain_de_Bouëxic,_comte_de_Guichen",1712,False,58078,206,67,"Luc Urbain de Bouëxic, comte de Guichen",0.476350861258148
+Ranieri_de'_Calzabigi,1714,False,36851,340,51,Ranieri de' Calzabigi,0.47632629545860533
+William_Vernon,1719,False,43314,239,62,William Vernon,0.47555640675475236
+"Robert_Petre,_8th_Baron_Petre",1713,False,51724,184,74,"Robert Petre, 8th Baron Petre",0.4752647761807888
+Domènec_Terradellas,1711,False,51596,165,82,Domènec Terradellas,0.47511120245572563
+Domènec_Terradellas,1713,False,51596,165,82,Domènec Terradellas,0.47511120245572563
+Philippe_de_Noailles,1715,False,61361,199,65,Philippe de Noailles,0.47424584176549095
+"Thomas_Osborne,_4th_Duke_of_Leeds",1713,False,48684,284,52,"Thomas Osborne, 4th Duke of Leeds",0.47422115336168774
+Jean-Baptiste_Marie_Pierre,1714,False,48536,397,42,Jean-Baptiste Marie Pierre,0.4734788869191634
+Friedrich_Karl_Joseph_von_Erthal,1719,False,49767,254,55,Friedrich Karl Joseph von Erthal,0.47341628338298475
+Alison_Cockburn,1712,False,44311,194,69,Alison Cockburn,0.4729269432821356
+Samuel_Martin_(Secretary_to_the_Treasury),1714,False,40675,173,78,Samuel Martin (Secretary to the Treasury),0.47279849536621155
+Carl_Fredrik_Adelcrantz,1716,False,67443,225,56,Carl Fredrik Adelcrantz,0.472775148898097
+John_Brown_(essayist),1715,False,43089,231,59,John Brown (essayist),0.47209328217159086
+Edward_Capell,1713,False,38695,265,54,Edward Capell,0.4716307426211224
+Pedro_Antonio_de_Cevallos,1715,False,39881,279,51,Pedro Antonio de Cevallos,0.47085849594651585
+Peter_Böhler,1712,False,60233,127,94,Peter Boehler,0.47073525002343347
+"Paul_II_Anton,_Prince_Esterházy",1711,False,45378,240,55,"Paul II Anton, Prince Esterházy",0.47065845061770223
+Joshua_Loring,1716,False,44507,268,51,Joshua Loring,0.4705714259585135
+Charles_Morris_(surveyor_general),1711,False,46964,144,86,Charles Morris (surveyor general),0.47056494535645704
+Anna_Nitschmann,1715,False,46734,169,72,Anna Nitschmann,0.4699526133501577
+John_Christopher_Hartwick,1714,False,60365,142,80,John Christopher Hartwick,0.46944429291412604
+Charles_Holmes_(Royal_Navy_officer),1711,False,43814,203,61,Charles Holmes (Royal Navy officer),0.4691759585390274
+"Pedro,_Prince_of_Brazil",1712,False,111299,484,31,"Pedro, Prince of Brazil",0.46819790285653395
+François-Vincent_Toussaint,1715,False,39293,211,59,François-Vincent Toussaint,0.46807362676914965
+Gaetano_Latilla,1711,False,37854,228,56,Gaetano Latilla,0.46806540528967316
+Alexandre_Guy_Pingré,1711,False,44042,213,57,Alexandre Guy Pingré,0.46790591942973064
+Mahadhammaraza_Dipadi,1714,False,59603,276,45,Mahadhammaraza Dipadi,0.46789543585792215
+Charles_Moss_(bishop_of_Bath_and_Wells),1711,False,74637,161,65,Charles Moss (bishop of Bath and Wells),0.4678613645895925
+Ebenezer_Kinnersley,1711,False,42725,168,69,Ebenezer Kinnersley,0.46716836401069495
+Christian_Wilhelm_Ernst_Dietrich,1712,False,53959,272,45,Christian Wilhelm Ernst Dietrich,0.46657032681966526
+József_Károly_Hell,1713,False,32506,119,103,József Károly Hell,0.465507770247575
+Kajetan_Sołtyk,1715,False,45383,156,70,Kajetan Sołtyk,0.46543169057345674
+Louis_Guillaume_Lemonnier,1717,False,45736,143,76,Louis-Guillaume Le Monnier,0.4653056797108139
+"Edmund_Sheffield,_2nd_Duke_of_Buckingham_and_Normanby",1716,False,33280,444,36,"Edmund Sheffield, 2nd Duke of Buckingham and Normanby",0.4645392762427652
+Spranger_Barry,1719,False,37111,296,43,Spranger Barry,0.46354503471945785
+Francesco_Antonio_Zaccaria,1714,False,46267,186,57,Francesco Antonio Zaccaria,0.463514949668773
+Christoph_Anton_Migazzi,1714,False,53054,160,63,Christoph Anton Migazzi,0.46342370038046127
+Guillaume_Coustou_the_Younger,1716,False,43923,291,42,Guillaume Coustou the Younger,0.46333501731194077
+"Edward_Seymour,_9th_Duke_of_Somerset",1717,False,74318,248,42,"Edward Seymour, 9th Duke of Somerset",0.4627456691428713
+Andrew_Gordon_(Benedictine),1712,False,35419,457,34,Andrew Gordon (Benedictine),0.4626049078774542
+Prince_Moritz_of_Anhalt-Dessau,1712,False,45232,216,50,Prince Moritz of Anhalt-Dessau,0.4625757470476213
+Omar_Ali_Saifuddin_I,1711,False,44414,312,39,Omar Ali Saifuddin I,0.4616326048367134
+Antoine-Joseph_Pernety,1716,False,36053,308,40,Antoine-Joseph Pernety,0.4607208570032268
+Johann_Nathanael_Lieberkühn,1711,False,40973,339,37,Johann Nathanael Lieberkühn,0.4604904677474552
+Emanuel_Mendez_da_Costa,1717,False,39462,183,55,Emanuel Mendez da Costa,0.4599279555682535
+François_Jacquier,1711,False,48953,184,52,François Jacquier,0.4594854390434324
+Pieter_Burman_the_Younger,1713,False,40446,158,61,Pieter Burman the Younger,0.4592113213651438
+Johann_Samuel_König,1712,False,38154,276,41,Johann Samuel König,0.45920264336164984
+John_Landen,1719,False,40129,207,49,John Landen,0.45911180110233085
+Benjamin_Beddome,1717,False,38711,153,63,Benjamin Beddome,0.4589424336983922
+"Thomas_Foley,_1st_Baron_Foley_(1716–1777)",1716,False,40205,162,59,"Thomas Foley, 1st Baron Foley (1716–1777)",0.4586857960402619
+Jean-Baptiste_Descamps,1714,False,53373,170,53,Jean-Baptiste Descamps,0.45821744911738366
+Charles_de_Fitz-James,1712,False,34572,287,39,Charles de Fitz-James,0.4568970694292009
+Princess_Marie_Victoire_d'Arenberg,1714,False,97279,132,57,Princess Marie Victoire d'Arenberg,0.45646065242465683
+Fortunatus_Wright,1712,False,40418,193,48,Fortunatus Wright,0.4558036615068987
+Saverio_Bettinelli,1718,False,47544,144,59,Saverio Bettinelli,0.4556570709574865
+Sarah_Osborn,1714,False,31252,279,39,Sarah Osborn,0.4551275063337781
+Johann_Elias_Schlegel,1719,False,41042,174,51,Johann Elias Schlegel,0.45507998034168706
+Marie_Sophie_de_Courcillon,1713,False,77471,226,38,Marie Sophie de Courcillon,0.4548314497833042
+Konrad_Ernst_Ackermann,1710,False,32353,206,46,Konrad Ernst Ackermann,0.454031143425995
+Ahmad_bin_Said_al-Busaidi,1710,False,62137,743,23,Ahmad bin Said al-Busaidi,0.4539938387780007
+Karl_Jakob_Weber,1712,False,33535,443,30,Karl Jakob Weber,0.4539036699683392
+Ulla_Tessin,1711,False,36488,157,55,Ulla Tessin,0.4536410622952078
+Petrus_Albertus_van_der_Parra,1714,False,56499,142,55,Petrus Albertus van der Parra,0.45355403283685936
+"Caroline_Townshend,_1st_Baroness_Greenwich",1717,False,31781,254,39,"Caroline Townshend, 1st Baroness Greenwich",0.4524253493589169
+"Anthony_Ashley_Cooper,_4th_Earl_of_Shaftesbury",1711,False,33138,216,42,"Anthony Ashley Cooper, 4th Earl of Shaftesbury",0.45141080208096773
+Lord_Augustus_FitzRoy,1716,False,59253,359,29,Lord Augustus FitzRoy,0.45115219108062943
+Louis-Antoine_Caraccioli,1719,False,38097,151,53,Louis-Antoine Caraccioli,0.4509639619748104
+Hongzhou_(prince),1712,False,65341,102,70,Hongzhou (prince),0.45089976160696754
+Jean-Olivier_Briand,1715,False,35873,194,44,Jean-Olivier Briand,0.45081572994881747
+Job_Baster,1711,False,36552,112,71,Job Baster,0.45064417431254283
+Angelo_Maria_Amorevoli,1716,False,45185,117,64,Angelo Maria Amorevoli,0.45026115308139536
+Johann_Friedrich_Doles,1715,False,34553,276,35,Johann Friedrich Doles,0.4499634501963833
+Gasparo_Gozzi,1713,False,39929,177,45,Gasparo Gozzi,0.4496697923001406
+Philipp_Gotthard_von_Schaffgotsch,1716,False,38076,129,59,Philipp Gotthard von Schaffgotsch,0.4494635488882587
+Bernardo_de_Miera_y_Pacheco,1713,False,46177,278,33,Bernardo de Miera y Pacheco,0.4494217802640358
+Marie_Marguerite_Bihéron,1719,False,39457,155,49,Marie Marguerite Bihéron,0.4487590881988888
+John_Alcock_(organist),1715,False,36556,218,38,John Alcock (organist),0.4475467454121028
+Israel_Acrelius,1714,False,59263,163,42,Israel Acrelius,0.4467201486717546
+Abraham_Drake,1715,False,30621,166,46,Abraham Drake,0.4461443957584751
+Pierre-Marie-Jérôme_Trésaguet,1716,False,30777,251,35,Pierre-Marie-Jérôme Trésaguet,0.4461174727548086
+Paul_Möhring,1710,False,42059,158,45,Paul Möhring,0.44610475424378027
+"Peter_Du_Cane,_Sr.",1713,False,33241,100,73,"Peter Du Cane, Sr.",0.446020165503962
+Gian_Carlo_Passeroni,1713,False,56414,102,63,Gian Carlo Passeroni,0.44568571864054146
+Pehr_Wilhelm_Wargentin,1717,False,36958,169,43,Pehr Wilhelm Wargentin,0.445259167684605
+"James_Cecil,_6th_Earl_of_Salisbury",1713,False,32223,359,28,"James Cecil, 6th Earl of Salisbury",0.44396779056674723
+"Harry_Grey,_4th_Earl_of_Stamford",1715,False,42054,188,38,"Harry Grey, 4th Earl of Stamford",0.4439220993367146
+Cyrus_Trapaud,1715,False,36596,173,40,Cyrus Trapaud,0.4425121466836747
+Marco_Coltellini,1719,False,34424,174,40,Marco Coltellini,0.4421904812109545
+Edward_Penny,1714,False,39815,186,37,Edward Penny,0.44177404562929573
+"Bertrand_Philip,_Count_of_Gronsveld",1715,False,30552,262,31,"Bertrand Philip, Count of Gronsveld",0.4407185286055596
+Andrzej_Mokronowski,1713,False,40553,130,47,Andrzej Mokronowski,0.44060748497325236
+James_Townley,1714,False,41489,144,43,James Townley,0.440548463443975
+Noël_Hallé,1711,False,38187,244,31,Noël Hallé,0.44052376025928847
+Hieronim_Florian_Radziwiłł,1715,False,36953,132,47,Hieronim Florian Radziwiłł,0.4404152435738559
+Adam_Drummond,1713,False,38164,126,48,Adam Drummond,0.43984836801560284
+John_Thomas_(bishop_of_Rochester),1712,False,66886,206,31,John Thomas (bishop of Rochester),0.43975798777764136
+Martin_Dobrizhoffer,1717,False,37138,153,41,Martin Dobrizhoffer,0.4395730725777789
+John_Bushell,1715,False,39149,220,32,John Bushell,0.4393586072862055
+"James_Drummond,_3rd_Duke_of_Perth",1713,False,37121,287,28,"James Drummond, 3rd Duke of Perth",0.43912938510208277
+Carl_Gustaf_Ekeberg,1716,False,38180,149,41,Carl Gustaf Ekeberg,0.43886604416459224
+Landgravine_Eleonore_of_Hesse-Rotenburg,1712,False,94746,120,42,Landgravine Eleonore of Hesse-Rotenburg,0.43884472878587866
+Józef_Aleksander_Jabłonowski,1711,False,40332,146,41,Józef Aleksander Jabłonowski,0.43859024713847955
+"Heneage_Finch,_3rd_Earl_of_Aylesford",1715,False,37901,168,37,"Heneage Finch, 3rd Earl of Aylesford",0.437982339215505
+Hugolín_Gavlovič,1712,False,33048,109,54,Hugolín Gavlovič,0.4379439912227324
+Anders_Johan_von_Höpken,1712,False,40257,131,44,Anders Johan von Höpken,0.4378865253009524
+"Charles_Edzard,_Prince_of_East_Frisia",1716,False,91988,217,28,"Charles Edzard, Prince of East Frisia",0.43787630319934623
+Pierre_Jélyotte,1713,False,33902,203,33,Pierre Jélyotte,0.43733423071402927
+Johann_Joachim_Spalding,1714,False,36053,170,36,Johann Joachim Spalding,0.43660199314999987
+George_Hay_(politician),1715,False,45922,122,44,George Hay (politician),0.4362604484319351
+Jonathan_Hornblower_(1717),1717,False,32141,139,42,Jonathan Hornblower (1717),0.4360812075002603
+Samuel_Enderby,1719,False,29500,199,33,Samuel Enderby,0.43554378760319556
+George_Hadow,1712,False,28919,119,48,George Hadow,0.43534416957569744
+Saliha_Sultan_(daughter_of_Ahmed_III),1715,False,51295,133,39,Saliha Sultan (daughter of Ahmed III),0.4347538485013485
+"Henry_Erskine,_10th_Earl_of_Buchan",1710,False,35360,214,30,"Henry Erskine, 10th Earl of Buchan",0.4341628810176892
+Carl_Fredrik_Mennander,1712,False,51730,103,47,Carl Fredrik Mennander,0.43344515578599546
+Abraham_Roentgen,1711,False,35300,273,26,Abraham Roentgen,0.43295791186645344
+Sebastian_Sailer,1714,False,34271,133,40,Sebastian Sailer,0.4327675076755592
+Giovanni_Battista_Locatelli,1713,False,33589,154,36,Giovanni Battista Locatelli,0.4326979799897402
+Francis_V_de_Beauharnais,1714,False,42312,219,28,Francis V de Beauharnais,0.4324272501323642
+Arima_Yoriyuki,1714,False,34548,145,37,Arima Yoriyuki,0.43219490347242184
+"Karl_Frederick,_Duke_of_Saxe-Meiningen",1712,False,98530,76,56,"Karl Friedrich, Duke of Saxe-Meiningen",0.43211281861642503
+Pietro_Chiari,1712,False,40638,118,42,Pietro Chiari,0.4319475414317119
+Anton_Raaff,1714,False,35818,172,32,Anton Raaff,0.4309095732435718
+Dominique_de_La_Rochefoucauld,1712,False,35656,172,32,Dominique de La Rochefoucauld,0.4308732744215824
+Benjamin_Andrew,1713,False,28509,114,45,Benjamin Andrew,0.43081310131953443
+Marie_Fel,1713,False,30684,226,28,Marie Fel,0.430773159110369
+"Eugene_Jean,_Count_of_Soissons",1714,False,101546,274,22,"Eugene Jean, Count of Soissons",0.4303554647614991
+Nicola_Sala,1713,False,39822,128,38,Nicola Sala,0.4301786262567879
+Sophie_Charlotte_Ackermann,1714,False,33487,128,39,Sophie Charlotte Ackermann,0.43001902341024967
+Arnarsaq,1716,False,27854,143,37,Arnarsaq,0.42993995612473296
+Gerrit_de_Graeff_(I.)_van_Zuid-Polsbroek,1711,False,42963,74,64,Gerrit de Graeff (I.) van Zuid-Polsbroek,0.42993167023657836
+John_Hamilton_(Royal_Navy_officer),1714,False,28222,176,32,John Hamilton (Royal Navy officer),0.42969932252360316
+Marie_Dumesnil,1713,False,35151,166,32,Marie Dumesnil,0.42960894122271476
+"Sir_Charles_Asgill,_1st_Baronet",1713,False,32615,119,41,"Sir Charles Asgill, 1st Baronet",0.42942330774675486
+Infante_Carlos_of_Portugal,1716,False,64782,294,22,Infante Carlos of Portugal,0.4291525984422078
+Leonardo_Ximenes,1716,False,38924,124,38,Leonardo Ximenes,0.4288472016892201
+Johan_Jacob_Bruun,1715,False,40292,126,37,Johan Jacob Bruun,0.4284371624581504
+Tadeusz_Franciszek_Ogiński,1712,False,46355,102,43,Tadeusz Franciszek Ogiński,0.4283781448245092
+John_Conder,1714,False,42929,96,46,John Conder,0.42826948662336706
+Aleksandr_Aleksandrovich_Menshikov,1714,False,32988,235,26,Alexander Alexandrovich Menshikov,0.42823264890828744
+Nicolas-Sylvestre_Bergier,1715,False,38926,148,33,Nicolas-Sylvestre Bergier,0.42818361544084743
+Johann_Balthasar_Bullinger,1713,False,45215,114,39,Johann Balthasar Bullinger,0.42809209368978346
+Claude_Yvon,1714,False,58979,106,39,Claude Yvon,0.4272741336124248
+"Somerset_Hamilton_Butler,_1st_Earl_of_Carrick",1719,False,37767,114,39,"Somerset Butler, 1st Earl of Carrick",0.4267124475460751
+Ralph_Bigland,1712,False,35937,158,31,Ralph Bigland,0.42652335271262726
+Pedro_António_Avondano,1714,False,35231,138,34,Pedro António Avondano,0.42650639451417693
+Jan_Jakub_Zamoyski,1716,False,38101,112,39,Jan Jakub Zamoyski,0.42611752301214495
+"William_Pery,_1st_Baron_Glentworth",1712,False,46492,127,34,"William Pery, 1st Baron Glentworth",0.4257180096568393
+"Sir_Richard_Acton,_5th_Baronet",1712,False,29041,91,49,"Sir Richard Acton, 5th Baronet",0.42561696014102784
+Charlotte_Sophie_of_Aldenburg,1715,False,35527,134,34,Charlotte Sophie of Aldenburg,0.42555326142811395
+Sophie_Charlotte_of_Brandenburg-Bayreuth,1713,False,38422,220,25,Sophie Charlotte of Brandenburg-Bayreuth,0.425253850056999
+Aaron_Cleveland,1715,False,44811,116,36,Aaron Cleveland,0.4249280739637674
+Louis-Georges_de_Bréquigny,1714,False,38942,108,39,Louis-Georges de Bréquigny,0.42491300423661266
+"William_Vane,_2nd_Viscount_Vane",1714,False,36005,126,35,"William Vane, 2nd Viscount Vane",0.424904672853507
+Stanhope_Aspinwall,1713,False,35586,98,43,Stanhope Aspinwall,0.42477192479508835
+Claude-Adrien_Nonnotte,1711,False,41151,181,27,Claude-Adrien Nonnotte,0.4244125673750877
+José_Solís_Folch_de_Cardona,1716,False,39400,137,32,José Solís Folch de Cardona,0.4240933691854702
+Lodewijk_Caspar_Valckenaer,1715,False,35913,106,39,Lodewijk Caspar Valckenaer,0.42358029074527503
+Jean_Georges_Lefranc_de_Pompignan,1715,False,36617,112,37,Jean Georges Lefranc de Pompignan,0.42338752990894746
+"Sir_John_Dashwood-King,_3rd_Baronet",1716,False,32373,128,34,"Sir John Dashwood-King, 3rd Baronet",0.4232250243277364
+Lord_John_Murray,1711,False,33853,151,30,Lord John Murray,0.4228654642658967
+"Maria_Margarida_de_Lorena,_2nd_Duchess_of_Abrantes",1713,False,38159,117,35,"Maria Margarida de Lorena, 2nd Duchess of Abrantes",0.42269024033506464
+Carlo_Bertinazzi,1710,False,34479,85,47,Carlo Bertinazzi,0.42247314007298575
+Paul_Rabaut,1718,False,39852,136,31,Paul Rabaut,0.4223169889430129
+Adam_Gib,1714,False,39197,135,31,Adam Gib,0.4219407252717637
+James_Grenville,1715,False,35755,131,32,James Grenville,0.4218132422609915
+Michel_Ferdinand_d'Albert_d'Ailly,1714,False,37138,124,33,Michel Ferdinand d'Albert d'Ailly,0.4217137509529319
+Jacques-Alexandre_Laffon_de_Ladebat,1719,False,27580,110,38,Jacques-Alexandre Laffon de Ladebat,0.42171062133073806
+Franz_Sparry,1715,False,31032,106,38,Franz Sparry,0.4212672351928479
+Ignazio_Fiorillo,1715,False,39611,146,29,Ignazio Fiorillo,0.42118233841218955
+Mateo_Aimerich,1715,False,37162,105,37,Mateo Aimerich,0.42108749255431044
+"Sir_Robert_Burdett,_4th_Baronet",1716,False,34519,127,32,"Sir Robert Burdett, 4th Baronet",0.4204707712400681
+William_Sawyer_(cricketer),1712,False,36197,80,47,William Sawyer (cricketer),0.4202998858819424
+Guillaume_du_Tillot,1711,False,37793,185,25,Guillaume du Tillot,0.42006580912502145
+"Sir_Richard_Glyn,_1st_Baronet,_of_Ewell",1711,False,33180,146,29,"Sir Richard Glyn, 1st Baronet, of Ewell",0.41983487850653833
+Giovanni_Battista_Borra,1713,False,32518,146,29,Giovanni Battista Borra,0.4196792390676031
+Thomas_Zebrowski,1714,False,39894,115,33,Thomas Zebrowski,0.4195679889233479
+"Charles,_Prince_of_Nassau-Usingen",1712,False,39447,396,18,"Charles, Prince of Nassau-Usingen",0.4191637942324475
+Kumara_Swamy_Desikar,1711,False,61854,92,36,Kumara Swamy Desikar,0.41839756025583347
+Jacob_Fortling,1711,False,42942,94,37,Jacob Fortling,0.4179201844978788
+Salomée_Halpir,1718,False,46676,102,34,Salomée Halpir,0.4177336301700002
+Johan_Maurits_Mohr,1716,False,32573,145,28,Johan Maurits Mohr,0.41761834369961376
+Louis_Legrand_(theologian),1711,False,33155,161,26,Louis Legrand (theologian),0.41706018931110783
+Charles-Nicolas_d'Oultremont,1716,False,36526,84,41,Charles-Nicolas d'Oultremont,0.4167471990948139
+Gottlieb_Rabener,1714,False,42964,94,36,Gottlieb Rabener,0.41667925338781764
+"Philip_Stanhope,_2nd_Earl_Stanhope",1714,False,33437,184,24,"Philip Stanhope, 2nd Earl Stanhope",0.41662268116759066
+John_Smith_(astronomer),1711,False,36580,145,27,John Smith (astronomer),0.41655008242414215
+Domenico_Caracciolo,1715,False,48362,105,32,Domenico Caracciolo,0.41615306000632524
+Job_Orton,1717,False,33537,137,28,Job Orton,0.4159858411773739
+Johann_Georg_Wille,1715,False,40161,124,29,Johann Georg Wille,0.41580109061860765
+"James_Hamilton,_8th_Earl_of_Abercorn",1712,False,34716,176,24,"James Hamilton, 8th Earl of Abercorn",0.41559105153903964
+Flavio_Chigi_(1711–1771),1711,False,30693,75,46,Flavio Chigi (1711–1771),0.4154381388484843
+John_Gambold,1711,False,39206,136,27,John Gambold,0.4149749022477175
+Alexei_Senyavin,1716,False,37056,129,28,Alexei Senyavin,0.4147309221848672
+Antoine_de_Montazet,1713,False,35454,107,32,Antoine de Montazet,0.4145952350769663
+Henry_Ernest_of_Stolberg-Wernigerode,1716,False,41722,151,25,Henry Ernest of Stolberg-Wernigerode,0.41457586295879334
+Ignazio_Cirri,1711,False,31292,150,26,Ignazio Cirri,0.4144081651509516
+Anna_Rosina_de_Gasc,1713,False,45078,172,23,Anna Rosina de Gasc,0.41432655099974647
+Charles_François_Hutin,1715,False,38303,93,35,Charles François Hutin,0.4141441779640644
+Giovanni_Battista_Mancini,1714,False,30698,187,23,Giovanni Battista Mancini,0.4139579585533206
+Francisco_José_Freire,1719,False,31692,110,31,Francisco José Freire,0.4132067677400743
+Sidonia_Hedwig_Zäunemann,1711,False,34530,89,36,Sidonia Hedwig Zäunemann,0.4129564123947876
+"William_Graham,_2nd_Duke_of_Montrose",1712,False,31725,275,19,"William Graham, 2nd Duke of Montrose",0.41259991888823144
+Camillo_Almici,1714,False,33213,111,30,Camillo Almici,0.4122639772870982
+Giuseppe_Antonio_Landi,1713,False,32259,106,31,Giuseppe Antonio Landi,0.41201493756346147
+Felix_of_Nicosia,1715,False,39512,251,19,Felix of Nicosia,0.41190892158228853
+"Constantine,_Landgrave_of_Hesse-Rotenburg",1716,False,35494,168,23,"Constantine, Landgrave of Hesse-Rotenburg",0.41190305832954327
+"Edward_Bligh,_2nd_Earl_of_Darnley",1715,False,30219,112,30,"Edward Bligh, 2nd Earl of Darnley",0.41187155936812514
+István_Hatvani,1718,False,34032,96,33,István Hatvani,0.4117569316383569
+François-Louis_de_Pourroy_de_Lauberivière,1711,False,33066,89,35,François-Louis de Pourroy de Lauberivière,0.4113676835785769
+Johann_Valentin_Tischbein,1715,False,35055,139,25,Johann Valentin Tischbein,0.41069113520586137
+Charles_Townley_(officer_of_arms),1713,False,33587,104,30,Charles Townley (officer of arms),0.41002836520584923
+Carl_Fredrik_Scheffer,1715,False,37877,143,24,Carl Fredrik Scheffer,0.4098817609926993
+Mathieu_Tillet,1714,False,34446,146,24,Mathieu Tillet,0.4098446365248429
+Emmanuel-Félicité_de_Durfort_de_Duras,1715,False,39035,130,25,Emmanuel-Félicité de Durfort de Duras,0.4093082274721829
+"Henry_Paget,_2nd_Earl_of_Uxbridge",1719,False,31536,135,25,"Henry Paget, 2nd Earl of Uxbridge",0.40898102113875967
+Hugh_Farmer,1714,False,45590,155,22,Hugh Farmer,0.40865833526502376
+Friedrich_Gottfried_Abel,1714,False,29679,126,26,Friedrich Gottfried Abel,0.408402116507018
+"Richard_Edgcumbe,_2nd_Baron_Edgcumbe",1716,False,39018,96,30,"Richard Edgcumbe, 2nd Baron Edgcumbe",0.4081973496305781
+Joseph_Relph,1712,False,25757,89,34,Joseph Relph,0.40817600345849847
+Jeremias_van_Riemsdijk,1712,False,46513,121,25,Jeremias van Riemsdijk,0.40816530326490247
+Johann_Philipp_Bethmann,1715,False,28944,68,43,Johann Philipp Bethmann,0.4081142189972766
+"Richard_FitzWilliam,_6th_Viscount_FitzWilliam",1711,False,32556,115,27,"Richard FitzWilliam, 6th Viscount FitzWilliam",0.40800725397340903
+Ignác_Raab,1715,False,43644,108,27,Ignác Raab,0.407923698145489
+Johann_Kies,1713,False,31919,122,26,Johann Kies,0.40787489881670896
+Johann_Karl_Philipp_von_Cobenzl,1712,False,46532,101,28,Johann Karl Philipp von Cobenzl,0.4078474813675536
+"John_Allen,_3rd_Viscount_Allen",1713,False,34442,126,25,"John Allen, 3rd Viscount Allen",0.40739286756729814
+Jean_Godin_des_Odonais,1713,False,41384,207,19,Jean Godin des Odonais,0.40718381959258076
+Pierre_Pouchot,1712,False,33002,126,25,Pierre Pouchot,0.40708397037197824
+Jacques-Nicolas_Tardieu,1716,False,58173,103,26,Jacques-Nicolas Tardieu,0.4062165885825956
+Anica_Bošković,1714,False,28691,115,26,Anica Bošković,0.405117854336722
+Johann_Adolph_Hass,1713,False,34775,110,26,Johann Adolph Hass,0.4050055319744965
+Anna_Maria_Hilfeling,1713,False,38071,121,24,Anna Maria Hilfeling,0.40455804307222076
+Pieter_Barbiers,1717,False,29703,112,26,Pieter Barbiers,0.4044816372841758
+Tokugawa_Gorōta,1711,False,29632,81,33,Tokugawa Gorōta,0.40424730039813456
+Joseph_Dinouart,1716,False,32719,101,27,Joseph Dinouart,0.40354854583321803
+Benjamin_Green_(merchant),1713,False,43528,143,21,Benjamin Green (merchant),0.4031512132447286
+Armand-Jérôme_Bignon,1711,False,35788,136,22,Armand-Jérôme Bignon,0.40297560991665826
+"Sir_Edward_Blackett,_4th_Baronet",1719,False,36370,97,27,"Sir Edward Blackett, 4th Baronet",0.40286236177862694
+Janusz_Aleksander_Sanguszko,1712,False,40161,100,26,Janusz Aleksander Sanguszko,0.40270281455489954
+Louis_Nicolas_Victor_de_Félix_d'Ollières,1711,False,33131,85,30,Louis Nicolas Victor de Félix d'Ollières,0.4024988255816134
+John_Hamilton_(1715–1796),1715,False,34763,86,29,John Hamilton (1715–1796),0.4016620687869575
+Anna_Wilhelmine_of_Anhalt-Dessau,1715,False,30166,134,22,Anna Wilhelmine of Anhalt-Dessau,0.4013057223754768
+Gennaro_Manna,1715,False,36203,124,22,Gennaro Manna,0.40015890629580625
+Charles-René_Dejordy_de_Villebon,1715,False,31170,70,34,Charles-René Dejordy de Villebon,0.4001103177167004
+Anne_Poulett,1711,False,33557,83,29,Anne Poulett,0.4000802663606533
+Johann_Kaspar_Basselet_von_La_Rosée,1710,False,28939,120,23,Johann Kaspar Basselet von La Rosée,0.40001381964368804
+Michael_Schlatter,1716,False,41770,103,24,Michael Schlatter,0.3997943213129085
+Fredericka_of_Saxe-Gotha-Altenburg,1715,False,43874,199,17,Fredericka of Saxe-Gotha-Altenburg,0.399218867281108
+Jan_Jacob_Schultens,1716,False,37718,79,29,Jan Jacob Schultens,0.3990051331266137
+Aymar_Joseph_de_Roquefeuil_et_du_Bousquet,1714,False,32199,81,29,Aymar Joseph de Roquefeuil et du Bousquet,0.39886826998527813
+Johann_Nicolaus_Mempel,1713,False,30409,100,25,Johann Nicolaus Mempel,0.39874085970622125
+Richard_Clarke_(merchant),1711,False,30923,212,17,Richard Clarke (merchant),0.3984669701377521
+Gaetano_Matteo_Pisoni,1713,False,31641,80,29,Gaetano Matteo Pisoni,0.39827393401398814
+Giuseppe_Capece_Zurlo,1711,False,36601,73,30,Giuseppe Capece Zurlo,0.39730912882809905
+François-Antoine_Devaux,1712,False,38141,86,26,François-Antoine Devaux,0.3969406845150491
+Morgan_Rhys,1716,False,32676,80,28,Morgan Rhys,0.3968293571160915
+Nicolas_Thyrel_de_Boismont,1715,False,34573,87,26,Nicolas Thyrel de Boismont,0.39669712497229753
+William_Whitfield_II,1715,False,31491,148,19,William Whitfield II,0.3959402305729819
+"Sir_Hew_Dalrymple,_2nd_Baronet",1712,False,37280,73,29,"Sir Hew Dalrymple, 2nd Baronet",0.3958615019860131
+Johann_Heinrich_Rolle,1716,False,36298,128,20,Johann Heinrich Rolle,0.3956656011671256
+Ali_II_ibn_Hussein,1712,False,31080,161,18,Ali II ibn Hussein,0.3948837397010035
+Johan_Hörner,1711,False,34687,98,23,Johan Hörner,0.3945697906186514
+Jean-François_de_Neufforge,1714,False,63141,154,17,Jean-François de Neufforge,0.3945452893479021
+Infante_Philip_of_Spain,1712,False,140115,172,15,Philip of Spain (1712–1719),0.39352292421627294
+Anton_August_Beck,1713,False,32381,76,27,Anton August Beck,0.39308204276531233
+Gottlieb_Sigmund_Gruner,1717,False,32941,93,23,Gottlieb Sigmund Gruner,0.3924243729857323
+George_Boscawen_(1712–1775),1712,False,47108,72,26,"George Boscawen (British Army officer, born 1712)",0.3916341517919512
+Louis_de_Brienne_de_Conflans_d'Armentières,1711,False,37482,95,22,Louis de Brienne de Conflans d'Armentières,0.39163338563245637
+Thomas_Estcourt_Cresswell,1712,False,32982,97,22,Thomas Estcourt Cresswell,0.3914911181092536
+Joseph_Allegranza,1715,False,31832,76,26,Joseph Allegranza,0.3911422467187889
+Claude_Humbert_Piarron_de_Chamousset,1717,False,33389,79,25,Claude Humbert Piarron de Chamousset,0.3909731173105306
+"Thomas_Watson,_3rd_Earl_of_Rockingham",1715,False,29788,114,20,"Thomas Watson, 3rd Earl of Rockingham",0.39073771814414554
+"James_Grimston,_2nd_Viscount_Grimston",1711,False,33803,100,21,"James Grimston, 2nd Viscount Grimston",0.39012360267605933
+David_Graeme_(1716–1797),1716,False,35226,69,27,David Graeme (British Army officer),0.3899252732993857
+Giovanni_Carlo_Boschi,1715,False,30768,82,24,Giovanni Carlo Boschi,0.38973032452094797
+Elisabeth_Stierncrona,1714,False,30164,73,26,Elisabeth Stierncrona,0.3892592315165844
+Paschen_von_Cossel,1714,False,42110,81,23,Paschen von Cossel,0.3891515074301154
+Louis_François_de_Monteynard,1713,False,32816,71,26,Louis François de Monteynard,0.3887642828028265
+Joseph_von_Petrasch,1714,False,33150,77,24,Joseph von Petrasch,0.38793874540551315
+Giovanni_Pietro_Francesco_Agius_de_Soldanis,1712,False,62542,197,14,Giovanni Pietro Francesco Agius de Soldanis,0.3876011431904725
+"Ralph_Verney,_2nd_Earl_Verney",1714,False,43302,131,17,"Ralph Verney, 2nd Earl Verney",0.3875894232142916
+Baltazar_Adam_Krčelić,1715,False,36697,97,20,Baltazar Adam Krčelić,0.3869290701744262
+Jean-Charles_Gervaise_de_Latouche,1715,False,32175,99,20,Jean-Charles Gervaise de Latouche,0.3867429924578448
+Antoine_Guenée,1717,False,30319,80,23,Antoine Guenée,0.38657263757537846
+Jean-Joseph_Balechou,1715,False,31444,108,19,Jean-Joseph Balechou,0.3864413629169
+Johann_Georg_Weishaupt,1716,False,33987,275,13,Johann Georg Weishaupt,0.38606302624043065
+Prince_George_of_Kartli,1712,False,29893,74,24,Prince George of Kartli,0.3857897329994079
+"Charles_Christian_Erdmann,_Duke_of_Württemberg-Oels",1716,False,37300,127,17,"Charles Christian Erdmann, Duke of Württemberg-Oels",0.38574439482955397
+Jean_Philippe_Goujon_de_Grondel,1714,False,26609,85,22,Jean Philippe Goujon de Grondel,0.3855256186012749
+Antoine_Choquet_de_Lindu,1712,False,32491,68,25,Antoine Choquet de Lindu,0.38515356777994725
+Lambert_Krahe,1712,False,44345,118,17,Lambert Krahe,0.38465149162571644
+Carl_Jesper_Benzelius,1714,False,29744,80,22,Carl Jesper Benzelius,0.38414677658592644
+Age_Wijnalda,1712,False,34443,69,24,Age Wijnalda,0.384094516165803
+Vijaya_Raghunatha_Raya_Tondaiman_I,1713,False,30245,99,19,Vijaya Raghunatha Raya Tondaiman I,0.3834261823267306
+"Sir_Thomas_Cave,_5th_Baronet",1712,False,38874,86,20,"Sir Thomas Cave, 5th Baronet",0.38325996214039204
+Samuel_Morris_(merchant),1711,False,25346,80,22,Samuel Morris (merchant),0.3830781574907475
+William_Whitmore_(British_Army_officer),1714,False,39933,92,19,William Whitmore (British Army officer),0.38280934113564113
+William_Pitcairn,1712,False,25382,111,18,William Pitcairn,0.38268670612497524
+Johann_Baptist_Babel,1716,False,40001,91,19,Johann Baptist Babel,0.38245859332847676
+Johann_Rudolf_Tschiffeli,1716,False,39483,83,20,Johann Rudolf Tschiffeli,0.38213976201356314
+Ferenc_Esterházy_(1715–1785),1715,False,40398,99,18,Ferenc Esterházy (1715–1785),0.3821212959207853
+John_Monro_(physician),1716,False,36184,225,13,John Monro (physician),0.3819830577591719
+George_Montgomerie,1712,False,33028,65,24,George Montgomerie,0.38154613067726784
+Princess_Victoria_Charlotte_of_Anhalt-Zeitz-Hoym,1715,False,36983,76,21,Princess Victoria Charlotte of Anhalt-Zeitz-Hoym,0.38127567172367105
+"John_Olmius,_1st_Baron_Waltham",1711,False,42322,85,19,"John Olmius, 1st Baron Waltham",0.3805221769106743
+Jakob_van_der_Schley,1715,False,35811,121,16,Jakob van der Schley,0.3802593016361601
+Edward_Pickard,1714,False,30132,104,17,Edward Pickard,0.3784145671621008
+"James_Veitch,_Lord_Elliock",1712,False,38969,81,19,"James Veitch, Lord Elliock",0.3783847779473901
+Johan_Daniel_Berlin,1714,False,42217,183,13,Johan Daniel Berlin,0.37805736450773486
+Franz_Töpsl,1711,False,40606,73,20,Franz Töpsl,0.3778084238645529
+Charles_Louis_de_Marbeuf,1712,False,25195,120,16,Charles Louis de Marbeuf,0.37776717490840733
+Joseph_Redlhamer,1713,False,34049,65,22,Joseph Redlhamer,0.37743187834168734
+Leopoldine_Marie_of_Anhalt-Dessau,1716,False,32825,188,13,Leopoldine Marie of Anhalt-Dessau,0.3771705359490613
+Maria_Menshikova,1711,False,29468,126,15,Maria Menshikova,0.376035500304353
+John_Martin_Mack,1715,False,35311,76,19,John Martin Mack,0.3755936788653893
+Georg_Anton_Urlaub,1713,False,53826,109,15,Georg Anton Urlaub,0.37547873755688016
+Johann_Gottlieb_Gleditsch,1714,False,39921,97,16,Johann Gottlieb Gleditsch,0.3743139482952787
+Franz_Wilhelm_Rabaliatti,1716,False,29876,56,23,Franz Wilhelm Rabaliatti,0.3730492322933367
+Jean_Chrétien_Fischer,1713,False,34395,106,15,Jean Chrétien Fischer,0.37205178284760276
+Jean-Baptiste_Coye,1711,False,30532,61,21,Jean-Baptiste Coye,0.37202223748990854
+William_Foye,1716,False,24659,79,18,William Foye,0.37167171727640663
+Andrea_Spagni,1716,False,30491,68,19,Andrea Spagni,0.37079387656474394
+Leslie_Corry,1712,False,30057,68,19,Leslie Corry,0.37070613499453636
+William_Cooke_(Provost_of_King's_College),1711,False,43973,69,18,William Cooke (Provost of King's College),0.3705247459555463
+Johan_Martin_Preisler,1715,False,34353,100,15,Johan Martin Preisler,0.37032293834058133
+"Sir_Mark_Sykes,_1st_Baronet",1711,False,27716,72,18,"Sir Mark Sykes, 1st Baronet",0.3692684963998
+Maximilian_Reichsgraf_von_Hamilton,1714,False,33133,97,15,Maximilian Reichsgraf von Hamilton,0.369197040295237
+John_Baptist_Caryll,1713,False,25650,102,15,John Baptist Caryll,0.3691229268856732
+Friedrich_Samuel_Bock,1716,False,30119,85,16,Friedrich Samuel Bock,0.3685004193758851
+Bowen_Southwell,1713,False,32824,68,18,Bowen Southwell,0.3683097594343902
+Jean-Baptiste_Lestiboudois,1715,False,35282,82,16,Jean-Baptiste Lestiboudois,0.3682958961873322
+Johann_Georg_Dominicus_von_Linprun,1714,False,42573,63,18,Johann Georg Dominicus von Linprun,0.3670933878006583
+Johann_Joachim_Schwabe,1714,False,37995,59,19,Johann Joachim Schwabe,0.36692708883950137
+Georg_David_Anthon,1714,False,29362,92,15,Georg David Anthon,0.36687664930412134
+Samuel_Egerton,1711,False,29196,128,13,Samuel Egerton,0.3668121934711961
+Samuel_Gotthold_Lange,1711,False,38390,87,15,Samuel Gotthold Lange,0.36673670803563707
+Johan_Samuel_Augustin,1715,False,35007,96,14,Johan Samuel Augustin,0.3648225919570739
+Margrave_Frederick_William_of_Brandenburg-Schwedt_(1714–1744),1715,False,35110,73,16,Margrave Frederick William of Brandenburg-Schwedt (1714–1744),0.3644664121675954
+"John_Boyle,_3rd_Earl_of_Glasgow",1714,False,30275,109,13,"John Boyle, 3rd Earl of Glasgow",0.3627029178468532
+Pierre-François_Brice,1714,False,27497,55,19,Pierre-François Brice,0.3624049634108176
+William_Errington_(priest),1716,False,28017,71,16,William Errington (priest),0.3622252595794468
+Giovanni_Fagnano,1715,False,34646,101,13,Giovanni Fagnano,0.36135476218737556
+Giovanni_Targioni_Tozzetti,1712,False,36338,100,13,Giovanni Targioni Tozzetti,0.3613421243038899
+Juan_Nentvig,1713,False,31616,56,18,Juan Nentvig,0.36108938675730784
+Increase_Moseley,1712,False,34617,84,14,Increase Moseley,0.36075681337565874
+Carl_Tersmeden,1715,False,28017,65,16,Carl Tersmeden,0.3592517306332148
+Marcus_Fredrik_Bang,1711,False,34078,78,14,Marcus Fredrik Bang,0.3583828868034498
+Friedrich_Christian_Glume,1714,False,31492,91,13,Friedrich Christian Glume,0.3578321715153774
+Johann_Andreas_Silbermann,1712,False,35255,105,12,Johann Andreas Silbermann,0.35705708938297553
+Ōkubo_Tadaoki,1715,False,30576,67,15,Ōkubo Tadaoki,0.3570523651329062
+Auguste_de_Keralio,1715,False,37684,83,13,Auguste de Keralio,0.3561165847085734
+"John_Howe,_2nd_Baron_Chedworth",1714,False,28324,65,15,"John Howe, 2nd Baron Chedworth",0.35560786794819654
+Henri_Joseph_Bouchard_d'Esparbès_de_Lussan_d'Aubeterre,1714,False,35514,82,13,Henri Joseph Bouchard d'Esparbès de Lussan d'Aubeterre,0.3554314159332023
+Michael_Lally_(brigadier-general),1714,False,27159,65,15,Michael Lally (brigadier-general),0.3553674714487802
+Lord_George_Graham,1715,False,66912,147,10,Lord George Graham,0.35518828040579126
+"Charles_Thomas,_Prince_of_Löwenstein-Wertheim-Rochefort",1714,False,43164,119,11,"Charles Thomas, Prince of Löwenstein-Wertheim-Rochefort",0.3551812212959583
+"António_of_Braganza,_Child_of_Palhavã",1714,False,27822,177,10,"António of Braganza, Child of Palhavã",0.35475044677443496
+Joachim_Friedrich_Henckel,1712,False,34375,69,14,Joachim Friedrich Henckel,0.35454182553463864
+John_Hustler,1715,False,28111,83,13,John Hustler,0.3544917764273529
+Giambattista_Almici,1717,False,28279,51,17,Giambattista Almici,0.353963486000163
+"John_Drummond,_10th_of_Lennoch",1713,False,41042,88,12,"John Drummond, 10th of Lennoch",0.3529541197656227
+Leonard_Lispenard,1714,False,25275,116,11,Leonard Lispenard,0.3516065546947109
+Gorges_Lowther_(1713–1792),1713,False,27455,64,13,Gorges Lowther (1713–1792),0.3463621720653815
+"Heinrich_IX,_Count_Reuss_of_Köstritz",1711,False,32828,73,12,"Heinrich IX, Count Reuss of Köstritz",0.3463068279225814
+"Gaspar_of_Braganza,_Archbishop_of_Braga",1716,False,28524,174,9,"Gaspar of Braganza, Archbishop of Braga",0.3459008425249566
+"Jacques-Nompar_III_de_Caumont,_duc_de_La_Force",1714,False,33976,67,12,"Jacques-Nompar III de Caumont, duc de La Force",0.3438783577564752
+Tommaso_Gherardini,1715,False,32977,67,12,Tommaso Gherardini,0.34372430395226755
+Étienne_Mignot_de_Montigny,1714,False,32655,64,12,Étienne Mignot de Montigny,0.3422544788563107
+Georg_Friedrich_Schmidt,1712,False,38796,95,10,Georg Friedrich Schmidt,0.3417775040286444
+Karl_Joseph_von_Firmian,1716,False,34880,91,10,Karl Joseph von Firmian,0.3401258979087564
+Lebbeus_Harris,1713,False,26399,49,13,Lebbeus Harris,0.33727683752048354
+"Friedrich_Wilhelm,_Graf_von_Wylich_und_Lottum",1716,False,31088,63,11,"Friedrich Wilhelm, Graf von Wylich und Lottum",0.33585539223263555
+Otto_William_Schwartz,1715,False,25796,82,10,Otto William Schwartz,0.3358325787365927
+"Charles_Bennet,_3rd_Earl_of_Tankerville",1716,False,32261,104,9,"Charles Bennet, 3rd Earl of Tankerville",0.3350713358349241
+John_Hicks_(politician),1715,False,30877,76,10,John Hicks (politician),0.3346838925712247
+Anna_Margareta_Salmelin,1716,False,25193,100,9,Anna Margareta Salmelin,0.33288662335060115
+Johann_Friedrich_Gräfe,1711,False,31025,70,10,Johann Friedrich Gräfe,0.3324174509127893
+Hans_Jacob_Scheel,1714,False,29531,79,9,Hans Jacob Scheel,0.3277878219377706
+Giovanni_Sarnelli,1714,False,29645,75,9,Giovanni Sarnelli,0.3264490010492364
+Anna_Maria_Elvia,1713,False,25642,48,11,Anna Maria Elvia,0.3263447634699604
+Gerard_Joan_Vreeland,1711,False,32990,72,9,Gerard Joan Vreeland,0.325869160357415
+Antoine-Gabriel-François_Benoist,1715,False,29679,64,9,Antoine-Gabriel-François Benoist,0.3221761660907554
+Cornelis_Elout,1714,False,24083,59,9,Cornelis Elout,0.31892690852191796
+Alexander_Murray_of_Elibank,1712,False,32960,114,7,Alexander Murray of Elibank,0.3161867472426921
+"William_Howard,_Viscount_Andover",1714,False,29994,110,7,"William Howard, Viscount Andover",0.3150355817271508
+Luis_González_Velázquez,1715,False,31527,100,7,Luis González Velázquez,0.3132529307516902
+"Charles_Moore,_1st_Earl_of_Charleville",1712,False,28669,96,7,"Charles Moore, 1st Earl of Charleville",0.3119648635245669
+Nicolaus_Christian_Friis,1714,False,30523,62,7,Nicolaus Christian Friis,0.30215402837532446
+Johan_Sparre_af_Söfdeborg,1715,False,29775,50,7,Johan Sparre af Söfdeborg,0.2965570691294959
+Jacques_de_Romas,1713,False,28277,77,6,Jacques de Romas,0.29354989193609454
+Giuseppe_Maria_Buondelmonti,1713,False,31452,75,5,Giuseppe Maria Buondelmonti,0.27611323728606746
+Lukrecija_Bogašinović_Budmani,1710,False,28764,65,5,Lukrecija Bogašinović Budmani,0.27305615840219327
+John_Blennerhassett_(1715–1763),1715,False,26332,66,4,John Blennerhassett (1715–1763),0.2500103625791911
+Johan_Heinrich_Becker,1715,False,32693,56,3,Johan Heinrich Becker,0.21401281420320736
+Alexander_Hamilton_(Maryland_doctor),1712,False,50496,0,63,Alexander Hamilton (Maryland doctor),0.1266415059718928
+"Jonathan_Nichols,_Jr.",1712,False,83663,0,40,Jonathan Nichols Jr.,0.1253582963701035
+Luis_Vicente_de_Velasco_e_Isla,1711,False,40348,0,45,Luis Vicente de Velasco,0.12535130377557943
+Sophie_de_Lafont,1717,False,35523,0,46,Sophie de Lafont,0.1253459208322279
+Bernardo_de_Hoyos,1711,False,53202,0,27,Bernardo Francisco de Hoyos de Seña,0.12340106432872751
+Louisa_Catharina_Harkort,1718,False,27980,0,5,Louisa Catharina Harkort,0.10864657318352616

@@ -357,7 +357,7 @@ def grid_chart(data, image_key, image_process=None,
             if img is None:
                 continue
             elif isinstance(img, str):
-                img = Image.from_url_with_cache(img)
+                img = Image.from_url_with_cache(img) if urlparse(img).netloc != "" else Image.open(img)
             if image_process is not None:
                 img = process_fn(img, v)
             img_array[r][c] = img

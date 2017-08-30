@@ -81,7 +81,9 @@ True
 **ignoring_exceptions**: wrapper that catches exceptions and returns instead.
 
 ```python
->> ignoring_exceptions(requests.get, requests.exceptions.RequestException)(url)
+>> ignoring_exceptions(operator.getitem)([], 0)
+>> ignoring_exceptions(operator.truediv, exceptions=ZeroDivisionError, handler=lambda x,y: sign(x)*math.inf)(-4, 0)
+-inf
 ```
 
 **with_retries**: wrapper that retries a function when an exception is thrown.

@@ -7,18 +7,23 @@ from wikipage import *
 
 # data visualisation 
 
-SPECS = [["datasets/wikibirths.csv", "output/wikibirths.png",
-          "100 famous people from the second millennium", "the most famous person born each decade, according to English Wikipedia*",
+SPECS = [["datasets/wikibirths.csv", "output/wikibirths.jpg",
+          "100 famous people from the second millennium", "the most famous person born each decade, according to English Wikipedia",
           "{}00s", "'{}0s", range(10,20), range(0,10)],
-         ["datasets/wikibirths_20c.csv", "output/wikibirths_20c.png",
-          "100 famous people from the 20th century", "the most famous person born each year, according to English Wikipedia*",
+         ["datasets/wikibirths_dead.csv", "output/wikibirths_dead.jpg",
+          "100 historical figures from the second millennium", "the most famous historical figure born each decade, according to English Wikipedia",
+          "{}00s", "'{}0s", range(10,20), range(0,10)],          
+         ["datasets/wikibirths_20c.csv", "output/wikibirths_20c.jpg",
+          "100 famous people from the 20th century", "the most famous person born each year, according to English Wikipedia",
           "19{}0s", "'{}", range(0,10), range(0,10)],
-         # NOT READY:
-         ["datasets/wikibirths_f.csv", "output/wikibirths_f.png",
-          "100 famous women from the second millennium", "the most famous woman born each decade, according to English Wikipedia*",
+         ["datasets/wikibirths_f.csv", "output/wikibirths_f.jpg",
+          "100 famous women from the second millennium", "the most famous woman born each decade, according to English Wikipedia",
           "{}00s", "'{}0s", range(10,20), range(0,10)]]
+          
+# FOOTNOTE = "*fame measure is a combination of article length, number of edits, and typical number of pageviews"
+FOOTNOTE = "restricted to people who died at least 20 years ago; fame measure is a combination of article length, number of edits, and typical number of pageviews"
 
-for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE in SPECS[:2]:
+for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE in SPECS[1:2]:
 
     fg, bg = "white", "black"
     DEFAULT_IMG = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
@@ -46,7 +51,7 @@ for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE i
     Image.from_text(TITLE, arial(60, bold=True), fg=fg, bg=bg).pad((10,0), bg=bg),
     Image.from_text(SUBTITLE, arial(36, bold=True), fg=fg, bg=bg).pad((10,0,10,2), bg=bg)
     ], bg=bg).pad((0,10),bg=bg)
-    comment = Image.from_text("*fame measure is a combination of article length, number of edits, and typical number of pageviews during 2016", arial(24), fg=fg, bg=bg).pad((0,20,0,5),bg=bg)
+    comment = Image.from_text(FOOTNOTE, arial(24), fg=fg, bg=bg).pad((0,20,0,5),bg=bg)
 
     chart = Image.from_column([title, grid, comment], bg=bg)
     chart.place(Image.from_text("/u/Udzu", font("arial", 24), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=0, copy=False)

@@ -153,7 +153,7 @@ class WDPage(CachedPage):
     def api_call(cls, parameters):
         """Wikidata api call."""
         logurl = "{}?{}".format(cls.API, "&".join("{}={}".format(k,v) for k,v in parameters.items()))
-        logger.info("WikiData API: {}".format(logurl))
+        logger.debug("WikiData API: {}".format(logurl))
         json = cls.CACHE.get(cls.API, params=assoc_in(parameters, ['format'], 'json'), headers=cls.HEADERS).json()
         if 'error' in json:
             raise Exception("WikiData API error for {}: {}".format(logurl, json['error'].get('info', '(no info)')))

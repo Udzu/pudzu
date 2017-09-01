@@ -75,6 +75,11 @@ class WikiPage(CachedPage):
         """The page og:image URL if it exists."""
         return self.bs4.find("meta", {"property": "og:image"})["content"]
 
+    @ignoring_exceptions
+    def to_wikidata(self, lang=None):
+        """The wikidata page if it exists."""
+        return WDPage(self.entity, lang=lang or self.lang)
+        
     # api calls
     
     def pageviews(self, start, end, granularity="monthly", access="all-access", agent="all-agents"):
@@ -157,7 +162,7 @@ class WDPage(CachedPage):
     @classmethod
     def get_entity(cls, id):
         """Return claims and labels for a given entity"""
-        parameters = { 'action' : 'wbgetentities', 'ids': id, 'props': 'claims|labels', 'format': 'json' }
+        parameters = { 'action' : 'wbgetentities', 'ids': id, 'props': 'claims|labels|sitelinks', 'format': 'json' }
         return cls.api_call(parameters)
         
     @classmethod
@@ -184,6 +189,12 @@ class WDPage(CachedPage):
     def name(self, lang=None):
         """Wikidata entity name"""
         return self.json['entities'][self.id]['labels'].get(lang or self.lang, {'value': '(unknown)'})['value']
+        
+    @ignoring_exceptions
+    def to_wikipedia(self, lang=None):
+        """Wikipedia page for the given Wikidata entry, if there is one."""
+        lang = lang or self.lang
+        return WikiPage(self.json['entities'][self.id]['sitelinks'][lang+'wiki']['title'], lang=lang)
         
     @staticmethod
     def convert_value(value):

@@ -207,11 +207,11 @@ class Nouncer(abc.MutableMapping):
             raise
        
     @classmethod
-    def _rhymeswith(self, phonemes1, phonemes2, identirhyme=False, enjambment=False, multirhyme=False):
+    def _rhymeswith(self, phonemes1, phonemes2, identirhyme=False, cutrhyme=False, multirhyme=False):
         stress1 = first_or_default((i for i in range(len(phonemes1)) if self._is_stressed(phonemes1[i])), 0)
         stress2 = first_or_default((i for i in range(len(phonemes2)) if self._is_stressed(phonemes2[i])), 0)
         same_consonant = stress1==stress2==0 or stress1>0 and stress2>0 and phonemes1[stress1-1]==phonemes2[stress2-1]
-        pattern1 = phonemes1[stress1:len(phonemes2)-stress2+stress1 if enjambment else None]
+        pattern1 = phonemes1[stress1:len(phonemes2)-stress2+stress1 if cutrhyme else None]
         pattern2 = phonemes2[stress2:]
         if multirhyme:
             def strip_consonants(p):
@@ -221,13 +221,13 @@ class Nouncer(abc.MutableMapping):
             pattern2 = strip_consonants(pattern2)
         return pattern1 == pattern2 and (not same_consonant or identirhyme)
         
-    def rhymes(self, word, identirhyme=False, enjambment=False, multirhyme=False):
+    def rhymes(self, word, identirhyme=False, cutrhyme=False, multirhyme=False):
         """Rhymes for a word."""
         d = {}
         for p1 in self.pdict[word]:
             for w2, ps2 in self.pdict.items():
                 for p2 in ps2:
-                    if self._rhymeswith(p1, p2, identirhyme, enjambment, multirhyme):
+                    if self._rhymeswith(p1, p2, identirhyme=identirhyme, cutrhyme=cutrhyme, multirhyme=multirhyme):
                         d.setdefault("".join(p1), []).append(w2)
         return d
         

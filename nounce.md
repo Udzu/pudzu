@@ -30,7 +30,6 @@ A simple pronouncing dictionary that supports IPA input and output, as well as i
 >> pdict = Nouncer("unpolished")
 ```
 
-
 **pronunciations**: generator returning individual pronunciations. Supports function or regex filters.
 
 ```python
@@ -49,7 +48,7 @@ A simple pronouncing dictionary that supports IPA input and output, as well as i
 {'(wugging)': 2}
 ```
 
-**rhymes**: words that rhyme with a given word. Options include identirhyme (allow the same consonant before the stress: e.g. head/behead), multirhyme (allow arbitrary internal consonants: e.g. beheading/depressing) and enjambment (return truncated rhymes: e.g. beheading/bread).
+**rhymes**: words that rhyme with a given word. Options include identirhyme (allow the same consonant before the stress: e.g. head/behead), multirhyme (allow arbitrary internal consonants: e.g. beheading/depressing) and cutrhyme (return truncated rhymes: e.g. beheading/bread).
 
 ```python
 >> pdict.rhymes("inconceivable")
@@ -58,6 +57,6 @@ A simple pronouncing dictionary that supports IPA input and output, as well as i
 {'ˌɪnkənsˈivəbəl': ['inconceivable', 'receivable', 'unbelievable', 'believable', 'achievable', 'conceivable']}
 >> pdict.rhymes("inconceivable", multirhyme=True)
 {'ˌɪnkənsˈivəbəl': ['learonal', 'impeachable', 'amenable', 'unreasonable', ... ]}
->> pdict.rhymes("beheading", enjambment=True)
+>> pdict.rhymes("beheading", cutrhyme=True)
 {'bɪhˈɛdɪŋ': ['dreading', 'treading', 'read', 'said', ... ]}
 ```

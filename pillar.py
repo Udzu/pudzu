@@ -247,10 +247,11 @@ class _Image(Image.Image):
         return cls.from_pattern(pattern, size, scale=(False,True), preserve_aspect=True, **kwargs)
         
     @classmethod
-    def from_gradient(cls, colormap, size, align=(1,0)):
-        """Create an image using a gradient color map. Requires numpy."""
-        align = Alignment(align)
-        grad_array = np.fromfunction(lambda y, x: 1 - (y / size[1]), (size[1], size[0]), dtype=float)
+    def from_gradient(cls, colormap, size, direction=(1,0)):
+        """Create a gradient image using a matplotlib color map. Requires numpy."""
+        valmin = min((x * direction[0] + y * direction[1]) for x in (0, size[1]-1) for y in (0, size[0]-1))
+        valrange = max((x * direction[0] + y * direction[1]) for x in (0, size[1]-1) for y in (0, size[0]-1)) - valmin
+        grad_array = np.fromfunction(lambda y, x: ((x * direction[0] + y * direction[1]) - valmin) / valrange, size, dtype=float)
         return Image.fromarray(colormap(grad_array, bytes=True))
         
     @classmethod

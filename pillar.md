@@ -147,6 +147,21 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 
 ![alt](images/frompattern3.png)
 
+**Image.from_gradient**: create a gradient image using a matplotlib color map. Requires numpy.
+
+```python
+>> import seaborn as sns
+>> Image.from_gradient(sns.diverging_palette(0, 255, as_cmap=True), (100,100)).show()
+```
+
+![alt](images/fromgradient1.png)
+
+```python
+>> Image.from_gradient(sns.diverging_palette(0, 255, as_cmap=True), (100,100), direction=(-1,1)).show()
+```
+
+![alt](images/fromgradient2.png)
+
 **Image.EMPTY_IMAGE**: an empty "RGBA" image.
 
 ```python

@@ -247,6 +247,13 @@ class _Image(Image.Image):
         return cls.from_pattern(pattern, size, scale=(False,True), preserve_aspect=True, **kwargs)
         
     @classmethod
+    def from_gradient(cls, colormap, size, align=(1,0)):
+        """Create an image using a gradient color map. Requires numpy."""
+        align = Alignment(align)
+        grad_array = np.fromfunction(lambda y, x: 1 - (y / size[1]), (size[1], size[0]), dtype=float)
+        return Image.fromarray(colormap(grad_array, bytes=True))
+        
+    @classmethod
     def from_array(cls, array, xalign=0.5, yalign=0.5, padding=0, bg=0):
         """Create an image from an array of images."""
         if not non_string_iterable(xalign): xalign = [xalign] * max(len(r) for r in array)
@@ -425,6 +432,7 @@ Image.from_array = _Image.from_array
 Image.from_row = _Image.from_row
 Image.from_column = _Image.from_column
 Image.from_pattern = _Image.from_pattern
+Image.from_gradient = _Image.from_gradient
 Image.from_vertical_pattern = _Image.from_vertical_pattern
 Image.from_horizontal_pattern = _Image.from_horizontal_pattern
 Image.from_url = _Image.from_url

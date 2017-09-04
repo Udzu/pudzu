@@ -47,7 +47,7 @@ def score_births_by_decade(decades):
 def rescore_decades(decades, langs=["de", "es", "fr", "ja", "ru", "zh"]):
     for d in tqdm.tqdm(make_iterable(decades)):
         df = pd.read_csv("datasets/wikibirths/{d}0-{d}9.csv".format(d=d))
-        for lang in tqdm.tqdm(langs):
+        for lang in tqdm.tqdm(make_iterable(langs)):
             lpath = pathlib.Path("datasets/wikibirths/{l}/{d}0-{d}9.csv".format(l=lang, d=d))
             if not lpath.parent.exists(): lpath.parent.mkdir()
             ldf = score_people(df, lang=lang, translate_from="en").sort_values('score', ascending=False)

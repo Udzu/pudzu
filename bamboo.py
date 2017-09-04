@@ -1,4 +1,5 @@
 import fnmatch
+import glob
 import math
 import operator
 import pandas as pd
@@ -84,6 +85,10 @@ def prompt_for_value(default=np.nan, prompt=lambda r: r.to_dict()):
         return v
     return updater
   
+def read_csvs(files, *args, **kwargs):
+    """Read and concatenate multiple csv files"""
+    return pd.concat([pd.read_csv(file, *args, **kwargs) for file in glob.glob(files)], ignore_index=True)
+    
 # filter expressions
 
 class FilterExpression:

@@ -100,6 +100,9 @@ class WikiPage(CachedPage):
         while True:
             response = requests.get(query_api, params=parameters).json()
             for page_id in response['query']['pages']:
+                if 'revisions' not in response['query']['pages'][page_id]:
+                    logger.warning("Missing revision information for {}".format(self.title))
+                    break
                 revisions += len(response['query']['pages'][page_id]['revisions'])
             if 'continue' in response:
                 parameters['continue'] = response['continue']['continue']
@@ -107,7 +110,7 @@ class WikiPage(CachedPage):
             else:
                 break
         return revisions
-    
+        
     # the remaining methods are domain-specific
 
     @staticmethod

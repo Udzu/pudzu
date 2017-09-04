@@ -5,7 +5,7 @@ from bamboo import *
 import seaborn as sns
 
 # generate map
-df = pd.read_csv("datasets/femaleleaders.csv")
+df = pd.read_csv("datasets/eufemaleleaders.csv")
 df = df.assign_rows(assign_if='hosdate:exists or hogdate:exists', date=lambda d: min(get_non(d,'hosdate',2017), get_non(d,'hogdate',2017)))
 df = df.set_index('country')
 
@@ -47,7 +47,7 @@ legend = Image.from_column([type_leg, note_leg, year_leg], bg="white", xalign=0,
 chart = chart.place(legend, align=(1,0), padding=10)
 
 # generate image grid
-df = pd.read_csv("datasets/femaleleaders_timeline.csv")
+df = pd.read_csv("datasets/eufemaleleaders_timeline.csv")
 tdata = pd.DataFrame([[df.loc[i+j] for j in range(12) if i + j < len(df)] for i in range(0,36,12)])
 
 flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('tld').set_index('tld')['flag']

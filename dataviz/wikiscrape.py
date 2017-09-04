@@ -53,4 +53,5 @@ def rescore_decades(decades, langs=["de", "es", "fr", "ja", "ru", "zh"]):
             ldf = score_people(df, lang=lang, translate_from="en").sort_values('score', ascending=False)
             ldf.to_csv(str(lpath), index=False, encoding="utf-8")
             
+# { d * 100 : { lang: read_csvs("dataviz/datasets/wikibirths{}/{}*csv".format("" if lang == "en" else "/"+lang,d)).sort_values("score", ascending=False)['link'].iloc[0] for lang in ["de", "en", "es", "fr", "ja", "ru", "zh"]} for d in range(10,13) }
             

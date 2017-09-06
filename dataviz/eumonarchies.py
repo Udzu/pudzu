@@ -73,6 +73,6 @@ Image.from_text("end of European monarchies", arial(36))],
 bg="white")
 
 img = Image.from_column([title, chart, grid], bg="white", padding=2)
-# img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
+#img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 
 img.save("output/eumonarchies.png")

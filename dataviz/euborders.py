@@ -35,7 +35,7 @@ chart = map.place(legend, align=(1,0), padding=10)
 # title
 title = Image.from_column([
 Image.from_text("BORDERS IN EUROPE", arial(48, bold=True)),
-Image.from_text("number of and longest borders", arial(36))],
+Image.from_text("number of and longest land borders", arial(36))],
 bg="white")
 
 # title = Image.from_text("Europe by number of, and longest borders", arial(48, bold=True), bg="white")

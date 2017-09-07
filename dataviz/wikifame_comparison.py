@@ -44,5 +44,4 @@ comment = Image.from_text(FOOTNOTE, arial(24), fg=fg, bg=bg).pad((0,20,0,5),bg=b
 
 chart = Image.from_column([title, grid, comment], bg=bg)
 chart.place(Image.from_text("/u/Udzu", font("arial", 24), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=0, copy=False)
-
-# chart.save(OUTPUT)
+chart.save("output/wikibirths_comparison.png")

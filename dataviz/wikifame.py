@@ -4,7 +4,8 @@ sys.path.append('..')
 
 from charts import *
 
-# data visualisation 
+# wikifame birth grids
+
 
 SPECS = [["datasets/wikibirths.csv", "output/wikibirths.jpg",
           "100 famous people from the second millennium", "the most famous person born each decade, according to English Wikipedia",
@@ -17,18 +18,23 @@ SPECS = [["datasets/wikibirths.csv", "output/wikibirths.jpg",
           "19{}0s", "'{}", range(0,10), range(0,10)],
          ["datasets/wikibirths_f.csv", "output/wikibirths_f.jpg",
           "100 famous women from the second millennium", "the most famous woman born each decade, according to English Wikipedia",
-          "{}00s", "'{}0s", range(10,20), range(0,10)]]
+          "{}00s", "'{}0s", range(10,20), range(0,10)],
+         ["datasets/wikibirths_global.csv", "output/wikibirths_global.jpg",
+          "famous people from the second millennium", "the most famous person born each decade, according to Wikipedia",
+          "{}00s", "'{}0s", range(10,19), range(0,10)]
+          ]
           
 # FOOTNOTE = "*fame measure is a combination of article length, number of edits, and typical number of pageviews"
-FOOTNOTE = "restricted to people who died at least 20 years ago; fame measure is a combination of article length, number of edits, and typical number of pageviews"
+# FOOTNOTE = "restricted to people who died at least 20 years ago; fame measure is a combination of article length, number of edits, and typical number of pageviews"
+FOOTNOTE = "based on English, French, German, Spanish, Russian, Chinese and Japanese Wikipedias; fame is a combination of article length, number of edits, and pageviews"
 
-for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE in SPECS[1:2]:
+for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE in SPECS[-1:]:
 
     fg, bg = "white", "black"
     DEFAULT_IMG = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 
     df = pd.read_csv(DATASET)
-    table = pd.DataFrame([[df.iloc[century*10+decade]['name'] if century*10+decade < len(df) else None for decade in range(0,10)] for century in range(0,10)],
+    table = pd.DataFrame([[df.iloc[century*10+decade]['name'] if century*10+decade < len(df) else None for decade in range(0,len(COLRANGE))] for century in range(0,len(ROWRANGE))],
                          index=[ROWFORMAT.format(c) for c in ROWRANGE], columns=[COLFORMAT.format(d) for d in COLRANGE])
     df = df.set_index('name')
 

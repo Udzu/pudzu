@@ -1,5 +1,6 @@
 import sys
 import pathlib
+from math import log
 sys.path.append('..')
 
 from wikipage import *
@@ -20,9 +21,10 @@ def extract_births(year):
     links = remove_duplicate_tags(links)
     return pd.DataFrame([{ "year": year, "link": WikiPage.title_from_url(a['href'])} for a in links])
     
+harmonic_mean = optional_import_from('statistics', 'harmonic_mean', lambda data: len(data) / sum(1/x for x in data))
+LIMITS = { 'length': 1500000, 'revisions': 25000, 'pageviews': 1000000 }
+
 def score_people(df, lang="en", translate_from=None):
-    LIMITS = { 'length': 1500000, 'revisions': 25000, 'pageviews': 1000000 }
-    harmonic_mean = optional_import_from('statistics', 'harmonic_mean', lambda data: len(data) / sum(1/x for x in data))
     df = df.assign_rows(progressbar = True,
                         wp = (lambda d: WikiPage(d['link'], lang=lang)) if translate_from is None else ignoring_exceptions(lambda d: WikiPage(d['link'], lang=translate_from).to_wikidata().to_wikipedia(lang=lang)))
     df = df.assign_rows(progressbar = True,
@@ -52,6 +54,17 @@ def rescore_decades(decades, langs=["de", "es", "fr", "ja", "ru", "zh"]):
             if not lpath.parent.exists(): lpath.parent.mkdir()
             ldf = score_people(df, lang=lang, translate_from="en").sort_values('score', ascending=False)
             ldf.to_csv(str(lpath), index=False, encoding="utf-8")
-            
-# { d * 100 : { lang: read_csvs("dataviz/datasets/wikibirths{}/{}*csv".format("" if lang == "en" else "/"+lang,d)).sort_values("score", ascending=False)['link'].iloc[0] for lang in ["de", "en", "es", "fr", "ja", "ru", "zh"]} for d in range(10,13) }
+
+def combine_decades(decades, langs=["de", "en", "es", "fr", "ja", "ru", "zh"], output_dir="combined"):
+    output_dir = "datasets/wikibirths/{}".format(output_dir)
+    if not os.path.exists(output_dir): os.makedirs(output_dir)
+    for d in tqdm.tqdm(make_iterable(decades)):
+        dfs = [pd.read_csv("datasets/wikibirths{}/{d}0-{d}9.csv".format("" if lang == "en" else "/"+lang, d=d)) for lang in langs]
+        dfs = [df.groupby('link').first().filter_columns(['length', 'pageviews', 'revisions']) for df in dfs]
+        df = sum(dfs).assign_rows(score=lambda d: harmonic_mean([log(max(d[k], 2)) / log(max_value) for k,max_value in LIMITS.items()]))
+        df = df.sort_values('score', ascending=False)
+        df.to_csv("{}/{d}0-{d}9.csv".format(output_dir, d=d), encoding="utf-8")
+    
+def top_per_century(centuries=range(10,19), langs=["de", "en", "es", "fr", "ja", "ru", "zh"]):
+    return { c * 100 : { lang: read_csvs("datasets/wikibirths{}/{}*csv".format("" if lang == "en" else "/"+lang,c)).sort_values("score", ascending=False)['link'].iloc[0] for lang in langs} for c in make_iterable(centuries) }
             

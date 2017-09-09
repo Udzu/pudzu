@@ -498,7 +498,7 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
             if isinstance(label, str):
                 label = Image.from_text(label, label_font, label_color)
             if label.width > labelboxes[c].width or label.height > labelboxes[c].height:
-                logger.warning("Label for {} too small to fit {}x{} bounding box".format(name, labelboxes[c].width, labelboxes[c].height))
+                logger.warning("{}x{} label for {} too small to fit {}x{} bounding box".format(label.width, label.height, name, labelboxes[c].width, labelboxes[c].height))
             else:
                 img = img.pin(label, labelboxes[c].center)
     return img

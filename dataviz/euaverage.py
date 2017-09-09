@@ -50,4 +50,4 @@ Image.from_text("average colours of flags and Scrabble scores of names", arial(3
 bg="white")
 img = Image.from_column([title, chart], bg="white", padding=2)
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
-img.save("output/euborders.png")
+img.save("output/euaverage.png")

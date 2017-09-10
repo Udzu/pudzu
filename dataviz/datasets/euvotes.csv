@@ -1,8 +1,11 @@
 country,type,year,leader,party,votes
+Albania,parliamentary,1992,Aleksandër Meksi,PDSh,1046193
 Austria,legislative,1979,Bruno Kreisky,SPÖ,2413226
 Belarus,presidential,2006,Alexander Lukashenko,Independent,5501249
 Belgium,general,1958,Gaston Eyskens,Christian Social Party,2465549
+Bosnia,general,1996,Alija Izet'ović,SDA,899970
 Bulgaria,assembly,1990,Alexander Lilov,BSP,2887766
+Croatia,parliamentary,1992,Franjo Tuđman,HDZ,1176437
 Czech Republic,presidential,2013,Miloš Zeman,SPOZ,2717405
 Cyprus,presidential,2008,Demetris Christofias,AKEL,240604
 Denmark,parliamentary,1998,Poul Nyrup Rasmussen,Social Democrats,1223620
@@ -15,20 +18,26 @@ Hungary,parliamentary,2010,Viktor Orbán,Fidesz,2706292
 Iceland,parliamentary,1999,Davíð Oddsson,Independence,67513
 Ireland,general,2007,Bertie Ahern,Fianna Fáil,858565
 Italy,general,1976,Benigno Zaccagnini,Christian Democracy,14209519
+Kosovo,parliamentary,2017,Kadri Veseli,PDK,245646
 Latvia,parliamentary,1993,Valdis Birkavs,Latvian Way,362473
 Lithuania,presidential,1993,Algirdas Mykolas Brazauskas,LDDP,1212075
 Luxembourg,general,1984,Jacques Santer,CSV,1148085
+Macedonia,general,2014,Gjorge Ivanov,VMRO-DPMNE,534910
+Malta,general,2017,Joseph Muscat,Labour,170976
 Moldova,parliamentary,2001,Vladimir Voronin,PCRM,794808
+Montenegro,parliamentary,2009,Milo Đukanović,ECG,168290
 Netherlands,general,1986,Ruud Lubbers,CDA,3172918
 Norway,parliamentary,1985,Gro Harlem Brundtland,Labour,1061712
 Poland,presidential,1990,Lech Wałęsa,Solidarity,10622696
 Portugal,presidential,1991,Aníbal Cavaco Silva,PSD,2902351
 Romania,presidential,1990,Ion Iliescu,Independent,12232498
 Russia,presidential,2008,Dmitry Medvedev,United Russia,52530712
+Serbia,parliamentary,2016,Aleksandar Vučić,SNS,1823147
 Slovakia,parliamentary,1992,Vladimír Mečiar,HZDS,1148625
+Slovenia,parliamentary,2000,Janez Drnovšek,LDS,390306
 Spain,general,2008,José Luis Rodríguez Zapatero,PSOE,11289335
 Sweden,geneeral,1982,Olof Palme,Social Democratic,2533250
 Switzerland,federal,2015,Toni Brunner,Swiss People's,740967
-Turkey,general*,2015 [Nov],Ahmet Davutoğlu,AK Party,23681926
+Turkey,general,2015 [Nov],Ahmet Davutoğlu,AK Party,23681926
 UK,general,1992,John Major,Conservative,14093007
 Ukraine,presidential,1991,Leonid Kravchuk,Independent,19643481

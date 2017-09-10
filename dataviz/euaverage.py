@@ -35,7 +35,7 @@ def flag(c): return Image.from_url_with_cache(flags['flag'][c]).resize_fixed_asp
 def box(c): return Image.new("RGBA", (50, 30), colorfn(c)).place(Image.from_text(label_fn(c), arial(16, bold=True), "black", bg=colorfn(c)))
 
 flag_leg = Image.from_array([[flag('Malta'), Image.from_text("flag", arial(16))],
-[box('Malta'), Image.from_text("average", arial(16))]
+[box('Malta'), Image.from_text("average\n+ score", arial(16))]
 ], bg="white", xalign=0, padding=(5,5))
 
 note_leg = Image.from_text("Flag images and common English names both from Wikipedia.", arial(16), max_width=120, bg="white", padding=(0,2))
@@ -45,8 +45,8 @@ chart = map.place(legend, align=(1,0), padding=10)
 
 # title
 title = Image.from_column([
-Image.from_text("EUROPE: THE ESSENTIAL FACTS", arial(48, bold=True)),
-Image.from_text("average colours of flags and Scrabble scores of names", arial(36))],
+Image.from_text("EUROPE: THE VITAL FACTS", arial(48, bold=True)),
+Image.from_text("average flag colours and name Scrabble scores", arial(36))],
 bg="white")
 img = Image.from_column([title, chart], bg="white", padding=2)
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)

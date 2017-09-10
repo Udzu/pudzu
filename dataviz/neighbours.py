@@ -12,7 +12,8 @@ MERGE = { 'Gibraltar': 'UK', 'Jersey': 'UK', 'Guernsey': 'UK', 'Faroe Islands': 
 mapnames = load_name_csv(MAP)
 names = [d['name'] for _,d in mapnames.iterrows() if d['name'] not in MERGE and d['name'] != BACKGROUND]
 bgcolor = mapnames[mapnames['name']==BACKGROUND].color.loc[0]
-palette = ImageColor.from_floats(sns.color_palette("hls", len(names) * 2)[len(names):])
+# palette = ImageColor.from_floats(sns.color_palette("hls", len(names) * 2)[len(names):])
+palette = ImageColor.from_floats(sns.cubehelix_palette(len(names) * 2, start=0.2, rot=-0.75))
 palette = list(riffle_shuffle(palette, 4))
 colorfn = lambda n: None if n == BACKGROUND else palette[names.index(MERGE[n])] if n in MERGE else palette[names.index(n)]
 map = map_chart(MAP, colorfn).convert("RGBA")

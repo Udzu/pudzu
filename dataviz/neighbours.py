@@ -49,5 +49,5 @@ maps = Image.from_array([[Image.from_text("Original map".upper(), arial(60, bold
 footer = Image.from_text("Blank map from Wikipedia. Dependencies counted under parent state. Calculations based on Euclidean distance and low resolution map, so not 100% accurate. Not for use in pub quizzes or planning escape routes.", arial(24), "black", "white", padding=10)
 chart = Image.from_column([maps, footer], bg="white")
 chart.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, copy=False)
-chart.save("output/neighbours.png")
+chart.save("output/euneighbours.png")
 

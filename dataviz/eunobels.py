@@ -82,4 +82,4 @@ Image.from_text("using modern countries of citizenship, based on Wikipedia", ari
 ], bg="white")
 chart = Image.from_column([title, gridleg], bg="white").pad(5,"white")
 # chart.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=0, copy=False)
-chart.save("output/eunobels.png")
+chart.save("output/nobelseu.png")

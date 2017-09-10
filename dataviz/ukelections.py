@@ -27,7 +27,7 @@ def clabelfn(c,r,v):
     seats = seat_data[party_data.columns[c]][party_data.index[r]]
     if c == 4: label = "({:.0%})".format(v / sum(vote_data[xx][party_data.index[r]] for xx in party_data.columns))
     else: label = str(seat_data[party_data.columns[c]][party_data.index[r]])
-    return Image.from_text(label, arial(10), bg=colorfn(c,r,v))
+    return Image.from_text(label, arial(10), bg=colorfn(c,r,v), fg="white")
     
 chart = bar_chart(vote_data, 40, 400, type=BarChartType.STACKED, colors=colorfn,
                   spacing=5, rlabels=arial(12), ylabels=arial(12), clabels=clabelfn,
@@ -50,4 +50,5 @@ text = Image.from_text("Chart highlights the top three parties by popular vote s
 legendtext = Image.from_column([legend, text], padding=(0,10), xalign=0)
 img = Image.from_row([chart, legendtext], bg="white", yalign=0, padding=(10,0))
 img = Image.from_column([title, img], bg="white").pad((0,5), "white")
+img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("output/ukelections.png")

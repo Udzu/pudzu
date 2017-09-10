@@ -96,7 +96,4 @@ Image.from_text("(state or country of birth, based on modern borders)", arial(36
 ], bg="white")
 chart = Image.from_column([title, gridleg], bg="white")
 chart.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
-chart.save("output/usnobels.png")
-
-
-
+chart.save("output/nobelsus.png")

@@ -80,6 +80,6 @@ title = Image.from_column([
 Image.from_text("European Nobel laureates by nationality", arial(48, bold=True), fg="black", bg="white", padding=(0,20,0,0)),
 Image.from_text("using modern countries of citizenship, based on Wikipedia", arial(24, bold=True), fg="black", bg="white", padding=(0,0,0,40))
 ], bg="white")
-chart = Image.from_column([title, gridleg], bg="white")
+chart = Image.from_column([title, gridleg], bg="white").pad(5,"white")
 # chart.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=0, copy=False)
 chart.save("output/eunobels.png")

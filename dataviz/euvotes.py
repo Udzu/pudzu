@@ -7,11 +7,11 @@ import seaborn as sns
 # generate map
 df = pd.read_csv("datasets/euvotes.csv").set_index('country')
 
-palette = list(reversed(ImageColor.from_floats(sns.cubehelix_palette(9, start=0.2, rot=-0.75))))
+palette = ImageColor.from_floats(sns.cubehelix_palette(11, start=0.2, rot=-0.75))
 ranges = [20000000,10000000,5000000,2000000,1000000,500000,200000,100000,0]
 
 def votecolfn(n):
-    return palette[next(i for i,x in enumerate(ranges) if n >= x)]
+    return palette[8 - next(i for i,x in enumerate(ranges) if n >= x)]
 
 def colorfn(c):
     if c not in df.index:

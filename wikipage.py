@@ -238,7 +238,7 @@ class WDPage(CachedPage):
     @cached_property
     def places_of_birth(self):
         """Places of birth."""
-        return sorted(self.property_values(self.PLACE_OF_BIRTH))
+        return self.property_values(self.PLACE_OF_BIRTH)
 
     @cached_property
     def countries_of_birth(self):

@@ -9,7 +9,7 @@ from collections import namedtuple
 
 from utils import *
 
-cd = optional_import("convertdate")
+cdate = optional_import("convertdate")
 
 # Date class supporting flexible calendars, deltas and ranges
 
@@ -244,16 +244,16 @@ class IslamicCalendar(Calendar):
         return "Islamic"
 
     def days_in_month(self, year, month): 
-        return cd.islamic.month_length(year, month)
+        return cdate.islamic.month_length(year, month)
         
     def months_in_year(self, year):
         return 12
         
     def date_to_ordinal(self, ymd):
-        return floor(cd.islamic.to_jd(*ymd) - 1721424)
+        return floor(cdate.islamic.to_jd(*ymd) - 1721424)
     
     def ordinal_to_date(self, ordinal):
-        return YMD(*cd.islamic.from_jd(ordinal + 1721424))
+        return YMD(*cdate.islamic.from_jd(ordinal + 1721424))
         
 class HebrewCalendar(Calendar):
     """Proleptic Hebrew Calendar. Months are based on the ecclesiastical year, years on the civil year. 
@@ -269,16 +269,16 @@ class HebrewCalendar(Calendar):
         return self.MONTHS[ymd.month - 1 + int(ymd.month >= 12 and self.months_in_year(ymd.year) == 13)]
         
     def days_in_month(self, year, month): 
-        return cd.hebrew.month_days(year, month)
+        return cdate.hebrew.month_days(year, month)
         
     def months_in_year(self, year):
-        return cd.hebrew.year_months(year)
+        return cdate.hebrew.year_months(year)
         
     def date_to_ordinal(self, ymd):
-        return floor(cd.hebrew.to_jd(*ymd) - 1721424)
+        return floor(cdate.hebrew.to_jd(*ymd) - 1721424)
     
     def ordinal_to_date(self, ordinal):
-        return YMD(*cd.hebrew.from_jd(ordinal + 1721424))
+        return YMD(*cdate.hebrew.from_jd(ordinal + 1721424))
         
     def add_months(self, ymd, month_delta):
         raise NotImplementedError("Date deltas not supported for ecclesiastical Hebrew calendar.")
@@ -321,7 +321,7 @@ class RepublicanCalendar(Calendar):
         return "French Republican"
 
     def date_name(self, ymd):
-        return cd.french_republican.french_republican_days[ymd.month][ymd.day-1]
+        return cdate.french_republican.french_republican_days[ymd.month][ymd.day-1]
         
     def date_format(self, ymd, weekday, format_string=None):
         if format_string is None:
@@ -329,7 +329,7 @@ class RepublicanCalendar(Calendar):
         return super().date_format(ymd, weekday, format_string)
     
     def days_in_month(self, year, month): 
-        return 30 if month <= 12 else 5 + int(cd.french_republican.leap(year))
+        return 30 if month <= 12 else 5 + int(cdate.french_republican.leap(year))
         
     def months_in_year(self, year):
         return 13
@@ -338,10 +338,10 @@ class RepublicanCalendar(Calendar):
         return (ordinal + 1) % len(self.WEEKDAYS)
 
     def date_to_ordinal(self, ymd):
-        return floor(cd.french_republican.to_jd(*ymd) - 1721424)
+        return floor(cdate.french_republican.to_jd(*ymd) - 1721424)
     
     def ordinal_to_date(self, ordinal):
-        return YMD(*[int(x) for x in cd.french_republican.from_jd(ordinal + 1721424)])
+        return YMD(*[int(x) for x in cdate.french_republican.from_jd(ordinal + 1721424)])
         
     def add_months(self, ymd, month_delta):
         # skip complementary month unless we start there
@@ -365,13 +365,13 @@ class ISOCalendar(Calendar):
         return 7
 
     def months_in_year(self, year): 
-        return cd.iso.weeks_per_year(year)
+        return cdate.iso.weeks_per_year(year)
 
     def date_to_ordinal(self, ymd):
-        return floor(cd.iso.to_jd(*ymd) - 1721425)
+        return floor(cdate.iso.to_jd(*ymd) - 1721425)
     
     def ordinal_to_date(self, ordinal):
-        return YMD(*[int(x) for x in cd.iso.from_jd(ordinal + 1721425)])
+        return YMD(*[int(x) for x in cdate.iso.from_jd(ordinal + 1721425)])
 
 # Calendars
    

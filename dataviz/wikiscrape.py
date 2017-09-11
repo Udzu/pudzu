@@ -68,3 +68,37 @@ def combine_decades(decades, langs=["de", "en", "es", "fr", "ja", "ru", "zh"], o
 def top_per_century(centuries=range(10,19), langs=["de", "en", "es", "fr", "ja", "ru", "zh"]):
     return { c * 100 : { lang: read_csvs("datasets/wikibirths{}/{}*csv".format("" if lang == "en" else "/"+lang,c)).sort_values("score", ascending=False)['link'].iloc[0] for lang in langs} for c in make_iterable(centuries) }
             
+# extract us state of birth (for dead people only; could use cleanup)
+
+def is_us_state(wd):
+    return any(x.get('id') == "Q35657" for x in wd.property_values("P31", convert=False))
+    
+def state_of_place(wd): # TODO: DC, Puerto Rico, etc
+    if is_us_state(wd): return wd.name()
+    for region in wd.property_values("P131"):
+        state = state_of_place(region)
+        if state: return state
+    return None
+
+def state_of_birth(name):
+    american = False
+    wd = WikiPage(name).to_wikidata()
+    if wd.property_values("P570", convert=False):
+        pobs = wd.places_of_birth
+        for pob in wd.places_of_birth:
+            for cob in pob.property_values(wd.COUNTRY, lambda qs: wd.END_TIME not in qs, convert=False):
+                if cob.get('id') == 'Q30':
+                    american = True
+                    state = state_of_place(pob)
+                    if state: return state
+    return "US" if american else None
+
+def write_states(df, file, append=False):
+    with open(file, "w" if not append else "a", encoding="utf-8") as f:
+        if not append: print("link,score,state", file=f)
+        for i in tqdm.tqdm(range(len(df))):
+            state = state_of_birth(df.iloc[i]['link'])
+            if state:
+                print("{},{},{}".format(df.iloc[i]['title'].replace(',',''),df.iloc[i]['score'],state), file=f)
+                f.flush()
+

@@ -6,7 +6,6 @@ from charts import *
 
 # wikifame birth grids
 
-
 SPECS = [["datasets/wikibirths.csv", "output/wikibirths.jpg",
           "100 famous people from the second millennium", "the most famous person born each decade, according to English Wikipedia",
           "{}00s", "'{}0s", range(10,20), range(0,10)],

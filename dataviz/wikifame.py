@@ -25,7 +25,7 @@ SPECS = [["datasets/wikibirths.csv", "output/wikibirths.jpg",
           
 # FOOTNOTE = "*fame measure is a combination of article length, number of edits, and typical number of pageviews"
 # FOOTNOTE = "restricted to people who died at least 20 years ago; fame measure is a combination of article length, number of edits, and typical number of pageviews"
-FOOTNOTE = "based on English, French, German, Spanish, Russian, Chinese and Japanese Wikipedias; fame is a combination of article length, number of edits, and pageviews"
+FOOTNOTE = "* based on English, French, German, Spanish, Russian, Chinese and Japanese Wikipedias\nfame is a combination of article length, number of edits, and typical number of pageviews"
 
 for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE in SPECS[-1:]:
 
@@ -55,7 +55,7 @@ for DATASET, OUTPUT, TITLE, SUBTITLE, ROWFORMAT, COLFORMAT, ROWRANGE, COLRANGE i
     Image.from_text(TITLE, arial(60, bold=True), fg=fg, bg=bg).pad((10,0), bg=bg),
     Image.from_text(SUBTITLE, arial(36, bold=True), fg=fg, bg=bg).pad((10,0,10,2), bg=bg)
     ], bg=bg).pad((0,10),bg=bg)
-    comment = Image.from_text(FOOTNOTE, arial(24), fg=fg, bg=bg).pad((0,20,0,5),bg=bg)
+    comment = Image.from_text(FOOTNOTE, arial(24), align="center", fg=fg, bg=bg).pad((0,20,0,5),bg=bg)
 
     chart = Image.from_column([title, grid, comment], bg=bg)
     chart.place(Image.from_text("/u/Udzu", font("arial", 24), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=0, copy=False)

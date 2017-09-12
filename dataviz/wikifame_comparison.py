@@ -14,6 +14,7 @@ FOOTNOTE = "fame measure is a combination of article length, number of edits, an
 
 df = pd.read_csv("datasets/wikibirths_comparison.csv")
 table = pd.crosstab(df.century, df.language, df.name, aggfunc=lambda i : i.iloc[0])
+table = table[['de', 'en', 'fr', 'es','ru', 'zh', 'ja']]
 gb =  df.groupby(['name', 'language']).first()
 
 def process(img, name, row, column):

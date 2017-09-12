@@ -1,0 +1,66 @@
+link,year,disambiguation,length,pageviews,revisions,title,score
+Filippo_Brunelleschi,1377,False,81944,11275,631,Filippo Brunelleschi,0.6963233276133063
+Zheng_He,1371,False,178718,3183,497,Zheng He,0.6637347422326196
+Henry_III_of_Castile,1379,False,128027,5365,264,Enrique III de Castilla,0.6473667142041455
+Pope_Callixtus_III,1378,False,87991,3035,332,Calixto III,0.6360521712227649
+Lorenzo_Ghiberti,1378,False,62355,3287,165,Lorenzo Ghiberti,0.6027170005620058
+John_the_Fearless,1371,False,64458,1350,134,Juan I de Borgoña,0.569421694771023
+Jadwiga_of_Poland,1374,False,59337,843,130,Eduviges I de Polonia,0.5529932048730409
+Isabeau_de_Bavière,1371,False,48712,547,88,Isabel de Baviera-Ingolstadt,0.5198701397462635
+Martin_I_of_Sicily,1374,False,54042,442,95,Martín el Joven,0.5175285798352911
+"Louis_of_Valois,_Duke_of_Orléans",1372,False,61405,427,90,Luis de Valois,0.51534783611102
+Vittorino_da_Feltre,1378,False,45865,665,52,Vittorino da Feltre,0.4988899536378159
+Vasily_I_of_Moscow,1371,False,50292,333,58,Basilio I de Moscú,0.48494564936367296
+Ladislaus_of_Naples,1377,False,50500,190,76,Ladislao I de Nápoles,0.47736657315715475
+Louis_II_of_Anjou,1377,False,46818,208,70,Luis II de Nápoles,0.47661906843508045
+"Joan_of_Navarre,_Queen_of_England",1370,False,35957,306,53,"Juana de Navarra, reina de Inglaterra",0.4746800257429883
+"Richard_of_Conisburgh,_3rd_Earl_of_Cambridge",1375,False,37594,390,45,Ricardo de Conisburgh,0.4742468495196928
+Joanna_II_of_Naples,1373,False,41321,221,55,Juana II de Nápoles,0.46698066530097293
+"Edward_of_Norwich,_2nd_Duke_of_York",1373,False,44195,223,51,Eduardo de York,0.46438883968636496
+Erasmo_of_Narni,1370,False,33901,308,43,Erasmo de Narni,0.46391175733236184
+Oswald_von_Wolkenstein,1377,False,38177,178,53,Oswald von Wolkenstein,0.4569874730083413
+"Ernest,_Duke_of_Austria",1377,False,42534,282,38,Ernesto I de Austria,0.4568357634580655
+"Frederick_I,_Elector_of_Saxony",1370,False,42767,129,68,Federico I de Sajonia,0.45617853262007485
+Olav_IV_of_Norway,1370,False,34457,304,36,Olaf II de Dinamarca,0.454295331712997
+Jerome_of_Prague,1379,False,40892,233,39,Jerónimo de Praga,0.45195271638151674
+John_VII_Palaiologos,1370,False,42103,100,49,Juan VII Paleólogo,0.4324262661974974
+"Yusuf_III,_Sultan_of_Granada",1376,False,36526,152,32,Yusuf III de Granada,0.4270140707727041
+Helena_Dragaš,1372,False,43182,114,37,Helena Dragaš,0.4252993555507936
+"Albert_IV,_Duke_of_Austria",1377,False,33673,115,34,Alberto IV de Austria,0.41972577228159347
+Shahrukh_Mirza,1377,False,43455,81,44,Shahruj,0.41949191396169117
+Jianwen_Emperor,1377,False,35712,122,29,Jianwen,0.41438100281567297
+Emperor_Go-Komatsu,1377,False,38028,96,34,Go-Komatsu Tennō,0.4139651507119915
+Hongxi_Emperor,1378,False,35311,115,30,Hongxi,0.4139636069798728
+"Leopold_IV,_Duke_of_Austria",1371,False,32315,93,33,Leopoldo IV de Austria,0.4101807890331074
+Konrad_of_Megenberg,1374,False,57157,78,32,Konrad von Megenberg,0.4058818022822574
+William_of_Austria,1370,False,36014,98,23,Guillermo de Austria,0.39482256233383506
+Yury_Dmitrievich,1374,False,40106,67,25,Yuri de Zvenígorod,0.38592935294467773
+John_Lydgate,1370,False,36822,72,20,John Lydgate,0.3767241597558467
+Sophia_of_Lithuania,1371,False,31085,64,20,Sofía de Lituania,0.37142406744180556
+Margery_Kempe,1373,False,55419,200,8,Margery Kempe,0.34170993552011375
+"Joanna_of_Aragon,_Countess_of_Foix",1375,False,87939,42,13,Juana de Aragón y de Armagnac,0.33732365713298873
+Jan_Sindel,1370,False,26532,35,11,Jan Šindel,0.3156204601302368
+"Frederick_I,_Elector_of_Brandenburg",1371,False,45381,129,6,Federico I de Brandeburgo,0.305473507334273
+"Louis_III,_Elector_Palatine",1378,False,43790,64,6,Luis III del Palatinado,0.2911386600933854
+Sofia_of_Bavaria,1376,False,95824,102,5,Sofía de Baviera (1376-1425),0.2851983054583101
+"Joan_II,_Countess_of_Auvergne",1378,False,34424,50,6,Juana II de Auvernia,0.2845045846780214
+"David_Stewart,_Duke_of_Rothesay",1378,False,31766,50,2,"David Estuardo, duque de Rothesay",0.15374319822914115
+"Roger_Mortimer,_4th_Earl_of_March",1374,False,58926,0,8,"Roger de Mortimer, IV Conde de March",0.11495951520487739
+Empress_Zhang_(Hongxi),1379,,1,1,1,?,0.05448825167540282
+Johannes_Abezier,1375,,1,1,1,?,0.05448825167540282
+Lan_Kham_Deng,1375,,1,1,1,?,0.05448825167540282
+Jan_Piast,1370,,1,1,1,?,0.05448825167540282
+John_Hardyng,1378,,1,1,1,?,0.05448825167540282
+Gihwa,1376,,1,1,1,?,0.05448825167540282
+Ibn_Hajar_al-Asqalani,1372,,1,1,1,?,0.05448825167540282
+Guarino_da_Verona,1370,,1,1,1,?,0.05448825167540282
+Pier_Paolo_Vergerio_the_Elder,1370,,1,1,1,?,0.05448825167540282
+Nicolas_Grenon,1375,,1,1,1,?,0.05448825167540282
+Paulus_Vladimiri,1370,,1,1,1,?,0.05448825167540282
+Marie_d'Alençon,1373,,1,1,1,?,0.05448825167540282
+"John_Hastings,_3rd_Earl_of_Pembroke",1372,,1,1,1,?,0.05448825167540282
+"Thomas_le_Despenser,_1st_Earl_of_Gloucester",1373,,1,1,1,?,0.05448825167540282
+Zhu_Quan,1378,,1,1,1,?,0.05448825167540282
+"Thomas_Holland,_1st_Duke_of_Surrey",1374,,1,1,1,?,0.05448825167540282
+Edmund_Mortimer_(1376-1409),1376,,1,1,1,?,0.05448825167540282
+Anglesia_Visconti,1377,,1,1,1,?,0.05448825167540282

@@ -1,0 +1,631 @@
+link,year,disambiguation,length,pageviews,revisions,title,score
+Isaac_Newton,1642,False,238217,222897,4121,Isaac Newton,0.8603158074473136
+Isaac_Newton,1643,False,238217,222897,4121,Isaac Newton,0.8603158074473136
+Gottfried_Wilhelm_Leibniz,1646,False,185474,37180,1230,Gottfried Leibniz,0.7675652635461856
+Carlos_de_Sigüenza_y_Góngora,1645,False,73225,5541,340,Carlos de Sigüenza y Góngora,0.6508122201250667
+Antonio_Stradivari,1644,False,60415,5282,351,Antonio Stradivari,0.6477644712994015
+"Philippe_I,_Duke_of_Orléans",1640,False,132329,3970,243,Felipe I de Orleans,0.6360465106798542
+Claudio_Coello,1642,False,167445,1355,488,Claudio Coello,0.6337254659757321
+"Leopold_I,_Holy_Roman_Emperor",1640,False,133875,3595,227,Leopoldo I de Habsburgo,0.6304109251851665
+Matsuo_Bashō,1644,False,136920,1981,274,Matsuo Bashō,0.6215815235105169
+Eusebio_Kino,1645,False,84230,1969,317,Eusebio Francisco Kino,0.620642759112088
+Mary_of_Jesus_de_León_y_Delgado,1643,False,104263,713,465,María de Jesús de León y Delgado,0.6021097604638789
+Margaret_Mary_Alacoque,1647,False,61848,2767,166,Margarita María Alacoque,0.598427252754257
+Gaspar_Sanz,1640,False,79763,1012,281,Gaspar Sanz,0.5937605554544689
+Juan_del_Valle_y_Caviedes,1645,False,32687,1765,241,Juan del Valle y Caviedes,0.5926033063237257
+William_Kidd,1645,False,65642,2186,136,William Kidd,0.5836544683890954
+William_Penn,1644,False,73219,1681,124,William Penn,0.5735514177840716
+Pope_Clement_XI,1649,False,91812,1158,144,Clemente XI,0.572465429349579
+Mehmed_IV,1642,False,55781,2696,97,Mehmed IV,0.569940487666601
+Maria_Sibylla_Merian,1647,False,84179,711,201,Maria Sibylla Merian,0.5695458993297884
+Ole_Rømer,1644,False,65335,1324,123,Ole Rømer,0.5650861059691887
+Denis_Papin,1647,False,58836,1423,116,Denis Papin,0.563061687575911
+Henrietta_Anne_Stuart,1644,False,152654,973,113,Enriqueta de Inglaterra,0.5616380113205881
+Pierre_Bayle,1647,False,69884,1342,106,Pierre Bayle,0.5592107902569229
+"Françoise-Athénaïs,_marquise_de_Montespan",1641,False,50943,1501,107,Madame de Montespan,0.5588509844229668
+Diego_Morcillo_Rubio_de_Auñón,1642,False,88422,465,209,Diego Morcillo Rubio de Auñón,0.5562308766173182
+Suleiman_II,1642,False,44471,2071,86,Suleiman II,0.5543771613607409
+"René-Robert_Cavelier,_Sieur_de_La_Salle",1643,False,87732,732,126,René Robert Cavelier de La Salle,0.551682728340393
+Ahmed_II,1643,False,46387,1693,89,Ahmed II,0.551679268636158
+Afonso_VI_of_Portugal,1643,False,136616,771,99,Alfonso VI de Portugal,0.546981215818965
+Andrea_Pozzo,1642,False,76212,792,97,Andrea Pozzo,0.5406813625397325
+"Charles_V,_Duke_of_Lorraine",1643,False,230429,633,85,Carlos V de Lorena,0.5383188111394337
+Louise_de_La_Vallière,1644,False,48145,981,90,Luisa de La Vallière,0.5381179689687364
+Jules_Hardouin-Mansart,1646,False,78186,672,97,Jules Hardouin-Mansart,0.535913162201213
+Peter_II_of_Portugal,1648,False,52099,782,81,Pedro II de Portugal,0.5274622210379423
+Heinrich_Ignaz_Franz_Biber,1644,False,66344,506,101,Heinrich Ignaz Biber,0.5268788725528225
+Juan_Bautista_Cabanilles,1644,False,61935,451,108,Juan Cabanilles,0.525185794103035
+Jean_de_La_Bruyère,1645,False,70420,722,63,Jean de La Bruyère,0.5157122724885189
+"Marie_Anne_de_La_Trémoille,_princesse_des_Ursins",1642,False,42155,787,65,Princesa de los Ursinos,0.514301670898393
+"Cosimo_III_de'_Medici,_Grand_Duke_of_Tuscany",1642,False,63962,450,75,Cosme III de Médici,0.5091648785663913
+Tomás_de_Torrejón_y_Velasco,1644,False,53295,295,107,Tomás de Torrejón y Velasco,0.5082076811445483
+Nehemiah_Grew,1641,False,54377,595,58,Nehemiah Grew,0.5032927992219849
+Aphra_Behn,1640,False,64378,405,67,Aphra Behn,0.5005127035137805
+Christian_V_of_Denmark,1646,False,60587,413,64,Cristián V de Dinamarca,0.4983398396046287
+Antoine_Galland,1646,False,44821,712,48,Antoine Galland,0.49610637806858215
+Arabella_Churchill_(royal_mistress),1648,False,43424,600,52,Arabella Churchill,0.4955145658896321
+Antoine_Coysevox,1640,False,69641,319,67,Antoine Coysevox,0.49341494875995484
+Nicolas_Lemery,1645,False,45070,733,45,Nicolás Lemery,0.4933005038551393
+John_Flamsteed,1646,False,61621,263,77,John Flamsteed,0.4917944034078981
+Juan_María_de_Salvatierra,1648,False,51471,250,83,Juan María de Salvatierra,0.49142633501491356
+"Henri_Jules,_Prince_of_Condé",1643,False,86471,241,74,Enrique III de Borbón-Condé,0.4899804463377634
+"John_Wilmot,_2nd_Earl_of_Rochester",1647,False,43316,585,47,John Wilmot,0.4893564500129447
+Johann_Ambrosius_Bach,1645,False,47585,435,52,Johann Ambrosius Bach,0.4872251911935231
+Godfrey_Kneller,1646,False,49859,457,49,Godfrey Kneller,0.48603202488457264
+Nicolas_Roland,1642,False,65347,215,77,Nicolás Roland,0.48494148761958195
+Claude_de_la_Colombière,1641,False,40265,327,60,Claudio de la Colombière,0.48382192880514835
+Pu_Songling,1640,False,48544,292,62,Pu Songling,0.4834561208380089
+"James_Scott,_1st_Duke_of_Monmouth",1649,False,134185,191,69,"James Scott, I duque de Monmouth",0.4818098283944074
+Regnier_de_Graaf,1641,False,44590,623,39,Regnier de Graaf,0.48079677393888454
+Johann_Christoph_Bach,1642,False,51796,308,55,Johann Christoph Bach (1642-1703),0.48014258966329865
+"Louis_I,_Prince_of_Monaco",1642,False,90942,200,65,Luis I de Mónaco,0.477789609004994
+Marie_Jeanne_Baptiste_of_Savoy-Nemours,1644,False,53204,215,66,María Juana Bautista de Saboya-Nemours,0.4764688354761671
+Jeanne_Marie_Bouvier_de_la_Motte_Guyon,1648,False,64957,333,41,Jeanne Marie Bouvier de la Motte Guyon,0.46956587629567853
+Diego_Ladrón_de_Guevara,1641,False,37854,340,44,Diego Ladrón de Guevara,0.46909884501691546
+Elihu_Yale,1649,False,39531,482,36,Elihu Yale,0.46833460425073686
+Juana_Rangel_de_Cuéllar,1649,False,31837,483,37,Juana Rangel de Cuéllar,0.46790686134116805
+"António_Luís_de_Sousa,_2nd_Marquis_of_Minas",1644,False,67479,123,86,"António Luís de Sousa, Marqués de Minas",0.46705079632285135
+Mariana_Alcoforado,1640,False,41745,246,48,Mariana Alcoforado,0.4642519400474597
+Maria_Francisca_of_Savoy,1646,False,39830,169,61,María Francisca de Saboya-Nemours,0.4616038631588023
+Louis_Jolliet,1645,False,78615,194,48,Louis Jolliet,0.46153295082641405
+"Francisco_Castillo_Fajardo,_Marquis_of_Villadarias",1642,False,44280,127,74,Francisco del Castillo y Fajardo,0.4591326712261923
+Johann_Zahn,1641,False,40091,539,29,Johann Zahn,0.4583223135712778
+Giovanni_Ceva,1647,False,42803,159,49,Giovanni Ceva,0.450377705112099
+Robert_Kirk_(folklorist),1644,False,46613,180,41,Robert Kirk,0.4470750067251224
+"Barbara_Palmer,_1st_Duchess_of_Cleveland",1640,False,42438,119,57,Barbara Villiers,0.44575989558567763
+"François-Michel_le_Tellier,_Marquis_de_Louvois",1641,False,36762,198,36,François Michel Le Tellier de Louvois,0.44174957680240984
+Philippe_de_La_Hire,1640,False,40169,157,41,Philippe de la Hire,0.44112562981511266
+Aert_de_Gelder,1645,False,70042,164,36,Arent de Gelder,0.44055933012185483
+"John_George_III,_Elector_of_Saxony",1647,False,48481,188,34,Juan Jorge III de Sajonia,0.4393581436995918
+Johann_Michael_Bach,1648,False,34690,143,43,Johann Michael Bach,0.4388214477357602
+Jean-Baptiste_du_Casse,1646,False,70519,124,42,Jean-Baptiste du Casse,0.437999019449051
+John_de_Brito,1647,False,38403,166,37,Juan de Brito,0.43768614656118876
+Charles_Plumier,1646,False,50193,103,48,Charles Plumier,0.4341133267936276
+"Christian_Albert,_Duke_of_Holstein-Gottorp",1641,False,41767,99,48,Cristián Alberto de Holstein-Gottorp,0.43109484349195304
+Maria_Elisabeth_Lämmerhirt,1644,False,25180,194,31,Maria Elisabetha Lämmerhirt,0.43011567483946106
+Diego_de_Salinas,1649,False,45218,365,21,Diego de Salinas,0.42890784652331915
+Giuseppe_Maria_Tomasi,1649,False,47183,114,38,Giuseppe Maria Tomasi,0.4272089920684552
+Nathaniel_Bacon_(Virginia_colonist_and_rebel),1647,False,46693,118,36,Nathaniel Bacon,0.4258627330298437
+"Louise_de_Kérouaille,_Duchess_of_Portsmouth",1649,False,43861,133,31,Louise de Kérouaille,0.4222701428252068
+"Henry_Stuart,_Duke_of_Gloucester",1640,False,42594,135,30,Enrique Estuardo (1640-1660),0.42087842117184443
+Johann_Christoph_Bach_(musician_at_Arnstadt),1645,False,30191,145,30,Johann Christoph Bach (1645-1693),0.4206381041529395
+Vincenzo_da_Filicaja,1642,False,51105,70,51,Vincenzo da Filicaja,0.4202202027419649
+Abdul-Qādir_Bīdel,1642,False,35738,59,67,Abdul Qader Bedil,0.41940088032553674
+Constantine_Phaulkon,1647,False,33900,105,36,Constantinos Phaulkon,0.4191258333428196
+Francis_de_Geronimo,1642,False,32857,123,32,Francisco de Jerónimo,0.41897780355241915
+Élisabeth_Sophie_Chéron,1648,False,65312,86,38,Elisabeth-Sophie Cheron,0.41851826546990273
+"François_de_Neufville,_duc_de_Villeroy",1644,False,43943,130,29,François de Neufville de Villeroy,0.41806769488123185
+"Henri_de_Massue,_Marquis_de_Ruvigny",1648,False,37865,69,44,"Henri de Massue, I conde de Galway",0.41163794107706647
+Jacques_Ozanam,1640,False,47297,111,28,Jacques Ozanam,0.41131519479026835
+Tokugawa_Tsunayoshi,1646,False,39466,158,23,Tokugawa Tsunayoshi,0.41082684556758325
+"William_Cavendish,_1st_Duke_of_Devonshire",1640,False,40305,118,26,William Cavendish (1640-1707),0.40843403337373746
+Juan_Núñez_de_la_Peña,1641,False,31975,89,32,Juan Núñez de la Peña,0.4070107273723554
+Archduke_Charles_Joseph_of_Austria,1649,False,32859,111,27,Carlos José de Habsburgo,0.4068636089892323
+Johann_Weikhard_von_Valvasor,1641,False,51273,92,29,Janez Vajkard Valvasor,0.40683641902917506
+"George_Jeffreys,_1st_Baron_Jeffreys",1645,False,49071,78,32,George Jeffreys,0.40487747127570745
+André_Charles_Boulle,1642,False,41829,300,16,André-Charles Boulle,0.40480555571346644
+Abraham_Mignon,1640,False,39348,83,31,Abraham Mignon,0.4043368670762368
+Juan_Domingo_de_Zuñiga_y_Fonseca,1640,False,42468,110,24,Juan Domingo de Haro,0.40214030548644947
+Elena_Cornaro_Piscopia,1646,False,57439,245,16,Elena Cornaro Piscopia,0.4020660288477768
+Tokugawa_Ietsuna,1641,False,41718,87,28,Tokugawa Ietsuna,0.40164453122722943
+"Charles_Henri,_Prince_of_Commercy",1649,False,46184,64,36,Carlos Enrique de Lorena,0.4015051850902237
+Pascal_Collasse,1649,False,31031,73,33,Pascal Collasse,0.4004678251422469
+Abraham_a_Sancta_Clara,1644,False,46526,66,33,Abraham a Sancta Clara,0.39910074124914724
+Jean_Chardin,1643,False,52595,116,21,Jean Chardin (explorador),0.39783870337994476
+Françoise_Madeleine_d'Orléans,1648,False,34193,121,19,Francisca Magdalena de Orleans,0.39051369799461316
+Louis_Moréri,1643,False,37100,72,26,Louis Moréri,0.39010637308743373
+"William_Bentinck,_1st_Earl_of_Portland",1649,False,65362,105,19,Hans Willem Bentinck,0.39009778376238646
+Johann_Aegidius_Bach,1645,False,29374,51,35,Johann Aegidius Bach,0.387379094980841
+Grinling_Gibbons,1648,False,31495,91,21,Grinling Gibbons,0.38650309887619216
+Arp_Schnitger,1648,False,73941,56,27,Arp Schnitger,0.38594347813240837
+Anne_Henriette_of_Bavaria,1648,False,98148,95,18,Ana Enriqueta del Palatinado,0.38587233757606787
+Giovanni_Maria_Bononcini,1642,False,32241,56,30,Giovanni Maria Bononcini,0.3856337323569845
+"Frederick_I,_Duke_of_Saxe-Gotha-Altenburg",1646,False,101423,76,20,Federico I de Sajonia-Gotha-Altenburgo,0.38441009727062514
+Claude_Fleury,1640,False,42846,85,20,Claude Fleury,0.38346126821564086
+Ilona_Zrínyi,1643,False,35652,54,29,Helena Zrínyi,0.3832628911603651
+"Louis_François,_duc_de_Boufflers",1644,False,54315,70,22,Louis François de Boufflers,0.38302669766321634
+Lorenzo_Bellini,1643,False,39016,79,21,Lorenzo Bellini,0.3829845831115181
+Princess_Anna_Sophie_of_Denmark,1647,False,44343,143,15,Ana Sofía de Dinamarca,0.38205159694553387
+Josep_Romaguera,1642,False,28124,60,26,Josep Romaguera,0.3811649588681977
+Hortense_Mancini,1646,False,48134,128,15,Hortensia Mancini,0.37946784341988976
+"John_Graham,_1st_Viscount_Dundee",1648,False,41323,58,23,"John Graham, I vizconde de Dundee",0.37640874861660023
+Francesco_del_Giudice,1647,False,66154,74,18,Francesco del Giudice,0.37525105494578537
+Francis_I_Rákóczi,1645,False,38042,57,23,Francisco Rákóczi I,0.37522559282697915
+Otto_Mencke,1644,False,35978,52,24,Otto Mencke,0.37320367472262833
+Marie_Champmeslé,1642,False,40059,60,21,Marie Desmares,0.37302703591148645
+John_Partridge_(astrologer),1644,False,37596,75,17,John Partridge (astrólogo),0.3692727904899853
+Fran_Krsto_Frankopan,1643,False,34655,84,16,Fran Krsto Frankopan,0.3689626958512284
+Sigismund_Casimir,1640,False,29788,77,17,Segismundo Casimiro Vasa,0.36876814463228896
+Francisco_de_Benavides,1640,False,32787,73,17,Francisco de Benavides Dávila y Corella,0.3675568440854519
+Abraham_Storck,1644,False,33229,65,18,Abraham Storck,0.3667886421613705
+Georg_Christoph_Bach,1642,False,28452,45,24,Georg Christoph Bach,0.36574986996087316
+Gabriel_Daniel,1649,False,34875,48,21,Gabriel Daniel,0.3634340787734611
+"Bernhard_I,_Duke_of_Saxe-Meiningen",1649,False,99898,55,17,Bernardo I de Sajonia-Meiningen,0.36332186075713735
+William_Wycherley,1641,False,35293,54,19,William Wycherley,0.3631641165751162
+René_de_Froulay_de_Tessé,1648,False,47749,78,14,René de Froulay de Tessé,0.36021870398743555
+"Charles_Sackville,_6th_Earl_of_Dorset",1643,False,31546,65,16,Charles Sackville,0.3599372149165535
+"Christian_William_I,_Prince_of_Schwarzburg-Sondershausen",1647,False,38661,46,20,Cristián Guillermo I de Schwarzburgo-Sondershausen,0.3599207184456939
+Anne_de_Rohan-Chabot,1648,False,36103,76,14,Ana de Rohan-Chabot,0.3578901598328566
+Robert_Plot,1640,False,47092,64,15,Robert Plot,0.3578648828292288
+Tommaso_Ceva,1648,False,41944,42,20,Tommaso Ceva,0.3566042726366042
+"Alphonse_Henri,_Count_of_Harcourt",1648,False,23882,45,20,Henri Harcourt,0.3562802407467153
+Gérard_Edelinck,1640,False,36695,35,24,Gérard Edelinck,0.3560702620296903
+Johann_Wolfgang_Franck,1644,False,30456,37,23,Johann Wolfgang Franck,0.3557378149426005
+Zeger_Bernhard_van_Espen,1646,False,34768,36,23,Zeger Bernhard van Espen,0.3552403348886089
+Adriaen_Frans_Boudewijns,1644,False,37408,41,15,Adriaen Frans Boudewyns,0.34051068376862736
+Adrien_Baillet,1649,False,50253,67,11,Adrien Baillet,0.3400355661204968
+"Wilhelm_Ludwig,_Duke_of_Württemberg",1647,False,33913,42,14,Guillermo Luis de Wurtemberg,0.3372010082885258
+Marie_Hedwig_of_Hesse-Darmstadt,1647,False,35677,45,13,María Eduviges de Hesse-Darmstadt,0.3357939447824205
+Huchtenburg,1647,False,45281,35,15,Jan van Huchtenburgh,0.335128211421229
+Kong_Shangren,1648,False,28505,27,17,Kong Shangren,0.32778231846428973
+Thomas_Pereira,1645,False,28671,40,12,Tomás Pereira,0.3258743412789976
+Jacques_d'Agar,1640,False,34288,98,8,Jacques d'Agar,0.3245022311463325
+François_Roger_de_Gaignières,1642,False,39048,30,13,François Roger de Gaignières,0.3206799316465087
+Paul_Hermann,1646,False,49983,55,9,Paul Hermann,0.3201442101889261
+Joseph_Parrocel,1646,False,42482,36,11,Joseph Parrocel,0.31871253144164663
+"Albert_Anton,_Prince_of_Schwarzburg-Rudolstadt",1641,False,36450,26,14,Alberto Antonio de Schwarzburgo-Rudolstadt,0.3180837009872014
+Louise_Elisabeth_of_Courland,1646,False,37739,35,11,Luisa Isabel de Curlandia,0.31717806218265454
+"Louis_Henry,_Count_Palatine_of_Simmern-Kaiserslautern",1640,False,66646,26,13,Luis Enrique de Palatinado-Simmern,0.3168303765310083
+Henry_Aldrich,1647,False,32280,28,12,Henry Aldrich,0.3127913249444576
+"Simon_Henry,_Count_of_Lippe",1649,False,37819,23,14,Simón Enrique de Lippe-Detmold,0.31274275994370165
+Princess_Frederica_Amalia_of_Denmark,1649,False,38105,59,8,Federica Amalia de Dinamarca,0.3122956351373181
+Marie_Casimire_Louise_de_La_Grange_d'Arquien,1641,False,38288,12,39,María Casimira Luisa de la Grange d'Arquien,0.31018940957144103
+Augusta_Marie_of_Holstein-Gottorp,1649,False,33831,83,7,Augusta María de Holstein-Gottorp,0.3094652434063961
+"William,_Landgrave_of_Hesse-Rotenburg",1648,False,32190,33,10,Guillermo I de Hesse-Rotenburg,0.30866466930859426
+Giuseppe_Avanzi,1645,False,28639,32,10,Giuseppe Avanzi,0.30706329273909694
+Gian_Antonio_Fumiani,1645,False,29274,32,9,Giovanni Antonio Fumiani,0.3006642789049189
+Ludmilla_Elisabeth_of_Schwarzburg-Rudolstadt,1640,False,33396,26,10,Ludmila Isabel de Schwarzburgo-Rudolstadt,0.29989268289604754
+Francisque_Millet,1642,False,34713,98,6,Jean-François Millet (siglo XVII),0.2992451726251572
+"Albert_V,_Duke_of_Saxe-Coburg",1648,False,90557,42,7,Alberto V de Sajonia-Coburgo,0.2956742344683021
+Maria_d'Este,1644,False,35379,52,6,María de Este,0.2855501855922132
+Johannes_Hancke,1644,False,30431,22,8,Johannes Hancke,0.2799295182926394
+Pietro_Dandini,1646,False,33220,23,6,Pietro Dandini,0.2626069697365187
+Philip_Aranda,1642,False,27565,21,6,Felipe Aranda,0.25905606016192256
+"John_Sheffield,_1st_Duke_of_Buckingham_and_Normanby",1648,False,37021,54,4,John Sheffield,0.24752194552782653
+John_Archdale,1642,False,25338,14,6,John Archdale,0.24411574537976274
+Samuel_Rodigast,1649,False,35808,26,4,Samuel Rodigast,0.23253327889385303
+Georg_Mohr,1640,False,29647,26,4,Jørgen Mohr,0.23208593085845394
+Katharyne_Lescailje,1649,False,42190,16,4,Katharyne Lescailje,0.2202154401971356
+Aleijda_Wolfsen,1648,False,41253,15,4,Aleijda Wolfsen,0.2182675742646782
+Evert_Collier,1642,False,38906,44,2,Edwaert Collier,0.1530140731335833
+Michał_Korybut_Wiśniowiecki,1640,False,54724,0,88,Miguel Korybut Wiśniowiecki,0.1276769833762839
+Henri_Arnaud_(pastor),1641,False,45267,0,23,Henri Arnaud,0.12251004929214826
+Gerhard_Noodt,1647,False,43688,0,11,Gerard Noodt,0.11771329206617552
+Sarah_Cloyce,1648,False,32319,0,11,Sarah Cloyce,0.11753511036408232
+Johann_Theile,1646,False,55177,0,9,Johann Theile,0.11608610252740346
+Elisabeth_Hevelius,1647,False,50044,0,9,Elisabeth Hevelius,0.11603333022078366
+"Bernard_Desjean,_Baron_de_Pointis",1645,False,40279,0,9,"Bernard Desjean, Baron de Pointis",0.11591271000331607
+Marguerite_Louise_d'Orléans,1645,False,137469,0,8,Margarita Luisa de Orleáns,0.11536933907372209
+"Julius_Francis,_Duke_of_Saxe-Lauenburg",1641,False,47276,0,7,Julio Francisco de Sajonia-Lauenburgo,0.11339232067996928
+Michelangelo_Tamburini,1648,False,27258,0,7,Michelangelo Tamburini,0.11308783546357888
+John_Hathorne,1641,False,38969,0,5,John Hathorne,0.1088181077253132
+Johann_Valentin_Meder,1649,False,37414,0,4,Johann Valentin Meder,0.10494304686823648
+Jonathan_Corwin,1640,False,34695,0,4,Jonathan Corwin,0.10490727794171853
+"Frederick_VII,_Margrave_of_Baden-Durlach",1647,False,95954,0,3,Federico VII Magno de Baden-Durlach,0.09872028616508709
+"Johann_Adolf_I,_Duke_of_Saxe-Weissenfels",1649,False,48197,0,3,Juan Adolfo I de Sajonia-Weissenfels,0.09846379409702413
+Andreas_Werckmeister,1645,False,42581,0,3,Andreas Werckmeister,0.09841428221027844
+Mumtaz_Shikoh,1643,,1,1,1,?,0.05448825167540282
+"Walter_Scott,_Earl_of_Tarras",1644,,1,1,1,?,0.05448825167540282
+Carr_Scrope,1649,,1,1,1,?,0.05448825167540282
+Johann_Gottfried_von_Guttenberg,1645,,1,1,1,?,0.05448825167540282
+Ephraim_Curtis,1642,,1,1,1,?,0.05448825167540282
+Constantin_Marselis,1647,,1,1,1,?,0.05448825167540282
+Eleonora_d'Este_(1643-1722),1643,,1,1,1,?,0.05448825167540282
+Sophie_Amalie_Lindenov,1649,,1,1,1,?,0.05448825167540282
+Louis_Nicolas_le_Tonnelier_de_Breteuil,1648,,1,1,1,?,0.05448825167540282
+"William_Louis,_Prince_of_Anhalt-Harzgerode",1643,,1,1,1,?,0.05448825167540282
+Jean-Baptiste_Corneille,1649,,1,1,1,?,0.05448825167540282
+Georg_Ludwig_Agricola,1643,,1,1,1,?,0.05448825167540282
+"Charles,_Count_of_Marsan",1648,,1,1,1,?,0.05448825167540282
+Jacob_Bobart_the_Younger,1641,,1,1,1,?,0.05448825167540282
+John_North_(Trinity),1645,,1,1,1,?,0.05448825167540282
+Jan_Van_Cleef,1646,,1,1,1,?,0.05448825167540282
+Philipp_Reinhard_Vitriarius,1647,,1,1,1,?,0.05448825167540282
+Tsarevich_Dmitry_Alexeyevich_of_Russia,1648,,1,1,1,?,0.05448825167540282
+"Sir_Richard_Newdigate,_2nd_Baronet",1644,,1,1,1,?,0.05448825167540282
+Nehemiah_Jewett,1643,,1,1,1,?,0.05448825167540282
+Celestino_Sfondrati,1644,,1,1,1,?,0.05448825167540282
+"Sir_Roger_Twisden,_2nd_Baronet",1640,,1,1,1,?,0.05448825167540282
+"Charles_François_d'Angennes,_Marquis_de_Maintenon",1648,,1,1,1,?,0.05448825167540282
+Leonard_Goffiné,1648,,1,1,1,?,0.05448825167540282
+Antonio_Lupis,1649,,1,1,1,?,0.05448825167540282
+John_Hayes_(1643–1705),1643,,1,1,1,?,0.05448825167540282
+Andreas_Gottlieb_von_Bernstorff,1649,,1,1,1,?,0.05448825167540282
+Julien_Garnier,1642,,1,1,1,?,0.05448825167540282
+William_Stanley_(1640–1670),1640,,1,1,1,?,0.05448825167540282
+Petrus_Houttuyn,1648,,1,1,1,?,0.05448825167540282
+Arthur_Brownlow,1645,,1,1,1,?,0.05448825167540282
+Jacob_Johan_Hastfer,1647,,1,1,1,?,0.05448825167540282
+Cornelia_van_der_Gon,1644,,1,1,1,?,0.05448825167540282
+David_van_der_Plas,1647,,1,1,1,?,0.05448825167540282
+García_Felipe_de_Legazpi_y_Velasco_Altamirano_y_Albornoz,1643,,1,1,1,?,0.05448825167540282
+John_Hales_(MP_for_New_Shoreham),1648,,1,1,1,?,0.05448825167540282
+"Sir_Samuel_Grimston,_3rd_Baronet",1643,,1,1,1,?,0.05448825167540282
+Olivier_Morel_de_La_Durantaye,1640,,1,1,1,?,0.05448825167540282
+Augustinus_Terwesten,1649,,1,1,1,?,0.05448825167540282
+Urban_Hjärne,1641,,1,1,1,?,0.05448825167540282
+Nicolas_Pasquin,1648,,1,1,1,?,0.05448825167540282
+Niels_Jonsson_Stromberg_af_Clastorp,1646,,1,1,1,?,0.05448825167540282
+Jacques_Échard,1644,,1,1,1,?,0.05448825167540282
+Michiel_ten_Hove,1640,,1,1,1,?,0.05448825167540282
+Paul_Tallement_the_Younger,1642,,1,1,1,?,0.05448825167540282
+Georg_Wolfgang_Wedel,1645,,1,1,1,?,0.05448825167540282
+Ivan_Ratkaj,1647,,1,1,1,?,0.05448825167540282
+Juan_Caballero_y_Ocio,1644,,1,1,1,?,0.05448825167540282
+Olimpia_Giustiniani,1641,,1,1,1,?,0.05448825167540282
+Charles-René_d'Hozier,1640,,1,1,1,?,0.05448825167540282
+"Frederick,_Count_of_Nassau-Weilburg",1640,,1,1,1,?,0.05448825167540282
+Johann_Ludwig_Hannemann,1640,,1,1,1,?,0.05448825167540282
+Maria_of_Orange-Nassau_(1642–1688),1642,,1,1,1,?,0.05448825167540282
+Badr-un-Nissa,1647,,1,1,1,?,0.05448825167540282
+Joseph_Herrick,1645,,1,1,1,?,0.05448825167540282
+John_Holwell,1649,,1,1,1,?,0.05448825167540282
+Jan_Claus,1641,,1,1,1,?,0.05448825167540282
+Countess_Palatine_Anna_Magdalena_of_Birkenfeld-Bischweiler,1640,,1,1,1,?,0.05448825167540282
+Wolfgang_Dietrich_of_Castell-Remlingen,1641,,1,1,1,?,0.05448825167540282
+Henry_Goring_(1646–1685),1646,,1,1,1,?,0.05448825167540282
+Thomas_Boylston,1644,,1,1,1,?,0.05448825167540282
+Charles_Gustav_of_Baden-Durlach,1648,,1,1,1,?,0.05448825167540282
+Magdalena_Stenbock,1649,,1,1,1,?,0.05448825167540282
+Jacob_van_Wassenaer_Obdam_(younger),1645,,1,1,1,?,0.05448825167540282
+Franz_Mozart,1649,,1,1,1,?,0.05448825167540282
+Anne_Bourdon,1644,,1,1,1,?,0.05448825167540282
+Michael_Wening,1645,,1,1,1,?,0.05448825167540282
+Madeleine_Boullogne,1646,,1,1,1,?,0.05448825167540282
+"Axel_Wachtmeister,_Count_of_Mälsåker",1643,,1,1,1,?,0.05448825167540282
+Johannes_van_Haensbergen,1642,,1,1,1,?,0.05448825167540282
+David_Caspari,1648,,1,1,1,?,0.05448825167540282
+William_Campion_(1640–1702),1640,,1,1,1,?,0.05448825167540282
+"Peter_Du_Cane,_the_elder",1645,,1,1,1,?,0.05448825167540282
+Heinrich_von_Cocceji,1644,,1,1,1,?,0.05448825167540282
+Isaac_Chayyim_Cantarini,1644,,1,1,1,?,0.05448825167540282
+François_Vaillant_de_Gueslis,1646,,1,1,1,?,0.05448825167540282
+Johannes_Bohn,1640,,1,1,1,?,0.05448825167540282
+Giovanni_Barbara,1642,,1,1,1,?,0.05448825167540282
+"John_Verney,_1st_Viscount_Fermanagh",1640,,1,1,1,?,0.05448825167540282
+"Sir_Thomas_Felton,_4th_Baronet",1649,,1,1,1,?,0.05448825167540282
+Dionysius_Andreas_Freher,1649,,1,1,1,?,0.05448825167540282
+George_Hickes_(divine),1642,,1,1,1,?,0.05448825167540282
+Zinat-un-Nissa,1643,,1,1,1,?,0.05448825167540282
+Frederik_Johan_van_Baer,1645,,1,1,1,?,0.05448825167540282
+"Dorothea_Maria_of_Saxe-Weimar,_Duchess_of_Saxe-Zeitz",1641,,1,1,1,?,0.05448825167540282
+François_Vachon_de_Belmont,1645,,1,1,1,?,0.05448825167540282
+"Roger_Boyle,_2nd_Earl_of_Orrery",1646,,1,1,1,?,0.05448825167540282
+Charles-Amador_Martin,1648,,1,1,1,?,0.05448825167540282
+Juan_Francisco_de_Padilla_y_San_Martín,1646,,1,1,1,?,0.05448825167540282
+Christian_Franz_Paullini,1643,,1,1,1,?,0.05448825167540282
+"Sir_William_Maynard,_1st_Baronet",1641,,1,1,1,?,0.05448825167540282
+Jan_Jansen_Bleecker,1641,,1,1,1,?,0.05448825167540282
+Anthony_Dopping,1643,,1,1,1,?,0.05448825167540282
+"William_Maurice,_Prince_of_Nassau-Siegen",1649,,1,1,1,?,0.05448825167540282
+Govert_van_der_Leeuw,1645,,1,1,1,?,0.05448825167540282
+Barent_van_Kalraet,1649,,1,1,1,?,0.05448825167540282
+Charles_Louis_Simonneau,1645,,1,1,1,?,0.05448825167540282
+Maria_de_Dominici,1645,,1,1,1,?,0.05448825167540282
+Matthijs_Naiveu,1647,,1,1,1,?,0.05448825167540282
+Nils_Gyldenstolpe_(1642–1709),1642,,1,1,1,?,0.05448825167540282
+Veit_Hans_Schnorr_von_Carolsfeld,1644,,1,1,1,?,0.05448825167540282
+Pierre_de_La_Broue,1644,,1,1,1,?,0.05448825167540282
+Antonio_Tarsia_(composer),1643,,1,1,1,?,0.05448825167540282
+"George_Albert_II,_Count_of_Erbach-Fürstenau",1648,,1,1,1,?,0.05448825167540282
+Gregorio_II_Boncompagni,1642,,1,1,1,?,0.05448825167540282
+Peter_Drelincourt,1644,,1,1,1,?,0.05448825167540282
+Johann_Jacob_Schütz,1640,,1,1,1,?,0.05448825167540282
+John_Waddon_(died_1695),1649,,1,1,1,?,0.05448825167540282
+Miles_Gale,1647,,1,1,1,?,0.05448825167540282
+James_Olmsted,1645,,1,1,1,?,0.05448825167540282
+Gilles_Schey,1644,,1,1,1,?,0.05448825167540282
+Denis-Nicolas_Le_Nourry,1647,,1,1,1,?,0.05448825167540282
+Thomas_Alvey,1645,,1,1,1,?,0.05448825167540282
+Marco_Battaglini,1645,,1,1,1,?,0.05448825167540282
+Asano_Nagatomo,1643,,1,1,1,?,0.05448825167540282
+Julius_Micrander,1640,,1,1,1,?,0.05448825167540282
+Matthijs_Wulfraet,1648,,1,1,1,?,0.05448825167540282
+Domenico_Viva,1648,,1,1,1,?,0.05448825167540282
+Philippe_Pierson,1642,,1,1,1,?,0.05448825167540282
+Salomon_van_Til,1643,,1,1,1,?,0.05448825167540282
+Nicolas_Letourneux,1640,,1,1,1,?,0.05448825167540282
+Johannes_Jakob_Buxtorf,1645,,1,1,1,?,0.05448825167540282
+Edward_Lake_(priest),1641,,1,1,1,?,0.05448825167540282
+Joaquín_Canaves,1640,,1,1,1,?,0.05448825167540282
+"Sir_James_Rushout,_1st_Baronet",1644,,1,1,1,?,0.05448825167540282
+Maurice_Bocland_(1648–1710),1648,,1,1,1,?,0.05448825167540282
+Elisabeth_Charlotte_of_Anhalt-Harzgerode,1647,,1,1,1,?,0.05448825167540282
+Nabeshima_Naoyuki,1643,,1,1,1,?,0.05448825167540282
+Miguel_Bayot,1644,,1,1,1,?,0.05448825167540282
+John_Alford_(died_1691),1645,,1,1,1,?,0.05448825167540282
+Jacob_Rotius,1644,,1,1,1,?,0.05448825167540282
+Elias_Brenner,1647,,1,1,1,?,0.05448825167540282
+Sebastiaen_van_Aken,1648,,1,1,1,?,0.05448825167540282
+"Henry_Wolrad,_Count_of_Waldeck",1642,,1,1,1,?,0.05448825167540282
+Johanna_Walpurgis_of_Leiningen-Westerburg,1647,,1,1,1,?,0.05448825167540282
+Joseph-François_Hertel_de_la_Fresnière,1642,,1,1,1,?,0.05448825167540282
+"Charles_Kirkhoven,_1st_Earl_of_Bellomont",1643,,1,1,1,?,0.05448825167540282
+Dodo_von_Knyphausen,1641,,1,1,1,?,0.05448825167540282
+"John_Philip_II,_Wild-_and_Rhinegrave_of_Salm-Dhaun",1645,,1,1,1,?,0.05448825167540282
+Marie_Morin,1649,,1,1,1,?,0.05448825167540282
+"George_Louis_I,_Count_of_Erbach-Erbach",1643,,1,1,1,?,0.05448825167540282
+William_Hay_(bishop),1647,,1,1,1,?,0.05448825167540282
+Joseph_Anthelmi,1648,,1,1,1,?,0.05448825167540282
+Gabriel_Tammelin,1641,,1,1,1,?,0.05448825167540282
+Anna_Elisabeth_of_Anhalt-Bernburg,1647,,1,1,1,?,0.05448825167540282
+Isaac_Addington,1645,,1,1,1,?,0.05448825167540282
+Basilius_Petritz,1647,,1,1,1,?,0.05448825167540282
+"André,_marquis_de_Nesmond",1641,,1,1,1,?,0.05448825167540282
+Gisbert_Steenwick,1642,,1,1,1,?,0.05448825167540282
+Tsugaru_Nobumasa,1646,,1,1,1,?,0.05448825167540282
+"Charles_Honoré_d'Albert,_duc_de_Luynes",1646,,1,1,1,?,0.05448825167540282
+Pierre_II_Mignard,1640,,1,1,1,?,0.05448825167540282
+Naitō_Kiyokazu,1645,,1,1,1,?,0.05448825167540282
+Esther_Liebmann,1649,,1,1,1,?,0.05448825167540282
+Jérôme_de_Gonnelieu,1640,,1,1,1,?,0.05448825167540282
+Johann_Oswald_Harms,1643,,1,1,1,?,0.05448825167540282
+Johann_Philipp_Jeningen,1642,,1,1,1,?,0.05448825167540282
+Juan_de_Santiago_y_León_Garabito,1641,,1,1,1,?,0.05448825167540282
+Gabriel_Revel,1643,,1,1,1,?,0.05448825167540282
+Emich_Christian_of_Leiningen-Dagsburg,1642,,1,1,1,?,0.05448825167540282
+Erik_Carlsson_Sjöblad,1647,,1,1,1,?,0.05448825167540282
+Eleonoro_Pacello,1643,,1,1,1,?,0.05448825167540282
+"Charles,_Landgrave_of_Hesse-Wanfried",1649,,1,1,1,?,0.05448825167540282
+William_Boynton,1641,,1,1,1,?,0.05448825167540282
+Christine_of_Baden-Durlach,1645,,1,1,1,?,0.05448825167540282
+Carlo_Mannelli,1640,,1,1,1,?,0.05448825167540282
+Jean_Barbier_d'Aucour,1641,,1,1,1,?,0.05448825167540282
+William_Lodge,1649,,1,1,1,?,0.05448825167540282
+Frescheville_Holles,1642,,1,1,1,?,0.05448825167540282
+"Alexander_Seton,_3rd_Earl_of_Dunfermline",1642,,1,1,1,?,0.05448825167540282
+Michael_Ettmüller,1644,,1,1,1,?,0.05448825167540282
+"Elisabeth_Charlotte,_Countess_of_Holzappel",1640,,1,1,1,?,0.05448825167540282
+Israel_Kolmodin,1643,,1,1,1,?,0.05448825167540282
+François-Joseph_de_Beaupoil_de_Sainte-Aulaire,1643,,1,1,1,?,0.05448825167540282
+Cresheld_Draper,1646,,1,1,1,?,0.05448825167540282
+"Sir_Francis_Blundell,_3rd_Baronet",1643,,1,1,1,?,0.05448825167540282
+"Charles_Lambart,_3rd_Earl_of_Cavan",1649,,1,1,1,?,0.05448825167540282
+Anne_Marie_Thérèse_de_Lorraine,1648,,1,1,1,?,0.05448825167540282
+Thomas_Widdrington_(died_1660),1640,,1,1,1,?,0.05448825167540282
+Michael_Kongehl,1646,,1,1,1,?,0.05448825167540282
+Johan_Teyler,1648,,1,1,1,?,0.05448825167540282
+Pierre_de_Langle,1643,,1,1,1,?,0.05448825167540282
+Johann_Wolfgang_Jäger,1647,,1,1,1,?,0.05448825167540282
+Jean-Baptiste_Morvan_de_Bellegarde,1648,,1,1,1,?,0.05448825167540282
+Jean_Martianay,1647,,1,1,1,?,0.05448825167540282
+Pierre_Cureau_de_La_Chambre,1640,,1,1,1,?,0.05448825167540282
+"Hildebrand_Alington,_5th_Baron_Alington",1641,,1,1,1,?,0.05448825167540282
+"George_IV,_Count_of_Erbach-Fürstenau",1646,,1,1,1,?,0.05448825167540282
+Jacob_de_Graeff,1642,,1,1,1,?,0.05448825167540282
+Marcantonio_Barbarigo,1640,,1,1,1,?,0.05448825167540282
+Eberhard_Werner_Happel,1647,,1,1,1,?,0.05448825167540282
+John_Benedict,1649,,1,1,1,?,0.05448825167540282
+Samuel_Hoadly,1643,,1,1,1,?,0.05448825167540282
+Vincent_Bigot,1649,,1,1,1,?,0.05448825167540282
+"Sir_William_Villiers,_3rd_Baronet",1645,,1,1,1,?,0.05448825167540282
+Edward_Montagu_(1649–1690),1649,,1,1,1,?,0.05448825167540282
+Giacomo_Cantelmo,1645,,1,1,1,?,0.05448825167540282
+Eleonore_Charlotte_of_Saxe-Lauenburg-Franzhagen,1646,,1,1,1,?,0.05448825167540282
+Pier_Simone_Fanelli,1641,,1,1,1,?,0.05448825167540282
+"Henry,_Prince_of_Nassau-Dillenburg",1641,,1,1,1,?,0.05448825167540282
+"Charles_Fanshawe,_4th_Viscount_Fanshawe",1643,,1,1,1,?,0.05448825167540282
+Johann_Kasimir_Kolbe_von_Wartenberg,1643,,1,1,1,?,0.05448825167540282
+"Sir_Orlando_Bridgeman,_1st_Baronet,_of_Ridley",1649,,1,1,1,?,0.05448825167540282
+Antoine_Thomas,1644,,1,1,1,?,0.05448825167540282
+"John_Lauder,_Lord_Fountainhall",1646,,1,1,1,?,0.05448825167540282
+John_Floyer_(physician),1649,,1,1,1,?,0.05448825167540282
+Pierre_Allix,1641,,1,1,1,?,0.05448825167540282
+Philip_Foley,1648,,1,1,1,?,0.05448825167540282
+Mary_Carleton,1642,,1,1,1,?,0.05448825167540282
+"Richard_Graham,_1st_Viscount_Preston",1648,,1,1,1,?,0.05448825167540282
+Jacob_de_Wilde,1645,,1,1,1,?,0.05448825167540282
+Hans_Carl_von_Carlowitz,1645,,1,1,1,?,0.05448825167540282
+"Louis,_Count_of_Armagnac",1641,,1,1,1,?,0.05448825167540282
+William_Salmon,1644,,1,1,1,?,0.05448825167540282
+Louis-Hector_de_Callière,1648,,1,1,1,?,0.05448825167540282
+Elisabeth_Dorothea_of_Saxe-Gotha-Altenburg,1640,,1,1,1,?,0.05448825167540282
+Fabrizio_Spada,1643,,1,1,1,?,0.05448825167540282
+Philips_van_Almonde,1644,,1,1,1,?,0.05448825167540282
+"Anna_Talbot,_Countess_of_Shrewsbury",1642,,1,1,1,?,0.05448825167540282
+"Francis_Howard,_5th_Baron_Howard_of_Effingham",1643,,1,1,1,?,0.05448825167540282
+Bernard_Lamy,1640,,1,1,1,?,0.05448825167540282
+Stanisław_Herakliusz_Lubomirski,1642,,1,1,1,?,0.05448825167540282
+Romeyn_de_Hooghe,1645,,1,1,1,?,0.05448825167540282
+Streynsham_Master,1640,,1,1,1,?,0.05448825167540282
+Queen_Myeongseong,1642,,1,1,1,?,0.05448825167540282
+"Sir_Thomas_Littleton,_3rd_Baronet",1647,,1,1,1,?,0.05448825167540282
+Elkanah_Settle,1648,,1,1,1,?,0.05448825167540282
+"Josceline_Percy,_11th_Earl_of_Northumberland",1644,,1,1,1,?,0.05448825167540282
+Sipihr_Shikoh,1644,,1,1,1,?,0.05448825167540282
+Magdalena_Sibylle_of_Saxe-Weissenfels,1648,,1,1,1,?,0.05448825167540282
+Conrad_von_Reventlow,1644,,1,1,1,?,0.05448825167540282
+Caspar_Neumann,1648,,1,1,1,?,0.05448825167540282
+Jean_de_Hautefeuille,1647,,1,1,1,?,0.05448825167540282
+Engel_de_Ruyter,1649,,1,1,1,?,0.05448825167540282
+"Edward_Howard,_2nd_Earl_of_Carlisle",1646,,1,1,1,?,0.05448825167540282
+Guichard_Joseph_Duverney,1648,,1,1,1,?,0.05448825167540282
+"Charles_Berkeley,_2nd_Earl_of_Berkeley",1649,,1,1,1,?,0.05448825167540282
+Bernard_de_la_Monnoye,1641,,1,1,1,?,0.05448825167540282
+Thomas_Lloyd_(lieutenant_governor),1640,,1,1,1,?,0.05448825167540282
+John_Trenchard_(politician),1649,,1,1,1,?,0.05448825167540282
+Gerard_Hoet,1648,,1,1,1,?,0.05448825167540282
+Robert_Gibbes,1644,,1,1,1,?,0.05448825167540282
+Johann_Wilhelm_Baier,1647,,1,1,1,?,0.05448825167540282
+Bonaventure_Giffard,1642,,1,1,1,?,0.05448825167540282
+"Patrick_Hume,_1st_Earl_of_Marchmont",1641,,1,1,1,?,0.05448825167540282
+Burchard_de_Volder,1643,,1,1,1,?,0.05448825167540282
+Charles_Duncombe_(English_banker),1648,,1,1,1,?,0.05448825167540282
+Thomas_Maule_(Quaker),1645,,1,1,1,?,0.05448825167540282
+Jeremiah_Dummer_(silversmith),1643,,1,1,1,?,0.05448825167540282
+Philipp_von_Hörnigk,1640,,1,1,1,?,0.05448825167540282
+Luise_Marie_of_the_Palatinate,1647,,1,1,1,?,0.05448825167540282
+Gottfried_Vopelius,1645,,1,1,1,?,0.05448825167540282
+Ferdinando_d'Adda,1649,,1,1,1,?,0.05448825167540282
+François_de_Callières,1645,,1,1,1,?,0.05448825167540282
+George_Hooper,1640,,1,1,1,?,0.05448825167540282
+Françoise-Marguerite_de_Sévigné,1646,,1,1,1,?,0.05448825167540282
+"Richard_Jones,_1st_Earl_of_Ranelagh",1641,,1,1,1,?,0.05448825167540282
+Philip_Verheyen,1648,,1,1,1,?,0.05448825167540282
+Johann_Philipp_Krieger,1649,,1,1,1,?,0.05448825167540282
+Zheng_Jing,1642,,1,1,1,?,0.05448825167540282
+John_Sharp_(bishop),1645,,1,1,1,?,0.05448825167540282
+Elisabeth_Pepys,1640,,1,1,1,?,0.05448825167540282
+Solomon_Stoddard,1643,,1,1,1,?,0.05448825167540282
+Empress_Xiaohuizhang,1641,,1,1,1,?,0.05448825167540282
+Nicolaes_Witsen,1641,,1,1,1,?,0.05448825167540282
+"Frances_Stewart,_Duchess_of_Richmond",1647,,1,1,1,?,0.05448825167540282
+Jonathan_Singletary_Dunham,1640,,1,1,1,?,0.05448825167540282
+"Daniel_Finch,_2nd_Earl_of_Nottingham",1647,,1,1,1,?,0.05448825167540282
+Stephanus_Van_Cortlandt,1643,,1,1,1,?,0.05448825167540282
+Élisabeth_Marguerite_d'Orléans,1646,,1,1,1,?,0.05448825167540282
+Hyeonjong_of_Joseon,1641,,1,1,1,?,0.05448825167540282
+Robert_Bolling,1646,,1,1,1,?,0.05448825167540282
+Anne_Hilarion_de_Tourville,1642,,1,1,1,?,0.05448825167540282
+"Sidney_Godolphin,_1st_Earl_of_Godolphin",1645,,1,1,1,?,0.05448825167540282
+"Meinhardt_Schomberg,_3rd_Duke_of_Schomberg",1641,,1,1,1,?,0.05448825167540282
+Robert_Barclay,1648,,1,1,1,?,0.05448825167540282
+Joseph_Dudley,1647,,1,1,1,?,0.05448825167540282
+Chhatrasal,1649,,1,1,1,?,0.05448825167540282
+"Robert_Spencer,_2nd_Earl_of_Sunderland",1641,,1,1,1,?,0.05448825167540282
+Edward_Taylor,1642,,1,1,1,?,0.05448825167540282
+Gilbert_Burnet,1643,,1,1,1,?,0.05448825167540282
+Titus_Oates,1649,,1,1,1,?,0.05448825167540282
+Jakob_Ammann,1644,,1,1,1,?,0.05448825167540282
+Bahadur_Shah_I,1643,,1,1,1,?,0.05448825167540282
+Nicholas_Noyes,1647,,1,1,1,?,0.05448825167540282
+Samuel_Willard,1640,,1,1,1,?,0.05448825167540282
+Jan_Luyken,1649,,1,1,1,?,0.05448825167540282
+"Louis_Phélypeaux,_comte_de_Pontchartrain",1643,,1,1,1,?,0.05448825167540282
+William_Carstares,1649,,1,1,1,?,0.05448825167540282
+Govert_Bidloo,1649,,1,1,1,?,0.05448825167540282
+Simon_de_la_Loubère,1642,,1,1,1,?,0.05448825167540282
+Samuel_Carpenter,1649,,1,1,1,?,0.05448825167540282
+"Patrick_Lyon,_3rd_Earl_of_Strathmore_and_Kinghorne",1643,,1,1,1,?,0.05448825167540282
+Benjamin_Keach,1640,,1,1,1,?,0.05448825167540282
+"Pierre_Le_Pesant,_sieur_de_Boisguilbert",1646,,1,1,1,?,0.05448825167540282
+Cornelis_Evertsen_the_Youngest,1642,,1,1,1,?,0.05448825167540282
+Anthonie_Heinsius,1641,,1,1,1,?,0.05448825167540282
+Titus_van_Rijn,1641,,1,1,1,?,0.05448825167540282
+François-Timoléon_de_Choisy,1644,,1,1,1,?,0.05448825167540282
+"Henry_Sydney,_1st_Earl_of_Romney",1641,,1,1,1,?,0.05448825167540282
+Abd_al-Ghani_al-Nabulsi,1641,,1,1,1,?,0.05448825167540282
+John_Coode_(Governor_of_Maryland),1648,,1,1,1,?,0.05448825167540282
+"Christian_Ernst,_Margrave_of_Brandenburg-Bayreuth",1644,,1,1,1,?,0.05448825167540282
+Dudley_North_(economist),1641,,1,1,1,?,0.05448825167540282
+Henry_Winstanley,1644,,1,1,1,?,0.05448825167540282
+John_Holt_(Lord_Chief_Justice),1642,,1,1,1,?,0.05448825167540282
+Robert_Sibbald,1641,,1,1,1,?,0.05448825167540282
+Gregory_King,1648,,1,1,1,?,0.05448825167540282
+John_Strype,1643,,1,1,1,?,0.05448825167540282
+Chikka_Devaraja,1645,,1,1,1,?,0.05448825167540282
+Robert_Knox_(sailor),1641,,1,1,1,?,0.05448825167540282
+"John_Egerton,_3rd_Earl_of_Bridgewater",1646,,1,1,1,?,0.05448825167540282
+David_Makeléer,1646,,1,1,1,?,0.05448825167540282
+Haquin_Spegel,1645,,1,1,1,?,0.05448825167540282
+Johannes_Voet,1647,,1,1,1,?,0.05448825167540282
+Giovanni_Antonio_Viscardi,1645,,1,1,1,?,0.05448825167540282
+James_Kendall_(politician),1647,,1,1,1,?,0.05448825167540282
+"Sir_William_Thomas,_1st_Baronet",1641,,1,1,1,?,0.05448825167540282
+Maria_Theresa_van_Thielen,1640,,1,1,1,?,0.05448825167540282
+"Thomas_Tufton,_6th_Earl_of_Thanet",1644,,1,1,1,?,0.05448825167540282
+Andreas_Kneller,1649,,1,1,1,?,0.05448825167540282
+Jeremiah_Shepard,1648,,1,1,1,?,0.05448825167540282
+Élie_Benoist,1640,,1,1,1,?,0.05448825167540282
+"Henrietta_Catharina,_Baroness_von_Gersdorff",1648,,1,1,1,?,0.05448825167540282
+Wolfgang_William_Romer,1640,,1,1,1,?,0.05448825167540282
+"Sir_Edward_Blackett,_2nd_Baronet",1649,,1,1,1,?,0.05448825167540282
+"Sir_John_Lowther,_2nd_Baronet,_of_Whitehaven",1642,,1,1,1,?,0.05448825167540282
+Mathias_Steuchius,1644,,1,1,1,?,0.05448825167540282
+"Sir_James_Oxenden,_2nd_Baronet",1641,,1,1,1,?,0.05448825167540282
+Nathaniel_Johnson_(politician),1644,,1,1,1,?,0.05448825167540282
+Bon_Boullogne,1649,,1,1,1,?,0.05448825167540282
+Angelo_Paoli,1642,,1,1,1,?,0.05448825167540282
+Johann_Wilhelm_Petersen,1649,,1,1,1,?,0.05448825167540282
+Jonas_Budde,1644,,1,1,1,?,0.05448825167540282
+"Sir_Walter_Bagot,_3rd_Baronet",1644,,1,1,1,?,0.05448825167540282
+Nicolaus_Adam_Strungk,1640,,1,1,1,?,0.05448825167540282
+Giacinto_Calandrucci,1646,,1,1,1,?,0.05448825167540282
+Jean-Louis_Bergeret,1641,,1,1,1,?,0.05448825167540282
+Jakob_Gronovius,1645,,1,1,1,?,0.05448825167540282
+Robert_Austen_(1642–1696),1642,,1,1,1,?,0.05448825167540282
+Jerolim_Kavanjin,1641,,1,1,1,?,0.05448825167540282
+Humphrey_Humphreys,1648,,1,1,1,?,0.05448825167540282
+Hermann_Otto_II_of_Limburg_Stirum,1646,,1,1,1,?,0.05448825167540282
+Amalia_Catharina,1640,,1,1,1,?,0.05448825167540282
+Eberhard_von_Danckelmann,1643,,1,1,1,?,0.05448825167540282
+Johann_Friedrich_Alberti,1642,,1,1,1,?,0.05448825167540282
+Pierre_Monier,1641,,1,1,1,?,0.05448825167540282
+Hayashi_Hōkō,1644,,1,1,1,?,0.05448825167540282
+Antoine_de_Pas_de_Feuquières,1648,,1,1,1,?,0.05448825167540282
+Étienne_Chauvin,1640,,1,1,1,?,0.05448825167540282
+Abraham_van_Calraet,1642,,1,1,1,?,0.05448825167540282
+Friedrich_Seyler,1642,,1,1,1,?,0.05448825167540282
+August_Kühnel,1645,,1,1,1,?,0.05448825167540282
+Pierre_Cholonec,1641,,1,1,1,?,0.05448825167540282
+"Sir_Robert_Burdett,_3rd_Baronet",1640,,1,1,1,?,0.05448825167540282
+Joan_Geelvinck_(1644–1707),1644,,1,1,1,?,0.05448825167540282
+Daniel_Eberlin,1647,,1,1,1,?,0.05448825167540282
+Daniel_Erich,1649,,1,1,1,?,0.05448825167540282
+Patriarch_Dositheos_II_of_Jerusalem,1641,,1,1,1,?,0.05448825167540282
+Joseph_de_Jouvancy,1643,,1,1,1,?,0.05448825167540282
+Christopher_Sandius,1644,,1,1,1,?,0.05448825167540282
+Richard_Edgcumbe_(1640–1688),1640,,1,1,1,?,0.05448825167540282
+Wolfgang_Printz,1641,,1,1,1,?,0.05448825167540282
+Hans_Adam_Weissenkircher,1646,,1,1,1,?,0.05448825167540282
+"Sir_William_Portman,_6th_Baronet",1643,,1,1,1,?,0.05448825167540282
+Robert_Cotton_(MP),1644,,1,1,1,?,0.05448825167540282
+Charles_de_la_Rue,1643,,1,1,1,?,0.05448825167540282
+Johann_Heinrich_Acker,1647,,1,1,1,?,0.05448825167540282
+"Sir_Thomas_Blount,_1st_Baronet",1649,,1,1,1,?,0.05448825167540282
+Johann_Ernst_von_Thun,1643,,1,1,1,?,0.05448825167540282
+"Vere_Fane,_4th_Earl_of_Westmorland",1645,,1,1,1,?,0.05448825167540282
+Carl_Piper,1647,,1,1,1,?,0.05448825167540282
+Johannes_Voorhout,1647,,1,1,1,?,0.05448825167540282
+Jakub_Kresa,1648,,1,1,1,?,0.05448825167540282
+Johann_Christoph_Volkamer,1644,,1,1,1,?,0.05448825167540282
+"William_Feilding,_3rd_Earl_of_Denbigh",1640,,1,1,1,?,0.05448825167540282
+Nils_Bielke,1644,,1,1,1,?,0.05448825167540282
+Jacques_Carrey,1649,,1,1,1,?,0.05448825167540282
+Eusèbe_Renaudot,1646,,1,1,1,?,0.05448825167540282
+Cardinal_de_Bouillon,1643,,1,1,1,?,0.05448825167540282
+John_Verelst,1648,,1,1,1,?,0.05448825167540282
+"Lionel_Tollemache,_3rd_Earl_of_Dysart",1649,,1,1,1,?,0.05448825167540282
+Lionel_Copley,1648,,1,1,1,?,0.05448825167540282
+Charles_de_Sévigné,1648,,1,1,1,?,0.05448825167540282
+Nicolas_Desmarets,1648,,1,1,1,?,0.05448825167540282
+"Richard_Newport,_2nd_Earl_of_Bradford",1644,,1,1,1,?,0.05448825167540282
+"Elizabeth_Stanhope,_Countess_of_Chesterfield",1640,,1,1,1,?,0.05448825167540282
+"Esmé_Stewart,_2nd_Duke_of_Richmond",1649,,1,1,1,?,0.05448825167540282
+Inaba_Masamichi,1640,,1,1,1,?,0.05448825167540282
+Jean_Rousseau_(violist),1644,,1,1,1,?,0.05448825167540282
+James_Tyrrell_(writer),1642,,1,1,1,?,0.05448825167540282
+Gérard_Audran,1640,,1,1,1,?,0.05448825167540282
+Juan_Romero_de_Figueroa,1646,,1,1,1,?,0.05448825167540282
+Marguerite_de_la_Sablière,1640,,1,1,1,?,0.05448825167540282
+Marie_Grubbe,1643,,1,1,1,?,0.05448825167540282
+William_Ashhurst,1647,,1,1,1,?,0.05448825167540282
+Petrus_Codde,1648,,1,1,1,?,0.05448825167540282
+Michał_Stefan_Radziejowski,1645,,1,1,1,?,0.05448825167540282
+William_Wall_(theologian),1647,,1,1,1,?,0.05448825167540282
+Christine_Charlotte_of_Württemberg,1645,,1,1,1,?,0.05448825167540282
+Alain_Emmanuel_de_Coëtlogon,1646,,1,1,1,?,0.05448825167540282
+Pieter_Cornelisz_van_Slingelandt,1640,,1,1,1,?,0.05448825167540282
+Giovanni_II_Cornaro,1647,,1,1,1,?,0.05448825167540282
+Johann_Schelle,1648,,1,1,1,?,0.05448825167540282
+Albert_Janse_Ryckman,1642,,1,1,1,?,0.05448825167540282
+Jonas_Danilssønn_Ramus,1649,,1,1,1,?,0.05448825167540282
+Joachim_Tielke,1641,,1,1,1,?,0.05448825167540282
+"Charles_Schomberg,_2nd_Duke_of_Schomberg",1645,,1,1,1,?,0.05448825167540282
+Gerard_Callenburgh,1642,,1,1,1,?,0.05448825167540282
+"Mary_Scott,_3rd_Countess_of_Buccleuch",1647,,1,1,1,?,0.05448825167540282
+Ercole_Antonio_Mattioli,1640,,1,1,1,?,0.05448825167540282
+Georg_Franck_von_Franckenau,1643,,1,1,1,?,0.05448825167540282
+Thomas_Britton,1644,,1,1,1,?,0.05448825167540282
+Christian_Weise,1642,,1,1,1,?,0.05448825167540282
+Robertus_Dixon,1647,,1,1,1,?,0.05448825167540282
+Simon_Foucher,1644,,1,1,1,?,0.05448825167540282
+Clara_Elisabeth_von_Platen,1648,,1,1,1,?,0.05448825167540282
+Hans_Adam_von_Schöning,1641,,1,1,1,?,0.05448825167540282
+Isaac_Johannes_Lamotius,1646,,1,1,1,?,0.05448825167540282
+Paolo_Lorenzani,1640,,1,1,1,?,0.05448825167540282
+Hans_Erasmus_Aßmann,1646,,1,1,1,?,0.05448825167540282
+"Sir_Edward_Hales,_3rd_Baronet",1645,,1,1,1,?,0.05448825167540282
+Date_Tsunamune,1640,,1,1,1,?,0.05448825167540282
+"Victor-Maurice,_comte_de_Broglie",1647,,1,1,1,?,0.05448825167540282
+Philip_Skippon_(1641-1691),1641,,1,1,1,?,0.05448825167540282

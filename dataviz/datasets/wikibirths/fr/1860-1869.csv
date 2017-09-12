@@ -1,0 +1,775 @@
+link,year,disambiguation,length,pageviews,revisions,title,score
+Mohandas_Gandhi,1869,False,568917,43394,2685,Mohandas Karamchand Gandhi,0.8220138168839302
+Marie_Curie,1867,False,327419,52348,1992,Marie Curie,0.805514165525034
+Henri_Matisse,1869,False,255596,23226,2719,Henri Matisse,0.7901102059462707
+Wassily_Kandinsky,1866,False,301282,22317,1495,Vassily Kandinsky,0.7707499923653206
+Nicholas_II_of_Russia,1868,False,549847,11429,1858,Nicolas II,0.7692672577942361
+Grigori_Rasputin,1869,False,209024,19382,1592,Grigori Raspoutine,0.7626119124056415
+Claude_Debussy,1862,False,249379,15570,1680,Claude Debussy,0.7615843060769478
+Pierre_de_Coubertin,1863,False,324022,10882,1906,Pierre de Coubertin,0.7598947044486563
+Gustav_Klimt,1862,False,243097,15522,1057,Gustav Klimt,0.7439172275903279
+Anton_Chekhov,1860,False,358414,9231,1217,Anton Tchekhov,0.7406436864112089
+Henry_Ford,1863,False,257880,11781,1138,Henry Ford,0.7399860725259683
+Edmond_Rostand,1868,False,126277,18703,1103,Edmond Rostand,0.7387936715447604
+André_Gide,1869,False,224519,15722,924,André Gide,0.7376719518536055
+Auguste_Lumière,1862,False,137601,16745,1096,Auguste et Louis Lumière,0.7372509748083275
+Louis_Lumière,1864,False,137601,16745,1096,Auguste et Louis Lumière,0.7372509748083275
+Henri_de_Toulouse-Lautrec,1864,False,208344,16681,803,Henri de Toulouse-Lautrec,0.7323669398592763
+Aristide_Briand,1862,False,468067,10032,769,Aristide Briand,0.7294646512230928
+Rudyard_Kipling,1865,False,253672,12126,844,Rudyard Kipling,0.7290497747494071
+Edvard_Munch,1863,False,176028,10562,1058,Edvard Munch,0.7276875292803335
+Max_Weber,1864,False,181074,14556,827,Max Weber,0.7275679934691051
+Erik_Satie,1866,False,140559,11584,996,Erik Satie,0.7241129099026946
+Raymond_Poincaré,1860,False,370398,10305,688,Raymond Poincaré,0.7221801722335751
+Archduke_Franz_Ferdinand_of_Austria,1863,False,290385,9659,697,François-Ferdinand d'Autriche,0.7171855499231035
+Georges_Méliès,1861,False,201338,9197,812,Georges Méliès,0.7160339196541826
+Gustav_Mahler,1860,False,171124,7489,995,Gustav Mahler,0.7149987062503094
+1944,1864,False,455289,4892,943,1944,0.7149160397907457
+H._G._Wells,1866,False,251975,9459,645,H. G. Wells,0.7112553075358782
+Henri_Désiré_Landru,1869,False,165763,9593,660,Henri Désiré Landru,0.7059025165780267
+George_V,1865,False,370663,8468,506,George V,0.7037357999796957
+Maxime_Weygand,1867,False,330793,3949,923,Maxime Weygand,0.7025060705801874
+Rudolf_Steiner,1861,False,190188,6820,698,Rudolf Steiner,0.7007054550177096
+Romain_Rolland,1866,False,237485,6042,655,Romain Rolland,0.6981054846324466
+Jean_Sibelius,1865,False,161323,3593,1141,Jean Sibelius,0.6957308100477265
+Richard_Strauss,1864,False,135729,6815,696,Richard Strauss,0.6951521804750221
+Frank_Lloyd_Wright,1867,False,147333,7616,608,Frank Lloyd Wright,0.6943684099740838
+Gaston_Doumergue,1863,False,359470,3587,580,Gaston Doumergue,0.6832084932881155
+Wilbur_Wright,1867,False,108277,5726,562,Orville et Wilbur Wright,0.6783023877338937
+Georges_Feydeau,1862,False,86551,6913,451,Georges Feydeau,0.6710604937795722
+Theodor_Herzl,1860,False,197285,4557,439,Theodor Herzl,0.6710435547566995
+Paul_Dukas,1865,False,87293,3924,609,Paul Dukas,0.6668270470881905
+Antoine_Bourdelle,1861,False,198699,2304,651,Antoine Bourdelle,0.6647162089802058
+Neville_Chamberlain,1869,False,368422,3929,334,Neville Chamberlain,0.6634991065075283
+Paul_Signac,1863,False,126389,4208,447,Paul Signac,0.6628963289215266
+Joseph_Merrick,1862,False,84422,8317,328,Joseph Merrick,0.6619068324464733
+La_Goulue,1866,False,90669,3573,555,La Goulue,0.6612163717538629
+Félix_Vallotton,1865,False,161359,3662,431,Félix Vallotton,0.6609464159003577
+Maurice_Maeterlinck,1862,False,163770,3409,433,Maurice Maeterlinck,0.6591920468192287
+Louis_Cyr,1863,False,75292,4175,489,Louis Cyr,0.6580482316369973
+Rabindranath_Tagore,1861,False,213359,2919,426,Rabindranath Tagore,0.6574599774900733
+Tristan_Bernard,1866,False,147730,6038,279,Tristan Bernard,0.6550282290449848
+Florence_Foster_Jenkins,1868,False,81492,15135,212,Florence Foster Jenkins,0.6545233995983046
+Luigi_Pirandello,1867,False,137477,3025,443,Luigi Pirandello,0.6539335655011257
+George_Gurdjieff,1866,False,111628,2736,517,Georges Gurdjieff,0.6536024743080123
+Eleftherios_Venizelos,1864,False,475382,953,897,Elefthérios Venizélos,0.653401233569159
+Alexandre_Yersin,1863,False,163734,2318,502,Alexandre Yersin,0.6527511335106546
+Maxim_Gorky,1868,False,132257,3469,363,Maxime Gorki,0.649525106940387
+David_Hilbert,1862,False,136758,2550,450,David Hilbert,0.6491498000633529
+Józef_Piłsudski,1867,False,482776,1628,425,Józef Piłsudski,0.6482190735765622
+Gaston_Leroux,1868,False,102482,3404,381,Gaston Leroux,0.6471975710050405
+Fridtjof_Nansen,1861,False,352294,1316,526,Fridtjof Nansen,0.6447079523854528
+Fridtjof_Nansen,1861,False,352294,1316,526,Fridtjof Nansen,0.6447079523854528
+Gabriele_D'Annunzio,1863,False,133794,2936,360,Gabriele D'Annunzio,0.6444116980156445
+W._B._Yeats,1865,False,141685,2616,379,William Butler Yeats,0.6437686897347618
+Laura_Ingalls_Wilder,1867,False,74536,11161,195,Laura Ingalls Wilder,0.6423478998222302
+Lou_Andreas-Salomé,1861,False,113303,3198,334,Lou Andreas-Salomé,0.6415074300671656
+Sun_Yat-sen,1866,False,123156,3389,308,Sun Yat-sen,0.6409954114219825
+Scott_Joplin,1867,False,105805,2181,443,Scott Joplin,0.6399072412082646
+Scott_Joplin,1868,False,105799,2181,443,Scott Joplin,0.6399064188084896
+Robert_Falcon_Scott,1868,False,259341,1358,486,Robert Falcon Scott,0.6392611532646651
+Fritz_Haber,1868,False,151209,2247,353,Fritz Haber,0.6371090955714185
+Aristide_Maillol,1861,False,131598,2307,359,Aristide Maillol,0.6367014580160428
+W._E._B._Du_Bois,1868,False,342631,3221,208,W. E. B. Du Bois,0.6351238353128712
+Mary_of_Teck,1867,False,89583,3428,296,Mary de Teck,0.635049753404876
+Arturo_Toscanini,1867,False,201320,1366,468,Arturo Toscanini,0.6349120845616325
+John_Jacob_Astor_IV,1864,False,127147,4113,221,John Jacob Astor IV,0.632104009765608
+Warren_G._Harding,1865,False,148024,2499,287,Warren G. Harding,0.6316172158408498
+Lizzie_Borden,1860,False,124931,2526,286,Lizzie Borden,0.6295037567361105
+David_Lloyd_George,1863,False,145196,2455,272,David Lloyd George,0.6285613706749242
+Jules_Laforgue,1860,False,89687,2896,279,Jules Laforgue,0.6278101349209568
+Isaac_Albéniz,1860,False,69757,2451,330,Isaac Albéniz,0.6260949893880428
+J._Bruce_Ismay,1862,False,134553,3160,222,Joseph Bruce Ismay,0.6259143699644429
+John_J._Pershing,1860,False,141165,1847,308,John Pershing,0.6245548478348204
+J._M._Barrie,1860,False,81428,2565,286,J. M. Barrie,0.6239485548175123
+Miklós_Horthy,1868,False,163939,1531,336,Miklós Horthy,0.6238243536432347
+Charles_Mangin,1866,False,111141,2039,299,Charles Mangin,0.6232522885851078
+Carl_Gustaf_Emil_Mannerheim,1867,False,157378,1118,392,Carl Gustaf Emil Mannerheim,0.618235271804812
+Gérard_Encausse,1865,False,109821,1686,306,Papus,0.6180567046385064
+Loie_Fuller,1862,False,88315,4722,169,Loïe Fuller,0.6178206489076096
+Herman_Webster_Mudgett,1861,False,92110,4264,175,H. H. Holmes,0.6175657864448718
+Erich_Ludendorff,1865,False,87009,2729,229,Erich Ludendorff,0.6172573089183873
+George_Santayana,1863,False,251642,854,383,George Santayana,0.6131414609531973
+James_Naismith,1861,False,70663,3224,201,James Naismith,0.6130817972123583
+Butch_Cassidy,1866,False,91510,4374,152,Butch Cassidy,0.6111891680714949
+Beatrix_Potter,1866,False,84879,2163,232,Beatrix Potter,0.6108309850403135
+Grand_Duchess_Elizabeth_Feodorovna_of_Russia,1864,False,202036,857,365,Élisabeth de Hesse-Darmstadt,0.6089866640726868
+Henri_Gouraud_(general),1867,False,118223,1310,255,Henri Joseph Eugène Gouraud,0.6036496254714445
+Arthur_Schnitzler,1862,False,100112,1792,206,Arthur Schnitzler,0.6024040785522076
+William_Randolph_Hearst,1863,False,91753,2147,179,William Randolph Hearst,0.6003003992558421
+Charles_Nicolle,1866,False,118044,921,289,Charles Nicolle,0.5965500921145535
+Charles_Rennie_Mackintosh,1868,False,75479,1675,203,Charles Rennie Mackintosh,0.5960510147237634
+Swami_Vivekananda,1863,False,138489,932,256,Vivekananda,0.5942891342558617
+Henri_Bourassa,1868,False,151508,1459,172,Henri Bourassa,0.5933791675197028
+Enrique_Granados,1867,False,104535,1474,186,Enrique Granados,0.592656471206114
+Mehmed_VI,1861,False,76212,2206,156,Mehmed VI,0.5923154560096752
+Edith_Wharton,1862,False,103797,1694,163,Edith Wharton,0.5908427348090122
+Karl_Landsteiner,1868,False,131322,1317,180,Karl Landsteiner,0.5905439451401674
+Jane_Addams,1860,False,255268,663,246,Jane Addams,0.587293148334193
+Constantin_Stanislavski,1863,False,79794,1666,161,Constantin Stanislavski,0.5864889568593012
+Alois_Alzheimer,1864,False,109593,3379,102,Alois Alzheimer,0.5864732434526831
+Frederick_Delius,1862,False,336877,490,293,Frederick Delius,0.5847418756203279
+Abdülmecid_II,1868,False,70255,1496,171,Abdülmecid II,0.5843826474092347
+Käthe_Kollwitz,1867,False,91666,989,208,Käthe Kollwitz,0.5830812299853164
+Yvette_Guilbert,1865,False,89470,1065,192,Yvette Guilbert,0.581921290960629
+Yvette_Guilbert,1867,False,89470,1065,192,Yvette Guilbert,0.581921290960629
+Alexander_Glazunov,1865,False,131416,825,208,Alexandre Glazounov,0.581268411388916
+José_Rizal,1861,False,84088,656,298,José Rizal,0.5812148008192433
+Calouste_Gulbenkian,1869,False,82707,1281,157,Calouste Gulbenkian,0.5780893774421864
+Vilhelm_Hammershøi,1864,False,177333,753,190,Vilhelm Hammershøi,0.5777786223735115
+Irving_Fisher,1867,False,61556,1603,146,Irving Fisher,0.5776261743502799
+Winsor_McCay,1869,False,117310,690,222,Winsor McCay,0.5762328127806038
+Erich_von_Falkenhayn,1861,False,98026,1599,125,Erich von Falkenhayn,0.5760974828984395
+Thomas_Hunt_Morgan,1866,False,115281,852,182,Thomas Hunt Morgan,0.5754234777835651
+Edward_S._Curtis,1868,False,92038,875,190,Edward Sheriff Curtis,0.5754198991246805
+Felix_Salten,1869,False,131654,568,252,Felix Salten,0.5751333996232512
+Benjamin_Guggenheim,1865,False,79784,2089,111,Benjamin Guggenheim,0.574994752989114
+René_Boylesve,1867,False,130104,545,257,René Boylesve,0.5741405761458199
+Gertrude_Bell,1868,False,91952,1274,140,Gertrude Bell,0.5740756578644648
+Victor_Emmanuel_III_of_Italy,1869,False,129171,485,289,Victor-Emmanuel III,0.5736685137606846
+Nadezhda_Konstantinovna_Krupskaya,1869,False,114804,1135,140,Nadejda Kroupskaïa,0.5731948981966077
+Walter_Rathenau,1867,False,98278,946,166,Walther Rathenau,0.5731485538837586
+Alfred_Stieglitz,1864,False,76945,1159,153,Alfred Stieglitz,0.5730402493973719
+Ferruccio_Busoni,1866,False,74216,892,187,Ferruccio Busoni,0.572786189546245
+Pietro_Mascagni,1863,False,80524,903,174,Pietro Mascagni,0.5712355894511618
+Henri_Desgrange,1865,False,104698,809,170,Henri Desgrange,0.569757728468815
+Stanislas_de_Guaita,1861,False,75344,823,181,Stanislas de Guaita,0.5690022180611406
+Stanley_Baldwin,1867,False,131094,864,149,Stanley Baldwin,0.5688491651666268
+Ferdinand_of_Bulgaria,1861,False,164158,555,201,Ferdinand Ier (roi des Bulgares),0.5681727776959915
+Ferdinand_I_of_Romania,1865,False,84294,699,195,Ferdinand Ier (roi de Roumanie),0.5677898081268583
+Rubén_Darío,1867,False,100810,848,157,Rubén Darío,0.5675311911148259
+Ramsay_MacDonald,1866,False,103990,844,153,Ramsay MacDonald,0.5666313816285888
+Hilma_af_Klint,1862,False,110489,619,194,Hilma af Klint,0.5664452657476176
+Ignacy_Jan_Paderewski,1860,False,102492,636,191,Ignacy Paderewski,0.5659475199499514
+"Rupprecht,_Crown_Prince_of_Bavaria",1869,False,83067,903,151,Rupprecht de Bavière,0.565633875002222
+Albéric_Magnard,1865,False,71187,526,239,Albéric Magnard,0.5631695273767745
+"George_Herbert,_5th_Earl_of_Carnarvon",1866,False,77964,674,182,George Herbert (égyptologue),0.5628949990066765
+Gerhart_Hauptmann,1862,False,105356,575,188,Gerhart Hauptmann,0.562040178263729
+James_Connolly,1868,False,73716,724,169,James Connolly (Irlande),0.5616966152802788
+Alexej_von_Jawlensky,1864,False,93985,637,174,Alexej von Jawlensky,0.5613259146131349
+Rachilde,1860,False,91620,712,158,Rachilde,0.5609156561589743
+Hugo_Wolf,1860,False,71329,694,167,Hugo Wolf,0.5594027904694987
+Georges_Darien,1862,False,95110,691,154,Georges Darien,0.5592681548833434
+William_Kennedy_Dickson,1860,False,138961,630,146,William Kennedy Laurie Dickson,0.5580099029980062
+Herman_Hollerith,1860,False,67846,757,149,Herman Hollerith,0.556998907696236
+Carl_Nielsen,1865,False,82625,676,154,Carl Nielsen,0.5569283203350873
+Robert_Andrews_Millikan,1868,False,107199,516,174,Robert Andrews Millikan,0.555293451034328
+"Prince_Albert_Victor,_Duke_of_Clarence_and_Avondale",1864,False,91377,673,142,Albert Victor de Clarence,0.554530937348416
+Antonio_de_La_Gándara,1861,False,79469,374,240,Antonio de La Gandara,0.5514593836958926
+George_Washington_Carver,1864,False,84186,739,120,George Washington Carver,0.5493726015159043
+Prince_Maximilian_of_Baden,1867,False,101726,393,195,Max de Bade,0.5487938219843993
+Sven_Hedin,1865,False,113269,323,223,Sven Hedin,0.5468458888631985
+Philipp_Scheidemann,1865,False,75872,599,134,Philipp Scheidemann,0.5461083685920115
+Philipp_Lenard,1862,False,113033,417,164,Philipp Lenard,0.5456692422256395
+Marguerite_Durand,1864,False,88867,687,113,Marguerite Durand (féministe),0.5449517107084125
+O._Henry,1862,False,64011,533,147,O. Henry,0.5440044798408908
+Walther_Nernst,1864,False,98253,420,154,Walther Nernst,0.5420230844984895
+Shigechiyo_Izumi,1865,False,57848,830,102,Shigechiyo Izumi,0.5413332380347946
+Silvio_Gesell,1862,False,99414,294,220,Silvio Gesell,0.5411115791619211
+Adrien_de_Gerlache,1866,False,73811,416,161,Adrien de Gerlache de Gomery,0.5403039562378071
+Anne_Sullivan,1866,False,76212,776,97,Anne Sullivan,0.540063438101123
+Kurt_Eisner,1867,False,124054,406,142,Kurt Eisner,0.5399523813832035
+Louis_Botha,1862,False,86081,456,139,Louis Botha,0.539544148295811
+John_Galsworthy,1867,False,102860,421,141,John Galsworthy,0.5390993963522633
+Annie_Oakley,1860,False,61830,974,84,Annie Oakley,0.537421987829036
+"Edmund_Allenby,_1st_Viscount_Allenby",1861,False,85212,533,116,Edmund Allenby,0.5373087554710504
+Léon_Gaumont,1864,False,59166,786,96,Léon Gaumont,0.5371445235532496
+Charles_Evans_Hughes,1862,False,164118,405,123,Charles Evans Hughes,0.5366989797734537
+William_Jennings_Bryan,1860,False,113163,477,116,William Jennings Bryan,0.5364376675526209
+Constance_Markievicz,1868,False,64998,519,119,Constance Markievicz,0.534571054414409
+Charles_Édouard_Guillaume,1861,False,103044,272,197,Charles Édouard Guillaume,0.534447740891511
+Valentin_Serov,1865,False,82830,403,137,Valentin Serov,0.5340905278582605
+Alfred_Hugenberg,1865,False,92121,507,107,Alfred Hugenberg,0.5329235484342132
+Charles_G._Dawes,1865,False,126909,349,136,Charles Dawes,0.532756979364645
+Wilhelm_Wien,1864,False,95119,408,126,Wilhelm Wien,0.5325978690352721
+Mary_Mallon,1869,False,81471,1187,65,Mary Mallon,0.5323805051818074
+Robert_Bosch,1861,False,67787,903,77,Robert Bosch,0.5319473558390184
+Wilhelm_Marx,1863,False,120225,329,140,Wilhelm Marx,0.5311035521162955
+Arnold_Sommerfeld,1868,False,79479,444,117,Arnold Sommerfeld,0.5306707029524872
+Bernard_Berenson,1865,False,75531,345,148,Bernard Berenson,0.5303380181962521
+Alfred_Werner,1866,False,103966,347,133,Alfred Werner,0.5296894821909427
+J._B._M._Hertzog,1866,False,120230,258,174,James B. Hertzog,0.529417791758959
+Pieter_Zeeman,1865,False,97688,354,131,Pieter Zeeman,0.5292155324483265
+Austen_Chamberlain,1863,False,104037,374,121,Austen Chamberlain,0.5286736833419207
+Reginald_Fessenden,1866,False,78054,349,138,Reginald Fessenden,0.5284300390683164
+Dmitry_Merezhkovsky,1866,False,79997,407,119,Dimitri Merejkovski,0.5283759808549275
+"Sir_Henry_Wilson,_1st_Baronet",1864,False,268049,216,167,Henry Hughes Wilson,0.5275557078281969
+William_Henry_Bragg,1862,False,113331,293,145,William Henry Bragg,0.5273366915999144
+Charles_Thomson_Rees_Wilson,1869,False,101759,273,158,Charles Thomson Rees Wilson,0.5266368855078141
+Emilio_Salgari,1862,False,91016,361,122,Emilio Salgari,0.5263726182916408
+Henrietta_Swan_Leavitt,1868,False,122964,326,117,Henrietta Swan Leavitt,0.5238088080349935
+Georges_Lacombe_(painter),1868,False,78573,431,102,Georges Lacombe (peintre),0.5236799166241779
+Anders_Zorn,1860,False,66563,398,113,Anders Zorn,0.5235233172847495
+Nathan_Söderblom,1866,False,111267,256,147,Nathan Söderblom,0.5222364697935726
+Stephen_Leacock,1869,False,77398,2085,44,Stephen Leacock,0.5220037562514398
+Max_Heindel,1865,False,69689,449,97,Max Heindel,0.5216427269932531
+Henry_Royce,1863,False,68436,560,80,Henri Royce,0.5197955466938506
+"Lucy,_Lady_Duff-Gordon",1863,False,72273,452,91,Lucy Christina Duff Gordon,0.5194101356197832
+Stefan_George,1868,False,69159,379,104,Stefan George,0.5187349154181223
+Felix_Hoffmann,1868,False,50778,830,66,Felix Hoffmann,0.5185846244079764
+Frederic_Remington,1861,False,74449,468,85,Frederic Remington,0.5177677957730697
+Eugen_Sandow,1867,False,59182,687,69,Eugen Sandow,0.5171694131482322
+Władysław_Reymont,1867,False,85075,235,147,Władysław Reymont,0.5161271108196627
+Vittorio_Monti,1868,False,55175,560,77,Vittorio Monti,0.5157269377109353
+Emily_Greene_Balch,1867,False,86786,281,119,Emily Greene Balch,0.5154800886855528
+Leo_Baekeland,1863,False,60019,345,107,Leo Baekeland,0.5151189558171627
+John_Nance_Garner,1868,False,99089,284,110,John Nance Garner,0.5140286810372936
+Mary_Ingalls,1865,False,47691,3755,35,Mary Amelia Ingalls,0.5130919955914787
+Eduard_Buchner,1860,False,90226,224,140,Eduard Buchner,0.5129503900192366
+Charles_de_Broqueville,1860,False,64508,315,108,Charles de Broqueville,0.5129466083095695
+"Albrecht,_Duke_of_Württemberg",1865,False,68712,377,91,Albert de Wurtemberg,0.5127623473796415
+Gustav_Vigeland,1869,False,61518,476,78,Gustav Vigeland,0.512398003932708
+Jacinto_Benavente,1866,False,85200,302,101,Jacinto Benavente,0.5114023825765175
+Juhani_Aho,1861,False,107117,227,125,Juhani Aho,0.5109087281704419
+Ferdinand_Ferber,1862,False,78511,353,89,Ferdinand Ferber,0.5108306270445182
+Umberto_Giordano,1867,False,64130,383,87,Umberto Giordano,0.5106349466858986
+Charles_Curtis,1860,False,87962,267,110,Charles Curtis,0.5105337721011818
+Israel_Zangwill,1864,False,64507,273,106,Israel Zangwill,0.5068852251525757
+Masaoka_Shiki,1867,False,64971,363,82,Masaoka Shiki,0.5063189980781041
+Willem_Einthoven,1860,False,109114,325,80,Willem Einthoven,0.5062843914724192
+Black_Elk,1863,False,58750,394,77,Black Elk,0.5052184777314489
+Maximilian_von_Spee,1861,False,53010,302,97,Maximilian von Spee,0.5050295787734094
+Usui_Mikao,1865,False,49029,519,65,Mikao Usui,0.5039948679697087
+Robert_W._Chambers,1865,False,77064,290,87,Robert W. Chambers,0.5026802476175996
+Carl_Laemmle,1867,False,59642,367,76,Carl Laemmle,0.5024219741735909
+"Julian_Byng,_1st_Viscount_Byng_of_Vimy",1862,False,58760,278,95,Julian Byng,0.5022002570667122
+Óscar_Carmona,1869,False,73085,337,77,Óscar Carmona,0.502104933108918
+Charlotte_Perkins_Gilman,1860,False,134861,271,80,Charlotte Perkins Gilman,0.5015873217765461
+Cy_Young,1867,False,59698,297,88,Cy Young,0.5015583806492873
+Felix_Hausdorff,1868,False,88098,223,103,Felix Hausdorff,0.5009229035972033
+Hjalmar_Branting,1860,False,86046,214,107,Hjalmar Branting,0.5005558900644156
+James_J._Corbett,1866,False,104946,311,73,James J. Corbett,0.500225276719483
+C._Aubrey_Smith,1863,False,84112,145,169,Charles Aubrey Smith,0.49965643468754195
+Edith_Roosevelt,1861,False,73669,434,61,Edith Roosevelt,0.499403561241756
+Michael_von_Faulhaber,1869,False,68499,265,88,Michael von Faulhaber,0.4987562801333307
+Else_Lasker-Schüler,1869,False,84285,224,97,Else Lasker-Schüler,0.4983081735492249
+Erik_Axel_Karlfeldt,1864,False,86865,177,121,Erik Axel Karlfeldt,0.4974175074155727
+Emilio_Aguinaldo,1869,False,64042,273,84,Emilio Aguinaldo,0.4972366384860342
+Stanisław_Wyspiański,1869,False,71279,281,79,Stanisław Wyspiański,0.49664624021359965
+Manuel_de_Oliveira_Gomes_da_Costa,1863,False,76154,315,71,Manuel de Oliveira Gomes da Costa,0.49648935896116814
+Giulio_Douhet,1869,False,61111,253,88,Giulio Douhet,0.49595595609515025
+Ernst_Troeltsch,1865,False,68439,264,82,Ernst Troeltsch,0.49562317143166595
+Qasim_Amin,1863,False,60720,397,62,Qasim Amin,0.495572315020096
+Qi_Baishi,1864,False,83981,325,66,Qi Baishi,0.4950544539256114
+Felix_Weingartner,1863,False,78643,260,79,Felix Weingartner,0.49475205594960986
+Arthur_Henderson,1863,False,104048,258,75,Arthur Henderson,0.4946885930673919
+Algernon_Blackwood,1869,False,79660,287,71,Algernon Blackwood,0.49367413786392955
+Emilio_de_Bono,1866,False,61475,242,86,Emilio De Bono,0.49341113318254737
+Alfred_Hermann_Fried,1864,False,98475,212,86,Alfred Hermann Fried,0.4926546038611061
+Denis_Auguste_Duchêne,1862,False,79650,221,85,Denis Auguste Duchêne,0.49189745143517977
+Nicholas_Murray_Butler,1862,False,83888,244,76,Nicholas Butler,0.49132945509908227
+Edwin_Lutyens,1869,False,65573,321,64,Edwin Lutyens,0.49092368898251376
+Theodore_William_Richards,1868,False,119329,148,116,Theodore William Richards,0.4908777757210067
+Ellen_Axson_Wilson,1860,False,60719,313,66,Ellen Wilson,0.4907965372042528
+Ida_B._Wells,1862,False,76232,348,58,Ida B. Wells,0.4902163169620597
+Harvey_Cushing,1869,False,82006,313,61,Harvey Cushing,0.48983293482547
+Emily_Murphy,1868,False,59081,272,72,Emily Murphy,0.4896546631615117
+Marie_Dressler,1868,False,80677,232,76,Marie Dressler,0.48911831444714243
+Frederick_Gowland_Hopkins,1861,False,92994,152,110,Frederick Gowland Hopkins,0.4880103271697393
+Elsie_de_Wolfe,1865,False,73197,181,94,Elsie de Wolfe,0.4873182065084152
+Pehr_Evind_Svinhufvud,1861,False,95828,133,126,Pehr Evind Svinhufvud,0.4871117392523822
+Hans_von_Seeckt,1866,False,75964,286,62,Hans von Seeckt,0.4868755524639955
+Washington_Luís,1869,False,66227,240,73,Washington Luís Pereira de Sousa,0.48684515272011425
+Ignacy_Mościcki,1867,False,68257,245,71,Ignacy Mościcki,0.48665097402286034
+Hans_Pfitzner,1869,False,65180,243,72,Hans Pfitzner,0.48654879386766486
+Douglas_Hyde,1860,False,57156,195,90,Douglas Hyde,0.48631785687555085
+Maurice_Schutz,1866,False,81073,165,98,Maurice Schutz,0.48602072373545396
+William_S._Hart,1864,False,93982,189,82,William S. Hart,0.4857843025690333
+Cosmo_Gordon_Lang,1864,False,215706,198,67,Cosmo Lang,0.48553136198286334
+Frances_Folsom_Cleveland_Preston,1864,False,63065,306,59,Frances Cleveland,0.48511937003399136
+Florence_Harding,1860,False,61925,231,71,Florence Harding,0.48363644474174255
+Gustaf_Dalén,1869,False,97857,159,91,Gustaf Dalén,0.4832448061816322
+Grand_Duke_Alexander_Alexandrovich_of_Russia,1869,False,71139,250,64,Alexandre Alexandrovitch de Russie,0.48309525306086304
+Ben_Turpin,1869,False,108740,173,81,Ben Turpin,0.4829659838143497
+Niels_Ryberg_Finsen,1860,False,86304,196,74,Niels Ryberg Finsen,0.4821956464136752
+Annie_Jump_Cannon,1863,False,57457,200,77,Annie Jump Cannon,0.48104010557522003
+Fritz_Pregl,1869,False,88608,159,86,Fritz Pregl,0.48020738529506135
+Kantarō_Suzuki,1868,False,85452,226,62,Kantarō Suzuki,0.47963729819141226
+Reinhard_Scheer,1863,False,66530,253,57,Reinhard Scheer,0.47755500367132414
+S._P._L._Sørensen,1868,False,58577,281,54,Søren Sørensen,0.47737877867400985
+Frederick_Russell_Burnham,1861,False,90578,277,49,Frederick Russell Burnham,0.47585232873211253
+Kaarlo_Juho_Ståhlberg,1865,False,72596,118,112,Kaarlo Juho Ståhlberg,0.475237352505272
+Albert_Giraud,1860,False,49197,208,67,Albert Giraud,0.4752024292761169
+George_Arliss,1868,False,77918,177,70,George Arliss,0.47504185338099886
+James_Henry_Breasted,1865,False,55622,191,69,James Henry Breasted,0.47441332793456475
+Christian_Lous_Lange,1869,False,80416,171,70,Christian Lous Lange,0.4739630313387955
+Arthur_Harden,1865,False,89012,146,80,Arthur Harden,0.47386085611660045
+John_Mott,1865,False,79558,208,58,John Raleigh Mott,0.47299285883202086
+Allvar_Gullstrand,1862,False,85516,133,87,Allvar Gullstrand,0.4728255947400256
+Franz_von_Hipper,1863,False,60385,231,56,Franz von Hipper,0.47273729381987295
+Armando_Diaz,1861,False,46788,253,55,Armando Diaz,0.4727205522260216
+Billy_Hughes,1862,False,79912,135,86,Billy Hughes,0.47246759536999644
+Vasily_Kalinnikov,1866,False,47866,187,69,Vassili Kalinnikov,0.4722639442158952
+Charley_Grapewin,1869,False,77958,146,78,Charley Grapewin,0.47176549881546836
+James_McKeen_Cattell,1860,False,55549,295,47,James McKeen Cattell,0.47160865095720017
+Enrique_Simonet,1866,False,66516,212,57,Enrique Simonet,0.47136958190826994
+Hobart_Bosworth,1867,False,144841,91,121,Hobart Bosworth,0.47088375334494004
+Arturo_Alessandri,1868,False,51681,188,65,Arturo Alessandri Palma,0.4706191629268873
+Kristian_Birkeland,1867,False,70714,195,59,Kristian Birkeland,0.4704321708352779
+Charles_F._Haanel,1866,False,59248,271,47,Charles F. Haanel,0.46945653027412393
+Carl_Schuhmann,1869,False,143332,131,73,Carl Schuhmann,0.469346272849282
+Richard_Adolf_Zsigmondy,1865,False,99742,117,89,Richard Adolf Zsigmondy,0.4692890743513542
+Count_Leopold_Berchtold,1863,False,122271,178,56,Leopold Berchtold,0.46905061774800305
+"Florenz_Ziegfeld,_Jr.",1867,False,64840,231,51,Florenz Ziegfeld,0.4689287011754868
+Matthew_Henson,1866,False,51805,552,32,Matthew Henson,0.4672739548508699
+George_William_Russell,1867,False,79941,147,68,George William Russell,0.4667030871008862
+Alexander_Gretchaninov,1864,False,54332,186,57,Alexandre Gretchaninov,0.46491643042638015
+Alberico_Albricci,1864,False,68723,123,80,Alberico Albricci,0.4644892483546224
+Otto_Jespersen,1860,False,80701,170,56,Otto Jespersen,0.4640791441195045
+Andrés_Bonifacio,1863,False,69782,141,66,Andrés Bonifacio,0.4626892336190737
+Theodor_Boveri,1862,False,81067,118,75,Theodor Boveri,0.46156934447521486
+Amy_Beach,1867,False,65302,191,50,Amy Beach,0.46141951602983833
+António_José_de_Almeida,1866,False,74910,171,53,António José de Almeida,0.4612131890514192
+Andrew_Fisher,1862,False,76981,103,87,Andrew Fisher,0.46066338691630543
+Chris_Watson,1867,False,72923,112,78,Chris Watson,0.45995518160720766
+Epitácio_Pessoa,1865,False,67434,117,75,Epitácio Pessoa,0.45972958101554706
+Hans_Spemann,1869,False,99260,247,38,Hans Spemann,0.45959164200051156
+Max_Hoffmann,1869,False,83077,139,60,Max Hoffmann,0.4595200193363742
+May_Whitty,1865,False,54075,122,74,May Whitty,0.4591698993881119
+Alexey_Kaledin,1861,False,59446,107,84,Alexeï Kaledine,0.459015830023993
+Rainis,1865,False,63515,95,94,Rainis,0.4581115061593754
+Manuel_Teixeira_Gomes,1860,False,54992,340,33,Manuel Teixeira Gomes,0.45667246452473387
+Archduke_Eugen_of_Austria,1863,False,129215,144,50,Eugène d'Autriche-Teschen,0.456149226652681
+Johan_Halvorsen,1864,False,48845,180,49,Johan Halvorsen,0.45595081718176445
+Vilhelm_Bjerknes,1862,False,54920,109,76,Wilhelm Bjerknes,0.45549396639016787
+"William_Birdwood,_1st_Baron_Birdwood",1865,False,66032,119,66,William Birdwood,0.45528546539719794
+Delfim_Moreira,1868,False,68944,95,85,Delfim Moreira da Costa Ribeiro,0.4552593104822581
+Peter_Cooper_Hewitt,1861,False,50433,151,52,Peter Cooper Hewitt,0.45250327293489107
+Louis-Henri_Foreau,1866,False,50479,96,83,Henri Foreau,0.45237147065993377
+Eero_Järnefelt,1863,False,76340,106,66,Eero Järnefelt,0.45150458179734476
+William_Grant_Stairs,1863,False,80611,150,47,William Grant Stairs,0.4513847772449096
+Helen_Herron_Taft,1861,False,56629,127,56,Helen Herron Taft,0.44997150179026885
+Christopher_Cradock,1862,False,45361,113,65,Christopher Cradock,0.44946360487599063
+Wilhelm_Souchon,1864,False,46034,147,50,Wilhelm Souchon,0.4490038124143087
+Venceslau_Brás,1868,False,63857,99,69,Venceslau Brás,0.44886437544543617
+Grandma_Moses,1860,False,73794,220,34,Grandma Moses,0.4476374486814097
+Charles_Marion_Russell,1864,False,52145,190,39,Charles Marion Russell,0.44733157948607466
+Will_Keith_Kellogg,1860,False,50194,282,31,Will Keith Kellogg,0.44699043868136207
+John_F._Fitzgerald,1863,False,62494,301,29,John Francis Fitzgerald,0.44670081053664706
+Roman_Dmowski,1864,False,47105,180,40,Roman Dmowski,0.44594771862602994
+Cai_Yuanpei,1868,False,49676,114,56,Cai Yuanpei,0.4445855429144976
+Korbinian_Brodmann,1868,False,54415,151,43,Korbinian Brodmann,0.4444358712604733
+Edith_Hamilton,1867,False,40874,201,36,Edith Hamilton,0.44311434220470447
+Stanisław_Wojciechowski,1869,False,54233,111,54,Stanisław Wojciechowski,0.44269185544116774
+Hiranuma_Kiichirō,1867,False,97508,96,56,Hiranuma Kiichirō,0.4424468065310926
+Hiranuma_Kiichirō,1867,False,97508,96,56,Hiranuma Kiichirō,0.4424468065310926
+Jeppe_Aakjær,1866,False,45758,111,54,Jeppe Aakjær,0.4413465275658684
+Richard_Warren_Sears,1863,False,56492,127,44,Richard Warren Sears,0.4393866125345988
+David_T._Abercrombie,1867,False,43516,355,25,David T. Abercrombie,0.4392266174511192
+"Alfred_Harmsworth,_1st_Viscount_Northcliffe",1865,False,49663,122,45,Alfred Harmsworth,0.43787738358473843
+Wilhelm_Peterson-Berger,1867,False,52447,101,52,Wilhelm Peterson-Berger,0.4369992473941413
+Eugenie_Besserer,1868,False,84126,72,70,Eugenie Besserer,0.4368041594272312
+Maximilian_Bircher-Benner,1867,False,41004,198,32,Maximilian Oskar Bircher-Benner,0.4364711249556307
+Princess_Zorka_of_Montenegro,1864,False,50880,179,32,Zorka de Monténégro,0.4349432413679795
+Johannes_Fibiger,1867,False,90479,111,41,Johannes Andreas Grib Fibiger,0.4343738192571641
+Charles_Martin_Loeffler,1861,False,56932,87,55,Charles Martin Loeffler,0.4335673470832402
+Adrien_Loir,1862,False,56836,99,48,Adrien Loir,0.4334373432218155
+Alfred_Ploetz,1860,False,55044,140,36,Alfred Ploetz,0.4332505053194061
+Tully_Marshall,1864,False,81356,99,45,Tully Marshall,0.4332405099714246
+W._H._R._Rivers,1864,False,52387,118,41,William Halse Rivers Rivers,0.4328035279082333
+J._Gordon_Edwards,1867,False,58958,88,52,J. Gordon Edwards,0.43207858163225704
+Henry_Head,1861,False,42371,123,40,Henry Head,0.43159904049677256
+Sakichi_Toyoda,1867,False,46861,259,25,Sakichi Toyoda,0.4313746884787466
+Madam_C._J._Walker,1867,False,64619,406,20,Madam C.J. Walker,0.4307611372210601
+Shrimad_Rajchandra,1867,False,57068,104,42,Shrimad Rajchandra,0.42964606383398096
+Kurt_Hensel,1861,False,49611,129,36,Kurt Hensel,0.42955344486820835
+Hugo_Eckener,1868,False,47097,207,27,Hugo Eckener,0.42949697006347926
+Lillian_Russell,1861,False,102124,82,47,Lillian Russell,0.42867789419806396
+"Henry_Horne,_1st_Baron_Horne",1861,False,63434,92,45,Henry Horne,0.4284721353116303
+Dimitrios_Gounaris,1867,False,54488,60,77,Dimítrios Goúnaris,0.4279867600655011
+Edward_German,1862,False,95598,78,49,Edward German,0.42776567216433947
+Edgar_Lee_Masters,1868,False,53042,113,38,Edgar Lee Masters,0.427743881803169
+Armas_Järnefelt,1869,False,52482,113,38,Armas Järnefelt,0.4276660375856875
+Henriette_Roland_Holst,1869,False,60997,86,47,Henriette Roland Holst,0.42720388502850554
+Charles_W._Clark,1865,False,98848,47,100,Charles W. Clark,0.4271229088283458
+Joseph_Cook,1860,False,56318,74,56,Joseph Cook,0.42700730770840495
+Edmund_C._Tarbell,1862,False,55027,109,38,Edmund Tarbell,0.4266458110270593
+Hawley_Harvey_Crippen,1862,False,52839,274,22,Hawley Harvey Crippen,0.42582894137733085
+G._R._S._Mead,1863,False,65714,65,61,G. R. S. Mead,0.4252341631373747
+Robert_Broom,1866,False,53934,79,50,Robert Broom,0.42519121737841065
+Otto_von_Lossow,1868,False,85311,136,29,Otto von Lossow,0.4242034222121776
+Walter_Damrosch,1862,False,67082,72,51,Walter Damrosch,0.4233947123403039
+Edwin_Arlington_Robinson,1869,False,58494,90,41,Edwin Arlington Robinson,0.42296827345911003
+Jessie_Ralph,1864,False,80154,73,48,Jessie Ralph,0.4228114962034508
+Minnie_Maddern_Fiske,1865,False,79640,66,54,Minnie Maddern Fiske,0.4227546473081889
+Eleanor_Hodgman_Porter,1868,False,59895,100,37,Eleanor H. Porter,0.42270054552825004
+"William_Wrigley,_Jr.",1861,False,47195,167,26,William Wrigley Jr.,0.4208196855014577
+George_Grey_Barnard,1863,False,50144,90,40,George Grey Barnard,0.42079146515886606
+Albert_Bassermann,1867,False,64414,82,41,Albert Bassermann,0.4197971467780435
+Alison_Skipworth,1863,False,91134,62,51,Alison Skipworth,0.41850944517973876
+Juliette_Wytsman,1866,False,52049,95,35,Juliette Wytsman,0.4171555836723053
+John_T._Thompson,1860,False,52231,98,34,John T. Thompson,0.4170152143343618
+Charles_K._French,1860,False,49729,52,70,Charles K. French,0.4169511269940356
+Marcelo_Torcuato_de_Alvear,1868,False,59106,88,36,Marcelo Torcuato de Alvear,0.4163267154468045
+Henry_Wood,1869,False,56330,97,33,Henry Wood (chef d'orchestre),0.4157304118942597
+John_de_Robeck,1862,False,42465,98,34,John de Robeck,0.415546414878526
+Casey_Jones,1864,False,52942,137,26,Casey Jones (mécanicien),0.41530388980864613
+Willie_Maley,1868,False,60250,67,44,Willie Maley,0.4135732555030311
+Vital_Brazil,1865,False,42388,108,30,Vital Brazil,0.4130647066679098
+Otto_Hermann_Kahn,1867,False,52711,99,31,Otto Hermann Kahn,0.41302566394784035
+John_Stone_Stone,1869,False,60139,37,106,John Stone Stone,0.41153222767062553
+Arvid_Järnefelt,1861,False,84221,68,38,Arvid Järnefelt,0.4102839643005793
+Felix_Calonder,1863,False,43860,68,42,Felix-Louis Calonder,0.41017203769443306
+Charles_Proteus_Steinmetz,1865,False,62421,149,22,Charles Proteus Steinmetz,0.4095572524925288
+Miina_Sillanpää,1866,False,51887,51,56,Miina Sillanpää,0.4087559102067023
+Alec_B._Francis,1867,False,48826,62,44,Alec B. Francis,0.40867691073065693
+Oskar_Merikanto,1868,False,65616,85,31,Oskar Merikanto,0.40867317295253736
+Géza_Gárdonyi,1863,False,94173,72,34,Géza Gárdonyi,0.4085063288722167
+Kato_Takaaki,1860,False,110618,78,31,Katō Takaaki,0.4084679866529737
+Alan_Leo,1860,False,48206,64,42,Alan Leo,0.40815907835884785
+Heinrich_Häberlin,1868,False,47808,52,54,Heinrich Häberlin,0.4078877699621573
+Ransom_E._Olds,1864,False,44412,203,19,Ransom Eli Olds,0.40714585612731075
+"Charles_Michael,_Duke_of_Mecklenburg",1863,False,43261,77,34,Charles-Michel de Mecklembourg-Strelitz,0.4062630460734528
+"Rosslyn_Wemyss,_1st_Baron_Wester_Wemyss",1864,False,55543,115,24,Rosslyn Wemyss,0.40541845317927483
+Billy_Sunday,1862,False,55364,91,28,Billy Sunday,0.4051958447314109
+Maxine_Elliott,1868,False,63841,99,25,Maxine Elliott,0.4033398433737977
+Miron_Cristea,1868,False,70245,102,24,Miron Cristea,0.40279862188140403
+Nina_Bang,1866,False,50026,55,43,Nina Bang,0.4024556394225791
+Helene_Kröller-Müller,1869,False,50214,95,26,Helene Kröller-Müller,0.40237315832845777
+José_Vicente_de_Freitas,1869,False,56765,80,29,José Vicente de Freitas,0.40218632395188075
+Charles_W._Bryan,1867,False,59789,76,30,Charles Wayland Bryan,0.40211973880651336
+Adolf_von_Trotha,1868,False,58689,66,33,Adolf von Trotha,0.400592199926063
+Alexander_Godley,1867,False,72088,71,30,Alexander Godley,0.40054630226196936
+James_Marcus_(American_actor),1867,False,50719,46,51,James A. Marcus,0.4001795308551869
+Charles_Dillon_Perrine,1867,False,56174,48,47,Charles Dillon Perrine,0.4000351106933183
+João_Pinheiro_Chagas,1863,False,59106,72,30,João Pinheiro Chagas,0.39988552372220626
+Ernest_Troubridge,1862,False,58249,82,27,Ernest Troubridge,0.3998021435104437
+George_Fawcett,1860,False,49738,53,41,George Fawcett,0.3988494651531248
+Albert_Gottschalk,1866,False,44893,83,27,Albert Gottschalk,0.39858511942522484
+"Gerald_Strickland,_1st_Baron_Strickland",1861,False,55618,53,39,Gerald Strickland,0.3975926240388793
+Ivana_Kobilca,1861,False,50236,75,28,Ivana Kobilca,0.3972093570402777
+Michael_Mayr,1864,False,53327,68,30,Michael Mayr,0.39692290412900977
+James_Rudolph_Garfield,1865,False,79800,59,32,James Rudolph Garfield,0.396299123879794
+Wayne_Wheeler,1869,False,62068,67,28,Wayne Wheeler,0.39404441113792554
+Frank_Campeau,1864,False,82178,69,26,Frank Campeau,0.39330353738327495
+Lala_Lajpat_Rai,1865,False,49388,80,24,Lala Lajpat Rai,0.3918986494198714
+Snitz_Edwards,1868,False,63108,46,39,Snitz Edwards,0.39168196947770034
+William_Morton_Wheeler,1865,False,59239,61,29,William Morton Wheeler,0.39153540456957847
+Charles_Stewart_(Canadian_politician),1868,False,57617,66,27,Charles Stewart,0.3912653923755908
+Heinrich_Rubens,1865,False,61374,61,27,Heinrich Rubens,0.38844050385511236
+Samuel_Cody,1867,False,52893,100,19,Samuel Franklin Cody,0.3872570677828012
+Anastasios_Charalambis,1862,False,40496,41,42,Anastasios Charalambis,0.3860960388612418
+Zeffie_Tilbury,1863,False,46113,57,28,Zeffie Tilbury,0.38558560366033007
+Ludwig_Thoma,1867,False,50340,64,25,Ludwig Thoma,0.3855312581372862
+John_Sealy_Townsend,1868,False,67090,100,18,John Townsend,0.38544789331264817
+Hannes_Hafstein,1861,False,54511,92,19,Hannes Hafstein,0.384689388043461
+Dmitri_Parsky,1866,False,57921,46,33,Dmitri Pavlovitch Parski,0.38454628346775943
+May_Irwin,1862,False,49008,74,22,May Irwin,0.384478085973593
+Nikolai_Pokrovsky,1865,False,56976,50,30,Nikolaï Pokrovski,0.38424112594768073
+Jacob_Robert_Emden,1862,False,51001,45,34,Robert Emden,0.3839784370252991
+Frank_Frost_Abbott,1860,False,55501,97,18,Frank Frost Abbott,0.3833699190719862
+John_Haden_Badley,1865,False,50279,44,34,John Badley,0.3828376601873602
+Tyrone_Power_Sr,1869,False,45996,134,15,Tyrone Power Sr.,0.3804808974410892
+Olavo_Bilac,1865,False,42796,92,18,Olavo Bilac,0.38011161461257276
+Konrad_Krafft_von_Dellmensingen,1862,False,69885,61,22,Konrad Krafft von Dellmensingen,0.3791832286828115
+David_Graham_Phillips,1867,False,43126,51,27,David Graham Phillips,0.3788413513529359
+Apolinario_Mabini,1864,False,59846,76,19,Apolinario Mabini,0.37868175139723825
+Julio_Garavito_Armero,1865,False,62061,61,22,Julio Garavito Armero,0.3785269843611162
+Andrey_Lyapchev,1866,False,82233,42,30,Andreï Liaptchev,0.3782992129851571
+Takejirō_Tokonami,1867,False,75478,36,34,Takejirō Tokonami,0.37532163205551566
+Kazimierz_Tetmajer,1865,False,35367,68,20,Kazimierz Przerwa-Tetmajer,0.3744218390721722
+Florence_Fuller,1867,False,56044,43,28,Florence Fuller,0.37440018796760427
+Antonio_Luna,1866,False,50635,51,24,Antonio Luna (général),0.3743911997028664
+Georg_Bruchmüller,1863,False,45792,41,30,Georg Bruchmüller,0.3739359353985481
+Paul_Behncke,1869,False,41317,64,20,Paul Behncke,0.37312421197574763
+Andrew_Stoddart,1863,False,46852,38,32,Andrew Stoddart,0.3730316077954816
+Hugo_Winckler,1863,False,44740,52,23,Hugo Winckler,0.372478053236967
+Nobuyoshi_Mutō,1868,False,61073,59,20,Nobuyoshi Mutō,0.3722526728535582
+Lyn_Harding,1867,False,48480,53,22,Lyn Harding,0.37156515046547933
+Holger_Pedersen_(linguist),1867,False,46599,60,20,Holger Pedersen (linguiste),0.3713971221295349
+Clyde_Fitch,1865,False,45989,46,25,Clyde Fitch,0.37133010461185084
+Herbert_Greenfield,1869,False,55494,43,26,Herbert Greenfield,0.3711440192844234
+Moriz_Rosenthal,1862,False,37012,68,18,Moriz Rosenthal,0.36901702762322375
+Eurosia_Fabris,1866,False,45215,56,20,Eurosia Fabris,0.368588308680343
+William_A._Moffett,1869,False,48787,46,23,William A. Moffett,0.36785085072565
+Rudolph_Schildkraut,1862,False,52383,35,29,Rudolph Schildkraut,0.36576865182498863
+James_Clark_McReynolds,1862,False,72636,45,21,James Clark McReynolds,0.3646982992118647
+Witmer_Stone,1866,False,56867,38,25,Witmer Stone,0.3639494019763908
+Charles_Ballantyne,1867,False,47336,40,24,Charles Colquhoun Ballantyne,0.36352011185129324
+Arvid_Lindman,1862,False,49362,62,16,Arvid Lindman,0.36075883748545323
+Henry_Marshall_Tory,1864,False,43707,49,19,Henry Marshall Tory,0.36057607002663516
+Ernest_Starling,1866,False,63011,85,13,Ernest Starling,0.3595109653113513
+John_Moisant,1868,False,44134,64,15,John Moisant,0.3575229772259392
+Ishii_Kikujirō,1866,False,47415,38,22,Ishii Kikujirō,0.3573581014218473
+Al_Shean,1868,False,77301,65,14,Al Shean,0.35670637591935206
+Edward_Higgins,1864,False,45406,44,19,Edward Higgins,0.35645315972860353
+Hans_Fruhstorfer,1866,False,42499,33,25,Hans Fruhstorfer,0.3558025604728771
+Flora_Finch,1867,False,86089,59,14,Flora Finch,0.35390230447979165
+Flora_Finch,1869,False,86089,59,14,Flora Finch,0.35390230447979165
+Herbert_Jennings,1868,False,47971,35,22,Herbert Spencer Jennings,0.35371675479242287
+William_Faversham,1868,False,91955,35,20,William Faversham,0.35250678915823536
+Eugen_Schiffer,1860,False,69489,39,18,Eugen Schiffer,0.35086977318690027
+Reginald_McKenna,1863,False,38010,80,12,Reginald McKenna,0.34979119873608966
+Kallirhoe_Parren,1861,False,50184,38,18,Kallirrói Parrén,0.3482109799606458
+Edwin_Thanhouser,1865,False,34698,33,21,Edwin Thanhouser,0.3473149515914192
+John_Bunny,1863,False,51665,47,15,John Bunny,0.3472968190328152
+Joseph_Cawthorn,1868,False,38301,42,16,Joseph Cawthorn,0.34497639819609954
+Bliss_Carman,1861,False,40713,44,15,William Bliss Carman,0.34363871952596453
+Mariette_Rheiner_Garner,1869,False,55182,53,13,Mariette Rheiner Garner,0.3436314793918032
+John_Nathan_Cobb,1868,False,59279,30,20,John Nathan Cobb,0.34339485737137526
+Harro_Magnussen,1861,False,57058,30,20,Harro Magnussen,0.3432176015936158
+Gyorche_Petrov,1865,False,43898,40,15,Guiortché Pétrov,0.3403295239029161
+Percy_Pilcher,1866,False,40751,43,14,Percy Pilcher,0.33898087835570984
+Amos_Alonzo_Stagg,1862,False,47149,105,9,Amos Alonzo Stagg,0.3371203740268794
+"Princess_Helena,_Duchess_of_Albany",1861,False,41617,167,8,Hélène de Waldeck-Pyrmont,0.3368399454033455
+Carl_Harries,1866,False,42875,25,21,Carl Harries,0.33513919622022437
+Ernest_Guglielminetti,1862,False,34902,50,12,Ernest Guglielminetti,0.33458518019187117
+Mary_Brewster_Hazelton,1868,False,50076,33,15,Mary Brewster Hazelton,0.3331537385255973
+Božena_Viková-Kunětická,1862,False,66491,32,15,Božena Viková-Kunětická,0.3330971634048766
+Alfred_Allen_(actor),1866,False,37936,40,13,Alfred Allen,0.3317838570900231
+George_Ernest_Morrison,1862,False,47746,32,15,George Ernest Morrison,0.33164761018927313
+Ingibjörg_H._Bjarnason,1867,False,41265,42,12,Ingibjörg H. Bjarnason,0.32932139378444997
+Ernest_Newman,1868,False,76711,45,11,Ernest Newman,0.3290641071819671
+Enoch_J._Rector,1863,False,41361,33,14,Enoch J. Rector,0.32872208848923357
+Henrietta_Crosman,1861,False,69963,45,11,Henrietta Crosman,0.3286878665661357
+Thomas_Cahill_(soccer),1864,False,58762,44,11,Thomas Cahill,0.32718919332640967
+Ruggero_Oddi,1864,False,37714,47,10,Ruggero Oddi,0.32134471844599233
+Sammy_Woods,1867,False,40147,28,13,Sammy Woods (rugby à XV),0.31794134671817575
+Stéphane_Javelle,1864,False,43497,40,10,Stéphane Javelle,0.31663557789637914
+József_Pusztai,1864,False,35945,28,12,József Pusztai,0.3132499714888702
+Karl_Staaff,1860,False,59300,55,8,Karl Staaff,0.31212977493508104
+Emilia_Broomé,1866,False,43785,30,11,Emilia Broomé,0.31198774852257727
+Zhang_Haipeng,1867,False,45148,54,8,Zhang Haipeng,0.31055373123659724
+Signe_Bergman,1869,False,41566,32,10,Signe Bergman,0.3085964094110413
+George_Forbes_(New_Zealand_politician),1869,False,36329,36,9,George Forbes,0.3055471858301121
+"Charles_Bathurst,_1st_Viscount_Bledisloe",1867,False,44464,33,9,Charles Bathurst,0.3033728815127414
+Viola_Allen,1869,False,41212,37,7,Viola Allen,0.2893419423767727
+Harry_Todd,1863,False,46279,33,7,Harry Todd,0.28628406298638526
+Carrie_Clark_Ward,1862,False,38782,33,4,Carrie Clark Ward,0.23805731917127676
+Wilhelm_Diegelmann,1861,False,48198,38,3,Wilhelm Diegelmann,0.20928573677509946
+Mrs._Patrick_Campbell,1865,False,64665,0,69,Mrs Patrick Campbell,0.127080512599071
+"Robert_Cecil,_1st_Viscount_Cecil_of_Chelwood",1864,False,99556,0,61,Robert Cecil (1er vicomte Cecil de Chelwood),0.1269538129188876
+"Henry_Rawlinson,_1st_Baron_Rawlinson",1864,False,58516,0,45,Henry Rawlinson (1er baron Rawlinson),0.12558961407007063
+Jane_Delano,1862,False,60310,0,32,Jane Delano,0.1242469560993641
+Adelaide_Cabete,1867,False,60808,0,24,Adelaide Cabete,0.12290551872858341
+Evangeline_Booth,1865,False,58118,0,17,Evangeline Booth,0.1209572594147965
+Susanna_M._Salter,1860,False,64766,0,12,Susanna M. Salter,0.11862172994858022
+Elena_Meissner,1867,False,36736,0,12,Elena Meissner,0.11829783608382637
+Mehmet_Esat_Bülkat,1862,False,50823,0,6,Mehmet Esat Bülkat,0.11154191586995858
+Ernest_Swinton,1868,False,55974,0,4,Ernest Dunlop Swinton,0.10512605145655861
+Mary_Colter,1869,False,49989,0,4,Mary Colter,0.10507599159041012
+Macklyn_Arbuckle,1866,False,44835,0,4,Macklyn Arbuckle,0.10502687058576643
+Ivan_Regen,1868,False,46495,0,2,Ivan Regen,0.08364829831290067
+William_Lockwood_(cricketer),1868,,1,1,1,?,0.05448825167540282
+Sergey_Reformatsky,1860,,1,1,1,?,0.05448825167540282
+Alfred_Hoare_Powell,1865,,1,1,1,?,0.05448825167540282
+T._Frank_Appleby,1864,,1,1,1,?,0.05448825167540282
+William_Rylands,1868,,1,1,1,?,0.05448825167540282
+Alexander_Rummler,1867,,1,1,1,?,0.05448825167540282
+Laura_Anning_Bell,1867,,1,1,1,?,0.05448825167540282
+Bernard_Tancred,1865,,1,1,1,?,0.05448825167540282
+Herbert_Henry_Ball,1863,,1,1,1,?,0.05448825167540282
+Mollie_McConnell,1865,,1,1,1,?,0.05448825167540282
+Napoléon_Turcot,1867,,1,1,1,?,0.05448825167540282
+Mark_Keppel,1867,,1,1,1,?,0.05448825167540282
+William_Walker_Atkinson,1862,,1,1,1,?,0.05448825167540282
+Alan_MacMasters,1865,,1,1,1,?,0.05448825167540282
+William_Attewell,1861,,1,1,1,?,0.05448825167540282
+Joe_Vila,1866,,1,1,1,?,0.05448825167540282
+Louis_Bouveault,1864,,1,1,1,?,0.05448825167540282
+William_Michael_Crose,1867,,1,1,1,?,0.05448825167540282
+William_Allen_White,1868,,1,1,1,?,0.05448825167540282
+Sydney_Deane,1863,,1,1,1,?,0.05448825167540282
+Warren_Terhune,1869,,1,1,1,?,0.05448825167540282
+Charles_Kilpatrick_(cyclist),1869,,1,1,1,?,0.05448825167540282
+Tommy_Tucker_(baseball),1863,,1,1,1,?,0.05448825167540282
+Kenneth_Robert_Balfour,1863,,1,1,1,?,0.05448825167540282
+Spencer_S._Wood,1861,,1,1,1,?,0.05448825167540282
+Berthold_Oppenheim,1867,,1,1,1,?,0.05448825167540282
+Srivilailaksana,1868,,1,1,1,?,0.05448825167540282
+Laurence_Binyon,1869,,1,1,1,?,0.05448825167540282
+Hale_Holden,1869,,1,1,1,?,0.05448825167540282
+Mokshagundam_Visvesvarayya,1860,,1,1,1,?,0.05448825167540282
+Gene_Stratton-Porter,1863,,1,1,1,?,0.05448825167540282
+Abner_Powell,1860,,1,1,1,?,0.05448825167540282
+Ioannis_Trilivas,1868,,1,1,1,?,0.05448825167540282
+Lancelot_Speed,1860,,1,1,1,?,0.05448825167540282
+George_H._Reed,1866,,1,1,1,?,0.05448825167540282
+Bartholomeus_Roodenburch,1866,,1,1,1,?,0.05448825167540282
+Seth_Weeks,1868,,1,1,1,?,0.05448825167540282
+Signe_Häggman,1863,,1,1,1,?,0.05448825167540282
+David_Warfield,1866,,1,1,1,?,0.05448825167540282
+Son_Byong-hi,1861,,1,1,1,?,0.05448825167540282
+George_Frederick_Phillips,1862,,1,1,1,?,0.05448825167540282
+William_Dodd_(ambassador),1869,,1,1,1,?,0.05448825167540282
+Harry_Grant_Dart,1869,,1,1,1,?,0.05448825167540282
+William_Bate_Hardy,1864,,1,1,1,?,0.05448825167540282
+Dixie_Haygood,1861,,1,1,1,?,0.05448825167540282
+Dimitrios_Ioannou,1861,,1,1,1,?,0.05448825167540282
+Arthur_Hayes-Sadler,1865,,1,1,1,?,0.05448825167540282
+John_Peltz,1861,,1,1,1,?,0.05448825167540282
+Verina_Morton_Jones,1865,,1,1,1,?,0.05448825167540282
+Lydia_Wahlström,1869,,1,1,1,?,0.05448825167540282
+Johanna_Elberskirchen,1864,,1,1,1,?,0.05448825167540282
+Yordan_Milanov,1867,,1,1,1,?,0.05448825167540282
+Tom_O'Brien_(second_baseman),1860,,1,1,1,?,0.05448825167540282
+Josefa_Toledo_de_Aguirre,1866,,1,1,1,?,0.05448825167540282
+Xenophon_Stratigos,1869,,1,1,1,?,0.05448825167540282
+Juliette_Gordon_Low,1860,,1,1,1,?,0.05448825167540282
+Victoire_Jean-Baptiste,1861,,1,1,1,?,0.05448825167540282
+Ioannis_Svoronos,1863,,1,1,1,?,0.05448825167540282
+József_Konkolics,1861,,1,1,1,?,0.05448825167540282
+May_Moss,1869,,1,1,1,?,0.05448825167540282
+Emilie_Rathou,1862,,1,1,1,?,0.05448825167540282
+Lumber_baron,1869,,1,1,1,?,0.05448825167540282
+Thomas_B._Thrige,1866,,1,1,1,?,0.05448825167540282
+John_Heisman,1869,,1,1,1,?,0.05448825167540282
+William_H._Stayton,1861,,1,1,1,?,0.05448825167540282
+Iván_Persa,1861,,1,1,1,?,0.05448825167540282
+Sy_Sanborn,1866,,1,1,1,?,0.05448825167540282
+Annie_Lowrie_Alexander,1864,,1,1,1,?,0.05448825167540282
+William_Blomfield,1866,,1,1,1,?,0.05448825167540282
+Hedda_Andersson,1861,,1,1,1,?,0.05448825167540282
+María_Abella_de_Ramírez,1863,,1,1,1,?,0.05448825167540282
+Kate_M._Gordon,1861,,1,1,1,?,0.05448825167540282
+Elsa_Eschelsson,1861,,1,1,1,?,0.05448825167540282
+Niels_Hansen_Jacobsen,1861,,1,1,1,?,0.05448825167540282
+George_Arthur_Boeckling,1862,,1,1,1,?,0.05448825167540282
+Ernest_William_Christmas,1863,,1,1,1,?,0.05448825167540282
+Charles_Swickard,1861,,1,1,1,?,0.05448825167540282
+Stanisław_Głąbiński,1862,,1,1,1,?,0.05448825167540282
+Leo_Ditrichstein,1865,,1,1,1,?,0.05448825167540282
+János_Zsupánek,1861,,1,1,1,?,0.05448825167540282
+Agnes_von_Konow,1868,,1,1,1,?,0.05448825167540282
+Lionel_Cripps,1863,,1,1,1,?,0.05448825167540282
+Marie_Booth,1864,,1,1,1,?,0.05448825167540282
+George_Washington_Vanderbilt_II,1862,,1,1,1,?,0.05448825167540282
+Adolph_Otto_Niedner,1863,,1,1,1,?,0.05448825167540282
+Henri_Nathansen,1868,,1,1,1,?,0.05448825167540282
+Carl_L._Boeckmann,1867,,1,1,1,?,0.05448825167540282
+"Henry_George,_Jr.",1862,,1,1,1,?,0.05448825167540282
+Clarence_Stewart_Williams,1863,,1,1,1,?,0.05448825167540282
+John_Radecki,1865,,1,1,1,?,0.05448825167540282
+Horatio_Dresser,1866,,1,1,1,?,0.05448825167540282
+Elma_Danielsson,1865,,1,1,1,?,0.05448825167540282
+William_B._Hanna,1866,,1,1,1,?,0.05448825167540282
+Amy_Carmichael,1867,,1,1,1,?,0.05448825167540282
+Henry_Francis_Bryan,1865,,1,1,1,?,0.05448825167540282
+Pauline_Schmidt,1865,,1,1,1,?,0.05448825167540282
+Victor_Villiger,1868,,1,1,1,?,0.05448825167540282
+Ernst_Didring,1868,,1,1,1,?,0.05448825167540282
+Mahatma_Hansraj,1864,,1,1,1,?,0.05448825167540282
+Lucy_Booth,1868,,1,1,1,?,0.05448825167540282
+Boies_Penrose,1860,,1,1,1,?,0.05448825167540282
+Joseph_S._Cullinan,1860,,1,1,1,?,0.05448825167540282
+Sahibzada_Abdul_Qayyum,1863,,1,1,1,?,0.05448825167540282
+Hristo_Tatarchev,1869,,1,1,1,?,0.05448825167540282
+Wilhelm_Weinberg,1862,,1,1,1,?,0.05448825167540282
+Charles_Henry_Turner_(zoologist),1867,,1,1,1,?,0.05448825167540282
+Vengayil_Kunhiraman_Nayanar,1861,,1,1,1,?,0.05448825167540282
+James_Stevenson-Hamilton,1867,,1,1,1,?,0.05448825167540282
+John_Kendrick_Bangs,1862,,1,1,1,?,0.05448825167540282
+"Edward_L._Beach,_Sr.",1867,,1,1,1,?,0.05448825167540282
+Marie_Tempest,1864,,1,1,1,?,0.05448825167540282
+Ernest_Hanbury_Hankin,1865,,1,1,1,?,0.05448825167540282
+Paul_Olaf_Bodding,1865,,1,1,1,?,0.05448825167540282
+Pío_Valenzuela,1869,,1,1,1,?,0.05448825167540282
+John_Englehart,1867,,1,1,1,?,0.05448825167540282
+Wilfred_Grenfell,1865,,1,1,1,?,0.05448825167540282
+Frederick_Blackman,1866,,1,1,1,?,0.05448825167540282
+Ellis_Parker_Butler,1869,,1,1,1,?,0.05448825167540282
+Joseph_Baptista,1864,,1,1,1,?,0.05448825167540282
+William_Goodenough,1867,,1,1,1,?,0.05448825167540282
+John_T._Raulston,1868,,1,1,1,?,0.05448825167540282
+Sir_William_Ashley,1860,,1,1,1,?,0.05448825167540282
+Irving_Babbitt,1865,,1,1,1,?,0.05448825167540282
+Henry_Bourne_Joy,1864,,1,1,1,?,0.05448825167540282
+Herbert_Tudor_Buckland,1869,,1,1,1,?,0.05448825167540282
+Cornelia_Sorabji,1866,,1,1,1,?,0.05448825167540282
+Paul_Elmer_More,1864,,1,1,1,?,0.05448825167540282
+Sadakichi_Hartmann,1867,,1,1,1,?,0.05448825167540282
+George_Van_Haltren,1866,,1,1,1,?,0.05448825167540282
+Sam_Mussabini,1867,,1,1,1,?,0.05448825167540282
+Jack_Worrall,1860,,1,1,1,?,0.05448825167540282
+Hugh_Evan-Thomas,1862,,1,1,1,?,0.05448825167540282
+Adela_Florence_Nicolson,1865,,1,1,1,?,0.05448825167540282
+Julia_Marlowe,1865,,1,1,1,?,0.05448825167540282
+Lew_Fields,1867,,1,1,1,?,0.05448825167540282
+Arthur_Leopold_Busch,1866,,1,1,1,?,0.05448825167540282
+Herbert_Akroyd_Stuart,1864,,1,1,1,?,0.05448825167540282
+Henrietta_Vinton_Davis,1860,,1,1,1,?,0.05448825167540282
+Steele_Rudd,1868,,1,1,1,?,0.05448825167540282
+Pattillo_Higgins,1863,,1,1,1,?,0.05448825167540282
+Princess_Anne_of_Löwenstein-Wertheim-Freudenberg,1864,,1,1,1,?,0.05448825167540282
+William_M._Dalton,1866,,1,1,1,?,0.05448825167540282
+Tom_Norman,1860,,1,1,1,?,0.05448825167540282
+Manuel_Dimech,1860,,1,1,1,?,0.05448825167540282
+Simon_Flexner,1863,,1,1,1,?,0.05448825167540282
+Fay_Templeton,1865,,1,1,1,?,0.05448825167540282
+Edith_Maude_Eaton,1865,,1,1,1,?,0.05448825167540282
+Janko_Vukotić,1866,,1,1,1,?,0.05448825167540282
+"Mary_Russell,_Duchess_of_Bedford",1865,,1,1,1,?,0.05448825167540282
+Józef_Dowbor-Muśnicki,1867,,1,1,1,?,0.05448825167540282
+Mary_Elizabeth_Coleridge,1861,,1,1,1,?,0.05448825167540282
+James_Percy_FitzPatrick,1862,,1,1,1,?,0.05448825167540282
+Tan_Sitong,1865,,1,1,1,?,0.05448825167540282
+Ninian_Comper,1864,,1,1,1,?,0.05448825167540282
+Frederick_Bligh_Bond,1864,,1,1,1,?,0.05448825167540282
+Charles_W._Woodworth,1865,,1,1,1,?,0.05448825167540282
+George_Lohmann,1865,,1,1,1,?,0.05448825167540282
+Damrong_Rajanubhab,1862,,1,1,1,?,0.05448825167540282
+Otto_Frank_(physiologist),1865,,1,1,1,?,0.05448825167540282
+"Mario_Ruspoli,_2nd_Prince_of_Poggio_Suasa",1867,,1,1,1,?,0.05448825167540282
+William_V._Pratt,1869,,1,1,1,?,0.05448825167540282
+Almroth_Wright,1861,,1,1,1,?,0.05448825167540282
+Arthur_Mold,1863,,1,1,1,?,0.05448825167540282
+William_E._Johnson,1862,,1,1,1,?,0.05448825167540282
+Herbert_Henry_Dow,1866,,1,1,1,?,0.05448825167540282
+Charles_James_Briggs,1865,,1,1,1,?,0.05448825167540282
+Carl_Eytel,1862,,1,1,1,?,0.05448825167540282
+George_W._Fuller,1868,,1,1,1,?,0.05448825167540282
+Dwight_B._Waldo,1864,,1,1,1,?,0.05448825167540282
+Aaron_S._Watkins,1863,,1,1,1,?,0.05448825167540282
+Richard_Rushall,1864,,1,1,1,?,0.05448825167540282
+Thomas_Coward,1867,,1,1,1,?,0.05448825167540282
+Nikola_Ivanov,1861,,1,1,1,?,0.05448825167540282
+Herbert_Booth,1862,,1,1,1,?,0.05448825167540282
+S.S._Kresge,1867,,1,1,1,?,0.05448825167540282
+J._T._Hearne,1867,,1,1,1,?,0.05448825167540282
+Sam_Thompson,1860,,1,1,1,?,0.05448825167540282
+James_Alexander_Calder,1868,,1,1,1,?,0.05448825167540282
+Johnny_Briggs_(cricketer),1862,,1,1,1,?,0.05448825167540282
+William_Jacob_Baer,1860,,1,1,1,?,0.05448825167540282
+Arnold_Theiler,1867,,1,1,1,?,0.05448825167540282
+Ezra_Fitch,1865,,1,1,1,?,0.05448825167540282
+Alice_Stevenson,1861,,1,1,1,?,0.05448825167540282
+Tommy_Corcoran_(baseball),1869,,1,1,1,?,0.05448825167540282
+Carl_Georg_Barth,1860,,1,1,1,?,0.05448825167540282
+Mary_Hunter_Austin,1868,,1,1,1,?,0.05448825167540282
+Clarence_Geldart,1867,,1,1,1,?,0.05448825167540282
+George_Sutherland,1862,,1,1,1,?,0.05448825167540282
+Josiah_Thomas,1863,,1,1,1,?,0.05448825167540282
+Pierce_Butler_(justice),1866,,1,1,1,?,0.05448825167540282
+Hughie_Jennings,1869,,1,1,1,?,0.05448825167540282
+Vishnu_Narayan_Bhatkhande,1860,,1,1,1,?,0.05448825167540282
+Adolfo_Müller-Ury,1862,,1,1,1,?,0.05448825167540282
+Nina_Boucicault,1867,,1,1,1,?,0.05448825167540282
+Marie_Cahill,1866,,1,1,1,?,0.05448825167540282
+Charles_Pelot_Summerall,1867,,1,1,1,?,0.05448825167540282
+Alvah_Curtis_Roebuck,1864,,1,1,1,?,0.05448825167540282
+Alexander_D._Henderson_(businessman),1865,,1,1,1,?,0.05448825167540282
+George_Ade,1866,,1,1,1,?,0.05448825167540282
+Julián_Felipe,1861,,1,1,1,?,0.05448825167540282
+Raymond_Hitchcock_(actor),1865,,1,1,1,?,0.05448825167540282
+Theodor_Wulf,1868,,1,1,1,?,0.05448825167540282
+Arthur_Collins_(singer),1864,,1,1,1,?,0.05448825167540282
+Bob_Dalton_(outlaw),1869,,1,1,1,?,0.05448825167540282
+Tinsley_Lindley,1865,,1,1,1,?,0.05448825167540282
+Albert_Abrams,1863,,1,1,1,?,0.05448825167540282
+Bernard_Maybeck,1862,,1,1,1,?,0.05448825167540282
+"Thomas_J._Preston,_Jr.",1862,,1,1,1,?,0.05448825167540282
+Evelina_Haverfield,1867,,1,1,1,?,0.05448825167540282
+"Sir_George_Warrender,_7th_Baronet",1860,,1,1,1,?,0.05448825167540282
+Charles_Turner_(Australian_cricketer),1862,,1,1,1,?,0.05448825167540282
+David_W._Taylor,1864,,1,1,1,?,0.05448825167540282
+George_Paish,1867,,1,1,1,?,0.05448825167540282
+Andrew_Volstead,1860,,1,1,1,?,0.05448825167540282
+Edward_Terry_Sanford,1865,,1,1,1,?,0.05448825167540282
+Emma_Booth_(The_Salvation_Army),1860,,1,1,1,?,0.05448825167540282
+J._B._Bury,1861,,1,1,1,?,0.05448825167540282
+Carl_Theodore_Vogelgesang,1869,,1,1,1,?,0.05448825167540282
+John_Henry_Kirby,1860,,1,1,1,?,0.05448825167540282
+James_Cannon_Jr.,1864,,1,1,1,?,0.05448825167540282
+Arthur_James_Arnot,1865,,1,1,1,?,0.05448825167540282
+Charles_Duryea,1861,,1,1,1,?,0.05448825167540282
+W._G._Read_Mullan,1860,,1,1,1,?,0.05448825167540282

@@ -1,0 +1,401 @@
+link,year,disambiguation,length,pageviews,revisions,title,score
+Galileo_Galilei,1564,False,284779,176853,4329,Galileo Galilei,0.8608089589018119
+William_Shakespeare,1564,False,327198,143179,4179,William Shakespeare,0.8575910763802327
+Lope_de_Vega,1562,False,247635,46568,2520,Lope de Vega,0.805729314256598
+Luís_de_Góngora_y_Argote,1561,False,110353,28160,1605,Luis de Góngora,0.7604229056148849
+Francis_Bacon,1561,False,121903,37741,988,Francis Bacon,0.7511585395411796
+Elizabeth_Báthory,1560,False,179755,17131,903,Erzsébet Báthory,0.7352074362526562
+James_VI_and_I,1566,False,260633,10463,606,Jacobo I de Inglaterra y VI de Escocia,0.7119823556024981
+Claudio_Monteverdi,1567,False,83978,7380,562,Claudio Monteverdi,0.6810733182727899
+Juan_Martínez_Montañés,1568,False,166820,2508,571,Juan Martínez Montañés,0.6603412005300943
+Hernando_Arias_de_Saavedra,1561,False,200740,2669,329,Hernando Arias de Saavedra,0.6433605519313403
+Guillén_de_Castro_y_Bellvis,1569,False,152302,1317,640,Guillén de Castro,0.6407190792784577
+Christopher_Marlowe,1564,False,86405,4538,246,Christopher Marlowe,0.6340792321854725
+Francis_de_Sales,1567,False,62366,4078,253,Francisco de Sales,0.6276175785465972
+Maria_Pita,1565,False,41960,5136,211,María Pita,0.6191764308299206
+Infanta_Isabella_Clara_Eugenia_of_Spain,1566,False,120675,2644,199,Isabel Clara Eugenia,0.6145390680441327
+Tommaso_Campanella,1568,False,76163,2745,179,Tommaso Campanella,0.6045668503242101
+Aloysius_Gonzaga,1568,False,56167,3626,163,Luis Gonzaga,0.6031258620592558
+Francisco_Pacheco,1564,False,78242,2111,182,Francisco Pacheco,0.5984637147036115
+Pope_Urban_VIII,1568,False,78777,2041,173,Urbano VIII,0.5953315752689721
+Annibale_Carracci,1560,False,114721,1806,150,Annibale Carracci,0.5900829907430023
+Carlo_Gesualdo,1566,False,65191,1469,178,Carlo Gesualdo,0.5846023530862335
+Francisco_Ribalta,1565,False,107414,1229,148,Francisco Ribalta,0.5773585938987462
+Mehmed_III,1566,False,47329,5089,88,Mehmed III,0.5767537896972728
+Sigismund_III_Vasa,1566,False,116170,910,153,Segismundo III Vasa,0.5703314666718481
+"Robert_Devereux,_2nd_Earl_of_Essex",1565,False,80001,952,159,"Robert Devereux, II conde de Essex",0.5690688149873538
+William_Adams_(sailor),1564,False,121153,811,150,William Adams (marino),0.5661931059305688
+Infanta_Catherine_Michelle_of_Spain,1567,False,107444,1144,121,Catalina Micaela de Austria,0.565939215914185
+Jacopo_Peri,1561,False,57109,863,149,Jacopo Peri,0.5591053301819052
+Fernando_de_Alva_Cortés_Ixtlilxóchitl,1568,False,49444,1919,86,Fernando de Alva Ixtlilxóchitl,0.553843639708749
+John_Dowland,1563,False,40673,1174,108,John Dowland,0.5497171916987704
+Juan_de_Jáuregui,1562,False,58407,854,106,Juan de Jáuregui,0.5440700621867477
+Pedro_Fernandes_de_Queirós,1565,False,54776,683,124,Pedro Fernández de Quirós,0.543376553647222
+Jacobus_Arminius,1560,False,45093,1306,82,Jacobo Arminio,0.5404823552062462
+Pieter_Brueghel_the_Younger,1564,False,63308,874,94,Pieter Brueghel el Joven,0.5400559096328336
+Henry_Briggs_(mathematician),1561,False,59585,751,101,Henry Briggs,0.5382028763651403
+"Maurice_of_Nassau,_Prince_of_Orange",1567,False,52123,961,88,Mauricio de Nassau,0.5373786572433937
+Thomas_Cavendish,1560,False,58434,642,101,Thomas Cavendish,0.5331419950189326
+"Charles_Emmanuel_I,_Duke_of_Savoy",1562,False,64876,643,98,Carlos Manuel I de Saboya,0.5329822299913021
+Paul_Miki,1564,False,42011,700,97,Pablo Miki,0.5301903239765302
+Date_Masamune,1567,False,62773,889,74,Date Masamune,0.5286581208583788
+Pedro_Páez,1564,False,54047,514,103,Pedro Páez,0.5260256322649386
+Santorio_Santorio,1561,False,47489,761,74,Santorio Santorio,0.5212154291000459
+"Diego_Sarmiento_de_Acuña,_1st_Count_of_Gondomar",1567,False,57721,477,94,Diego Sarmiento de Acuña,0.5202826147529903
+"Karl_I,_Prince_of_Liechtenstein",1569,False,100465,176,143,Carlos I de Liechtenstein,0.5044385910605521
+Mariana_Navarro_de_Guevarra_Romero,1565,False,42661,410,79,Mariana de Jesús (beata),0.504377917947912
+Jan_Pieterszoon_Sweelinck,1562,False,69609,353,71,Jan Pieterszoon Sweelinck,0.4995009273991484
+Jahangir,1569,False,50729,405,67,Jahangir,0.49816508322417535
+Adriano_Banchieri,1568,False,44059,326,69,Adriano Banchieri,0.49108224377105375
+"Christina,_Grand_Duchess_of_Tuscany",1565,False,43736,468,52,Cristina de Lorena,0.48854407180973325
+Gaspard_Bauhin,1560,False,61683,294,62,Caspar Bauhin,0.48592637145805184
+Isabel_Barreto,1567,False,48105,437,50,Isabel Barreto,0.4854396343418115
+Sanada_Yukimura,1567,False,42810,754,37,Sanada Yukimura,0.48206954941861563
+John_Bull_(composer),1562,False,59569,224,66,John Bull (compositor),0.4789734611256121
+Ishida_Mitsunari,1560,False,42396,451,43,Ishida Mitsunari,0.4771233742802294
+Giambattista_Marino,1569,False,54861,342,47,Giambattista Marino,0.47610418970555757
+"Vincenzo_Gonzaga,_Duke_of_Mantua",1562,False,112070,252,50,Vicente I Gonzaga de Mantua,0.4754172886987834
+"Robert_Cecil,_1st_Earl_of_Salisbury",1563,False,38796,435,43,"Robert Cecil, conde de Salisbury",0.4752602083980196
+Giovanni_Baglione,1566,False,46768,246,53,Giovanni Baglione,0.47002807061874136
+"Ercole,_Lord_of_Monaco",1562,False,93721,180,57,Hércules I de Mónaco,0.4682124553828002
+Franciscus_Gomarus,1563,False,56207,148,67,Franciscus Gomarus,0.4634391045829876
+Marie_de_Gournay,1565,False,53159,325,38,Marie de Gournay,0.46299988245725937
+Jacques_Clément,1567,False,31708,340,40,Jacques Clément,0.46243184768024476
+Hans_Leo_Hassler,1562,False,49071,170,58,Hans Leo Hassler,0.46149262187187895
+Hans_Leo_Hassler,1564,False,49071,170,58,Hans Leo Hassler,0.46149262187187895
+"Ranuccio_I_Farnese,_Duke_of_Parma",1569,False,99052,180,48,Ranucio I Farnesio,0.46064819378375926
+Pietro_Bernini,1562,False,35659,261,44,Pietro Bernini,0.4604363692839218
+"Maximilien_de_Béthune,_Duke_of_Sully",1560,False,53671,197,48,Maximilien de Béthune,0.4589489012010942
+Wanli_Emperor,1563,False,40374,160,52,Emperador Wanli,0.4527671840392699
+"Henry_I,_Duke_of_Lorraine",1563,False,39345,225,36,Enrique II de Lorena,0.4463731410194139
+"Teodósio_II,_Duke_of_Braganza",1568,False,37612,235,35,Teodosio II de Braganza,0.44585429558349293
+Anton_Praetorius,1560,False,52021,85,78,Anton Praetorius,0.4448612918558932
+Honoré_d'Urfé,1568,False,47387,165,39,Honoré d'Urfé,0.4417727780705416
+Sebald_de_Weert,1567,False,64812,119,45,Sebald de Weert,0.4389422595420039
+Jodocus_Hondius,1563,False,53065,205,31,Jodocus Hondius,0.4378579619062668
+Xu_Guangqi,1562,False,55877,181,33,Xu Guangqi,0.4376496713607604
+Xu_Guangqi,1562,False,55877,181,33,Xu Guangqi,0.4376496713607604
+Gregor_Aichinger,1565,False,41469,151,39,Gregorio Aichinger,0.437623332722673
+"Charles,_Count_of_Soissons",1566,False,39523,107,50,Carlos de Borbón-Soissons,0.4354956208022699
+Katō_Kiyomasa,1562,False,44682,191,31,Katō Kiyomasa,0.43431159132028313
+David_Fabricius,1564,False,48797,138,37,David Fabricius,0.4331717264575661
+Manuel_Cardoso,1566,False,45018,140,36,Manuel Cardoso,0.4317262417740119
+Edward_Alleyn,1566,False,39742,248,26,Edward Alleyn,0.4312337545722101
+Thomas_Campion,1567,False,45807,143,34,Thomas Campion,0.42976495164478135
+Duarte_Lobo,1565,False,46513,131,35,Duarte Lobo,0.42824668555895
+Ottavio_Rinuccini,1562,False,39734,147,33,Ottavio Rinuccini,0.42811361539828163
+Pietro_Cerone,1566,False,48129,88,48,Pietro Cerone,0.42731745717846753
+Federico_Borromeo,1564,False,40611,126,36,Federico Borromeo,0.42718981111878473
+Thomas_Nashe,1567,False,31587,165,31,Thomas Nashe,0.4269048788274678
+Reza_Abbasi,1565,False,51365,171,28,Reza Abbasi,0.42631332905127645
+Anthony_Babington,1561,False,31146,241,25,Anthony Babington,0.4261745961677042
+Frans_Pourbus_the_Younger,1569,False,36172,183,28,Frans Pourbus el Joven,0.4257795881983063
+Francis_Caracciolo,1563,False,37584,133,33,Francisco Caracciolo,0.4242541198466548
+Anna_Juliana_Gonzaga,1566,False,52173,140,30,Ana Catalina Gonzaga de Mantua,0.42359077017652513
+Michael_Drayton,1563,False,32933,196,26,Michael Drayton,0.42296650199158314
+Willem_Schouten,1567,False,49453,146,28,Willem Schouten,0.42094053690960037
+"Charles_Blount,_1st_Earl_of_Devonshire",1563,False,43853,114,33,"Charles Blount, VIII barón de Mountjoy",0.41995055457976327
+Cornelis_van_Haarlem,1562,False,41136,128,30,Cornelis Cornelisz. van Haarlem,0.41880550863493327
+Hosokawa_Gracia,1563,False,45652,147,27,Hosokawa Gracia,0.4186174934684751
+"Margherita_Gonzaga,_Duchess_of_Ferrara",1564,False,32801,91,35,Margarita Gonzaga d´Este,0.4121649113585655
+Michal_Sedziwój,1566,False,42211,114,28,Michał Sędziwój,0.4114509068977738
+Isabella_Andreini,1562,False,40997,98,29,Isabella Andreini,0.4076372804469427
+Jean_Titelouze,1563,False,47038,69,34,Jean Titelouze,0.40233808708528146
+Jan_Karol_Chodkiewicz,1560,False,74163,78,28,Jan Karol Chodkiewicz,0.4011633878638845
+"Richard_Boyle,_1st_Earl_of_Cork",1566,False,52706,94,25,"Richard Boyle, conde de Cork",0.4002748297972121
+Virginia_de'_Medici,1568,False,41145,114,22,Virginia de Médici,0.39832234583581805
+Cornelis_de_Houtman,1565,False,51172,91,24,Cornelis de Houtman,0.3967892247780447
+Cornelius_a_Lapide,1567,False,35223,120,21,Cornelio a Lapide,0.39628747708408496
+"John_William,_Duke_of_Jülich-Cleves-Berg",1562,False,51190,54,37,Juan Guillermo de Jülich-Cléveris-Berg,0.39581164457822515
+"Christian_I,_Prince_of_Anhalt-Bernburg",1568,False,36477,76,27,Cristián I de Anhalt-Bernburg,0.39388337865722645
+Bartholomaeus_Pitiscus,1561,False,40021,141,18,Bartolomé Pitiscus,0.3928117222522999
+Étienne_Martellange,1569,False,101243,69,25,Étienne Martellange,0.39252529182364465
+Tobias_Hume,1569,False,33695,121,19,Tobias Hume,0.39041627200665385
+Adriaen_Block,1567,False,47080,100,20,Adriaen Block,0.3895065270448077
+Anna_de'_Medici,1569,False,33986,47,34,Ana de Médici,0.3834852876737945
+Maria_of_the_Palatinate-Simmern,1561,False,39126,59,26,María del Palatinado,0.3825957594096238
+Jacob_van_Heemskerk,1567,False,43853,66,23,Jacob van Heemskerk,0.381791755952902
+Francis_Godwin,1562,False,39868,48,31,Francis Godwin,0.3816706139331535
+Samuel_Daniel,1562,False,45804,66,22,Samuel Daniel,0.37980761216459774
+Hosokawa_Tadaoki,1563,False,33881,100,17,Hosokawa Tadaoki,0.37794584253255115
+George_Abbot_(bishop),1562,False,27918,56,25,George Abbot,0.3765386111603836
+"Edward_Seymour,_Viscount_Beauchamp",1561,False,86789,102,15,"Edward Seymour, vizconde de Beauchamp",0.3760708957704512
+Gunilla_Bielke,1568,False,30615,52,24,Gunilla Johansdotter,0.37222274882253137
+Countess_Emilia_of_Nassau,1569,False,37826,72,18,Emilia de Nassau,0.3711421765288919
+John_Parkinson_(botanist),1567,False,60902,91,15,John Parkinson,0.3706909168039011
+Tachibana_Muneshige,1567,False,30122,101,15,Tachibana Muneshige,0.3698260414242776
+Vincenzo_Giustiniani,1564,False,41674,90,15,Vincenzo Giustiniani,0.36825389551245297
+Marie_of_the_Incarnation_(Carmelite),1566,False,29514,69,18,María de la Encarnación,0.36818166066421193
+Jan_Jesenius,1566,False,49043,100,14,Jan Jesenius,0.36792132763663676
+Margherita_Farnese,1567,False,35495,142,12,Margarita Farnesio,0.3649493170387379
+Lucio_Massari,1569,False,37221,46,22,Lucio Massari,0.3642636091321462
+François_d'Aguilon,1567,False,53101,67,16,François d'Aguilon,0.36384686010069517
+"Christian_I,_Elector_of_Saxony",1560,False,37121,54,19,Cristián I de Sajonia,0.36345088450130436
+Gustav_of_Sweden_(1568–1607),1568,False,33824,56,18,Gustavo Eriksson de Suecia,0.3614759264553282
+Wilhelm_Fabry,1560,False,37402,74,15,Wilhelm Fabry,0.36144942369206384
+Jacopo_Corsi,1561,False,27345,60,17,Jacopo Corsi,0.3596890295557677
+William_Alabaster,1567,False,40794,69,15,William Alabaster,0.3596299526794499
+Valens_Acidalius,1567,False,47650,41,20,Valens Acidalius,0.35625849151979
+Sigrid_of_Sweden_(1566–1633),1566,False,30137,74,14,Sigrid Eriksdotter,0.35604255903342574
+Christoph_Demantius,1567,False,37088,71,14,Christoph Demantius,0.3558751356296528
+"William_Louis,_Count_of_Nassau-Dillenburg",1560,False,32791,48,18,Guillermo Luis de Nassau-Dillenburg,0.3554484600398658
+Don_Giovanni_de'_Medici,1567,False,40586,75,13,Don Juan de Médici,0.3534332437168125
+Martin_Fréminet,1567,False,34481,74,13,Martin Fréminet,0.3521517236837404
+Lieven_de_Key,1560,False,35020,45,17,Lieven de Key,0.3503594644183271
+Archduke_Wenceslaus_of_Austria,1561,False,32412,139,10,Wenceslao de Austria,0.350183326314021
+"Ernest_Frederick,_Margrave_of_Baden-Durlach",1560,False,40822,39,18,Ernesto Federico I de Baden-Durlach,0.34826661379582546
+Yodo-dono,1569,False,32544,76,12,Yodogimi,0.34746204129540725
+Kikkawa_Hiroie,1561,False,31438,46,16,Kikkawa Hiroie,0.34745891065236695
+Arima_Harunobu,1567,False,29094,45,16,Arima Harunobu,0.34620838042872826
+Archduchess_Margaret_of_Austria_(1567–1633),1567,False,39857,42,16,Margarita de Austria (1567-1633),0.3451774726459142
+Henry_Constable,1562,False,65349,52,13,Henry Constable,0.343753155122546
+John_Heminges,1566,False,23431,79,11,John Heminges,0.34097350413040173
+Henry_Wotton,1568,False,33799,131,9,Henry Wotton,0.3406624919480724
+Charles_Butler_(beekeeper),1560,False,28036,48,13,Charles Butler,0.3368715141873569
+Philip_of_Nassau,1566,False,29127,34,16,Felipe de Nassau,0.33505951903078096
+Giovanni_Paolo_Lascaris,1560,False,31085,42,13,Juan de Lascaris-Castellar,0.3326269585178797
+Paola_Massarenghi,1565,False,32326,34,15,Paola Massarenghi,0.33234390897875893
+Edward_Fortunatus,1565,False,55706,34,14,Eduardo Fortunato de Baden-Baden,0.3312593041448144
+Mutio_Vitelleschi,1563,False,33784,78,9,Mutio Vitelleschi,0.32809544201135715
+Henry_Chettle,1564,False,36037,33,14,Henry Chettle,0.32809048066872115
+George_Kirbye,1565,False,28541,21,23,George Kirbye,0.3277369192464687
+Erdmuthe_of_Brandenburg,1561,False,69949,34,12,Edmunda de Brandeburgo,0.32370035861181923
+"Charles_I,_Count_Palatine_of_Zweibrücken-Birkenfeld",1560,False,93055,28,13,Carlos I del Palatinado-Zweibrücken-Birkenfeld,0.32129790683261883
+Akizuki_Tanenaga,1567,False,26215,25,14,Akizuki Tanenaga,0.3148942045071766
+Maeda_Toshinaga,1562,False,29096,31,11,Maeda Toshinaga,0.31153014320661854
+Maeda_Toshinaga,1562,False,29096,31,11,Maeda Toshinaga,0.31153014320661854
+Daniel_Chamier,1564,False,31064,51,8,Daniel Chamier,0.3074250779137042
+Fabio_Colonna,1567,False,40059,43,8,Fabio Colonna,0.3034936190051798
+Francesco_Usper,1561,False,31207,18,15,Francesco Usper,0.3032289824846329
+Nikolaus_Ager,1568,False,36382,23,11,Nicolas Ager,0.3004975427683397
+Scipione_Dentice,1560,False,30003,19,12,Scipione Dentice,0.2956600100577813
+Hieronymus_Praetorius,1560,False,34172,77,6,Hieronymus Praetorius,0.29427456963712273
+Sophie_of_Brandenburg,1568,False,70274,39,7,Sofía de Brandeburgo,0.2927005772345235
+Yi_Eokgi,1561,False,24621,24,8,Yi Eok-gi,0.2823934196965587
+Nicolaus_Mulerius,1564,False,33033,17,10,Nicolaus Mulerius,0.2819305356450343
+Christian_Sørensen_Longomontanus,1562,False,47452,27,6,Christen Sørensen Longomontanus,0.26871314770767674
+Elisabeth_of_Anhalt-Zerbst,1563,False,43564,39,5,Isabel de Anhalt-Zerbst,0.2632873667785347
+Countess_Anna_of_Nassau,1563,False,30189,37,4,Ana de Nassau,0.2398177964571114
+Anna_Maria_of_Brandenburg,1567,False,65475,25,2,Ana María de Brandeburgo,0.1486321309295328
+Guru_Arjan_Dev,1563,False,37868,0,40,Gurú Arjan Dev Ji,0.12486604436623236
+"John_Casimir,_Duke_of_Saxe-Coburg",1564,False,113010,0,12,Juan Casimiro de Sajonia-Coburgo,0.11891050051892983
+"James_III,_Margrave_of_Baden-Hachberg",1562,False,53177,0,7,Jacobo III de Baden-Hachberg,0.11345356347148004
+Philippe_van_Lansberge,1561,False,48819,0,7,Philippe van Lansberge,0.1134091687686594
+"John_Ernest,_Duke_of_Saxe-Eisenach",1566,False,100876,0,5,Juan Ernesto II de Sajonia-Eisenach,0.10925824727947892
+Adriaan_van_Roomen,1561,False,50907,0,5,Adriaan van Roomen,0.10894920367299607
+Christoph_Grienberger,1561,False,44510,0,5,Christoph Grienberger,0.10888410602416039
+"Friedrich_Wilhelm_I,_Duke_of_Saxe-Weimar",1562,False,100280,0,4,Federico Guillermo I de Sajonia-Weimar,0.10536924017098875
+"Philip_III,_Margrave_of_Baden-Rodemachern",1567,False,87282,0,2,Felipe III de Baden-Rodemachern,0.08381949579489774
+"Penelope_Blount,_Countess_of_Devonshire",1563,,1,1,1,?,0.05448825167540282
+Charles_II_de_Bourbon-Vendôme,1562,,1,1,1,?,0.05448825167540282
+"Edward_Sutton,_5th_Baron_Dudley",1567,,1,1,1,?,0.05448825167540282
+"Juan_de_la_Cerda,_6th_Duke_of_Medinaceli",1569,,1,1,1,?,0.05448825167540282
+Anna_of_Württemberg,1561,,1,1,1,?,0.05448825167540282
+Sophie_of_Brunswick-Lüneburg,1563,,1,1,1,?,0.05448825167540282
+Anne_of_Ostfriesland,1562,,1,1,1,?,0.05448825167540282
+"Henri,_Duke_of_Joyeuse",1563,,1,1,1,?,0.05448825167540282
+Péter_Révay,1568,,1,1,1,?,0.05448825167540282
+Lucia_Quinciani,1566,,1,1,1,?,0.05448825167540282
+Henri_Spondanus,1568,,1,1,1,?,0.05448825167540282
+Sophie_Hedwig_of_Brunswick-Wolfenbüttel,1561,,1,1,1,?,0.05448825167540282
+Francesco_Bracciolini,1566,,1,1,1,?,0.05448825167540282
+Martin_Becanus,1563,,1,1,1,?,0.05448825167540282
+"Thomas_Howard,_1st_Earl_of_Suffolk",1561,,1,1,1,?,0.05448825167540282
+Ferdinando_Gorges,1565,,1,1,1,?,0.05448825167540282
+Samuel_Sandys_(died_1623),1560,,1,1,1,?,0.05448825167540282
+Maria_of_Brunswick-Lüneburg,1566,,1,1,1,?,0.05448825167540282
+Torii_Tadamasa,1567,,1,1,1,?,0.05448825167540282
+Francis_Ashley,1569,,1,1,1,?,0.05448825167540282
+Edmund_Whitelocke,1565,,1,1,1,?,0.05448825167540282
+"Frederick_II,_Duke_of_Holstein-Gottorp",1568,,1,1,1,?,0.05448825167540282
+Jobst_of_Limburg,1560,,1,1,1,?,0.05448825167540282
+John_Davies_(poet),1569,,1,1,1,?,0.05448825167540282
+Dorothea_of_Saxony,1563,,1,1,1,?,0.05448825167540282
+Philipp_Uffenbach,1566,,1,1,1,?,0.05448825167540282
+Abraham_Scultetus,1566,,1,1,1,?,0.05448825167540282
+Anna_of_Saxony_(1567–1613),1567,,1,1,1,?,0.05448825167540282
+Gervase_Markham,1568,,1,1,1,?,0.05448825167540282
+"Ernest_II,_Duke_of_Brunswick-Lüneburg",1564,,1,1,1,?,0.05448825167540282
+Dominicus_Baudius,1561,,1,1,1,?,0.05448825167540282
+Wei_Zhongxian,1568,,1,1,1,?,0.05448825167540282
+Ernst_of_Schaumburg,1569,,1,1,1,?,0.05448825167540282
+Martinus_Smiglecius,1564,,1,1,1,?,0.05448825167540282
+Valerius_Herberger,1562,,1,1,1,?,0.05448825167540282
+Eilhard_Lubinus,1565,,1,1,1,?,0.05448825167540282
+Nakagawa_Hidemasa,1568,,1,1,1,?,0.05448825167540282
+Jonathan_Trelawny_(High_Sheriff_of_Cornwall),1568,,1,1,1,?,0.05448825167540282
+Joachim_Andreas_von_Schlick,1569,,1,1,1,?,0.05448825167540282
+Roger_de_Saint-Lary_de_Termes,1562,,1,1,1,?,0.05448825167540282
+"Lamoral,_1st_Prince_of_Ligne",1563,,1,1,1,?,0.05448825167540282
+Ketevan_the_Martyr,1560,,1,1,1,?,0.05448825167540282
+Jan_Szczęsny_Herburt,1567,,1,1,1,?,0.05448825167540282
+Baltasar_Marradas,1560,,1,1,1,?,0.05448825167540282
+Jakob_Hassler,1569,,1,1,1,?,0.05448825167540282
+Jacob_Gretser,1562,,1,1,1,?,0.05448825167540282
+Anna_Maria_of_Hesse-Kassel,1567,,1,1,1,?,0.05448825167540282
+Camillo_Cortellini,1561,,1,1,1,?,0.05448825167540282
+Roland_Lytton,1561,,1,1,1,?,0.05448825167540282
+Matthias_Hafenreffer,1561,,1,1,1,?,0.05448825167540282
+Martin_Ruland_the_Younger,1569,,1,1,1,?,0.05448825167540282
+Park_Jin,1560,,1,1,1,?,0.05448825167540282
+Minye_Kyawswa_II_of_Ava,1567,,1,1,1,?,0.05448825167540282
+Paul_Sartorius_(composer),1569,,1,1,1,?,0.05448825167540282
+Berlinghiero_Gessi,1563,,1,1,1,?,0.05448825167540282
+Andreas_Angelus,1561,,1,1,1,?,0.05448825167540282
+Agnes_of_Limburg-Styrum,1563,,1,1,1,?,0.05448825167540282
+"Toby_Caulfeild,_1st_Baron_Caulfeild",1565,,1,1,1,?,0.05448825167540282
+"Juan_Fernandez_Pacheco,_5th_Duke_of_Escalona",1563,,1,1,1,?,0.05448825167540282
+Katharina_of_Hanau-Lichtenberg,1568,,1,1,1,?,0.05448825167540282
+Elisabeth_of_Brunswick-Wolfenbüttel_(1567–1618),1567,,1,1,1,?,0.05448825167540282
+Adam_Haslmayr,1560,,1,1,1,?,0.05448825167540282
+Maria_of_Hanau-Münzenberg,1562,,1,1,1,?,0.05448825167540282
+Johannetta_of_Sayn-Wittgenstein,1561,,1,1,1,?,0.05448825167540282
+Luigi_Caponaro,1567,,1,1,1,?,0.05448825167540282
+"Anna_III,_Abbess_of_Quedlinburg",1565,,1,1,1,?,0.05448825167540282
+"Erekle_I,_Prince_of_Mukhrani",1560,,1,1,1,?,0.05448825167540282
+Johann_Christoph_von_Westerstetten,1563,,1,1,1,?,0.05448825167540282
+Amalia_von_Hatzfeld,1560,,1,1,1,?,0.05448825167540282
+Benedikt_Carpzov_the_elder,1565,,1,1,1,?,0.05448825167540282
+Cort_Aslakssøn,1564,,1,1,1,?,0.05448825167540282
+Mary_Sidney,1561,,1,1,1,?,0.05448825167540282
+Thiri_Thudhamma_Yaza_of_Martaban,1561,,1,1,1,?,0.05448825167540282
+Caterina_Vitale,1566,,1,1,1,?,0.05448825167540282
+Sophie_of_Württemberg_(1563-1590),1563,,1,1,1,?,0.05448825167540282
+Polyxena_von_Lobkowicz,1566,,1,1,1,?,0.05448825167540282
+Wolfgang_Ernst_I_of_Isenburg-Büdingen-Birstein,1560,,1,1,1,?,0.05448825167540282
+"John_Louis_I,_Count_of_Nassau-Wiesbaden-Idstein",1567,,1,1,1,?,0.05448825167540282
+Bartholda_van_Swieten,1566,,1,1,1,?,0.05448825167540282
+Francesco_Cennini_de'_Salamandri,1566,,1,1,1,?,0.05448825167540282
+Georg_Friedrich_of_Hohenlohe-Neuenstein-Weikersheim,1569,,1,1,1,?,0.05448825167540282
+"Augustus_the_Elder,_Duke_of_Brunswick-Lüneburg",1568,,1,1,1,?,0.05448825167540282
+Ippolito_Galantini_(teacher),1565,,1,1,1,?,0.05448825167540282
+Amandus_Polanus,1561,,1,1,1,?,0.05448825167540282
+"Sir_Lionel_Tollemache,_1st_Baronet",1562,,1,1,1,?,0.05448825167540282
+"George,_Count_of_Nassau-Dillenburg",1562,,1,1,1,?,0.05448825167540282
+"Henry_Percy,_9th_Earl_of_Northumberland",1564,,1,1,1,?,0.05448825167540282
+Nicolas_Formé,1567,,1,1,1,?,0.05448825167540282
+Thomas_Freke_(died_1663),1563,,1,1,1,?,0.05448825167540282
+Frederick_IV_of_Fürstenberg,1563,,1,1,1,?,0.05448825167540282
+Johanna_Sibylla_of_Hanau-Lichtenberg,1564,,1,1,1,?,0.05448825167540282
+Zygmunt_Kazanowski,1563,,1,1,1,?,0.05448825167540282
+"William_Augustus,_Duke_of_Brunswick-Harburg",1564,,1,1,1,?,0.05448825167540282
+Muzio_Oddi,1569,,1,1,1,?,0.05448825167540282
+Robert_Wintour,1565,,1,1,1,?,0.05448825167540282
+Guido_Pepoli,1560,,1,1,1,?,0.05448825167540282
+Sophia_of_Holstein-Gottorp,1569,,1,1,1,?,0.05448825167540282
+Jacob_Ulfeldt_(born_1567),1567,,1,1,1,?,0.05448825167540282
+Hedwig_of_Hesse-Kassel,1569,,1,1,1,?,0.05448825167540282
+Philip_Sigismund_of_Brunswick-Wolfenbüttel,1568,,1,1,1,?,0.05448825167540282
+Joseph_Gaultier_de_la_Vallette,1564,,1,1,1,?,0.05448825167540282
+Rascas_de_Bagarris,1562,,1,1,1,?,0.05448825167540282
+Nils_Turesson_Bielke,1569,,1,1,1,?,0.05448825167540282
+Johannes_Hartmann,1568,,1,1,1,?,0.05448825167540282
+"Sir_Miles_Sandys,_1st_Baronet",1563,,1,1,1,?,0.05448825167540282
+Anna_Maria_of_Anhalt,1561,,1,1,1,?,0.05448825167540282
+"Francis_Hay,_9th_Earl_of_Erroll",1564,,1,1,1,?,0.05448825167540282
+Gervase_Helwys,1561,,1,1,1,?,0.05448825167540282
+Kryštof_Harant,1564,,1,1,1,?,0.05448825167540282
+Francis_Meres,1565,,1,1,1,?,0.05448825167540282
+Richard_Neile,1562,,1,1,1,?,0.05448825167540282
+Stephen_Bachiler,1561,,1,1,1,?,0.05448825167540282
+Louise_Bourgeois_Boursier,1563,,1,1,1,?,0.05448825167540282
+Christopher_Heydon,1561,,1,1,1,?,0.05448825167540282
+John_Hoskins_(poet),1566,,1,1,1,?,0.05448825167540282
+Yi_Su-gwang,1563,,1,1,1,?,0.05448825167540282
+Leonhard_Hutter,1563,,1,1,1,?,0.05448825167540282
+John_Bois,1560,,1,1,1,?,0.05448825167540282
+Fujiwara_Seika,1561,,1,1,1,?,0.05448825167540282
+Willem_Baudartius,1565,,1,1,1,?,0.05448825167540282
+"Edward_Chichester,_1st_Viscount_Chichester",1568,,1,1,1,?,0.05448825167540282
+Richard_Whitbourne,1561,,1,1,1,?,0.05448825167540282
+"George_Gordon,_1st_Marquess_of_Huntly",1562,,1,1,1,?,0.05448825167540282
+Hugh_Hamersley,1565,,1,1,1,?,0.05448825167540282
+Pierre_Biard,1567,,1,1,1,?,0.05448825167540282
+Jan_Gruter,1560,,1,1,1,?,0.05448825167540282
+Arthur_Lake_(bishop),1569,,1,1,1,?,0.05448825167540282
+"Henry_Julius,_Duke_of_Brunswick-Lüneburg",1564,,1,1,1,?,0.05448825167540282
+Hendrick_de_Keyser,1565,,1,1,1,?,0.05448825167540282
+Anna_Vasa_of_Sweden,1568,,1,1,1,?,0.05448825167540282
+Anna_Guarini,1563,,1,1,1,?,0.05448825167540282
+John_Spottiswoode,1565,,1,1,1,?,0.05448825167540282
+"Enno_III,_Count_of_East_Frisia",1563,,1,1,1,?,0.05448825167540282
+John_Welsh_of_Ayr,1568,,1,1,1,?,0.05448825167540282
+"Edward_Talbot,_8th_Earl_of_Shrewsbury",1561,,1,1,1,?,0.05448825167540282
+Thomas_Richardson_(judge),1569,,1,1,1,?,0.05448825167540282
+Edward_Blount,1562,,1,1,1,?,0.05448825167540282
+Thomas_Fincke,1561,,1,1,1,?,0.05448825167540282
+Jindřich_Matyáš_Thurn,1567,,1,1,1,?,0.05448825167540282
+Robert_Naunton,1563,,1,1,1,?,0.05448825167540282
+Alessandro_Tassoni,1565,,1,1,1,?,0.05448825167540282
+John_Coke,1563,,1,1,1,?,0.05448825167540282
+Thomas_Shirley,1564,,1,1,1,?,0.05448825167540282
+Thomas_Lake,1561,,1,1,1,?,0.05448825167540282
+Marino_Ghetaldi,1568,,1,1,1,?,0.05448825167540282
+Thomas_Walsingham_(literary_patron),1561,,1,1,1,?,0.05448825167540282
+"John_George_I,_Prince_of_Anhalt-Dessau",1567,,1,1,1,?,0.05448825167540282
+Barnabe_Barnes,1568,,1,1,1,?,0.05448825167540282
+"Johann_VII,_Count_of_Nassau-Siegen",1561,,1,1,1,?,0.05448825167540282
+William_Bathe,1564,,1,1,1,?,0.05448825167540282
+Conrad_Vorstius,1569,,1,1,1,?,0.05448825167540282
+Johannes_Buxtorf,1564,,1,1,1,?,0.05448825167540282
+Felice_Anerio,1560,,1,1,1,?,0.05448825167540282
+Lord_William_Howard,1563,,1,1,1,?,0.05448825167540282
+William_Monson_(Royal_Navy_officer),1569,,1,1,1,?,0.05448825167540282
+Heo_Nanseolheon,1563,,1,1,1,?,0.05448825167540282
+John_Davies_of_Hereford,1565,,1,1,1,?,0.05448825167540282
+Antonio_Marcello_Barberini,1569,,1,1,1,?,0.05448825167540282
+Thomas_Morton_(bishop),1564,,1,1,1,?,0.05448825167540282
+Patrick_Forbes,1564,,1,1,1,?,0.05448825167540282
+Anne_de_Xainctonge,1567,,1,1,1,?,0.05448825167540282
+Magnus_Brahe_(1564–1633),1564,,1,1,1,?,0.05448825167540282
+Francis_Tanfield,1565,,1,1,1,?,0.05448825167540282
+"Robert_Sidney,_1st_Earl_of_Leicester",1563,,1,1,1,?,0.05448825167540282
+Samuel_Harsnett,1561,,1,1,1,?,0.05448825167540282
+Šurhaci,1564,,1,1,1,?,0.05448825167540282
+George_Heriot,1563,,1,1,1,?,0.05448825167540282
+James_Sempill,1566,,1,1,1,?,0.05448825167540282
+Antoine_Arnauld_(lawyer),1560,,1,1,1,?,0.05448825167540282
+Henry_Wallop_(died_1642),1568,,1,1,1,?,0.05448825167540282
+Scipione_Gentili,1563,,1,1,1,?,0.05448825167540282
+"George_Talbot,_9th_Earl_of_Shrewsbury",1566,,1,1,1,?,0.05448825167540282
+"Johann_Reinhard_I,_Count_of_Hanau-Lichtenberg",1569,,1,1,1,?,0.05448825167540282
+Hugh_Myddelton,1560,,1,1,1,?,0.05448825167540282
+Petrus_Bertius,1565,,1,1,1,?,0.05448825167540282
+George_Brooke_(conspirator),1568,,1,1,1,?,0.05448825167540282
+"Edward_Somerset,_4th_Earl_of_Worcester",1568,,1,1,1,?,0.05448825167540282
+"Louis_II,_Count_of_Nassau-Weilburg",1565,,1,1,1,?,0.05448825167540282
+John_Percy,1569,,1,1,1,?,0.05448825167540282
+Joan_Shakespeare,1569,,1,1,1,?,0.05448825167540282
+Johannes_Polyander,1568,,1,1,1,?,0.05448825167540282
+Natsuka_Masaie,1562,,1,1,1,?,0.05448825167540282
+Henry_Spelman,1562,,1,1,1,?,0.05448825167540282
+Philipp_Dulichius,1562,,1,1,1,?,0.05448825167540282
+Pierre_Coton,1564,,1,1,1,?,0.05448825167540282
+"Charles,_Margrave_of_Burgau",1560,,1,1,1,?,0.05448825167540282
+Edwin_Sandys_(American_colonist),1561,,1,1,1,?,0.05448825167540282
+Agostino_Ciampelli,1565,,1,1,1,?,0.05448825167540282
+Charles_III_de_Croÿ,1560,,1,1,1,?,0.05448825167540282
+"Hercule,_Duke_of_Montbazon",1568,,1,1,1,?,0.05448825167540282
+Laurentius_Paulinus_Gothus,1565,,1,1,1,?,0.05448825167540282
+"Henry_Brooke,_11th_Baron_Cobham",1564,,1,1,1,?,0.05448825167540282
+Daniel_Cramer,1568,,1,1,1,?,0.05448825167540282
+György_Thurzó,1567,,1,1,1,?,0.05448825167540282
+"Christian,_Duke_of_Brunswick-Lüneburg",1566,,1,1,1,?,0.05448825167540282
+John_Suckling_(politician),1569,,1,1,1,?,0.05448825167540282
+Richard_Field_(theologian),1561,,1,1,1,?,0.05448825167540282
+Sibylla_of_Anhalt,1564,,1,1,1,?,0.05448825167540282
+François_de_Joyeuse,1562,,1,1,1,?,0.05448825167540282
+James_Crichton,1560,,1,1,1,?,0.05448825167540282
+Joseph_Heintz_the_Elder,1564,,1,1,1,?,0.05448825167540282
+Joshua_Sylvester,1563,,1,1,1,?,0.05448825167540282
+Heribert_Rosweyde,1569,,1,1,1,?,0.05448825167540282
+Marcin_Kazanowski,1563,,1,1,1,?,0.05448825167540282
+Ban_Naoyuki,1567,,1,1,1,?,0.05448825167540282
+Mark_Alexander_Boyd,1562,,1,1,1,?,0.05448825167540282
+Guglielmo_Caccia,1568,,1,1,1,?,0.05448825167540282
+Claude_de_Bullion,1569,,1,1,1,?,0.05448825167540282
+James_Crichton,1560,,1,1,1,?,0.05448825167540282
+William_Slingsby,1563,,1,1,1,?,0.05448825167540282
+Francesco_Erizzo,1566,,1,1,1,?,0.05448825167540282
+"Margaret_Clifford,_Countess_of_Cumberland",1560,,1,1,1,?,0.05448825167540282
+Margaretha_van_Valckenburch,1565,,1,1,1,?,0.05448825167540282

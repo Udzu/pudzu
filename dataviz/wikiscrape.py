@@ -55,12 +55,14 @@ def rescore_decades(decades, langs=["de", "es", "fr", "ja", "ru", "zh"]):
             ldf = score_people(df, lang=lang, translate_from="en").sort_values('score', ascending=False)
             ldf.to_csv(str(lpath), index=False, encoding="utf-8")
 
-def combine_decades(decades, langs=["de", "en", "es", "fr", "ja", "ru", "zh"], output_dir="combined"):
+def combine_decades(decades, langs=["de", "en", "es", "fr", "ja", "ru", "zh"], output_dir="combined", normalise=False):
     output_dir = "datasets/wikibirths/{}".format(output_dir)
     if not os.path.exists(output_dir): os.makedirs(output_dir)
     for d in tqdm.tqdm(make_iterable(decades)):
         dfs = [pd.read_csv("datasets/wikibirths{}/{d}0-{d}9.csv".format("" if lang == "en" else "/"+lang, d=d)) for lang in langs]
         dfs = [df.groupby('link').first().filter_columns(['length', 'pageviews', 'revisions']) for df in dfs]
+        if normalise:
+            dfs = [df.update_columns(length=lambda v: int(LIMITS['length']*v/df.length.max()), pageviews=lambda v: int(LIMITS['pageviews']*v/df.pageviews.max()), revisions=lambda v: int(LIMITS['revisions']*v/df.revisions.max())) for df in dfs]
         df = sum(dfs).assign_rows(score=lambda d: harmonic_mean([log(max(d[k], 2)) / log(max_value) for k,max_value in LIMITS.items()]))
         df = df.sort_values('score', ascending=False)
         df.to_csv("{}/{d}0-{d}9.csv".format(output_dir, d=d), encoding="utf-8")

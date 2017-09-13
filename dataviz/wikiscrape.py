@@ -6,7 +6,7 @@ sys.path.append('..')
 from wikipage import *
 from bamboo import *
 
-# wikifame scraping (requires manual cleanup and veririficaiton at the moment; could add simple wikidata corroboration)
+# wikifame scraping (messy; also requires manual cleanup and verificaiton at the moment)
 
 def extract_births(year):
     DATE_PATTERN = re.compile(r"^[_ 0-9]*(January|February|March|April|May|June|July|August|September|October|November|December)[ 0-9]*$")
@@ -55,21 +55,33 @@ def rescore_decades(decades, langs=["de", "es", "fr", "ja", "ru", "zh"]):
             ldf = score_people(df, lang=lang, translate_from="en").sort_values('score', ascending=False)
             ldf.to_csv(str(lpath), index=False, encoding="utf-8")
 
-def combine_decades(decades, langs=["de", "en", "es", "fr", "ja", "ru", "zh"], output_dir="combined", normalise=False):
+def combine_decades(decades, langs=["de", "en", "es", "fr", "ja", "ru", "zh"], output_dir="combined"):
     output_dir = "datasets/wikibirths/{}".format(output_dir)
     if not os.path.exists(output_dir): os.makedirs(output_dir)
     for d in tqdm.tqdm(make_iterable(decades)):
         dfs = [pd.read_csv("datasets/wikibirths{}/{d}0-{d}9.csv".format("" if lang == "en" else "/"+lang, d=d)) for lang in langs]
         dfs = [df.groupby('link').first().filter_columns(['length', 'pageviews', 'revisions']) for df in dfs]
-        if normalise:
-            dfs = [df.update_columns(length=lambda v: int(LIMITS['length']*v/df.length.max()), pageviews=lambda v: int(LIMITS['pageviews']*v/df.pageviews.max()), revisions=lambda v: int(LIMITS['revisions']*v/df.revisions.max())) for df in dfs]
         df = sum(dfs).assign_rows(score=lambda d: harmonic_mean([log(max(d[k], 2)) / log(max_value) for k,max_value in LIMITS.items()]))
         df = df.sort_values('score', ascending=False)
         df.to_csv("{}/{d}0-{d}9.csv".format(output_dir, d=d), encoding="utf-8")
-    
+
 def top_per_century(centuries=range(10,19), langs=["de", "en", "es", "fr", "ja", "ru", "zh"]):
     return { c * 100 : { lang: read_csvs("datasets/wikibirths{}/{}*csv".format("" if lang == "en" else "/"+lang,c)).sort_values("score", ascending=False)['link'].iloc[0] for lang in langs} for c in make_iterable(centuries) }
-            
+
+def normalise_scores(df):
+    limits = { k : df[k].max() for k in LIMITS.keys() }
+    return df.assign_rows(score=lambda d: harmonic_mean([log(max(d[k], 2)) / log(max_value) for k,max_value in limits.items()]))
+    
+def normalise_and_combine(langs=["en", "de", "es", "fr", "ja", "ru", "zh"]):
+    dfs = [normalise_scores(read_csvs("datasets/wikibirths{}/*csv".format("" if lang == "en" else "/"+lang))) for lang in tqdm.tqdm(langs)]
+    dfs = [df.groupby('link').first() for df in dfs]
+    df = sum(df.filter_columns(['score']) for df in dfs) / len(langs)
+    df = df.sort_values('score', ascending=False)
+    return pd.concat([df, dfs[0].filter_columns(['year', 'title'])], axis=1).sort_values("score", ascending=False)
+       
+def top_per_decade(df):
+    return df.reset_index(drop=True).groupby_rows(lambda r: r['year'] // 10).first()
+
 # extract us state of birth (for dead people only; could use cleanup)
 
 def is_us_state(wd):

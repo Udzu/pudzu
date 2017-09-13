@@ -16,7 +16,7 @@ def cell(d):
     person = df.loc[d['name']]
     
     img = Image.from_url_with_cache(get_non(person, 'image_url', DEFAULT_IMG))
-    img = img.crop_to_aspect(200, 180, (0.5, 0.2)).resize_fixed_aspect(width=200)
+    img = img.crop_to_aspect(200, 180, (0.5, 0.2)).resize((200, 180))
     
     top = Image.new("RGBA", (200, 35), TOP_BAR_BG)
     code = Image.from_text(d['code'], arial(28, bold=True), fg="black", bg=TOP_BAR_BG)
@@ -30,14 +30,16 @@ def cell(d):
     
     return Image.from_column([top,img,bot])
 
-grid = grid_chart(statetable, cell, bg="white")
+grid = grid_chart(statetable, cell, bg="white").pad(10, "white")
 
 title = Image.from_column([
-Image.from_text("Famous Historical Figures by US State", arial(60, bold=True), fg="black", bg="white").pad((10,0), bg="white"),
-Image.from_text("the most famous dead historical figure born in each state, according to English Wikipedia", arial(36, bold=True), fg="black", bg="white").pad((10,0,10,2), bg="white")
-], bg="white").pad((0,10),bg="white")
-comment = Image.from_text("blah di blah", arial(24), fg="black", bg="white").pad((0,20,0,5),bg="white")
+Image.from_text("The most famous historical figure born in each US state, according to Wikipedia", arial(54, bold=True), fg="black", bg="white").pad((10,0), bg="white"),
+Image.from_text("(restricted to deceased figures listed in the yearly Births sections; fame measure is a combination of article length, revisions and pageviews)", arial(32, italics=True), fg="black", bg="white", align="center", padding=(0,2)).pad((10,0,10,5), bg="white")
+], bg="white").pad((0,10,0,20),bg="white")
+comment = Image.from_text("¹Stonewall Jackson was born in Clarksburg, WV when it was still part of Virginia. Second is mathematician John Forbes.\n²Davy Crockett was born in Greene County, TN when it was part of the unrecognized State of Franklin. Second is Confederate general Nathan Bedford Forrest.\n³President Andrew Jackson was born in the Waxhaws, on the border of North and South Carolina, and would come top in either.", arial(24, italics=True), fg="black", bg="white").pad((0,20,0,10),bg="white")
 
 chart = Image.from_column([title, grid, comment], bg="white")
+chart.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
+chart.save("output/wikibirths_states.jpg")
 
 # James Brown, Davy Crocket, Andrew Johnson, Stonewall Jackson

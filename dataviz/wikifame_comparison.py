@@ -1,5 +1,4 @@
 import sys
-import seaborn as sns
 sys.path.append('..')
 
 from charts import *

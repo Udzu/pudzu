@@ -36,6 +36,10 @@ def score_people(df, lang="en", translate_from=None):
     df = df.assign_rows(score=lambda d: harmonic_mean([log(max(d[k], 2)) / log(max_value) for k,max_value in LIMITS.items()]))
     return df.filter_columns(lambda k: k != 'wp')
 
+def score_by_name(names, *args, **kwargs):
+    df = pd.DataFrame([{'link': name} for name in make_iterable(names)])
+    return score_people(df, *args, **kwargs)
+    
 def score_births(years):
     dfs = [score_people(extract_births(year)) for year in tqdm.tqdm(years)]
     df = pd.concat(dfs, ignore_index=True).sort_values('score', ascending=False)
@@ -81,7 +85,7 @@ def top_per_x(df, x=10):
 # extract us state of birth (for dead people only; could use cleanup)
 
 def is_us_state(wd):
-    return any(x.get('id') == "Q35657" for x in wd.property_values("P31", convert=False))
+    return any(x.get('id') == "Q35657" or x.get('id') == 'Q1352230' for x in wd.property_values("P31", convert=False))
     
 def state_of_place(wd): # TODO: DC, Puerto Rico, etc
     if is_us_state(wd): return wd.name()

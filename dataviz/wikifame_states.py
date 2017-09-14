@@ -36,7 +36,7 @@ title = Image.from_column([
 Image.from_text("The most famous historical figure born in each US state, according to Wikipedia", arial(54, bold=True), fg="black", bg="white").pad((10,0), bg="white"),
 Image.from_text("(restricted to deceased figures listed in the yearly Births sections; fame measure is a combination of article length, revisions and pageviews)", arial(32, italics=True), fg="black", bg="white", align="center", padding=(0,2)).pad((10,0,10,5), bg="white")
 ], bg="white").pad((0,10,0,20),bg="white")
-comment = Image.from_text("¹Stonewall Jackson was born in Clarksburg, WV when it was still part of Virginia. Second is mathematician John Forbes.\n²Davy Crockett was born in Greene County, TN when it was part of the unrecognized State of Franklin. Second is Confederate general Nathan Bedford Forrest.\n³President Andrew Jackson was born in the Waxhaws, on the border of North and South Carolina, and would come top in either.", arial(24, italics=True), fg="black", bg="white").pad((0,20,0,10),bg="white")
+comment = Image.from_text("¹Stonewall Jackson was born in Clarksburg, WV when it was still part of Virginia. Second is mathematician John Nash.\n²Davy Crockett was born in Greene County, TN when it was part of the unrecognized State of Franklin. Second is Confederate general Nathan Bedford Forrest.\n³President Andrew Jackson was born in the Waxhaws, on the border of North and South Carolina, and would come top in either.", arial(24, italics=True), fg="black", bg="white").pad((0,20,0,10),bg="white")
 
 chart = Image.from_column([title, grid, comment], bg="white")
 chart.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)

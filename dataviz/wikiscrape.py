@@ -39,7 +39,7 @@ def score_people(df, lang="en", translate_from=None):
 def score_births(years):
     dfs = [score_people(extract_births(year)) for year in tqdm.tqdm(years)]
     df = pd.concat(dfs, ignore_index=True).sort_values('score', ascending=False)
-    df.to_csv("datasets/wikibirths/{}-{}.csv".format(min(years), max(years)), index=False, encoding="utf-8")
+    df.to_csv("datasets/wikibirths/en/{}-{}.csv".format(min(years), max(years)), index=False, encoding="utf-8")
     return df
     
 def score_births_by_decade(decades):
@@ -48,39 +48,35 @@ def score_births_by_decade(decades):
         
 def rescore_decades(decades, langs=["de", "es", "fr", "ja", "ru", "zh"]):
     for d in tqdm.tqdm(make_iterable(decades)):
-        df = pd.read_csv("datasets/wikibirths/{d}0-{d}9.csv".format(d=d))
+        df = pd.read_csv("datasets/wikibirths/en/{d}0-{d}9.csv".format(d=d))
         for lang in tqdm.tqdm(make_iterable(langs)):
             lpath = pathlib.Path("datasets/wikibirths/{l}/{d}0-{d}9.csv".format(l=lang, d=d))
             if not lpath.parent.exists(): lpath.parent.mkdir()
             ldf = score_people(df, lang=lang, translate_from="en").sort_values('score', ascending=False)
             ldf.to_csv(str(lpath), index=False, encoding="utf-8")
 
-def combine_decades(decades, langs=["de", "en", "es", "fr", "ja", "ru", "zh"], output_dir="combined"):
-    output_dir = "datasets/wikibirths/{}".format(output_dir)
-    if not os.path.exists(output_dir): os.makedirs(output_dir)
-    for d in tqdm.tqdm(make_iterable(decades)):
-        dfs = [pd.read_csv("datasets/wikibirths{}/{d}0-{d}9.csv".format("" if lang == "en" else "/"+lang, d=d)) for lang in langs]
-        dfs = [df.groupby('link').first().filter_columns(['length', 'pageviews', 'revisions']) for df in dfs]
-        df = sum(dfs).assign_rows(score=lambda d: harmonic_mean([log(max(d[k], 2)) / log(max_value) for k,max_value in LIMITS.items()]))
-        df = df.sort_values('score', ascending=False)
-        df.to_csv("{}/{d}0-{d}9.csv".format(output_dir, d=d), encoding="utf-8")
-
-def top_per_century(centuries=range(10,19), langs=["de", "en", "es", "fr", "ja", "ru", "zh"]):
-    return { c * 100 : { lang: read_csvs("datasets/wikibirths{}/{}*csv".format("" if lang == "en" else "/"+lang,c)).sort_values("score", ascending=False)['link'].iloc[0] for lang in langs} for c in make_iterable(centuries) }
-
+def load_decades(decades=range(100,190), lang="en"):
+    return pd.concat([pd.read_csv("datasets/wikibirths/{l}/{d}0-{d}9.csv".format(l=lang, d=d)) for d in make_iterable(decades)], ignore_index=True)
+    
 def normalise_scores(df):
     limits = { k : df[k].max() for k in LIMITS.keys() }
     return df.assign_rows(score=lambda d: harmonic_mean([log(max(d[k], 2)) / log(max_value) for k,max_value in limits.items()]))
     
-def normalise_and_combine(langs=["en", "de", "es", "fr", "ja", "ru", "zh"]):
-    dfs = [normalise_scores(read_csvs("datasets/wikibirths{}/*csv".format("" if lang == "en" else "/"+lang))) for lang in tqdm.tqdm(langs)]
+def combine_scores(decades=range(100,190), langs=["en", "de", "es", "fr", "ja", "ru", "zh"]):
+    dfs = [load_decades(decades, lang) for lang in tqdm.tqdm(langs)]
+    dfs = [df.groupby('link').first() for df in dfs]
+    df = normalise_scores(sum(df.filter_columns(['length', 'pageviews', 'revisions']) for df in dfs))
+    return pd.concat([df, dfs[0].filter_columns(['year', 'title'])], axis=1).sort_values("score", ascending=False)
+
+def normalise_and_combine_scores(decades=range(100,190), langs=["en", "de", "es", "fr", "ja", "ru", "zh"]):
+    dfs = [normalise_scores(load_decades(decades, lang)) for lang in tqdm.tqdm(langs)]
     dfs = [df.groupby('link').first() for df in dfs]
     df = sum(df.filter_columns(['score']) for df in dfs) / len(langs)
     df = df.sort_values('score', ascending=False)
     return pd.concat([df, dfs[0].filter_columns(['year', 'title'])], axis=1).sort_values("score", ascending=False)
        
-def top_per_decade(df):
-    return df.reset_index(drop=True).groupby_rows(lambda r: r['year'] // 10).first()
+def top_per_x(df, x=10):
+    return df.reset_index(drop=True).groupby_rows(lambda r: r['year'] // x).first()
 
 # extract us state of birth (for dead people only; could use cleanup)
 

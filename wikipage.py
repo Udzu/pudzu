@@ -227,18 +227,30 @@ class WDPage(CachedPage):
     
     COUNTRY = 'P17'
     PLACE_OF_BIRTH = 'P19'
+    PLACE_OF_DEATH = 'P20'
     DATE_OF_BIRTH = 'P569'
+    DATE_OF_DEATH = 'P570'
     END_TIME = 'P582'
     
     @cached_property
     def dates_of_birth(self):
         """Dates of birth."""
         return sorted(self.property_values(self.DATE_OF_BIRTH))
+
+    @cached_property
+    def dates_of_death(self):
+        """Dates of birth."""
+        return sorted(self.property_values(self.DATE_OF_DEATH))
         
     @cached_property
     def places_of_birth(self):
         """Places of birth."""
         return self.property_values(self.PLACE_OF_BIRTH)
+
+    @cached_property
+    def places_of_death(self):
+        """Places of birth."""
+        return self.property_values(self.PLACE_OF_DEATH)
 
     @cached_property
     def countries_of_birth(self):

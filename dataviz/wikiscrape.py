@@ -87,17 +87,19 @@ def top_per_x(df, x=10):
 def is_us_state(wd):
     return any(x.get('id') in ["Q35657", 'Q1352230', 'Q783733'] for x in wd.property_values("P31", convert=False))
     
-def state_of_place(wd): # TODO: DC, Puerto Rico, etc
+def state_of_place(wd):
+    carry_on = True
     if is_us_state(wd): return wd.name()
     for region in wd.property_values("P131"):
         state = state_of_place(region)
         if state: return state
-    return None
+        elif region.id == "Q30": carry_on = False
+    return None if carry_on else wd.name()
 
-def state_of_birth_or_death(name, birth=True):
+def state_of_birth_or_death(name, living=False, birth=True):
     american = False
     wd = WikiPage(name).to_wikidata()
-    if wd.property_values(wd.DATE_OF_DEATH, convert=False):
+    if living or wd.property_values(wd.DATE_OF_DEATH, convert=False):
         for pob in (wd.places_of_birth if birth else wd.places_of_death):
             for cob in pob.property_values(wd.COUNTRY, lambda qs: wd.END_TIME not in qs, convert=False):
                 if cob.get('id') == 'Q30':
@@ -106,11 +108,11 @@ def state_of_birth_or_death(name, birth=True):
                     if state: return state
     return "US" if american else None
 
-def write_states(df, file, birth=True, append=False):
+def write_states(df, file, append=False, **kwargs):
     with open(file, "w" if not append else "a", encoding="utf-8") as f:
         if not append: print("link,score,state", file=f)
         for i in tqdm.tqdm(range(len(df))):
-            state = state_of_birth_or_death(df.iloc[i]['link'], birth=birth)
+            state = state_of_birth_or_death(df.iloc[i]['link'], **kwargs)
             if state:
                 print("{},{},{}".format(df.iloc[i]['title'].replace(',',''),df.iloc[i]['score'],state), file=f)
                 f.flush()

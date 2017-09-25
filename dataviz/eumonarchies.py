@@ -17,7 +17,7 @@ def stripe(c1, c2):
 def colorfn(c):
     abolished = ValueCache()
     if c not in df.index:
-        return None if c == 'Sea' else "grey"
+        return "white" if c in ['Sea', 'Borders'] else "grey"
     elif df['monarchy'][c]:
         col = monarchies
     elif none_or_nan(df['abolished'][c]):

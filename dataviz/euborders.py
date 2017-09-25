@@ -13,7 +13,7 @@ palette = ImageColor.from_floats(sns.cubehelix_palette(11, start=0.2, rot=-0.75)
 
 def colorfn(c):
     if c not in df.index:
-        return None if c == 'Sea' else "grey"
+        return "white" if c in ['Sea', 'Borders'] else "grey"
     return palette[min(10, df['borders'][c])]
     
 map = map_chart("maps/Europe.png", colorfn, ignoring_exceptions(lambda c: str(get_non(df.loc[c], "longest", ""))), label_font=arial(12, bold=True))

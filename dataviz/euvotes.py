@@ -15,7 +15,7 @@ def votecolfn(n):
 
 def colorfn(c):
     if c not in df.index:
-        return None if c == 'Sea' else "grey"
+        return "white" if c in ['Sea', 'Borders'] else "grey"
     return votecolfn(int(df.loc[c].votes))
     
 def labelfn(c):

@@ -17,7 +17,7 @@ def stripe(c1, c2):
     return Image.from_column([Image.new("RGBA", (100,4), c1), Image.new("RGBA", (100,4), c2)])
 
 def colorfn(c):
-    if c not in df.index: return None if c == 'Sea' else "grey"
+    if c not in df.index: return "white" if c in ['Sea', 'Borders'] else "grey"
     d = df.ix[c]
     if none_or_nan(df['date'][c]) : return stripe("grey", hos[-1])
     y = int(df['date'][c]) // 10 - 196

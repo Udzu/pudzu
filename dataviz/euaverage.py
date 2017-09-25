@@ -10,7 +10,7 @@ flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld
 
 def colorfn(c):
     if c not in flags.index: # or flags['continent'][c] != 'Europe':
-        return None if c == 'Sea' else "grey"
+        return "white" if c in ['Sea', 'Borders'] else "grey"
     flag_array = np.array(Image.from_url_with_cache(flags['flag'][c]).convert("RGB"))
     average = [ int(flag_array[:,:,i].mean()) for i in range(flag_array.shape[-1])]
     return ImageColor.getrgba(average)

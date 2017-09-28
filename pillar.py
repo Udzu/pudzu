@@ -178,7 +178,7 @@ class _ImageColor():
     @classmethod
     def getrgba(cls, color):
         """Convert color to an RGBA named tuple."""
-        color = tuple(color) if non_string_sequence(color, Integral) else ImageColor.getrgb(color)
+        color = tuple(color) if non_string_iterable(color) else ImageColor.getrgb(color)
         if len(color) == 3: color += (255,)
         return RGBA(*color)
         
@@ -189,7 +189,7 @@ class _ImageColor():
             return cls.getrgba([int(x*255) for x in color])
         else:
             return [cls.getrgba([int(x*255) for x in c]) for c in color]
-    
+            
 ImageColor.getrgba = _ImageColor.getrgba
 ImageColor.from_floats = _ImageColor.from_floats
 

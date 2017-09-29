@@ -1,53 +1,53 @@
-code,name,population,grid_x,grid_y
-AL,Alabama,4863300,7,6
-AK,Alaska,741894,0,0
-AZ,Arizona,6931071,2,5
-AR,Arkansas,2988248,5,5
-CA,California,39250017,1,4
-CO,Colorado,5540545,3,4
-CT,Connecticut,3576452,10,3
-DE,Delaware,952065,10,4
-DC,District of Columbia,681170,9,5
-FL,Florida,20612439,9,7
-GA,Georgia,10310371,8,6
-HI,Hawaii,1428557,0,7
-ID,Idaho,1683140,2,2
-IL,Illinois,12801539,6,2
-IN,Indiana,6633053,6,3
-IA,Iowa,3134693,5,3
-KS,Kansas,2907289,4,5
-KY,Kentucky,4436974,6,4
-LA,Louisiana,4681666,5,6
-ME,Maine,1331479,11,0
-MD,Maryland,6016447,9,4
-MA,Massachusetts,6811779,11,2
-MI,Michigan,9928300,8,2
-MN,Minnesota,5519952,5,2
-MS,Mississippi,2988726,6,6
-MO,Missouri,6093000,5,4
-MT,Montana,1042520,3,2
-NE,Nebraska,1907116,4,4
-NV,Nevada,2940058,2,3
-NH,New Hampshire,1334795,11,1
-NJ,New Jersey,8944469,9,3
-NM,New Mexico,2081015,3,5
-NY,New York,19745289,9,2
-NC,North Carolina,10146788,7,5
-ND,North Dakota,757952,4,2
-OH,Ohio,11614373,7,3
-OK,Oklahoma,3923561,4,6
-OR,Oregon,4093465,1,3
-PA,Pennsylvania,12784227,8,3
-PR,Puerto Rico,3411307,11,7
-RI,Rhode Island,1056426,10,2
-SC,South Carolina,4961119,8,5
-SD,South Dakota,865454,4,3
-TN,Tennessee,6651194,6,5
-TX,Texas,27862596,4,7
-UT,Utah,3051217,2,4
-VT,Vermont,624594,10,1
-VA,Virginia,8411808,8,4
-WA,Washington,7288000,1,2
-WV,West Virginia,1831102,7,4
-WI,Wisconsin,5778708,7,2
-WY,Wyoming,585501,3,3
+code,name,population,grid_x,grid_y,flag
+AL,Alabama,4863300,7,6,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Alabama.svg/1024px-Flag_of_Alabama.svg.png
+AK,Alaska,741894,0,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Flag_of_Alaska.svg/1024px-Flag_of_Alaska.svg.png
+AZ,Arizona,6931071,2,5,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Arizona.svg/1024px-Flag_of_Arizona.svg.png
+AR,Arkansas,2988248,5,5,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Arkansas.svg/1024px-Flag_of_Arkansas.svg.png
+CA,California,39250017,1,4,https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_California.svg/1024px-Flag_of_California.svg.png
+CO,Colorado,5540545,3,4,https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Flag_of_Colorado.svg/1024px-Flag_of_Colorado.svg.png
+CT,Connecticut,3576452,10,3,https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Flag_of_Connecticut.svg/994px-Flag_of_Connecticut.svg.png
+DE,Delaware,952065,10,4,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Flag_of_Delaware.svg/1024px-Flag_of_Delaware.svg.png
+DC,District of Columbia,681170,9,5,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Flag_of_Washington%2C_D.C..svg/1024px-Flag_of_Washington%2C_D.C..svg.png
+FL,Florida,20612439,9,7,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Flag_of_Florida.svg/1024px-Flag_of_Florida.svg.png
+GA,Georgia,10310371,8,6,https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Flag_of_Georgia_%28U.S._state%29.svg/1024px-Flag_of_Georgia_%28U.S._state%29.svg.png
+HI,Hawaii,1428557,0,7,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Flag_of_Hawaii.svg/1024px-Flag_of_Hawaii.svg.png
+ID,Idaho,1683140,2,2,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_Idaho.svg/975px-Flag_of_Idaho.svg.png
+IL,Illinois,12801539,6,2,https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Illinois.svg/1024px-Flag_of_Illinois.svg.png
+IN,Indiana,6633053,6,3,https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Flag_of_Indiana.svg/1024px-Flag_of_Indiana.svg.png
+IA,Iowa,3134693,5,3,https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Iowa.svg/1024px-Flag_of_Iowa.svg.png
+KS,Kansas,2907289,4,5,https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Kansas.svg/1024px-Flag_of_Kansas.svg.png
+KY,Kentucky,4436974,6,4,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Flag_of_Kentucky.svg/1024px-Flag_of_Kentucky.svg.png
+LA,Louisiana,4681666,5,6,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Flag_of_Louisiana.svg/1024px-Flag_of_Louisiana.svg.png
+ME,Maine,1331479,11,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Flag_of_Maine.svg/1024px-Flag_of_Maine.svg.png
+MD,Maryland,6016447,9,4,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Flag_of_Maryland.svg/1024px-Flag_of_Maryland.svg.png
+MA,Massachusetts,6811779,11,2,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Flag_of_Massachusetts.svg/1024px-Flag_of_Massachusetts.svg.png
+MI,Michigan,9928300,8,2,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Flag_of_Michigan.svg/1024px-Flag_of_Michigan.svg.png
+MN,Minnesota,5519952,5,2,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Minnesota.svg/1024px-Flag_of_Minnesota.svg.png
+MS,Mississippi,2988726,6,6,https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Flag_of_Mississippi.svg/1024px-Flag_of_Mississippi.svg.png
+MO,Missouri,6093000,5,4,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Flag_of_Missouri.svg/1024px-Flag_of_Missouri.svg.png
+MT,Montana,1042520,3,2,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_Montana.svg/1024px-Flag_of_Montana.svg.png
+NE,Nebraska,1907116,4,4,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Flag_of_Nebraska.svg/1024px-Flag_of_Nebraska.svg.png
+NV,Nevada,2940058,2,3,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Flag_of_Nevada.svg/1024px-Flag_of_Nevada.svg.png
+NH,New Hampshire,1334795,11,1,https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Flag_of_New_Hampshire.svg/1024px-Flag_of_New_Hampshire.svg.png
+NJ,New Jersey,8944469,9,3,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_New_Jersey.svg/1024px-Flag_of_New_Jersey.svg.png
+NM,New Mexico,2081015,3,5,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_New_Mexico.svg/1024px-Flag_of_New_Mexico.svg.png
+NY,New York,19745289,9,2,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_New_York.svg/1024px-Flag_of_New_York.svg.png
+NC,North Carolina,10146788,7,5,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Flag_of_North_Carolina.svg/1024px-Flag_of_North_Carolina.svg.png
+ND,North Dakota,757952,4,2,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Flag_of_North_Dakota.svg/981px-Flag_of_North_Dakota.svg.png
+OH,Ohio,11614373,7,3,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Ohio.svg/1024px-Flag_of_Ohio.svg.png
+OK,Oklahoma,3923561,4,6,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Flag_of_Oklahoma.svg/1024px-Flag_of_Oklahoma.svg.png
+OR,Oregon,4093465,1,3,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Oregon.svg/1024px-Flag_of_Oregon.svg.png
+PA,Pennsylvania,12784227,8,3,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Flag_of_Pennsylvania.svg/1024px-Flag_of_Pennsylvania.svg.png
+PR,Puerto Rico,3411307,11,7,https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Flag_of_Puerto_Rico.svg/1024px-Flag_of_Puerto_Rico.svg.png
+RI,Rhode Island,1056426,10,2,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Rhode_Island.svg/835px-Flag_of_Rhode_Island.svg.png
+SC,South Carolina,4961119,8,5,https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Flag_of_South_Carolina.svg/1024px-Flag_of_South_Carolina.svg.png
+SD,South Dakota,865454,4,3,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_South_Dakota.svg/1024px-Flag_of_South_Dakota.svg.png
+TN,Tennessee,6651194,6,5,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Tennessee.svg/1024px-Flag_of_Tennessee.svg.png
+TX,Texas,27862596,4,7,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Flag_of_Texas.svg/1024px-Flag_of_Texas.svg.png
+UT,Utah,3051217,2,4,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Utah_%282011-present%29.svg/1024px-Flag_of_Utah_%282011-present%29.svg.png
+VT,Vermont,624594,10,1,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Vermont.svg/1024px-Flag_of_Vermont.svg.png
+VA,Virginia,8411808,8,4,https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Flag_of_Virginia.svg/1024px-Flag_of_Virginia.svg.png
+WA,Washington,7288000,1,2,https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Flag_of_Washington.svg/1024px-Flag_of_Washington.svg.png
+WV,West Virginia,1831102,7,4,https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Flag_of_West_Virginia.svg/1024px-Flag_of_West_Virginia.svg.png
+WI,Wisconsin,5778708,7,2,https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Flag_of_Wisconsin.svg/1024px-Flag_of_Wisconsin.svg.png
+WY,Wyoming,585501,3,3,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Wyoming.svg/1024px-Flag_of_Wyoming.svg.png

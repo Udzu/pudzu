@@ -15,7 +15,7 @@ def duration(d):
     return END - max(START, dateparser.parse(d['start']).date())
     
 def percentage_left(df):
-    return sum((duration(d) for _,d in df.filter_rows("spectrum=left").iterrows()), datetime.timedelta(0)) / sum((duration(d) for _,d in df.iterrows()), datetime.timedelta(0))
+    return sum((duration(d) for _,d in df[df.spectrum == "left"].iterrows()), datetime.timedelta(0)) / sum((duration(d) for _,d in df.iterrows()), datetime.timedelta(0))
     
 groups = pd.read_csv("datasets/g7.csv").groupby_rows(lambda d: "{} ({})".format(d['country'], d['office']))
 group_order = sorted(list(groups.groups), key=lambda s: percentage_left(groups.get_group(s)), reverse=True)

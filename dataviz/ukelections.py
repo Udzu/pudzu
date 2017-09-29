@@ -7,7 +7,7 @@ from bamboo import *
 # UK elections
 # ------------
 
-df = pd.read_csv("datasets/ukelections.csv").sort_values("year").filter_rows(lambda d: int(d["year"][:4]) >= 1966)
+df = pd.read_csv("datasets/ukelections.csv").sort_values("year").filter_boolean(lambda df: df.year.map(lambda y: int(y[:4]) >= 1966))
 
 groups = OrderedDict()
 for i in map(str, range(1,4)):

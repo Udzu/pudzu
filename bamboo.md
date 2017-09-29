@@ -2,7 +2,7 @@
 
 ## Summary 
 
-A handful of utilities monkey-patched onto the pandas DataFrame class.
+A handful of utilities monkey-patched onto the pandas DataFrame class. Aim is convenience rather than performance.
 
 ## Dependencies
 *Required*: [pandas](http://pandas.pydata.org/), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
@@ -21,17 +21,25 @@ A handful of utilities monkey-patched onto the pandas DataFrame class.
 2        15   Dino         NaN
 ```
 
-**filter_rows**: filter rows by a row predicate or a filter expression (see `FilterExpression` docstring for details).
+**filter_boolean**: boolean indexing variant that takes a function, useful in chaining.
 
 ```python
->> df.filter_rows(lambda r: r['name'] == "Fred")
+>> df.filter_boolean(lambda df: df.name.map(lambda n: n.startswith("F")))
+   children  name     surname
+0         2  Fred  Flintstone
+```
+
+**filter_rows**: filter rows by a row predicate or a filter expression (see `FilterExpression` docstring for details). Less efficient than boolean indexing.
+
+```python
+>> df.filter_rows(lambda r: r['name'].startswith("F"))
    children  name     surname
 0         2  Fred  Flintstone
 >> df.filter_rows("name=Fred or children>2")
    children  name     surname
 0         2  Fred  Flintstone
 2        15  Dino         NaN
->> df.filter_rows("*name~stone") # field wildcard and regex match
+>> df.filter_rows("*name~'^F'") # field wildcard and regex match
    children   name     surname
 0         2   Fred  Flintstone
 1         2  Wilma  Flintstone

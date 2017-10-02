@@ -39,7 +39,7 @@ CAN,North America,Canada,https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/Fl
 CCK,Asia,Cocos Islands,https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Flag_of_the_Cocos_%28Keeling%29_Islands.svg/1024px-Flag_of_the_Cocos_%28Keeling%29_Islands.svg.png,Cocos Island,596,.cc
 CHE,Europe,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Switzerland.svg/1024px-Flag_of_Switzerland.svg.png,Swiss,8286976,.ch
 CHL,South America,Chile,https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Flag_of_Chile.svg/1024px-Flag_of_Chile.svg.png,Chilean,17948141,.cl
-CHN,Asia,China,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1024px-Flag_of_the_People%27s_Republic_of_China.svg.png,Chinese,1371220000,.cn|.中国|.中國
+CHN,Asia,China|People's Republic of China,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1024px-Flag_of_the_People%27s_Republic_of_China.svg.png,Chinese,1371220000,.cn|.中国|.中國
 CIV,Africa,Côte d'Ivoire|Ivory Coast,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/1024px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png,Ivorian,22701556,.ci
 CMR,Africa,Cameroon,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Cameroon.svg/1024px-Flag_of_Cameroon.svg.png,Cameroonian,23344179,.cm
 COD,Africa,Democratic Republic of the Congo|DR Congo,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg/1024px-Flag_of_the_Democratic_Republic_of_the_Congo.svg.png,Congolese,77266814,.cd
@@ -230,7 +230,7 @@ TZA,Africa,Tanzania,https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Fl
 UGA,Africa,Uganda,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Flag_of_Uganda.svg/1024px-Flag_of_Uganda.svg.png,Ugandan,39032383,.ug
 UKR,Europe,Ukraine,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/1024px-Flag_of_Ukraine.svg.png,Ukrainian,45198200,.ua|.укр
 URY,South America,Uruguay,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Uruguay.svg/1024px-Flag_of_Uruguay.svg.png,Uruguayan,3431555,.uy
-USA,North America,United States|US|USA,https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/1024px-Flag_of_the_United_States.svg.png,United States|US|American,321418820,.us|.gov|.mil|.edu
+USA,North America,United States|United States of America|US|USA,https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/1024px-Flag_of_the_United_States.svg.png,United States|US|American,321418820,.us|.gov|.mil|.edu
 UZB,Asia,Uzbekistan,https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Uzbekistan.svg/1024px-Flag_of_Uzbekistan.svg.png,Uzbekistani|Uzbek,31299500,.uz
 VAT,Europe,Vatican City,https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_the_Vatican_City.svg/1024px-Flag_of_the_Vatican_City.svg.png,Vatican,1000,.va
 VCT,North America,Saint Vincent and the Grenadines,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Flag_of_Saint_Vincent_and_the_Grenadines.svg/1024px-Flag_of_Saint_Vincent_and_the_Grenadines.svg.png,Saint Vincentian|Vincentian,109462,.vc

@@ -62,8 +62,9 @@ def rescore_decades(decades, langs=["de", "es", "fr", "ja", "ru", "zh"]):
 def load_decades(decades=range(100,190), lang="en"):
     return pd.concat([pd.read_csv("datasets/wikibirths/{l}/{d}0-{d}9.csv".format(l=lang, d=d)) for d in make_iterable(decades)], ignore_index=True)
     
-def normalise_scores(df):
-    limits = { k : df[k].max() for k in LIMITS.keys() }
+def normalise_scores(df, using=None):
+    if using is None: using = df
+    limits = { k : using[k].max() for k in LIMITS.keys() }
     return df.assign_rows(score=lambda d: harmonic_mean([log(max(d[k], 2)) / log(max_value) for k,max_value in limits.items()]))
     
 def combine_scores(decades=range(100,190), langs=["en", "de", "es", "fr", "ja", "ru", "zh"]):
@@ -79,10 +80,29 @@ def normalise_and_combine_scores(decades=range(100,190), langs=["en", "de", "es"
     df = df.sort_values('score', ascending=False)
     return pd.concat([df, dfs[0].filter_columns(['year', 'title'])], axis=1).sort_values("score", ascending=False)
        
+def score_and_normalise_by_name(names, langs=["en", "de", "es", "fr", "ja", "ru", "zh"]):
+    dfs = [normalise_scores(score_by_name(names, lang=lang, translate_from="en"), using=load_decades(range(100,190), lang=lang)) for lang in tqdm.tqdm(langs)]
+    dfs = [df.groupby('link').first() for df in dfs]
+    df = sum(df.filter_columns(['score']) for df in dfs) / len(langs)
+    df = df.sort_values('score', ascending=False)
+    return pd.concat([df, dfs[0].filter_columns(['year', 'title'])], axis=1).sort_values("score", ascending=False)
+    
 def top_per_x(df, x=10):
     return df.reset_index(drop=True).groupby_rows(lambda r: r['year'] // x).first()
 
-# extract us state of birth (for dead people only; could use cleanup)
+# extract countries of birth
+    
+def write_cob(df, file, append=False, **kwargs):
+    with open(file, "w" if not append else "a", encoding="utf-8") as f:
+        if not append: print("link,score,country", file=f)
+        for i in tqdm.tqdm(range(len(df))):
+            wd = WikiPage(df.link[i]).to_wikidata()
+            cobs = wd.countries_of_birth
+            if not cobs: print("MISSING COB: {} ({})".format(df.title[i], i))
+            print('"{}",{},"{}"'.format(df.title[i], df.score[i], '|'.join(cob.name() for cob in cobs)), file=f)
+            f.flush()
+    
+# extract us state of birth (for dead people only)
 
 def is_us_state(wd):
     return any(x.get('id') in ["Q35657", 'Q1352230', 'Q783733'] for x in wd.property_values("P31", convert=False))
@@ -116,4 +136,4 @@ def write_states(df, file, append=False, **kwargs):
             if state:
                 print("{},{},{}".format(df.iloc[i]['title'].replace(',',''),df.iloc[i]['score'],state), file=f)
                 f.flush()
-
+                

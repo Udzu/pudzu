@@ -1,226 +1,226 @@
 country,link,score,description,image
-Germany,Albert Einstein,0.9143216018788428,physicist
-Germany,Ludwig van Beethoven,0.8911284609057437,composer
-Germany,Karl Marx,0.8911261326059867,philosopher
-Germany,Friedrich Nietzsche,0.8687792721803381,philosopher
-Germany,Martin Luther,0.8581395701492264,religious leader
-United Kingdom,William Shakespeare,0.8854584520035772,playwright
-United Kingdom,Winston Churchill,0.8765143828848388,politician
-United Kingdom,Charlie Chaplin,0.8721168642861773,actor
-United Kingdom,Isaac Newton,0.8704909842250566,physicist
-United Kingdom,Charles Darwin,0.8607403056647466,biologist
-Italy,Leonardo da Vinci,0.8894676080464381,polymath
-Italy,Christopher Columbus,0.872890299644359,explorer
-Italy,Benito Mussolini,0.868735872690672,dictator
-Italy,Galileo Galilei,0.8675049033290148,physicist
-Italy,Michelangelo,0.8405384187838472,artist
-Austria,Adolf Hitler,0.9567609046191208,dictator
-Austria,Wolfgang Amadeus Mozart,0.8889240351112055,composer
-Austria,Marie Antoinette,0.8439800882190786,queen of France
-Austria,Franz Schubert,0.8122575316523759,composer
-Austria,Franz Liszt,0.8071090152797477,composer
-France,Napoleon,0.9115669128686154,emperor
-France,Joan of Arc,0.8646603893254301,military hero
-France,Louis XIV of France,0.8604511935310953,king
-France,René Descartes,0.8377133340031007,philosopher
-France,Voltaire,0.8321885728708996,philosopher
-Russia,Vladimir Lenin,0.8924236582117426,revolutionary
-Russia,Immanuel Kant,0.8451256584423094,philosopher
-Russia,Nicholas II of Russia,0.842087937784992,tsar
-Russia,Fyodor Dostoyevsky,0.8386499860175265,author
-Russia,Pyotr Ilyich Tchaikovsky,0.8339059837904637,composer
-Poland,Frédéric Chopin,0.8571155800801494,composer
-Poland,Marie Curie,0.8485999934387232,scientist
-Poland,Nicolaus Copernicus,0.8366091527169949,astronomer
-Poland,Catherine the Great,0.8260457334171828,empress
-Poland,Arthur Schopenhauer,0.7817154582829975,philosopher
-Spain,Pablo Picasso,0.873396142003611,artist
-Spain,Francisco Franco,0.8297634243151456,dictator
-Spain,Antoni Gaudí,0.8030640422855149,artist
-Spain,Hernán Cortés,0.7969729551691362,conquistador
-Spain,Francisco Goya,0.7954753092281903,painter
-Czech Republic,Sigmund Freud,0.879195645721752,psychoanalyst
-Czech Republic,Franz Kafka,0.8391252204176756,author
-Czech Republic,Gustav Mahler,0.7949950196645774,composer
-Czech Republic,Gregor Mendel,0.7680298824067012,scientist
-Czech Republic,Antonín Dvořák,0.7640484382798747,composer
-Switzerland,Jean-Jacques Rousseau,0.8496277119089132,philosopher
-Switzerland,Carl Jung,0.819387323443557,psychoanalyst
-Switzerland,Le Corbusier,0.8013333504029639,architect
-Switzerland,Leonhard Euler,0.7911909709619642,mathematician
-Switzerland,Jean Piaget,0.7566685256035123,psychologist
-Netherlands,Vincent van Gogh,0.8794610835972241
-Netherlands,Rembrandt,0.8072362564116465
-Netherlands,Baruch Spinoza,0.7772653550939639
-Netherlands,Johannes Vermeer,0.7734396351422114
-Netherlands,Erasmus,0.7633714113929184
-Ireland,Oscar Wilde,0.8282959335870845
-Ireland,James Joyce,0.7666230351529336
-Ireland,George Bernard Shaw,0.7572064076398186
-Ireland,"Arthur Wellesley, 1st Duke of Wellington",0.7480900393810738
-Ireland,Ernest Shackleton,0.7422110858737457
-Ukraine,Leon Trotsky,0.8334019776576088
-Ukraine,Sergei Prokofiev,0.7661983420857889
-Ukraine,Nikolai Gogol,0.7497368552481113
-Ukraine,Helena Blavatsky,0.7346027903426522
-Ukraine,Golda Meir,0.7168514207079842
-Denmark,Hans Christian Andersen,0.8059436812540033
-Denmark,Niels Bohr,0.7798205550689088
-Denmark,Søren Kierkegaard,0.7734048249103195
-Denmark,Maria Feodorovna (Dagmar of Denmark),0.7019440504516066
-Denmark,Alexandra of Denmark,0.6890286536422403
-Portugal,Ferdinand Magellan,0.8099099337008259
-Portugal,Vasco da Gama,0.788115291923831
-Portugal,António de Oliveira Salazar,0.7255809323654505
-Portugal,Anthony of Padua,0.7016684502440848
-Portugal,Fernando Pessoa,0.6934861693997371
-Belgium,"Charles V, Holy Roman Emperor",0.8204832694710953
-Belgium,René Magritte,0.7470396567766532
-Belgium,Leopold II of Belgium,0.7311654443925076
-Belgium,Jan van Eyck,0.710813547993047
-Belgium,Andreas Vesalius,0.6917009606008442
-Sweden,Carl Linnaeus,0.7895769903728054
-Sweden,Alfred Nobel,0.7728199726331377
-Sweden,Tycho Brahe,0.7324069802887699
-Sweden,"Christina, Queen of Sweden",0.7014407020706644
-Sweden,Gustavus Adolphus of Sweden,0.6988371788077172
-Norway,Edvard Munch,0.7601187533951406
-Norway,Edvard Grieg,0.7403888980943394
-Norway,Henrik Ibsen,0.7217182961006122
-Norway,Fridtjof Nansen,0.7038518110780411
-Norway,Roald Amundsen,0.6767801894883031
-Turkey,Suleiman the Magnificent,0.7937379286821712
-Turkey,Mehmed the Conqueror,0.7424883456436281
-Turkey,Abdul Hamid II,0.6969334699716718
-Turkey,Osman I,0.6893758482802801
-Turkey,Constantine XI Palaiologos,0.6802010947170588
-Hungary,Elizabeth Báthory,0.7809733028502509
-Hungary,Harry Houdini,0.7566044470884583
-Hungary,Theodor Herzl,0.6964685901126949
-Hungary,Miklós Horthy,0.6807974320252522
-Hungary,Ignaz Semmelweis,0.6720094571195799
-Croatia,Nikola Tesla,0.8630824422678108
-Croatia,Josip Broz Tito,0.7923266891864721
-Croatia,Rudolf Steiner,0.7587555967667141
-Croatia,Franz von Suppé,0.6001150757438876
-Croatia,Milutin Milanković,0.5673244906989182
-Romania,Vlad the Impaler,0.8074575749848586
-Romania,Béla Bartók,0.727209418782277
-Romania,Ion Antonescu,0.6809718094791313
-Romania,Matthias Corvinus,0.6706771552053523
-Romania,Constantin Brâncuși,0.6682101418570515
-Greece,Mustafa Kemal Atatürk,0.819097157004703
-Greece,El Greco,0.7441243101145304
-Greece,Muhammad Ali of Egypt,0.6885073530764562
-Greece,Hayreddin Barbarossa,0.6772741000812665
-Greece,Giorgio de Chirico,0.6622424208495197
-Belarus,Marc Chagall,0.7678035057201946
-Belarus,Lev Vygotsky,0.7219343201512449
-Belarus,Tadeusz Kościuszko,0.674043959606621
-Belarus,Adam Mickiewicz,0.664307295618997
-Belarus,Chaim Weizmann,0.6468439161919036
-Finland,Jean Sibelius,0.7324675157511764
-Finland,Carl Gustaf Emil Mannerheim,0.7188046043003469
-Finland,Alvar Aalto,0.6873460272128853
-Finland,Paavo Nurmi,0.6440985197828384
-Finland,Risto Ryti,0.5659342529099504
-Georgia,Joseph Stalin,0.9186396295704464
-Georgia,Lavrentiy Beria,0.7595027807587545
-Georgia,Aram Khachaturian,0.6925016862334278
-Georgia,Tamar of Georgia,0.5994465282299622
-Georgia,David IV of Georgia,0.5691253455459312
-Lithuania,Józef Piłsudski,0.7148274965918633
-Lithuania,Władysław II Jagiełło,0.6528227826738355
-Lithuania,Michael Andreas Barclay de Tolly,0.6297270231461004
-Lithuania,César Cui,0.6111731806679017
-Lithuania,Vytautas,0.6058539491443442
-Luxembourg,Robert Schuman,0.6701973711345441
-Luxembourg,"Charlotte, Grand Duchess of Luxembourg",0.6275326078354933
-Luxembourg,John of Bohemia,0.6156398175128853
-Luxembourg,Gabriel Lippmann,0.5871547456747963
-Luxembourg,Edward Steichen,0.5833306601121775
-Slovakia,Franz Lehár,0.6355299368671325
-Slovakia,Philipp Lenard,0.6247454639979322
-Slovakia,Jozef Tiso,0.6210221932880022
-Slovakia,Johann Nepomuk Hummel,0.6105065426630512
-Slovakia,Ernő Dohnányi,0.555887290083964
-Latvia,Sergei Eisenstein,0.7115671719355146
-Latvia,Catherine I of Russia,0.6976977464137953
-Latvia,Wilhelm Ostwald,0.6396223491171066
-Latvia,Jacob Kettler,0.5132387446524534
-Latvia,Ernst Gideon von Laudon,0.4737302814122903
-Bulgaria,Boris III of Bulgaria,0.654980259308059
-Bulgaria,Georgi Dimitrov,0.6298244764056845
-Bulgaria,Ahmed III,0.6196277313557585
-Bulgaria,Fritz Zwicky,0.5911843580098421
-Bulgaria,Jules Pascin,0.4915287054658416
-Estonia,Alfred Rosenberg,0.7078065704153991
-Estonia,Fabian Gottlieb von Bellingshausen,0.5880510741334838
-Estonia,Paul von Rennenkampf,0.5539361838146836
-Estonia,Adam Johann von Krusenstern,0.5387727034905614
-Estonia,Karl Ernst von Baer,0.5239591058203131
-Slovenia,Giuseppe Tartini,0.6159012646410303
-Slovenia,Hugo Wolf,0.5959509098051498
-Slovenia,France Prešeren,0.5681425855558165
-Slovenia,Stefan Nemanja,0.5624250875132605
-Slovenia,Fritz Pregl,0.5284918710626835
-Serbia,Mileva Marić,0.6356111248749144
-Serbia,Draža Mihailović,0.6085895258624133
-Serbia,Vuk Karadžić,0.5584769294039571
-Serbia,Peter I of Serbia,0.5438918026862851
-Serbia,Mihajlo Pupin,0.5418564366365047
-Albania,Zog I of Albania,0.6498197028552536
-Albania,Skanderbeg,0.6475778154259626
-Albania,Ali Pasha of Ioannina,0.5445219112089184
-Albania,Ismail Qemali,0.4735479214174467
-Albania,Köprülü Mehmed Pasha,0.414163197906864
-Montenegro,Alexander I of Yugoslavia,0.6514737046952929
-Montenegro,Nikola I Petrović-Njegoš,0.5973457553354186
-Montenegro,Elena of Montenegro,0.5230516487803459
-Montenegro,Princess Anastasia of Montenegro,0.47761022425503696
-Montenegro,Princess Zorka of Montenegro,0.44123347840046495
-Cyprus,Peter I of Cyprus,0.4095859747709182
-Cyprus,John II of Cyprus,0.40389445996974105
-Cyprus,Anne of Cyprus,0.39847660425805387
-Cyprus,Henry I of Cyprus,0.3769396501227134
-Cyprus,"Charlotte, Queen of Cyprus",0.3721490856471042
-Iceland,Snorri Sturluson,0.6279854118429747
-Iceland,Ásgeir Ásgeirsson,0.4916726777879626
-Iceland,Jón Sigurðsson,0.4270445691975136
-Iceland,Ari Þorgilsson,0.40050304065411774
-Iceland,Ólafur Thors,0.3852995935705196
-Bosnia and Herzegovina,Gavrilo Princip,0.721463236926881
-Bosnia and Herzegovina,Ante Pavelić,0.6538743032860985
-Bosnia and Herzegovina,Ivo Andrić,0.6385608379563038
-Bosnia and Herzegovina,Tvrtko I of Bosnia,0.4375751912907135
-Bosnia and Herzegovina,Prince Marko,0.4322175511473418
-Azerbaijan,Murad III,0.652796032218468
-Azerbaijan,Nizami Ganjavi,0.6291873601286629
-Azerbaijan,Ivan Bagramyan,0.6178207913965073
-Azerbaijan,Shirali Muslimov,0.3895239196897421
-Azerbaijan,Meshadi Azizbekov,0.36688120718660056
-Moldova,Anton Rubinstein,0.6444661569376651
-Moldova,William F. Friedman,0.4638540252196277
-Moldova,Jerzy Neyman,0.46605290643136316
-Moldova,Lev Berg,0.3955183911058024
-Moldova,Nachum Gutman,0.3050822792073453
-Armenia,George Gurdjieff,0.7264722771949895
-Armenia,Anastas Mikoyan,0.6482638205627723
-Armenia,Khachatur Abovian,0.4625944167091228
-Armenia,Hovhannes Tumanyan,0.44284154209772403
-Armenia,Hamo Beknazarian,0.2407114409140949
-Kosovo,Lazar of Serbia,0.5744968814496537
-Kosovo,Isa Boletini,0.39196006007450934
-Kosovo,Vuk Branković,0.3812571445056529
-Kosovo,Mara Branković,0.35564273071367924
-Kosovo,Hasan Prishtina,0.3101488493663879
-Malta,Nicolas Isouard,0.3964012902282567
-Malta,Joseph Calleia,0.36741605627165613
-Malta,George Preca,0.34583393349729646
-Malta,Gerald Strickland,0.2967617689459582
-Malta,Manwel Dimech,0.22286138849972986
-Macedonia,Dame Gruev,0.30348117233785893
-Macedonia,Gyorche Petrov,0.23401096363377358
-Macedonia,Ilyo Voyvoda,0.2198535163449262
-Macedonia,Petar Poparsov,0.21920356131396534
-Macedonia,Georgi Pulevski,0.19042104795448248
+Germany,Albert Einstein,0.9143216018788428,physicist,https://vignette2.wikia.nocookie.net/epicrapbattlesofhistory/images/4/4d/Albert_Einstein_Based_On.png
+Germany,Ludwig van Beethoven,0.8911284609057437,composer,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Beethoven.jpg/1200px-Beethoven.jpg
+Germany,Karl Marx,0.8911261326059867,philosopher,http://www.thenee.com/karl-markx.jpg
+Germany,Friedrich Nietzsche,0.8687792721803381,philosopher,https://upload.wikimedia.org/wikipedia/commons/1/1d/Portrait_of_Friedrich_Nietzsche.jpg
+Germany,Martin Luther,0.8581395701492264,religious leader,https://s3.amazonaws.com/cli-website/Lucas_Cranach_d.%C3%84._-_Martin_Luther_1528_Veste_Coburg_cropped.jpg
+United Kingdom,William Shakespeare,0.8854584520035772,playwright,https://upload.wikimedia.org/wikipedia/commons/a/a2/Shakespeare.jpg
+United Kingdom,Winston Churchill,0.8765143828848388,politician,
+United Kingdom,Charlie Chaplin,0.8721168642861773,actor,
+United Kingdom,Isaac Newton,0.8704909842250566,physicist,http://www.fredsakademiet.dk/library/science/_gifs/newton.jpg
+United Kingdom,Charles Darwin,0.8607403056647466,biologist,
+Italy,Leonardo da Vinci,0.8894676080464381,polymath,https://www.biography.com/.image/t_share/MTIwNjA4NjMzNTM4NDQ2ODYw/leonardo-da-vinci-40396-2-raw.jpg
+Italy,Christopher Columbus,0.872890299644359,explorer,"https://upload.wikimedia.org/wikipedia/commons/c/c2/Portrait_of_a_Man,_Said_to_be_Christopher_Columbus.jpg"
+Italy,Benito Mussolini,0.868735872690672,dictator,
+Italy,Galileo Galilei,0.8675049033290148,physicist,http://www.crystalinks.com/galileo.jpg
+Italy,Michelangelo,0.8405384187838472,artist,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg/220px-Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg
+Austria,Adolf Hitler,0.9567609046191208,dictator,
+Austria,Wolfgang Amadeus Mozart,0.8889240351112055,composer,
+Austria,Marie Antoinette,0.8439800882190786,queen of France,
+Austria,Franz Schubert,0.8122575316523759,composer,
+Austria,Franz Liszt,0.8071090152797477,composer,
+France,Napoleon,0.9115669128686154,emperor,
+France,Joan of Arc,0.8646603893254301,military hero,
+France,Louis XIV of France,0.8604511935310953,king,
+France,René Descartes,0.8377133340031007,philosopher,
+France,Voltaire,0.8321885728708996,philosopher,
+Russia,Vladimir Lenin,0.8924236582117426,revolutionary,
+Russia,Immanuel Kant,0.8451256584423094,philosopher,
+Russia,Nicholas II of Russia,0.842087937784992,tsar,
+Russia,Fyodor Dostoyevsky,0.8386499860175265,author,
+Russia,Pyotr Ilyich Tchaikovsky,0.8339059837904637,composer,
+Poland,Frédéric Chopin,0.8571155800801494,composer,
+Poland,Marie Curie,0.8485999934387232,scientist,
+Poland,Nicolaus Copernicus,0.8366091527169949,astronomer,
+Poland,Catherine the Great,0.8260457334171828,empress,
+Poland,Arthur Schopenhauer,0.7817154582829975,philosopher,
+Spain,Pablo Picasso,0.873396142003611,artist,
+Spain,Francisco Franco,0.8297634243151456,dictator,
+Spain,Antoni Gaudí,0.8030640422855149,artist,
+Spain,Hernán Cortés,0.7969729551691362,conquistador,
+Spain,Francisco Goya,0.7954753092281903,painter,
+Czech Republic,Sigmund Freud,0.879195645721752,psychoanalyst,
+Czech Republic,Franz Kafka,0.8391252204176756,author,
+Czech Republic,Gustav Mahler,0.7949950196645774,composer,
+Czech Republic,Gregor Mendel,0.7680298824067012,scientist,
+Czech Republic,Antonín Dvořák,0.7640484382798747,composer,
+Switzerland,Jean-Jacques Rousseau,0.8496277119089132,philosopher,
+Switzerland,Carl Jung,0.819387323443557,psychoanalyst,
+Switzerland,Le Corbusier,0.8013333504029639,architect,
+Switzerland,Leonhard Euler,0.7911909709619642,mathematician,
+Switzerland,Jean Piaget,0.7566685256035123,psychologist,
+Netherlands,Vincent van Gogh,0.8794610835972241,,
+Netherlands,Rembrandt,0.8072362564116465,,
+Netherlands,Baruch Spinoza,0.7772653550939639,,
+Netherlands,Johannes Vermeer,0.7734396351422114,,
+Netherlands,Erasmus,0.7633714113929184,,
+Ireland,Oscar Wilde,0.8282959335870845,,
+Ireland,James Joyce,0.7666230351529336,,
+Ireland,George Bernard Shaw,0.7572064076398186,,
+Ireland,"Arthur Wellesley, 1st Duke of Wellington",0.7480900393810738,,
+Ireland,Ernest Shackleton,0.7422110858737457,,
+Ukraine,Leon Trotsky,0.8334019776576088,,
+Ukraine,Sergei Prokofiev,0.7661983420857889,,
+Ukraine,Nikolai Gogol,0.7497368552481113,,
+Ukraine,Helena Blavatsky,0.7346027903426522,,
+Ukraine,Golda Meir,0.7168514207079842,,
+Denmark,Hans Christian Andersen,0.8059436812540033,,
+Denmark,Niels Bohr,0.7798205550689088,,
+Denmark,Søren Kierkegaard,0.7734048249103195,,
+Denmark,Maria Feodorovna (Dagmar of Denmark),0.7019440504516066,,
+Denmark,Alexandra of Denmark,0.6890286536422403,,
+Portugal,Ferdinand Magellan,0.8099099337008259,,
+Portugal,Vasco da Gama,0.788115291923831,,
+Portugal,António de Oliveira Salazar,0.7255809323654505,,
+Portugal,Anthony of Padua,0.7016684502440848,,
+Portugal,Fernando Pessoa,0.6934861693997371,,
+Belgium,"Charles V, Holy Roman Emperor",0.8204832694710953,,
+Belgium,René Magritte,0.7470396567766532,,
+Belgium,Leopold II of Belgium,0.7311654443925076,,
+Belgium,Jan van Eyck,0.710813547993047,,
+Belgium,Andreas Vesalius,0.6917009606008442,,
+Sweden,Carl Linnaeus,0.7895769903728054,,
+Sweden,Alfred Nobel,0.7728199726331377,,
+Sweden,Tycho Brahe,0.7324069802887699,,
+Sweden,"Christina, Queen of Sweden",0.7014407020706644,,
+Sweden,Gustavus Adolphus of Sweden,0.6988371788077172,,
+Norway,Edvard Munch,0.7601187533951406,,
+Norway,Edvard Grieg,0.7403888980943394,,
+Norway,Henrik Ibsen,0.7217182961006122,,
+Norway,Fridtjof Nansen,0.7038518110780411,,
+Norway,Roald Amundsen,0.6767801894883031,,
+Turkey,Suleiman the Magnificent,0.7937379286821712,,
+Turkey,Mehmed the Conqueror,0.7424883456436281,,
+Turkey,Abdul Hamid II,0.6969334699716718,,
+Turkey,Osman I,0.6893758482802801,,
+Turkey,Constantine XI Palaiologos,0.6802010947170588,,
+Greece,Mustafa Kemal Atatürk,0.819097157004703,,
+Greece,El Greco,0.7441243101145304,,
+Greece,Muhammad Ali of Egypt,0.6885073530764562,,
+Greece,Hayreddin Barbarossa,0.6772741000812665,,
+Greece,Giorgio de Chirico,0.6622424208495197,,
+Hungary,Elizabeth Báthory,0.7809733028502509,,
+Hungary,Harry Houdini,0.7566044470884583,,
+Hungary,Theodor Herzl,0.6964685901126949,,
+Hungary,Miklós Horthy,0.6807974320252522,,
+Hungary,Ignaz Semmelweis,0.6720094571195799,,
+Croatia,Nikola Tesla,0.8630824422678108,,
+Croatia,Josip Broz Tito,0.7923266891864721,,
+Croatia,Rudolf Steiner,0.7587555967667141,,
+Croatia,Franz von Suppé,0.6001150757438876,,
+Croatia,Milutin Milanković,0.5673244906989182,,
+Romania,Vlad the Impaler,0.8074575749848586,,
+Romania,Béla Bartók,0.727209418782277,,
+Romania,Ion Antonescu,0.6809718094791313,,
+Romania,Matthias Corvinus,0.6706771552053523,,
+Romania,Constantin Brâncuși,0.6682101418570515,,
+Georgia,Joseph Stalin,0.9186396295704464,,
+Georgia,Lavrentiy Beria,0.7595027807587545,,
+Georgia,Aram Khachaturian,0.6925016862334278,,
+Georgia,Tamar of Georgia,0.5994465282299622,,
+Georgia,David IV of Georgia,0.5691253455459312,,
+Belarus,Marc Chagall,0.7678035057201946,,
+Belarus,Lev Vygotsky,0.7219343201512449,,
+Belarus,Tadeusz Kościuszko,0.674043959606621,,
+Belarus,Adam Mickiewicz,0.664307295618997,,
+Belarus,Chaim Weizmann,0.6468439161919036,,
+Finland,Jean Sibelius,0.7324675157511764,,
+Finland,Carl Gustaf Emil Mannerheim,0.7188046043003469,,
+Finland,Alvar Aalto,0.6873460272128853,,
+Finland,Paavo Nurmi,0.6440985197828384,,
+Finland,Risto Ryti,0.5659342529099504,,
+Lithuania,Józef Piłsudski,0.7148274965918633,,
+Lithuania,Władysław II Jagiełło,0.6528227826738355,,
+Lithuania,Michael Andreas Barclay de Tolly,0.6297270231461004,,
+Lithuania,César Cui,0.6111731806679017,,
+Lithuania,Vytautas,0.6058539491443442,,
+Luxembourg,Robert Schuman,0.6701973711345441,,
+Luxembourg,"Charlotte, Grand Duchess of Luxembourg",0.6275326078354933,,
+Luxembourg,John of Bohemia,0.6156398175128853,,
+Luxembourg,Gabriel Lippmann,0.5871547456747963,,
+Luxembourg,Edward Steichen,0.5833306601121775,,
+Slovakia,Franz Lehár,0.6355299368671325,,
+Slovakia,Philipp Lenard,0.6247454639979322,,
+Slovakia,Jozef Tiso,0.6210221932880022,,
+Slovakia,Johann Nepomuk Hummel,0.6105065426630512,,
+Slovakia,Ernő Dohnányi,0.555887290083964,,
+Latvia,Sergei Eisenstein,0.7115671719355146,,
+Latvia,Catherine I of Russia,0.6976977464137953,,
+Latvia,Wilhelm Ostwald,0.6396223491171066,,
+Latvia,Jacob Kettler,0.5132387446524534,,
+Latvia,Ernst Gideon von Laudon,0.4737302814122903,,
+Bulgaria,Boris III of Bulgaria,0.654980259308059,,
+Bulgaria,Georgi Dimitrov,0.6298244764056845,,
+Bulgaria,Ahmed III,0.6196277313557585,,
+Bulgaria,Fritz Zwicky,0.5911843580098421,,
+Bulgaria,Jules Pascin,0.4915287054658416,,
+Estonia,Alfred Rosenberg,0.7078065704153991,,
+Estonia,Fabian Gottlieb von Bellingshausen,0.5880510741334838,,
+Estonia,Paul von Rennenkampf,0.5539361838146836,,
+Estonia,Adam Johann von Krusenstern,0.5387727034905614,,
+Estonia,Karl Ernst von Baer,0.5239591058203131,,
+Serbia,Mileva Marić,0.6356111248749144,,
+Serbia,Draža Mihailović,0.6085895258624133,,
+Serbia,Vuk Karadžić,0.5584769294039571,,
+Serbia,Peter I of Serbia,0.5438918026862851,,
+Serbia,Mihajlo Pupin,0.5418564366365047,,
+Bosnia and Herzegovina,Gavrilo Princip,0.721463236926881,,
+Bosnia and Herzegovina,Ante Pavelić,0.6538743032860985,,
+Bosnia and Herzegovina,Ivo Andrić,0.6385608379563038,,
+Bosnia and Herzegovina,Tvrtko I of Bosnia,0.4375751912907135,,
+Bosnia and Herzegovina,Prince Marko,0.4322175511473418,,
+Slovenia,Giuseppe Tartini,0.6159012646410303,,
+Slovenia,Hugo Wolf,0.5959509098051498,,
+Slovenia,France Prešeren,0.5681425855558165,,
+Slovenia,Stefan Nemanja,0.5624250875132605,,
+Slovenia,Fritz Pregl,0.5284918710626835,,
+Albania,Zog I of Albania,0.6498197028552536,,
+Albania,Skanderbeg,0.6475778154259626,,
+Albania,Ali Pasha of Ioannina,0.5445219112089184,,
+Albania,Ismail Qemali,0.4735479214174467,,
+Albania,Köprülü Mehmed Pasha,0.414163197906864,,
+Montenegro,Alexander I of Yugoslavia,0.6514737046952929,,
+Montenegro,Nikola I Petrović-Njegoš,0.5973457553354186,,
+Montenegro,Elena of Montenegro,0.5230516487803459,,
+Montenegro,Princess Anastasia of Montenegro,0.477610224255037,,
+Montenegro,Princess Zorka of Montenegro,0.44123347840046495,,
+Azerbaijan,Murad III,0.652796032218468,,
+Azerbaijan,Nizami Ganjavi,0.6291873601286629,,
+Azerbaijan,Ivan Bagramyan,0.6178207913965073,,
+Azerbaijan,Shirali Muslimov,0.3895239196897421,,
+Azerbaijan,Meshadi Azizbekov,0.36688120718660056,,
+Armenia,George Gurdjieff,0.7264722771949895,,
+Armenia,Anastas Mikoyan,0.6482638205627723,,
+Armenia,Khachatur Abovian,0.4625944167091228,,
+Armenia,Hovhannes Tumanyan,0.442841542097724,,
+Armenia,Hamo Beknazarian,0.2407114409140949,,
+Iceland,Snorri Sturluson,0.6279854118429747,,
+Iceland,Ásgeir Ásgeirsson,0.4916726777879626,,
+Iceland,Jón Sigurðsson,0.4270445691975136,,
+Iceland,Ari Þorgilsson,0.40050304065411774,,
+Iceland,Ólafur Thors,0.3852995935705196,,
+Moldova,Anton Rubinstein,0.6444661569376651,,
+Moldova,Jerzy Neyman,0.4660529064313632,,
+Moldova,William F. Friedman,0.4638540252196277,,
+Moldova,Lev Berg,0.3955183911058024,,
+Moldova,Nachum Gutman,0.3050822792073453,,
+Kosovo,Lazar of Serbia,0.5744968814496537,,
+Kosovo,Isa Boletini,0.3919600600745093,,
+Kosovo,Vuk Branković,0.3812571445056529,,
+Kosovo,Mara Branković,0.35564273071367924,,
+Kosovo,Hasan Prishtina,0.3101488493663879,,
+Cyprus,Peter I of Cyprus,0.4095859747709182,,
+Cyprus,John II of Cyprus,0.40389445996974105,,
+Cyprus,Anne of Cyprus,0.39847660425805387,,
+Cyprus,Henry I of Cyprus,0.3769396501227134,,
+Cyprus,"Charlotte, Queen of Cyprus",0.3721490856471042,,
+Malta,Nicolas Isouard,0.3964012902282567,,
+Malta,Joseph Calleia,0.3674160562716561,,
+Malta,George Preca,0.3458339334972965,,
+Malta,Gerald Strickland,0.2967617689459582,,
+Malta,Manwel Dimech,0.22286138849972986,,
+Macedonia,Dame Gruev,0.3034811723378589,,
+Macedonia,Gyorche Petrov,0.2340109636337736,,
+Macedonia,Ilyo Voyvoda,0.2198535163449262,,
+Macedonia,Petar Poparsov,0.21920356131396532,,
+Macedonia,Georgi Pulevski,0.19042104795448248,,

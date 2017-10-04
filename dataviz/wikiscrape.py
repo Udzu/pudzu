@@ -96,10 +96,10 @@ def write_cob(df, file, append=False, **kwargs):
     with open(file, "w" if not append else "a", encoding="utf-8") as f:
         if not append: print("link,score,country", file=f)
         for i in tqdm.tqdm(range(len(df))):
-            wd = WikiPage(df.link[i]).to_wikidata()
+            wd = WikiPage(df.iloc[i].link).to_wikidata()
             cobs = wd.countries_of_birth
-            if not cobs: print("MISSING COB: {} ({})".format(df.title[i], i))
-            print('"{}",{},"{}"'.format(df.title[i], df.score[i], '|'.join(cob.name() for cob in cobs)), file=f)
+            if not cobs: print("MISSING COB: {} ({})".format(df.iloc[i].title, i))
+            print('"{}",{},"{}"'.format(df.iloc[i].title, df.iloc[i].score, '|'.join(cob.name() for cob in cobs)), file=f)
             f.flush()
     
 # extract us state of birth (for dead people only)

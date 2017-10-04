@@ -5,76 +5,76 @@ Germany,Karl Marx,0.8911261326059867,philosopher,http://www.thenee.com/karl-mark
 Germany,Friedrich Nietzsche,0.8687792721803381,philosopher,https://upload.wikimedia.org/wikipedia/commons/1/1d/Portrait_of_Friedrich_Nietzsche.jpg
 Germany,Martin Luther,0.8581395701492264,religious leader,https://s3.amazonaws.com/cli-website/Lucas_Cranach_d.%C3%84._-_Martin_Luther_1528_Veste_Coburg_cropped.jpg
 United Kingdom,William Shakespeare,0.8854584520035772,playwright,https://upload.wikimedia.org/wikipedia/commons/a/a2/Shakespeare.jpg
-United Kingdom,Winston Churchill,0.8765143828848388,politician,
-United Kingdom,Charlie Chaplin,0.8721168642861773,actor,
+United Kingdom,Winston Churchill,0.8765143828848388,politician,https://i.imgur.com/l1npC32.jpg
+United Kingdom,Charlie Chaplin,0.8721168642861773,actor,"https://images-na.ssl-images-amazon.com/images/M/MV5BNDcwMDc0ODAzOF5BMl5BanBnXkFtZTgwNTY2OTI1MDE@._V1_UX214_CR0,0,214,317_AL_.jpg"
 United Kingdom,Isaac Newton,0.8704909842250566,physicist,http://www.fredsakademiet.dk/library/science/_gifs/newton.jpg
-United Kingdom,Charles Darwin,0.8607403056647466,biologist,
+United Kingdom,Charles Darwin,0.8607403056647466,biologist,https://i.pinimg.com/736x/ec/3d/8d/ec3d8d0d7757247f2a8b25a32ad84776--photos-historiques-colorized-photos.jpg
 Italy,Leonardo da Vinci,0.8894676080464381,polymath,https://www.biography.com/.image/t_share/MTIwNjA4NjMzNTM4NDQ2ODYw/leonardo-da-vinci-40396-2-raw.jpg
 Italy,Christopher Columbus,0.872890299644359,explorer,"https://upload.wikimedia.org/wikipedia/commons/c/c2/Portrait_of_a_Man,_Said_to_be_Christopher_Columbus.jpg"
-Italy,Benito Mussolini,0.868735872690672,dictator,
+Italy,Benito Mussolini,0.868735872690672,dictator,http://i.dailymail.co.uk/i/pix/2013/01/02/article-0-0B569A9D00000578-719_306x427.jpg
 Italy,Galileo Galilei,0.8675049033290148,physicist,http://www.crystalinks.com/galileo.jpg
 Italy,Michelangelo,0.8405384187838472,artist,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg/220px-Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg
-Austria,Adolf Hitler,0.9567609046191208,dictator,
-Austria,Wolfgang Amadeus Mozart,0.8889240351112055,composer,
-Austria,Marie Antoinette,0.8439800882190786,queen of France,
-Austria,Franz Schubert,0.8122575316523759,composer,
-Austria,Franz Liszt,0.8071090152797477,composer,
-France,Napoleon,0.9115669128686154,emperor,
-France,Joan of Arc,0.8646603893254301,military hero,
-France,Louis XIV of France,0.8604511935310953,king,
-France,René Descartes,0.8377133340031007,philosopher,
-France,Voltaire,0.8321885728708996,philosopher,
-Russia,Vladimir Lenin,0.8924236582117426,revolutionary,
-Russia,Immanuel Kant,0.8451256584423094,philosopher,
-Russia,Nicholas II of Russia,0.842087937784992,tsar,
-Russia,Fyodor Dostoyevsky,0.8386499860175265,author,
-Russia,Pyotr Ilyich Tchaikovsky,0.8339059837904637,composer,
-Poland,Frédéric Chopin,0.8571155800801494,composer,
-Poland,Marie Curie,0.8485999934387232,scientist,
-Poland,Nicolaus Copernicus,0.8366091527169949,astronomer,
-Poland,Catherine the Great,0.8260457334171828,empress,
-Poland,Arthur Schopenhauer,0.7817154582829975,philosopher,
-Spain,Pablo Picasso,0.873396142003611,artist,
-Spain,Francisco Franco,0.8297634243151456,dictator,
-Spain,Antoni Gaudí,0.8030640422855149,artist,
-Spain,Hernán Cortés,0.7969729551691362,conquistador,
-Spain,Francisco Goya,0.7954753092281903,painter,
-Czech Republic,Sigmund Freud,0.879195645721752,psychoanalyst,
-Czech Republic,Franz Kafka,0.8391252204176756,author,
-Czech Republic,Gustav Mahler,0.7949950196645774,composer,
-Czech Republic,Gregor Mendel,0.7680298824067012,scientist,
-Czech Republic,Antonín Dvořák,0.7640484382798747,composer,
-Switzerland,Jean-Jacques Rousseau,0.8496277119089132,philosopher,
-Switzerland,Carl Jung,0.819387323443557,psychoanalyst,
-Switzerland,Le Corbusier,0.8013333504029639,architect,
-Switzerland,Leonhard Euler,0.7911909709619642,mathematician,
-Switzerland,Jean Piaget,0.7566685256035123,psychologist,
-Netherlands,Vincent van Gogh,0.8794610835972241,,
-Netherlands,Rembrandt,0.8072362564116465,,
-Netherlands,Baruch Spinoza,0.7772653550939639,,
-Netherlands,Johannes Vermeer,0.7734396351422114,,
-Netherlands,Erasmus,0.7633714113929184,,
-Ireland,Oscar Wilde,0.8282959335870845,,
-Ireland,James Joyce,0.7666230351529336,,
-Ireland,George Bernard Shaw,0.7572064076398186,,
-Ireland,"Arthur Wellesley, 1st Duke of Wellington",0.7480900393810738,,
-Ireland,Ernest Shackleton,0.7422110858737457,,
-Ukraine,Leon Trotsky,0.8334019776576088,,
-Ukraine,Sergei Prokofiev,0.7661983420857889,,
-Ukraine,Nikolai Gogol,0.7497368552481113,,
-Ukraine,Helena Blavatsky,0.7346027903426522,,
-Ukraine,Golda Meir,0.7168514207079842,,
-Denmark,Hans Christian Andersen,0.8059436812540033,,
-Denmark,Niels Bohr,0.7798205550689088,,
-Denmark,Søren Kierkegaard,0.7734048249103195,,
-Denmark,Maria Feodorovna (Dagmar of Denmark),0.7019440504516066,,
-Denmark,Alexandra of Denmark,0.6890286536422403,,
-Portugal,Ferdinand Magellan,0.8099099337008259,,
-Portugal,Vasco da Gama,0.788115291923831,,
-Portugal,António de Oliveira Salazar,0.7255809323654505,,
-Portugal,Anthony of Padua,0.7016684502440848,,
-Portugal,Fernando Pessoa,0.6934861693997371,,
-Belgium,"Charles V, Holy Roman Emperor",0.8204832694710953,,
+Austria,Adolf Hitler,0.9567609046191208,dictator,http://cdn.images.express.co.uk/img/dynamic/20/590x/secondary/Adolf-Hitler-789141.jpg
+Austria,Wolfgang Amadeus Mozart,0.8889240351112055,composer,https://s2-ssl.dmcdn.net/TVIxi.jpg
+Austria,Marie Antoinette,0.8439800882190786,queen of France,http://en.chateauversailles.fr/sites/default/files/styles/timeline_portrait_widget/public/visuels_principaux/personnages/mv-3893_002.jpg
+Austria,Franz Schubert,0.8122575316523759,composer,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Franz_Schubert_by_Wilhelm_August_Rieder_1875.jpg/220px-Franz_Schubert_by_Wilhelm_August_Rieder_1875.jpg
+Austria,Franz Liszt,0.8071090152797477,composer,https://upload.wikimedia.org/wikipedia/commons/6/69/Liszt-kaulbach.jpg
+France,Napoleon,0.9115669128686154,emperor,https://static.independent.co.uk/s3fs-public/thumbnails/image/2013/09/29/23/24-Napoleonv2.jpg
+France,Joan of Arc,0.8646603893254301,military hero,https://upload.wikimedia.org/wikipedia/commons/c/c3/Joan_of_Arc_miniature_graded.jpg
+France,Louis XIV,0.8604511935310953,king,https://www.biography.com/.image/t_share/MTE1ODA0OTcxNzA1MDA5Njc3/louis-xiv-9386885-2-sized.jpg
+France,René Descartes,0.8377133340031007,philosopher,https://upload.wikimedia.org/wikipedia/commons/7/73/Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg
+France,Voltaire,0.8321885728708996,philosopher,https://s-media-cache-ak0.pinimg.com/236x/af/61/18/af611830d9b2308c78ca833bf3acfd6d.jpg
+Russia,Vladimir Lenin,0.8924236582117426,revolutionary,https://i.pinimg.com/736x/8c/ac/f4/8cacf46251bd6b47226bd03d9c060ac1--october-revolution-russian-revolution.jpg
+Russia,Immanuel Kant,0.8451256584423094,philosopher,http://kdfrases.com/imagens/immanuel-kant.jpg
+Russia,Nicholas II,0.842087937784992,tsar,http://spartacus-educational.com/00tsar1.jpg
+Russia,Fyodor Dostoyevsky,0.8386499860175265,author,https://ichef.bbci.co.uk/news/660/media/images/79150000/jpg/_79150511_dostoyevsky.jpg
+Russia,Pyotr Ilyich Tchaikovsky,0.8339059837904637,composer,http://cdn-images.audioaddict.com/3/0/3/1/7/7/303177293f1308b00e152c8993902cdd.png
+Poland,Frédéric Chopin,0.8571155800801494,composer,http://cdn-images.audioaddict.com/8/b/8/3/f/7/8b83f76da0c88bf71fe7e63eae1fd986.png
+Poland,Marie Curie,0.8485999934387232,scientist,https://upload.wikimedia.org/wikipedia/commons/7/7e/Marie_Curie_c1920.jpg
+Poland,Nicolaus Copernicus,0.8366091527169949,astronomer,https://upload.wikimedia.org/wikipedia/commons/f/f2/Nikolaus_Kopernikus.jpg
+Poland,Catherine the Great,0.8260457334171828,Russian empress,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Portrait_of_Empress_Catherine_II%28a%29.jpg/220px-Portrait_of_Empress_Catherine_II%28a%29.jpg
+Poland,Arthur Schopenhauer,0.7817154582829975,philosopher,http://static.existentialcomics.com/philosophers/schopenhauer.jpg
+Spain,Pablo Picasso,0.873396142003611,artist,http://www.biographyonline.net/wp-content/uploads/2014/05/picasso46021.jpg
+Spain,Francisco Franco,0.8297634243151456,dictator,http://vignette3.wikia.nocookie.net/the-untermation/images/3/34/Franco.jpg
+Spain,Antoni Gaudí,0.8030640422855149,architect,https://cdn.theculturetrip.com/wp-content/uploads/2016/01/1024px-Gaud%C3%AD_1878.jpg
+Spain,Hernán Cortés,0.7969729551691362,conquistador,https://www.biography.com/.image/t_share/MTE5NDg0MDU0OTMzMDQ2Nzk5/hernan-cortes-9258320-1-402.jpg
+Spain,Francisco Goya,0.7954753092281903,painter,https://upload.wikimedia.org/wikipedia/commons/b/bf/Vicente_L%C3%B3pez_Porta%C3%B1a_-_el_pintor_Francisco_de_Goya.jpg
+Czech Republic,Sigmund Freud,0.879195645721752,psychoanalyst,http://cdn.history.com/sites/2/2015/04/hith-10-things-sigmund-freud-501585595-E.jpeg
+Czech Republic,Franz Kafka,0.8391252204176756,author,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Franz_Kafka_1917.jpg/220px-Franz_Kafka_1917.jpg
+Czech Republic,Gustav Mahler,0.7949950196645774,composer,https://www.mfiles.co.uk/composers/mahler-picture-big.jpg
+Czech Republic,Gregor Mendel,0.7680298824067012,scientist,https://media1.britannica.com/eb-media/96/118096-004-1B54BF5A.jpg
+Czech Republic,Antonín Dvořák,0.7640484382798747,composer,http://vignette3.wikia.nocookie.net/littleeinsteinspedia/images/4/42/Antonin_Dvorak_Slovak_Philharmonic_Orchestra_Dvorak.jpg
+Switzerland,Jean-Jacques Rousseau,0.8496277119089132,philosopher,http://www.iep.utm.edu/wp-content/media/rousseau.jpg
+Switzerland,Carl Jung,0.819387323443557,psychoanalyst,https://forbiddenhistories.files.wordpress.com/2013/10/jung.jpg
+Switzerland,Le Corbusier,0.8013333504029639,architect,https://42ndblackwatch1881.files.wordpress.com/2009/04/corbusier_585x350_400240a.jpg
+Switzerland,Leonhard Euler,0.7911909709619642,mathematician,https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/4/15/1366030761509/18th-century-mathematicia-001.jpg
+Switzerland,Jean Piaget,0.7566685256035123,psychologist,http://4.bp.blogspot.com/-wVdLk5d0OkY/Vm7dSbO4KOI/AAAAAAAAAGs/jZlXyRtGfds/s1600/images2XZ6QZ7X.jpg
+Netherlands,Vincent van Gogh,0.8794610835972241,painter,http://zpnetwork.com/wp-content/uploads/2017/09/vincent-van-gogh-9515695-3-402.jpg
+Netherlands,Rembrandt,0.8072362564116465,painter,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Rembrandt_van_Rijn_-_Self-Portrait_-_Google_Art_Project.jpg/220px-Rembrandt_van_Rijn_-_Self-Portrait_-_Google_Art_Project.jpg
+Netherlands,Baruch Spinoza,0.7772653550939639,philosopher,https://i.pinimg.com/originals/6d/8b/53/6d8b53d205b40f78840ce085bb378985.jpg
+Netherlands,Johannes Vermeer,0.7734396351422114,painter,https://www.wannart.com/wp-content/uploads/2017/09/vermeer1.jpg
+Netherlands,Erasmus,0.7633714113929184,humanist,https://upload.wikimedia.org/wikipedia/commons/3/30/Holbein-erasmus.jpg
+Ireland,Oscar Wilde,0.8282959335870845,writer,https://images.gr-assets.com/authors/1357460488p5/3565.jpg
+Ireland,James Joyce,0.7666230351529336,author,https://cdn.theculturetrip.com/wp-content/uploads/2015/06/screen-shot-2016-09-28-at-4-56-55-pm.png
+Ireland,George Bernard Shaw,0.7572064076398186,playwright,http://cdn3.imgbb.ru/community/33/335623/2f53c745f671d49b87610db3c0cd8876.jpg
+Ireland,Duke of Wellington,0.7480900393810738,soldier & statesman,https://upload.wikimedia.org/wikipedia/commons/8/83/Sir_Arthur_Wellesley%2C_1st_Duke_of_Wellington.png
+Ireland,Ernest Shackleton,0.7422110858737457,polar explorer,https://www.submerged.co.uk/gfx/s/shackbig.jpg
+Ukraine,Leon Trotsky,0.8334019776576088,revolutionary,http://2.bp.blogspot.com/-Xs-k68yXkAw/Vor1VheCfZI/AAAAAAAAUA0/HxXAUizxW8Q/s1600/leon_trotsky_by_klimbims-d9jhj04.jpg
+Ukraine,Sergei Prokofiev,0.7661983420857889,composer,https://i.pinimg.com/236x/39/cc/c1/39ccc16f1952d661ae43fdd111247deb--sergei-prokofiev-history-quotes.jpg
+Ukraine,Nikolai Gogol,0.7497368552481113,dramatist,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/N.Gogol_by_F.Moller_%281840%2C_Tretyakov_gallery%29.jpg/189px-N.Gogol_by_F.Moller_%281840%2C_Tretyakov_gallery%29.jpg
+Ukraine,Helena Blavatsky,0.7346027903426522,occultist,https://upload.wikimedia.org/wikipedia/commons/a/ad/Helena_Petrovna_Blavatsky.jpg
+Ukraine,Golda Meir,0.7168514207079842,Israeli prime minister,http://static-cms.legacy.com/sites/default/files/styles/og_share_image/public/golda-meir-hero.jpg
+Denmark,Hans Christian Andersen,0.8059436812540033,author,https://vignette.wikia.nocookie.net/disney/images/e/e2/Hans_Christain_Anderson.jpg/revision/latest/scale-to-width-down/350?cb=20120604175737
+Denmark,Niels Bohr,0.7798205550689088,physicist,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Niels_Bohr.jpg/220px-Niels_Bohr.jpg
+Denmark,Søren Kierkegaard,0.7734048249103195,philosopher,https://upload.wikimedia.org/wikipedia/commons/8/89/Kierkegaard.jpg
+Denmark,Dagmar of Denmark,0.7019440504516066,Russian empress,https://upload.wikimedia.org/wikipedia/commons/b/b4/Maria_Feodorovna_of_Russia_1882.jpg
+Denmark,Alexandra of Denmark,0.6890286536422403,British queen,https://upload.wikimedia.org/wikipedia/commons/4/4e/Queen_Alexandra%2C_the_Princess_of_Wales.jpg
+Portugal,Ferdinand Magellan,0.8099099337008259,explorer,https://upload.wikimedia.org/wikipedia/commons/9/9c/Ferdinand_Magellan.jpg
+Portugal,Vasco da Gama,0.788115291923831,explorer,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Vasco_da_Gama_-_1838.png/220px-Vasco_da_Gama_-_1838.png
+Portugal,António de Oliveira Salazar,0.7255809323654505,dictator,https://i.pinimg.com/736x/7e/d6/60/7ed660427b557c419b2429751025a9e9--prove-it-salazar.jpg
+Portugal,Anthony of Padua,0.7016684502440848,friar,https://www.passionistnuns.org/Saints/StAnthonyPadua/StAnthony_Padua.jpg
+Portugal,Fernando Pessoa,0.6934861693997371,poet,https://images.gr-assets.com/authors/1427039317p5/7816.jpg
+Belgium,Charles V,0.8204832694710953,Holy Roman Emperor,
 Belgium,René Magritte,0.7470396567766532,,
 Belgium,Leopold II of Belgium,0.7311654443925076,,
 Belgium,Jan van Eyck,0.710813547993047,,
@@ -109,12 +109,12 @@ Croatia,Josip Broz Tito,0.7923266891864721,,
 Croatia,Rudolf Steiner,0.7587555967667141,,
 Croatia,Franz von Suppé,0.6001150757438876,,
 Croatia,Milutin Milanković,0.5673244906989182,,
-Romania,Vlad the Impaler,0.8074575749848586,,
+Romania,Vlad the Impaler,0.8074575749848586,,https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Vlad_Tepes_002.jpg/220px-Vlad_Tepes_002.jpg
 Romania,Béla Bartók,0.727209418782277,,
 Romania,Ion Antonescu,0.6809718094791313,,
 Romania,Matthias Corvinus,0.6706771552053523,,
 Romania,Constantin Brâncuși,0.6682101418570515,,
-Georgia,Joseph Stalin,0.9186396295704464,,
+Georgia,Joseph Stalin,0.9186396295704464,dictator,https://static.giantbomb.com/uploads/scale_small/3/32849/2163825-jstalin.jpg
 Georgia,Lavrentiy Beria,0.7595027807587545,,
 Georgia,Aram Khachaturian,0.6925016862334278,,
 Georgia,Tamar of Georgia,0.5994465282299622,,

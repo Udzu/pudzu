@@ -10,7 +10,8 @@ average_scores = df.groupby('country').mean().score
 df = df.assign_rows(sortby=lambda r: average_scores[r.country]).sort_values(['sortby', 'score'], ascending=False).drop(['sortby'], axis=1)
 dfi = df.set_index('link')
 
-for i in [0]: 
+grids = []
+for i in [1]: # range(3): 
 
     start = i * 15
     table = pd.DataFrame([[df.iloc[n*5+i]['link'] for i in range(5)] for n in range(start,start+15)], index=[df.iloc[n*5]['country'] for n in range(start,start+15)]).transpose()
@@ -31,4 +32,10 @@ for i in [0]:
         return Image.from_url_with_cache(countries.flag[table.columns[column]]).resize((160,100)).pad((0,20), "black")
 
     grid = grid_chart(table, lambda n: n and get_non(dfi['image'], n, DEFAULT_IMG), image_process=cell, col_label=flag, bg=bg)
+    grid.save("output/eufame{}.jpg".format(i))
+    grids.append(grid)
+    
+# chart = Image.from_column(grids)
+# chart.save("output/eufame.jpg")    
+
 

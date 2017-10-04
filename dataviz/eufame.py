@@ -11,7 +11,7 @@ df = df.assign_rows(sortby=lambda r: average_scores[r.country]).sort_values(['so
 dfi = df.set_index('link')
 
 grids = []
-for i in [1]: # range(3): 
+for i in range(3): 
 
     start = i * 15
     table = pd.DataFrame([[df.iloc[n*5+i]['link'] for i in range(5)] for n in range(start,start+15)], index=[df.iloc[n*5]['country'] for n in range(start,start+15)]).transpose()
@@ -35,7 +35,7 @@ for i in [1]: # range(3):
     grid.save("output/eufame{}.jpg".format(i))
     grids.append(grid)
     
-# chart = Image.from_column(grids)
-# chart.save("output/eufame.jpg")    
+chart = Image.from_column(grids)
+chart.save("output/eufame.jpg")    
 
 

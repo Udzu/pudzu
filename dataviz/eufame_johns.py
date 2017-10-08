@@ -14,7 +14,7 @@ fg, bg = "white", "black"
 def entitle(img, i=None):
     title = Image.from_text("The most famous historical Johns from each European country" + ("" if i is None else " [{}/3]".format(i+1)), arial(60, bold=True), fg=fg, bg=bg)
     subtitle = Image.from_text("people called John, or any of its alternate or derived forms, born between 1000–1900", arial(48), align="center", fg=fg, bg=bg)
-    footer = Image.from_text("¹ pen name of Henryk Goldszmit; highest John from birth is Jan III Sobieski ² born in Bosnia to Croatian parents and wrote mainly in Serbian.", arial(36), max_width=img.width, fg=fg, bg=bg, padding=(0, 10))
+    footer = Image.from_text("¹ pen name of Henryk Goldszmit; highest John-from-birth is Jan III Sobieski ² born in Bosnia to Croatian parents and wrote mainly in Serbian.\nfame measure is based on Wikipedia article lengths, revision counts and monthly views, averaged across different language Wikipedias.", arial(36), max_width=img.width, align="center", fg=fg, bg=bg, padding=(0, 10))
     return Image.from_column([title, subtitle, img, footer], bg=bg).pad(10,bg=bg)
 
 grids = []
@@ -35,7 +35,8 @@ for i in range(3):
         return box
         
     def flag(column):
-        return Image.from_url_with_cache(countries.flag[table.columns[column]]).resize((160,100)).pad((0,20), "black")
+        flag = Image.from_url_with_cache(countries.flag[table.columns[column]]).resize((160,100)).pad((0,20), "black")
+        return flag
 
     grid = grid_chart(table, lambda n: n and get_non(dfi['image'], n, DEFAULT_IMG), image_process=cell, col_label=flag, bg=bg)
     grids.append(grid)

@@ -12,9 +12,9 @@ dfi = df.set_index('link')
 
 fg, bg = "white", "black"
 def entitle(img, i=None):
-    title = Image.from_text("The most famous historical John from each European country" + ("" if i is None else " [{}/3]".format(i+1)), arial(60, bold=True), fg=fg, bg=bg)
-    subtitle = Image.from_text("people called John, or any of its alternate forms, born between 1000–1900", arial(48), align="center", fg=fg, bg=bg)
-    footer = Image.from_text("¹ pen name of Henryk Goldszmit; next is Jan III Sobieski ² born in Bosnia to Croatian parents and wrote mainly in Serbian.", arial(36), max_width=img.width, fg=fg, bg=bg, padding=(0, 10))
+    title = Image.from_text("The most famous historical Johns from each European country" + ("" if i is None else " [{}/3]".format(i+1)), arial(60, bold=True), fg=fg, bg=bg)
+    subtitle = Image.from_text("people called John, or any of its alternate or derived forms, born between 1000–1900", arial(48), align="center", fg=fg, bg=bg)
+    footer = Image.from_text("¹ pen name of Henryk Goldszmit; highest John from birth is Jan III Sobieski ² born in Bosnia to Croatian parents and wrote mainly in Serbian.", arial(36), max_width=img.width, fg=fg, bg=bg, padding=(0, 10))
     return Image.from_column([title, subtitle, img, footer], bg=bg).pad(10,bg=bg)
 
 grids = []
@@ -43,4 +43,4 @@ for i in range(3):
 chart = Image.from_column(grids, xalign=0)
 entitle(chart).save("output/eujohns.jpg")    
 
-
+# TODO: Azerbaijan, Kosovo, Malta

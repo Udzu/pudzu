@@ -174,6 +174,9 @@ Turkey,Chemistry,Turkey|US,2015,http://en.wikipedia.org/wiki/Aziz_Sancar,Aziz Sa
 France,Chemistry,France,2016,http//en.wikipedia.org/wiki/Jean-Pierre_Sauvage,Jean-Pierre Sauvage,1/3
 UK_SCO,Chemistry,UK,2016,http://en.wikipedia.org/wiki/Fraser_Stoddart,Fraser Stoddart,1/3
 Netherlands,Chemistry,Netherlands,2016,http://en.wikipedia.org/wiki/Ben_Feringa,Ben Feringa,1/3
+Switzerland,Chemistry,Switzerland,2017,https://en.wikipedia.org/wiki/Jacques_Dubochet,Jacques Dubochet,1/3
+Germany,Chemistry,Germany|US,2017,https://en.wikipedia.org/wiki/Joachim_Frank,Joachim Frank,1/3
+UK_SCO,Chemistry,UK,2017,https://en.wikipedia.org/wiki/Richard_Henderson_(biologist),Richard Henderson,1/3
 Norway,Economics,Norway,1969,http://en.wikipedia.org/wiki/Ragnar_Frisch,Ragnar Frisch,1/2
 Netherlands,Economics,Netherlands,1969,http://en.wikipedia.org/wiki/Jan_Tinbergen,Jan Tinbergen,1/2
 US_IN,Economics,US,1970,http://en.wikipedia.org/wiki/Paul_Samuelson,Paul Samuelson,1
@@ -279,7 +282,7 @@ Poland,Literature,Poland,1924,http://en.wikipedia.org/wiki/W%C5%82adys%C5%82aw_R
 Ireland,Literature,UK|Ireland,1925,http://en.wikipedia.org/wiki/George_Bernard_Shaw,George Bernard Shaw,1
 Italy,Literature,Italy,1926,http://en.wikipedia.org/wiki/Grazia_Deledda,Grazia Deledda,1
 France,Literature,France,1927,http://en.wikipedia.org/wiki/Henri_Bergson,Henri Bergson,1
-Denmark,Literature,Denmark|Norway,1928,http://en.wikipedia.org/wiki/Sigrid_Undset,Sigrid Undset,1
+Denmark,Literature,Norway,1928,http://en.wikipedia.org/wiki/Sigrid_Undset,Sigrid Undset,1
 Germany,Literature,Germany,1929,http://en.wikipedia.org/wiki/Thomas_Mann,Thomas Mann,1
 US_MN,Literature,US,1930,http://en.wikipedia.org/wiki/Sinclair_Lewis,Sinclair Lewis,1
 Sweden,Literature,Sweden,1931,http://en.wikipedia.org/wiki/Erik_Axel_Karlfeldt,Erik Axel Karlfeldt,1
@@ -364,6 +367,8 @@ China,Literature,China,2012,http://en.wikipedia.org/wiki/Mo_Yan,Mo Yan,1
 Canada,Literature,Canada,2013,http://en.wikipedia.org/wiki/Alice_Munro,Alice Munro,1
 France,Literature,France,2014,http://en.wikipedia.org/wiki/Patrick_Modiano,Patrick Modiano,1
 Ukraine,Literature,Belarus,2015,http://en.wikipedia.org/wiki/Svetlana_Alexievich,Svetlana Alexievich,1
+US_MN,Literature,US,2016,http://en.wikipedia.org/wiki/Bob_Dylan,Bob Dylan,1
+Japan,Literature,Japan|UK,2017,https://en.wikipedia.org/wiki/Kazuo_Ishiguro,Kazuo Ishiguro,1
 Switzerland,Peace,Switzerland|France,1901,http://en.wikipedia.org/wiki/Henry_Dunant,Henry Dunant,1/2
 France,Peace,France,1901,http://en.wikipedia.org/wiki/Fr%C3%A9d%C3%A9ric_Passy,Frédéric Passy,1/2
 Switzerland,Peace,Switzerland,1902,http://en.wikipedia.org/wiki/%C3%89lie_Ducommun,Élie Ducommun,1/2
@@ -494,6 +499,7 @@ India,Peace,India,2014,http://en.wikipedia.org/wiki/Kailash_Satyarthi,Kailash Sa
 Pakistan,Peace,Pakistan,2014,http://en.wikipedia.org/wiki/Malala_Yousafzai,Malala Yousafzai,1/2
 Tunisia,Peace,,2015,http://en.wikipedia.org/wiki/Tunisian_National_Dialogue_Quartet,Tunisian National Dialogue Quartet,1
 Colombia,Peace,Colombia,2016,https://en.wikipedia.org/wiki/Juan_Manuel_Santos,Juan Manuel Santos,1
+Australia,Peace,,2017,https://en.wikipedia.org/wiki/International_Campaign_to_Abolish_Nuclear_Weapons,International Campaign to Abolish Nuclear Weapons,1
 Germany,Physics,Germany,1901,http://en.wikipedia.org/wiki/Wilhelm_R%C3%B6ntgen,Wilhelm Röntgen,1
 Netherlands,Physics,Netherlands,1902,http://en.wikipedia.org/wiki/Hendrik_Lorentz,Hendrik Lorentz,1/2
 Netherlands,Physics,Netherlands,1902,http://en.wikipedia.org/wiki/Pieter_Zeeman,Pieter Zeeman,1/2
@@ -698,6 +704,9 @@ Canada,Physics,Canada,2015,http://en.wikipedia.org/wiki/Arthur_B._McDonald,Arthu
 UK_SCO,Physics,UK,2016,http://en.wikipedia.org/wiki/David_J._Thouless,David J. Thouless,1/2
 UK_ENG,Physics,UK,2016,http://en.wikipedia.org/wiki/Duncan_Haldane,Duncan Haldane,1/4
 UK_SCO,Physics,UK|US,2016,http://en.wikipedia.org/wiki/John_M._Kosterlitz,John M. Kosterlitz,1/4
+Germany,Physics,Germany|US,2017,https://en.wikipedia.org/wiki/Rainer_Weiss,Rainer Weiss,1/2
+US_NE,Physics,US,2017,https://en.wikipedia.org/wiki/Barry_Barish,Barry Barish,1/4
+US_UT,Physics,US,2017,https://en.wikipedia.org/wiki/Kip_Thorne,Kip Thorne,1/4
 Poland,Physiology and Medicine,Germany,1901,http://en.wikipedia.org/wiki/Emil_Adolf_von_Behring,Emil Adolf von Behring,1
 India,Physiology and Medicine,UK,1902,http://en.wikipedia.org/wiki/Ronald_Ross,Ronald Ross,1
 Faroe Islands,Physiology and Medicine,Faroe Islands|Denmark,1903,http://en.wikipedia.org/wiki/Niels_Ryberg_Finsen,Niels Ryberg Finsen,1
@@ -909,3 +918,6 @@ Ireland,Physiology and Medicine,Ireland|US,2015,http://en.wikipedia.org/wiki/Wil
 Japan,Physiology and Medicine,Japan,2015,http://en.wikipedia.org/wiki/Satoshi_%C5%8Cmura,Satoshi Ōmura,1/4
 China,Physiology and Medicine,China,2015,http://en.wikipedia.org/wiki/Tu_Youyou,Tu Youyou,1/2
 Japan,Physiology and Medicine,Japan,2016,http://en.wikipedia.org/wiki/Yoshinori_Ohsumi,Yoshinori Ohsumi,1
+US_NY,Physiology and Medicine,US,2017,https://en.wikipedia.org/wiki/Jeffrey_C._Hall,Jeffrey C. Hall,1/3
+US_MO,Physiology and Medicine,US,2017,https://en.wikipedia.org/wiki/Michael_Rosbash,Michael Rosbash,1/3
+US_FL,Physiology and Medicine,US,2017,https://en.wikipedia.org/wiki/Michael_W._Young,Michael W. Young,1/3

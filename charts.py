@@ -158,7 +158,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
             label = rlabel_fn(r)
             if isinstance(label, ImageFont.FreeTypeFont):
                 label = Image.from_text(str(data.index[r]), label, fg=fg, bg=bg)
-            group = Image.from_column([group, Image.new("RGBA",(0,label.height//2)), label])
+            group = Image.from_column([group, Image.new("RGBA",(0,10)), label])
         groups.append(group)
     chart = Image.from_row(groups, padding=(spacing,0), bg=bgtransparent, yalign=0)
     

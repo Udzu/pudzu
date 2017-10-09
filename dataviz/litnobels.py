@@ -62,7 +62,7 @@ def rlabelfn(r):
     return Image.from_text(catlabels[table.index[r]], arial(14, bold=False), "black", "white", align="center", padding=2, max_width=WIDTH)
     
 ymax = 100
-chart = bar_chart(table, WIDTH, BAR*2*ymax, type=BarChartType.STACKED, spacing=10, colors=colorfn, grid_interval=10, tick_interval=5, ylabels=arial(14), rlabels=rlabelfn, bg="white", fg="black", ylabel=Image.from_text("# Nobel Literature Prize laureates", arial(14), padding=(0,2,0,10), bg="white").transpose(Image.ROTATE_90), ymax=ymax)
+chart = bar_chart(table, WIDTH, BAR*2*ymax, type=BarChartType.STACKED, spacing=10, colors=colorfn, grid_interval=10, tick_interval=5, ylabels=arial(14), rlabels=rlabelfn, bg="white", fg="black", ylabel=Image.from_text("# Nobel Literature laureates", arial(14), padding=(0,2,0,10), bg="white").transpose(Image.ROTATE_90), ymax=ymax)
 
 def lbox(c):
     count = counts.select(lambda cs: c in cs).sum()
@@ -83,7 +83,7 @@ nlegs
 ], bg="white", padding=(0,3), xalign=0).pad(5, "white").pad(1, "black")
 
 chart = Image.from_row([chart, legend], bg="white", yalign=0, padding=5)
-title = Image.from_text("Geographic biases of the Nobel Prize in Literature", arial(24, bold=True)).pad((0,4,0,8), "white")
+title = Image.from_text("Geographic distribution of Literature Nobel laureates", arial(24, bold=True)).pad((0,4,0,8), "white")
 img = Image.from_column([title, chart], bg="white")
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("output/litnobels.png")

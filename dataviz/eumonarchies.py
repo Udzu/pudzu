@@ -20,7 +20,7 @@ def colorfn(c):
         return "white" if c in ['Sea', 'Borders'] else "grey"
     elif df['monarchy'][c]:
         col = monarchies
-    elif none_or_nan(df['abolished'][c]):
+    elif non(df['abolished'][c]):
         col = never
     elif abolished.set(int(re.search('[0-9]+', df['abolished'][c]).group())) < 1914:
         col = republics[1]
@@ -64,7 +64,7 @@ def process(img, d):
       Image.from_text(d['description'], arial(11), max_width=100, fg="black", bg="white", align="center", padding=1)],
       bg="white")
     
-grid = grid_chart(tdata, lambda d: None if none_or_nan(d) else get_non(d, "image_url", DEFAULT_IMG), process, yalign=0, bg="white", padding=1)
+grid = grid_chart(tdata, lambda d: None if non(d) else get_non(d, "image_url", DEFAULT_IMG), process, yalign=0, bg="white", padding=1)
 
 # title
 title = Image.from_column([

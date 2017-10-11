@@ -47,7 +47,7 @@ def _assign_rows(df, progressbar=False, assign_if=None, **kwargs):
 
 def _update_columns(df, progressbar=False, update_if=None, **kwargs):
     """Update columns using a value function, with an optional value predicate condition, or True to update just non-nans. Progress bars require tqdm."""
-    filter_fn = lambda v: (update_if is None or callable(update_if) and update_if(v) or isinstance(update_if, bool) and update_if != none_or_nan(v))
+    filter_fn = lambda v: (update_if is None or callable(update_if) and update_if(v) or isinstance(update_if, bool) and update_if != non(v))
     if progressbar and tqdm:
         t = tqdm.tqdm(total = len(df) * len(kwargs))
         filter_fn = partial(_tqdm_wrapper, t, filter_fn)
@@ -128,7 +128,7 @@ class FilterExpression:
     str_ops = { '=': lambda x,y: x==str(y), '!=': lambda x,y: x!=str(y),
                 '~': lambda x,y: re.search(y,str(x)), '!~': lambda x,y: not re.search(y,str(x)),
                 '>>': lambda x,y: y in x, '!>>': lambda x,y: y not in x }
-    exist_ops = { ':': lambda x,y: { 'exists': not none_or_nan(x), 'true': bool(x) }[y.lower()] }
+    exist_ops = { ':': lambda x,y: { 'exists': not non(x), 'true': bool(x) }[y.lower()] }
                 
     def oneOfOpMap(map): return oneOf(list(map.keys())).setParseAction(lambda t: ignoring_exceptions(map[t[0]], False))
     num_op = oneOfOpMap(num_ops)

@@ -418,6 +418,15 @@ class _Image(Image.Image):
         color = ImageColor.getrgba(color)[:data.shape[-1]]
         mask = _nparray_mask_by_color(data, color)
         return Image.fromarray(mask * 255).convert("1")
+        
+    def remove_transparency(self, bg="white"):
+        """Return an image with the transparency removed"""
+        if not self.mode.endswith('A'): return self
+        bg = ImageColor.getrgba(bg)._replace(alpha=255)
+        alpha = self.convert("RGBA").split()[-1]
+        img = Image.new("RGBA", self.size, bg)
+        img.paste(self, mask=alpha)
+        return img
 
 def _nparray_mask_by_color(nparray, color, num_channels=None):
     if len(nparray.shape) != 3: raise NotImplementedError
@@ -451,6 +460,7 @@ Image.Image.resize = _Image.resize
 Image.Image.resize_fixed_aspect = _Image.resize_fixed_aspect
 Image.Image.replace_color = _Image.replace_color
 Image.Image.select_color = _Image.select_color
+Image.Image.remove_transparency = _Image.remove_transparency
 
 def font(name, size, bold=False, italics=False):
     """Return a truetype font object."""

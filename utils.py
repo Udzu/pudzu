@@ -281,19 +281,23 @@ def generate_subsequences(iterable, start_if, end_if):
 
 def riffle_shuffle(iterable, n=2):
     """Generator that performs a perfect riffle shuffle on the input, using a given number of subdecks."""
-    return itertools.filterfalse(none_or_nan, itertools.chain.from_iterable(zip(*list(itertools.zip_longest(*[iter(iterable)]*n)))))
+    return itertools.filterfalse(non, itertools.chain.from_iterable(zip(*list(itertools.zip_longest(*[iter(iterable)]*n)))))
 
 # Mappings
     
-def none_or_nan(x):
+def non(x):
     """Whether the object is None or a float nan."""
     return x is None or isinstance(x, float) and math.isnan(x)
     
 def get_non(d, k, default=None):
     """Like get but treats None and nan as missing values."""
     v = d.get(k, default)
-    return default if none_or_nan(v) else v
+    return default if non(v) else v
     
+def if_non(x, default):
+    """Return a default if the value is None or nan."""
+    return default if non(x) else x
+
 def make_mapping(v, key_fn=identity):
     """Return a mapping from an object, using a function to generate keys if needed.
     Mappings are left as is, iterables are split into elements, everything else is

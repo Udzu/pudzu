@@ -19,11 +19,11 @@ def stripe(c1, c2):
 def colorfn(c):
     if c not in df.index: return "white" if c in ['Sea', 'Borders'] else "grey"
     d = df.ix[c]
-    if none_or_nan(df['date'][c]) : return stripe("grey", hos[-1])
+    if non(df['date'][c]) : return stripe("grey", hos[-1])
     y = int(df['date'][c]) // 10 - 196
-    if none_or_nan(df['hog'][c]): return hos[y]
-    elif none_or_nan(df['hos'][c]): return hog[y]
-    elif none_or_nan(df['hosdate'][c]): return stripe(hog[y], both[y])
+    if non(df['hog'][c]): return hos[y]
+    elif non(df['hos'][c]): return hog[y]
+    elif non(df['hosdate'][c]): return stripe(hog[y], both[y])
     else: return both[y]
     
 chart = map_chart("maps/Europe.png", colorfn, ignoring_exceptions(lambda c: str(int(df["date"][c]))), label_font=arial(16, bold=True))
@@ -62,7 +62,7 @@ def process(img, d):
                       Image.from_text(str(d['year']), arial(10, bold=True), fg="black", bg="white")], bg="white", padding=3, yalign=1)
       ], bg="white")
     
-grid = grid_chart(tdata, lambda d: None if none_or_nan(d) else d["url"], process, bg="white", padding=1)
+grid = grid_chart(tdata, lambda d: None if non(d) else d["url"], process, bg="white", padding=1)
 
 # put it all together
 title = Image.from_text("40 Years of Women Leaders in Europe".upper(), arial(52, bold=True), "black", "white", padding=(0,20))

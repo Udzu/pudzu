@@ -16,7 +16,7 @@ DATERANGES = (1600,1800,1850,1900,1950,2000,2050)
 df = pd.read_csv("datasets/periodic.csv").split_columns(('countries', 'types'), "|")
 @artial(ignoring_exceptions, -1, KeyError)
 @artial(ignoring_exceptions, 0, ValueError)
-def year_group(d): return -1 if none_or_nan(d['year']) else next(i for i,x in enumerate(DATERANGES) if int(d['year']) < x)
+def year_group(d): return -1 if non(d['year']) else next(i for i,x in enumerate(DATERANGES) if int(d['year']) < x)
 df = df.assign_rows(group=year_group)
 
 # load flag urls

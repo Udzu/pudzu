@@ -120,7 +120,7 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 **Image.from_array**: create an image from an array of images. Similarly, **Image.from_row** and **Image.from_column** create images form a list of images.
 
 ```python
->> Image.from_array([[Image.from_text("{}×{}={}".format(x,y,x*y), arial(16)) for x in (2,4,8)] for y in range(5)],
+>> Image.from_array([[Image.from_text("{}×{}={}".format(x,y,x*y), arial(16), "white") for x in (2,4,8)] for y in range(5)],
                     padding=(5,2), xalign=(0,0.5,1), bg="#1f5774").show()
 ```                    
 
@@ -175,7 +175,7 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 
 ```python
 >> base = Image.new("RGB", (100,60), "blue")
->> base.overlay(Image.from_text("red", arial(24)), (0,0), copy=True).show()
+>> base.overlay(Image.from_text("red", arial(24), "white"), (0,0), copy=True).show()
 ```
 
 ![alt](images/overlay1.png)
@@ -183,7 +183,7 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 **Image.Image.place**: overlay an image at the given alignment and padding.
 
 ```python
->> img = Image.from_text("red", arial(24), bg="grey")
+>> img = Image.from_text("red", arial(24), "white", "grey")
 >> base.place(img).show()
 ```
 
@@ -291,3 +291,11 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 >> base.place(pattern, mask=mask).show()
 ```
 ![alt](images/colorselect.png)
+
+**Image.Image.remove_transparency**: return an flatenned image copy with any transparency removed.
+
+```python
+>> red = Image.from_text("red", arial(24), "red", padding=10)
+>> red.remove_transparency("grey").show()
+```
+![alt](images/removetransparency.png)

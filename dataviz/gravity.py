@@ -3,8 +3,19 @@ import matplotlib.pyplot as plt
 sys.path.append('..')
 from pillar import *
 from PIL import ImageOps
+from toolz.functoolz import memoize
 
-# slow calculation
+def magnitude_array(arr, normalised=True):
+    mag = np.vectorize(np.linalg.norm)(arr)
+    return mag / mag.max() if normalised else mag
+
+def direction_array(arr):
+    def direction(v):
+        angle = np.arctan2(v[0], v[1]) / (2 * np.pi)
+        return angle + 1 if angle < 0 else angle
+    return np.vectorize(direction)(arr)
+
+# slow precise calculation
 
 def inverse_square_array(w, h):
     def generate(i, j):
@@ -19,17 +30,7 @@ def gravity_array(arr):
     def convolve(i, j): return (arr * isq[w-1-i:w-1-i+w,h-1-j:h-1-j+h]).sum()
     return np.fromfunction(np.frompyfunc(convolve, 2, 1), arr.shape, dtype=int)
 
-def magnitude_array(arr):
-    mag = np.vectorize(np.linalg.norm)(arr)
-    return mag / mag.max()
-
-def direction_array(arr):
-    def direction(v):
-        angle = np.arctan2(v[0], v[1]) / (2 * np.pi)
-        return angle + 1 if angle < 0 else angle
-    return np.vectorize(direction)(arr)
-
-# quadtree estimate
+# faster quadtree estimate
 
 class QuadTree(object):
 
@@ -66,35 +67,33 @@ def gravity(qtree, loc, theta):
     d = np.linalg.norm(v)
     if qtree.width == 1 or d > 0 and qtree.width / d < theta:
         return 0 if d == 0 else v * qtree.mass / (d**3)
-    else:
-        return sum(gravity(c, loc, theta) for c in qtree.children if c is not None)
+    return sum(gravity(c, loc, theta) for c in qtree.children if c is not None)
    
-def qtree_gravity_array(arr, theta=0.8):
-    qtree = QuadTree(arr)
-    def calculate(i, j): return gravity(qtree, np.array([i, j]), theta)
+def qtree_gravity_array(arr, theta=0.8, memo=False):
+    padded_size = 1 << (max(arr.shape)-1).bit_length()
+    padded = np.pad(arr, [(0, padded_size - arr.shape[0]), (0, padded_size - arr.shape[1])], mode='constant')
+    qtree = QuadTree(padded)
+    def calculate(i, j): return gravity(qtree, np.array([i, j]), theta, normer)
     return np.fromfunction(np.frompyfunc(calculate, 2, 1), arr.shape, dtype=int)
     
 # visualisation
 
-def heatmap(arr, cmap="hot"):
+def heatmap(grav, cmap="hot"):
     cmap = plt.get_cmap(cmap)
-    mag = np.uint8(arr * 255)
+    mag =  np.uint8(magnitude_array(grav) * 255)
     return Image.fromarray(cmap(mag, bytes=True))
     
-def hsvmap(hue, sat, val):
+def hsvmap(grav):
+    hue, sat, val = direction_array(grav), np.full(grav.shape, 0.7), magnitude_array(grav)
     stacked = np.stack((np.uint8(hue * 255), np.uint8(sat * 255), np.uint8(val * 255)), axis=2)
     return Image.fromarray(stacked, mode="HSV").convert("RGBA")
-    
-def icon_to_array(file, width=50):
+   
+def icon_to_array(file="icons/color.png", width=64):
     img = Image.open(file).remove_transparency().resize_fixed_aspect(width=width).convert('L')
     return np.array(ImageOps.invert(img)) / 256
     
-def heat_icon(file="icons/color.png", size=32, cmap="hot", internal=False, fn=qtree_gravity_array):
-    arr = icon_to_array(file, size)
-    grav = fn(arr) * (1 if internal else (1-arr))
-    return heatmap(magnitude_array(grav), cmap)
-
-def hsv_icon(file="icons/color.png", size=32, internal=False, fn=qtree_gravity_array):
-    arr = icon_to_array(file, size)
-    grav = fn(arr) * (1 if internal else (1-arr))
-    return hsvmap(direction_array(grav), np.full(grav.shape, 0.7), magnitude_array(grav))
+def array_to_img(arr, base="red"):
+    rgba = ImageColor.getrgba(base)
+    def colfn(channel): return np.uint8(255 - ((255 - channel) * arr / arr.max()))
+    stacked = np.stack((colfn(rgba.red), colfn(rgba.green), colfn(rgba.blue)), axis=2)
+    return Image.fromarray(stacked)

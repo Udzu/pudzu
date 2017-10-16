@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 sys.path.append('..')
 from pillar import *
 from PIL import ImageOps
-from toolz.functoolz import memoize
 
 def magnitude_array(arr, normalised=True):
     mag = np.vectorize(np.linalg.norm)(arr)
@@ -69,18 +68,19 @@ def gravity(qtree, loc, theta):
         return 0 if d == 0 else v * qtree.mass / (d**3)
     return sum(gravity(c, loc, theta) for c in qtree.children if c is not None)
    
-def qtree_gravity_array(arr, theta=0.8, memo=False):
+def qtree_gravity_array(arr, theta=0.8):
     padded_size = 1 << (max(arr.shape)-1).bit_length()
     padded = np.pad(arr, [(0, padded_size - arr.shape[0]), (0, padded_size - arr.shape[1])], mode='constant')
     qtree = QuadTree(padded)
-    def calculate(i, j): return gravity(qtree, np.array([i, j]), theta, normer)
+    def calculate(i, j): return gravity(qtree, np.array([i, j]), theta)
     return np.fromfunction(np.frompyfunc(calculate, 2, 1), arr.shape, dtype=int)
     
 # visualisation
 
-def heatmap(grav, cmap="hot"):
+def heatmap(grav, cmap="hot", over=0.05):
     cmap = plt.get_cmap(cmap)
-    mag =  np.uint8(magnitude_array(grav) * 255)
+    cmap.set_over("green")
+    mag = magnitude_array(grav) * (1 + over)
     return Image.fromarray(cmap(mag, bytes=True))
     
 def hsvmap(grav):
@@ -97,3 +97,7 @@ def array_to_img(arr, base="red"):
     def colfn(channel): return np.uint8(255 - ((255 - channel) * arr / arr.max()))
     stacked = np.stack((colfn(rgba.red), colfn(rgba.green), colfn(rgba.blue)), axis=2)
     return Image.fromarray(stacked)
+
+# heatmap(qtree_gravity_array(arr)).show()
+
+

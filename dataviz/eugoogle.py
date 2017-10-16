@@ -26,7 +26,7 @@ for n, type in enumerate(["whyisXso", "whyisX", "whyareXian", "isXbetterthan"]):
         TITLE = "Why is X ...?"
         SUBTITLE = "excludes 'Why is X so ...?' and 'Why is X called X?'"
     elif type == "whyareXian":
-        TITLE = "Why are Xian ...?"
+        TITLE = "Why are X-ian ...?"
         SUBTITLE = ""
     elif type == "isXbetterthan":
         TITLE = "Is X better than ...?"

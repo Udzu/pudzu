@@ -455,7 +455,7 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
     and a label csv file with label bounding boxes.
     - map (filename): map image filename (and template for the name and label csv filenames).
     - color_fn (name -> color/pattern/None): a dict or function that gets passed each region name (or color tuple, if there isn't one) and returns a new color, pattern, or None (to leave the region unchanged).
-    - label_fn (name -> text/image/None): an dict or function that returns either a text label or image. The label location is determined from the label csv file. [None]
+    - label_fn (name, width, height -> text/image/None): an dict or function that returns either a text label or image. The label location is determined from the label csv file. [None]
     - label_font (font): font to use for text labels. [None]
     - label_color (color): color to use for text labels. [black]
     """
@@ -489,11 +489,12 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
         logger.info("Using label bounding box file {}".format(labelbox_csv_path(map)))
         labelboxes = { tuple(d["color"]) : BoundingBox(d['bbox']) for _,d in df.iterrows() }
         for c,name in colors:
-            label = label_fn(name) if callable(label_fn) else label_fn.get(name)
-            if label is None:
-                continue
             if c not in labelboxes:
-                logger.warning("No label location found for {}".format(name))
+                if ignoring_extra_args(label_fn)(name, img.width, img.height) is not None:
+                    logger.warning("No label location found for {}".format(name))
+                continue
+            label = ignoring_extra_args(label_fn)(name, labelboxes[c].width, labelboxes[c].height) if callable(label_fn) else label_fn.get(name)
+            if label is None:
                 continue
             if isinstance(label, str):
                 label = Image.from_text(label, label_font, label_color)

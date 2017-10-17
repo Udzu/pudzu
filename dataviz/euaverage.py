@@ -45,7 +45,7 @@ chart = map.place(legend, align=(1,0), padding=10)
 
 # title
 title = Image.from_column([
-Image.from_text("EUROPE: THE VITAL FACTS", arial(48, bold=True)),
+Image.from_text("EUROPE: THE IMPORTANT FACTS", arial(48, bold=True)),
 Image.from_text("average flag colours and name Scrabble scores", arial(36))],
 bg="white")
 img = Image.from_column([title, chart], bg="white", padding=2)

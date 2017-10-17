@@ -14,7 +14,7 @@ def direction_array(arr):
         return angle + 1 if angle < 0 else angle
     return np.vectorize(direction)(arr)
 
-# slow precise calculation
+# slow but precise calculation
 
 def inverse_square_array(w, h):
     def generate(i, j):
@@ -75,6 +75,23 @@ def qtree_gravity_array(arr, theta=0.8):
     def calculate(i, j): return gravity(qtree, np.array([i, j]), theta)
     return np.fromfunction(np.frompyfunc(calculate, 2, 1), arr.shape, dtype=int)
     
+# basic shapes
+
+def rectangle(rx, ry, val=1.):
+    return np.full((ry * 2 + 1, rx * 2 + 1), val)
+
+def ellipse(rx, ry, val=1.):
+    return np.fromfunction(lambda j, i: ((rx-i)**2/rx**2+(ry-j)**2/ry**2 <= 1)*val, (ry*2+1, rx*2+1))
+    
+def pad(arr, pad_x, pad_y, val=0.):
+    return np.pad(arr, [(pad_y, pad_y), (pad_x, pad_x)], mode='constant', constant_values=val)
+    
+def row(*arrs):
+    return np.concatenate(arrs)
+    
+def column(*arrs):
+    return np.concatenate(arrs, axis=1)
+    
 # visualisation
 
 def heatmap(grav, cmap="hot", over=0.05):
@@ -97,7 +114,5 @@ def array_to_img(arr, base="red"):
     def colfn(channel): return np.uint8(255 - ((255 - channel) * arr / arr.max()))
     stacked = np.stack((colfn(rgba.red), colfn(rgba.green), colfn(rgba.blue)), axis=2)
     return Image.fromarray(stacked)
-
-# heatmap(qtree_gravity_array(arr)).show()
 
 

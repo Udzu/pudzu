@@ -38,10 +38,10 @@ for i in range(3):
         return Image.from_url_with_cache(countries.flag[table.columns[column]]).resize((160,100)).pad((0,20), "black")
 
     grid = grid_chart(table, lambda n: n and get_non(dfi['image'], n, DEFAULT_IMG), image_process=cell, col_label=flag, bg=bg)
-    entitle(grid, i=i).save("output/eufame{}.jpg".format(i))
+    entitle(grid, i=i).save("output/wikifame_eu{}.jpg".format(i))
     grids.append(grid)
     
 chart = Image.from_column(grids)
-entitle(chart).save("output/eufame.jpg")    
+entitle(chart).save("output/wikifame_eu.jpg")    
 
 

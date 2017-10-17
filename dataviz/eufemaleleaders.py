@@ -68,5 +68,5 @@ grid = grid_chart(tdata, lambda d: None if non(d) else d["url"], process, bg="wh
 title = Image.from_text("40 Years of Women Leaders in Europe".upper(), arial(52, bold=True), "black", "white", padding=(0,20))
 img = Image.from_column([title, chart, grid], bg="white", padding=2)
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
-img.save("output/femaleleaders.png")
+img.save("output/eufemaleleaders.png")
 

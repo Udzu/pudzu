@@ -54,4 +54,4 @@ title = Image.from_column([
     ], bg=bg)
       
 grid = grid_chart(data, lambda d: print(d) or get_non(d, "image", default_img), image_process=process, padding=(10,20), bg=bg, yalign=0, title=title).pad(20, bg)
-grid.save("output/eucapitals.png")
+grid.save("output/flagseurope.png")

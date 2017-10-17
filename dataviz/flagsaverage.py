@@ -43,5 +43,5 @@ FOOTER = "*each flag is assigned to just one continent; average is the quadratic
 footer = Image.from_text(FOOTER, arial(48), "black", "white", padding=10)
 img = Image.from_column([Image.from_row(imgs, yalign=0), footer], bg="white", padding=20)
 img.place(Image.from_text("/u/Udzu", font("arial", 32), fg="black", bg="white", padding=10).pad((2,2,0,0), "black"), align=1, padding=20, copy=False)
-img.save("output/averageflags.jpg")
+img.save("output/flagsaverage.jpg")
 

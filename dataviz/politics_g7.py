@@ -32,4 +32,4 @@ footer_row = [box("left"), label("left-of-centre"), box("centre"), label("centri
               Image.from_text("Note that they differ from the ones used in the US since 2000.", arial(16, bold=True), fg="white")]
 footer = Image.from_row(footer_row, padding=3, bg="black")
 img = Image.from_column([chart, footer], bg="black", padding=(0,20))
-img.save("output/g7.png")
+img.save("output/politics_g7.png")

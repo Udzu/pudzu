@@ -42,6 +42,6 @@ for i in range(3):
     grids.append(grid)
     
 chart = Image.from_column(grids, xalign=0)
-entitle(chart).save("output/eujohns.jpg")    
+entitle(chart).save("output/wikifame_eujohns.jpg")    
 
 # TODO: Azerbaijan, Kosovo, Malta

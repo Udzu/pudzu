@@ -41,7 +41,7 @@ chart = map.place(legend, align=(1,0), padding=10)
 
 title = Image.from_column([
 Image.from_text("EUROPEAN POPULAR VOTE RECORDS", arial(48, bold=True)),
-Image.from_text("candidate or party with the highest popular vote", arial(36))],
+Image.from_text("candidate or party with the highest absolute popular vote", arial(36))],
 bg="white")
 img = Image.from_column([title, chart], bg="white", padding=2)
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)

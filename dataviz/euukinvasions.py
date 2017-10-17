@@ -30,16 +30,16 @@ font_size = 16
 def box(c, box_size=30): return Image.new("RGBA", (box_size, box_size), c)
 
 year_arr = Image.from_array([
-[box(invaded), Image.from_text("Invasion", arial(font_size), padding=(10,0))],
-[box(parent), Image.from_text("Invasion of parent", arial(font_size), padding=(10,0))],
-[box(supported), Image.from_text("Supporting action", arial(font_size), padding=(10,0))]
+[box(invaded), Image.from_text("Attack against state", arial(font_size), padding=(10,0))],
+[box(parent), Image.from_text("Attack against parent", arial(font_size), padding=(10,0))],
+[box(supported), Image.from_text("Supported state", arial(font_size), padding=(10,0))]
 ], bg="white", xalign=0)
-year_leg = Image.from_column([Image.from_text("Type of invasion", arial(font_size, bold=True)), year_arr], bg="white", xalign=0, padding=(0,5))
-note_leg = Image.from_text("Invasions refer to any hostile military actions in the territory of the state.\n\nParent invasions refers to actions when the state was under the control of another country (e.g. the Russian Empire).\n\nSupporting actions, like invasions, only include military actions in the territory of the state.", arial(font_size), max_width=200, bg="white", padding=(0,2))
+year_leg = Image.from_column([Image.from_text("Type of attack", arial(font_size, bold=True)), year_arr], bg="white", xalign=0, padding=(0,5))
+note_leg = Image.from_text("Attacks refer to any hostile military actions in the territory of the state.\n\nParent attacks refers to actions in the state when it was under the control of another country (e.g. the Russian Empire).\n\nSupporting actions, like attacks, only include military actions in the territory of the state.", arial(font_size), max_width=200, bg="white", padding=(0,2))
 legend = Image.from_column([year_leg, note_leg], bg="white", xalign=0, padding=5).pad(1, "black")
 
 chart = map.place(legend, align=(1,0), padding=10)
-title = Image.from_text("European countries invaded by Britain", arial(60, bold=True), "black", "white")
+title = Image.from_text("European countries attacked by Britain", arial(60, bold=True), "black", "white")
 footer = Image.from_text("also: technically at war with Sweden from 1810-12 but no shots were fired; accidentally bombed Switzerland during WWII; bombed East Prussia before it became part of Poland", arial(14), "black", "white", padding=(0,5,20,5)) #max_width=chart.width-150
 
 img = Image.from_column([title, chart, footer], bg="white")

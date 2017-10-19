@@ -92,9 +92,13 @@ def row(*arrs):
 def column(*arrs):
     return np.concatenate(arrs, axis=1)
     
+def nested_circles(circles = ((48,1), (24,2)), radius = 63):
+    arrays = [pad(ellipse(r,r,val=v), radius-r, radius-r) for r,v in circles]
+    return arrays[0] if len(arrays) == 1 else np.maximum(*arrays)
+
 # visualisation
 
-def heatmap(grav, cmap="hot", over=0.05):
+def heatmap(grav, cmap="hot", over=0):
     cmap = plt.get_cmap(cmap)
     cmap.set_over("green")
     mag = magnitude_array(grav) * (1 + over)
@@ -115,4 +119,8 @@ def array_to_img(arr, base="red"):
     stacked = np.stack((colfn(rgba.red), colfn(rgba.green), colfn(rgba.blue)), axis=2)
     return Image.fromarray(stacked)
 
+# plt.plot: mag[63], np.diag(mag), etc
+# - figure out why magnitutde seems to need to be squared
+# - zero at centre and scale diagonals appropriately
+# - set axis limits and remove labels
 

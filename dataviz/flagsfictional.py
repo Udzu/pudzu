@@ -3,10 +3,6 @@ sys.path.append('..')
 from charts import *
 from bamboo import *
 
-# ----------------------
-# 40 under 40 grid chart
-# ----------------------
-
 df = pd.read_csv("datasets/flagsfictional.csv")
 data = pd.DataFrame(list(generate_batches([dict(row) for _,row in df.iterrows()], 3)))
 fg, bg="black", "#EEEEEE"

@@ -98,10 +98,11 @@ def nested_circles(circles = ((48,1), (24,2)), radius = 63):
 
 # visualisation
 
-def heatmap(grav, cmap="hot", over=0):
+def heatmap(grav, cmap="hot", over=0, under=0):
     cmap = plt.get_cmap(cmap)
     cmap.set_over("green")
-    mag = magnitude_array(grav) * (1 + over)
+    cmap.set_under("blue")
+    mag = magnitude_array(grav) * (1 + (over + under)) - under
     return Image.fromarray(cmap(mag, bytes=True))
     
 def hsvmap(grav):
@@ -123,4 +124,7 @@ def array_to_img(arr, base="red"):
 # - figure out why magnitutde seems to need to be squared
 # - zero at centre and scale diagonals appropriately
 # - set axis limits and remove labels
+
+# TODO: circle, ellipse, core, hollow, mountain, plateau, two, weighted, square, rectangle, ?, reddit
+
 

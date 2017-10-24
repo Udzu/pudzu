@@ -21,7 +21,7 @@ flags =  Image.from_array(array, bg=bg, padding=(10,20), xalign=(0.5,0,0)).pad((
 
 title = Image.from_column([
     Image.from_text("Variations on a theme".upper(), arial(72, bold=True), fg=fg, bg=bg),
-    Image.from_text("8 flags that are based on the Union Jack (and 1 that isn't) ", arial(48, italics=True), fg=fg, bg=bg).pad(5,bg=bg)
+    Image.from_text("8 flags that contain the Union Jack (and 1 that doesn't) ", arial(48, italics=True), fg=fg, bg=bg).pad(5,bg=bg)
     ], bg=bg)
       
 img = Image.from_column([title, flags], bg=bg, padding=(0,10))

@@ -4,6 +4,7 @@ from charts import *
 from bamboo import *
 
 flags = pd.read_csv("datasets/countries.csv").filter_boolean(lambda df: df.code != "EUU").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country').drop_duplicates(subset='flag', keep='first')
+bg = "#EEEEEE"
 
 def image_flag(c):
     return Image.from_url_with_cache(flags['flag'][c]).convert("RGB")
@@ -24,7 +25,7 @@ def average_flag(df, size, weights=None):
     return average_image(flags, size, weights)
 
 continents = list(flags.groupby("continent").count().index)
-continentlabels = [ Image.from_text(continent.upper(), arial(60, bold=True), "black", "white")  for continent in continents ]
+continentlabels = [ Image.from_text(continent.upper(), arial(60, bold=True), "black", bg)  for continent in continents ]
 
 imgs = []
 
@@ -33,15 +34,15 @@ for weights, TITLE, SUBTITLE in [(None, "AVERAGE WORLD/CONTINENT FLAGS", "averag
     world = average_flag(flags, (1200,800), weights=weights)
     continentflags = [ average_flag(flags[flags.continent == continent], (630,420), weights=weights) for continent in continents ]
     continentimgs = [ Image.from_column([label, flag], padding=10) for flag, label in zip(continentflags, continentlabels) ]
-    continentarray = Image.from_array(list(generate_batches(continentimgs, 3)), bg="white", padding=5, yalign=1)
-    subtitle = Image.from_text(SUBTITLE, arial(60, bold=True), "black", "white", padding=(0,0,0,20))
-    title = Image.from_column([Image.from_text(TITLE, arial(96, bold=True), "black", "white"), subtitle], bg="white", padding=10)
-    img = Image.from_column([title, world, continentarray], bg="white", padding=20)
+    continentarray = Image.from_array(list(generate_batches(continentimgs, 3)), bg=bg, padding=5, yalign=1)
+    subtitle = Image.from_text(SUBTITLE, arial(60, bold=True), "black", bg, padding=(0,0,0,20))
+    title = Image.from_column([Image.from_text(TITLE, arial(96, bold=True), "black", bg), subtitle], bg=bg, padding=10)
+    img = Image.from_column([title, world, continentarray], bg=bg, padding=20)
     imgs.append(img)
 
 FOOTER = "*each flag is assigned to just one continent; average is the quadratic mean of RGB values (as per the Computer Color is Broken Youtube video)"
-footer = Image.from_text(FOOTER, arial(48), "black", "white", padding=10)
-img = Image.from_column([Image.from_row(imgs, yalign=0), footer], bg="white", padding=20)
-img.place(Image.from_text("/u/Udzu", font("arial", 32), fg="black", bg="white", padding=10).pad((2,2,0,0), "black"), align=1, padding=20, copy=False)
+footer = Image.from_text(FOOTER, arial(48), "black", bg, padding=10)
+img = Image.from_column([Image.from_row(imgs, yalign=0), footer], bg=bg, padding=20)
+img.place(Image.from_text("/u/Udzu", font("arial", 32), fg="black", bg=bg, padding=10).pad((2,2,0,0), "black"), align=1, padding=20, copy=False)
 img.save("output/flagsaverage.jpg")
 

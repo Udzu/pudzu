@@ -11,9 +11,9 @@ flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld
 def colorfn(c):
     if c not in flags.index: # or flags['continent'][c] != 'Europe':
         return "white" if c in ['Sea', 'Borders'] else "grey"
-    flag_array = np.array(Image.from_url_with_cache(flags['flag'][c]).convert("RGB"))
-    average = [ int(flag_array[:,:,i].mean()) for i in range(flag_array.shape[-1])]
-    return ImageColor.getrgba(average)
+    flag_array = np.array(Image.from_url_with_cache(flags['flag'][c]).convert("RGB")) / 256
+    float_average = [ math.sqrt((flag_array[:,:,i] ** 2).mean()) for i in range(flag_array.shape[-1])]
+    return ImageColor.getrgba(int(256 * f) for f in float_average)
 
 scores = { "AEIOULNSTR": 1, "DG": 2, "BCMP": 3, "FHVWY": 4, "K": 5, "JX": 8, "QZ": 10 }
 scores = { l : s for ls,s in scores.items() for l in ls }
@@ -45,8 +45,8 @@ chart = map.place(legend, align=(1,0), padding=10)
 
 # title
 title = Image.from_column([
-Image.from_text("EUROPE: THE IMPORTANT FACTS", arial(48, bold=True)),
-Image.from_text("average flag colours and name Scrabble scores", arial(36))],
+Image.from_text("EUROPE: THE ESSENTIAL FACTS", arial(48, bold=True)),
+Image.from_text("average flag colours and Scrabble name scores", arial(36))],
 bg="white")
 img = Image.from_column([title, chart], bg="white", padding=2)
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)

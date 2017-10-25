@@ -5,6 +5,7 @@ from bamboo import *
 import seaborn as sns
 
 df = pd.read_csv("datasets/eugoogle.csv").set_index('country')
+palette = ImageColor.from_floats(sns.color_palette())
 
 def colorfn(c, type, bg):
     if c in ['Sea', 'Borders']: return "white"
@@ -18,7 +19,7 @@ def labelfn(c, w, h, type):
     
 cs = []
 for n, type in enumerate(["whyisXso", "whyisX", "whyareXian", "isXbetterthan"]):
-    chart = map_chart("maps/Europe.png", partial(colorfn, type=type, bg=VEGA_PALETTE[n]), partial(labelfn, type=type))
+    chart = map_chart("maps/Europe.png", partial(colorfn, type=type, bg=palette[n]), partial(labelfn, type=type))
     if type == "whyisXso":
         TITLE = "Why is X so ...?"
         SUBTITLE = "excludes rich/poor/big/small/expensive/cheap"

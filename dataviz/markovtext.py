@@ -104,7 +104,7 @@ word_array = Image.from_array([
     [Image.from_text(words[2*i], arial(font_size, italics=True), fg="black", bg="white"),
      Image.from_text(words[2*i+1], arial(font_size, italics=True), fg="black", bg="white")] for i in range(len(words)//2)], bg="white", padding=(15,2)).pad(5,"white")
 word_title = Image.from_column([Image.from_text("Markov generators", arial(font_size, bold=True)), 
-Image.from_text("The letters distributions in the chart can be used to generate psuedowords such as the ones below. A similar approach, at the word level, is used for online parody generators.", arial(font_size),max_width=280)], bg="white", xalign=0, padding=(0,5))
+Image.from_text("The letters distributions in the chart can be used to generate pseudowords such as the ones below. A similar approach, at the word level, is used for online parody generators.", arial(font_size),max_width=280)], bg="white", xalign=0, padding=(0,5))
 word_box = Image.from_column([word_title, word_array], bg="white", padding=5)
 word_box = word_box.pad_to_aspect(legend_inner.width, word_box.height, align=0, bg="white").pad(1, "white").pad((20,0,10,0), "white")
 
@@ -116,5 +116,5 @@ title = Image.from_column([Image.from_text(TITLE, arial(40, bold=True), bg="whit
 Image.from_text(SUBTITLE, arial(24, bold=True), bg="white")])
 full = Image.from_column([title, chart], bg="white", padding=(0,10))
 full.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
-full.save("output/{}.png".format(CORPUS))
+full.save("output/markovtext_{}.png".format(CORPUS))
 

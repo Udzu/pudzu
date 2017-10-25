@@ -16,7 +16,9 @@ countries = {
     'Turkey': '\n\nturkey\nturquoise\n',
     'Sweden': 'suede\nswede',
     'Denmark': 'Danish',
-    'Poland': 'polonaise'
+    # 'Poland': 'polonaise',
+    'Italy': 'italics',
+    'Malta': 'maltese'
 }
 
 cities = {
@@ -25,6 +27,8 @@ cities = {
 # Belgium
     'spa': (470, 745),
     'duffel bag': (445, 715),
+# Croatia
+    'dalmatian': (705, 950),
 # Czechia
     'pilsner': (640, 760),
     'dollar': (635, 740, True),
@@ -33,21 +37,28 @@ cities = {
     'denim': (430, 965),
     'bayonet': (280, 955),
     'limousine': (350, 900),
+    'vaudeville': (325, 780),
+    'cognac': (315, 890, True),
+    'alsatian': (495, 815),
 # Germany   
     'frankfurter': (530, 760),
     'hamburger': (555, 635),
     'neanderthal': (505, 715, True),
+    'cologne': (503,728),
+    'spruce': (620, 670),
 # Greece
     'lesbian': (990, 1075),
-    'attic': (920, 1120),
+    'academia\nattic': (920, 1120),
     'marathon': (932, 1118, True),
     'spartan': (890, 1155),
+    'magnet': (885, 1080, True),
 # Hungary
     'coach': (745, 830),
 # Iceland
     'geyser': (125,185),
 # Ireland
     'limerick': (180, 620),
+    'beyond the pale': (225, 615, True),
 # Italy
     'magenta': (525, 905),
     'jeans': (530, 940),
@@ -55,24 +66,36 @@ cities = {
     'tarantula': (755, 1065),
     'volcano': (692, 1142),
     'bolognese': (580, 930),
+    'romantic': (622, 1027),
 # Jersey
     'jersey': (292, 762),
 # Netherlands
     'hollandaise': (450, 680, True),
 # Norway
-    'maelstorm': (615, 130),
+#    'maelstrom': (615, 130),
+# Poland
+    'pomeranian': (650, 635),
 # Spain
     'mayonnaise': (405, 1090),
 # Switzerland
     'Jurassic': (490, 840),
+    'alpine': (485, 895),
 # Turkey
     'parchment': (1020, 1075, True),
+    'meander': (1035, 1085),
     'angora': (1150, 995),
-    'trojan': (990, 1040, True),
+    'trojan horse': (990, 1040, True),
 # UK
-    'badminton': (305, 685),
-    'rugby': (325, 650),
+    'badminton': (305, 685, True),
+    'rugby': (325, 655, True),
+    'cardigan': (260, 660, True),
+    'wellies': (290, 700),
+    'derby': (325, 625, True),
+    # 'Cambrian': (285, 650, True),
     'sandwich': (370, 705),
+    'paisley': (285, 530),
+    'tweed': (315, 550),
+    'scotch': (285, 485, True),
 # Ukraine
     'balaclava': (1125, 845)
 }
@@ -80,7 +103,8 @@ cities = {
 city_countries = {
     'Austria', 'Belgium', 'Czech Republic', 'France', 'Germany', 'Greece',
     'Hungary', 'Iceland', 'Ireland', 'Italy', 'Jersey',
-    'Netherlands', 'Norway', 'Switzerland', 'UK', 'Ukraine'
+    'Netherlands', 'Poland', # 'Norway',
+    'Switzerland', 'UK', 'Ukraine'
 }
 
 # visualisation
@@ -101,7 +125,7 @@ def country_color(c):
 
 def country_label(c):
     if c not in df.index: return None
-    else: return Image.from_text(df.toponym[c], arial(16, bold=True), COUNTRY_LABEL, align="center")
+    else: return Image.from_text(df.toponym[c], arial(16, bold=True, italics=(c == 'Italy')), COUNTRY_LABEL, align="center")
 
 df = pd.DataFrame([{ 'country': k, 'toponym': v} for k,v in countries.items() ]).set_index('country')
 map = map_chart("maps/Europe.png", country_color, country_label)
@@ -130,7 +154,7 @@ map = add_cities(map, cities)
 
 title = Image.from_column([
 Image.from_text("words that derive from European place names", arial(48, bold=True)),
-Image.from_text("an incomplete list, which also excludes cheese and wines", arial(36, italics=True))],
+Image.from_text("an incomplete list that excludes cheese and wines", arial(36, italics=True))],
 bg="white")
 
 img = Image.from_column([title, map], bg="white")

@@ -1,0 +1,169 @@
+City_s,Country_s,Date_s,Fatalities_i,Perpetrator Group_s,Type_s,Year_i
+Portadown,United Kingdom,10/01/2000,1,Loyalist Volunteer Forces (LVF),Nationalist,2000
+Madrid,Spain,21/01/2000,3,Basque Fatherland and Freedom (ETA),Nationalist,2000
+Vitoria,Spain,22/02/2000,2,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2000
+Quevert,France,19/04/2000,1,Breton Liberation Front (FLB),Nationalist,2000
+Andoain,Spain,07/05/2000,1,Basque Fatherland and Freedom (ETA),Nationalist,2000
+Vigo,Spain,08/05/2000,2,First of October Antifascist Resistance Group (GRAPO) (suspected),Far left,2000
+Durango,Spain,04/06/2000,1,Basque Fatherland and Freedom (ETA),Nationalist,2000
+Athens,Greece,08/06/2000,1,November 17 Revolutionary Organization (N17RO),Far left,2000
+Dortmund and Waltrop,Germany,14/06/2000,3,Unknown,Far right,2000
+Malaga,Spain,16/07/2000,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2000
+Tolosa,Spain,29/07/2000,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2000
+Zumaia,Spain,07/08/2000,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2000
+Bilbao,Spain,07/08/2000,4,Basque Fatherland and Freedom (ETA),Nationalist,2000
+L'Ile Rousse,France,07/08/2000,2,Unknown,Nationalist,2000
+Sallent de Gallego,Spain,20/08/2000,2,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2000
+Belfast,United Kingdom,21/08/2000,2,Ulster Volunteer Force (UVF) (suspected),Nationalist,2000
+Nuremberg,Germany,09/09/2000,1,National Socialist Underground,Far right,2000
+Sant Adria de Besos,Spain,21/09/2000,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2000
+Magherafelt,United Kingdom,29/09/2000,1,Unknown,Nationalist,2000
+Granada,Spain,09/10/2000,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2000
+Belfast,United Kingdom,13/10/2000,1,Irish Republican Army (IRA) (suspected),Nationalist,2000
+Seville,Spain,16/10/2000,2,Basque Fatherland and Freedom (ETA),Nationalist,2000
+Vitoria,Spain,22/10/2000,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2000
+Madrid,Spain,30/10/2000,3,Basque Fatherland and Freedom (ETA),Nationalist,2000
+Newtownabbey,United Kingdom,01/11/2000,1,Unknown,Nationalist,2000
+Madrid,Spain,17/11/2000,1,First of October Antifascist Resistance Group (GRAPO) (suspected),Far left,2000
+Barcelona,Spain,21/11/2000,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2000
+Baule,France,24/11/2000,1,Unknown,Nationalist,2000
+Belfast,United Kingdom,06/12/2000,1,Ulster Freedom Fighters (UFF) (suspected),Nationalist,2000
+Donostia-San Sebastian,Spain,26/01/2001,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2001
+Holmlia,Norway,26/01/2001,1,Neo-Nazi Group,Far right,2001
+Donostia-San Sebastian,Spain,22/02/2001,2,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2001
+Hernani,Spain,09/03/2001,1,Unknown,Nationalist,2001
+Hernani,Spain,09/03/2001,1,Basque Fatherland and Freedom (ETA),Nationalist,2001
+Rosas,Spain,17/03/2001,1,Basque Fatherland and Freedom (ETA),Nationalist,2001
+Lasarte,Spain,20/03/2001,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2001
+Zaragoza,Spain,06/05/2001,1,Basque Fatherland and Freedom (ETA),Nationalist,2001
+Donostia-San Sebastian,Spain,24/05/2001,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2001
+Nuremberg,Germany,13/06/2001,1,National Socialist Underground,Far right,2001
+Hamburg,Germany,27/06/2001,1,National Socialist Underground,Far right,2001
+Antrim,United Kingdom,04/07/2001,1,Red Hand Defenders (RHD),Nationalist,2001
+Madrid,Spain,10/07/2001,1,Basque Fatherland and Freedom (ETA),Nationalist,2001
+Glengormley,United Kingdom,29/07/2001,1,Red Hand Defenders (RHD),Nationalist,2001
+Belfast,United Kingdom,16/08/2001,1,Unknown,Nationalist,2001
+San Sebastian,Spain,20/08/2001,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2001
+Munich,Germany,29/08/2001,1,National Socialist Underground,Far right,2001
+Zug,Switzerland,27/09/2001,14,Unknown,Other,2001
+Lurgan,United Kingdom,28/09/2001,1,Red Hand Defenders (RHD),Nationalist,2001
+Strabane,United Kingdom,29/10/2001,1,Continuity Irish Republican Army (CIRA) (suspected),Nationalist,2001
+Getxo,Spain,07/11/2001,1,Basque Fatherland and Freedom (ETA),Nationalist,2001
+Belfast,United Kingdom,11/11/2001,2,Unaffiliated Individual(s),Nationalist,2001
+Beasain,Spain,23/11/2001,2,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2001
+Belfast,United Kingdom,12/12/2001,1,Red Hand Defenders (RHD),Nationalist,2001
+Rathcoole,United Kingdom,12/01/2002,1,"Red Hand Defenders (RHD) (suspected),Ulster Freedom Fighters (UFF) (suspected)",Nationalist,2002
+Bologna,Italy,19/03/2002,1,Red Brigades Fighting Communist Union (BR-UCC),Far left,2002
+Orio,Spain,21/03/2002,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2002
+Hilversum,Netherlands,06/05/2002,1,Unaffiliated Individual(s),Far left,2002
+Brussels,Belgium,07/05/2002,2,Unknown,Far right,2002
+Londonderry,United Kingdom,01/08/2002,1,Real Irish Republican Army (RIRA),Nationalist,2002
+Alicante,Spain,04/08/2002,2,Basque Fatherland and Freedom (ETA),Nationalist,2002
+Leitze,Spain,24/09/2002,1,Unknown,Nationalist,2002
+Collado Villalba,Spain,17/12/2002,1,Basque Fatherland and Freedom (ETA),Nationalist,2002
+Belfast,United Kingdom,01/02/2003,2,Red Hand Defenders (RHD),Nationalist,2003
+Andoain,Spain,08/02/2003,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2003
+Sanguesa,Spain,30/05/2003,2,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2003
+Bergisches Land,Germany,07/10/2003,3,Former member of various groups,Nationalist,2003
+Kandel,Germany,06/12/2003,2,Nationalen Widerstands Kandel,Far right,2003
+Rostock,Germany,25/02/2004,1,National Socialist Underground,Far right,2004
+Madrid,Spain,11/03/2004,73,Abu Hafs al-Masri Brigades (suspected),Islamic,2004
+Madrid,Spain,11/03/2004,62,Abu Hafs al-Masri Brigades (suspected),Islamic,2004
+Madrid,Spain,11/03/2004,37,Abu Hafs al-Masri Brigades (suspected),Islamic,2004
+Madrid,Spain,11/03/2004,19,Abu Hafs al-Masri Brigades (suspected),Islamic,2004
+Brescia,Italy,28/03/2004,1,Unaffiliated Individual(s),Islamic,2004
+Castejon,Spain,08/06/2004,2,Unknown,Nationalist,2004
+Amsterdam,Netherlands,02/11/2004,1,Hofstad Network,Islamic,2004
+Nuremberg,Germany,09/06/2005,1,National Socialist Underground,Far right,2005
+Munich,Germany,15/06/2005,1,National Socialist Underground,Far right,2005
+Belfast,United Kingdom,01/07/2005,1,Ulster Volunteer Force (UVF),Nationalist,2005
+London,United Kingdom,07/07/2005,27,Secret Organization of al-Qaida in Europe,Islamic,2005
+London,United Kingdom,07/07/2005,14,Secret Organization of al-Qaida in Europe,Islamic,2005
+London,United Kingdom,07/07/2005,8,Secret Organization of al-Qaida in Europe,Islamic,2005
+London,United Kingdom,07/07/2005,7,Secret Organization of al-Qaida in Europe,Islamic,2005
+Latina,Italy,14/09/2005,1,Unknown,Far left,2005
+Aix-en-Provence,France,22/01/2006,1,Corsican National Liberation Front (FLNC),Nationalist,2006
+Maas,Ireland,04/04/2006,1,Irish Republican Army (IRA) (suspected),Nationalist,2006
+Dortmund,Germany,04/04/2006,1,National Socialist Underground,Far right,2006
+Kassel,Germany,06/04/2006,1,National Socialist Underground,Far right,2006
+Antwerp,Belgium,11/05/2006,2,Unaffiliated Individual(s),Far right,2006
+Madrid,Spain,30/12/2006,2,Basque Fatherland and Freedom (ETA),Nationalist,2006
+Belfast,United Kingdom,18/03/2007,2,Continuity Irish Republican Army (CIRA) (suspected),Nationalist,2007
+Heilbronn,Germany,25/04/2007,1,National Socialist Underground,Far right,2007
+Abbotsinch,United Kingdom,30/06/2007,1,Al-Qaida in Iraq (suspected),Islamic,2007
+Tuusula,Finland,07/11/2007,9,Unaffiliated Individual(s),Other,2007
+Londonderry,United Kingdom,08/11/2007,1,Real Irish Republican Army (RIRA),Nationalist,2007
+Capbreton,France,01/12/2007,2,Basque Fatherland and Freedom (ETA),Nationalist,2007
+Paris,France,06/12/2007,1,Unknown,Other,2007
+Leguitano,Spain,14/05/2008,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2008
+Santona,Spain,22/09/2008,1,Basque Fatherland and Freedom (ETA),Nationalist,2008
+Azpeitia,Spain,03/12/2008,1,Basque Fatherland and Freedom (ETA),Nationalist,2008
+Vienna,Austria,13/01/2009,1,Unknown,Islamic,2009
+Antrim,United Kingdom,07/03/2009,2,Real Irish Republican Army (RIRA),Nationalist,2009
+Craigavon,United Kingdom,09/03/2009,1,Continuity Irish Republican Army (CIRA),Nationalist,2009
+Apeldoorn,Netherlands,01/05/2009,7,Unknown,Other,2009
+Athens,Greece,17/06/2009,1,Sect of Revolutionaries (Greece),Far left,2009
+Arrigorriaga,Spain,19/06/2009,1,Basque Fatherland and Freedom (ETA) (suspected),Nationalist,2009
+Dresden,Germany,01/07/2009,1,Unaffiliated Individual(s),Far right,2009
+Calvia,Spain,30/07/2009,2,Basque Fatherland and Freedom (ETA),Nationalist,2009
+Malmö,Sweden,10/10/2009,1,Unaffiliated Individual(s),Far right,2009
+Athens,Greece,28/03/2010,1,Rebellious Group Lambros Foundas,Far left,2010
+Athens,Greece,30/03/2010,1,Unknown,Other,2010
+Athens,Greece,24/06/2010,1,Revolutionary Struggle (suspected),Far left,2010
+Athens,Greece,19/07/2010,1,Sect of Revolutionaries (Greece) (suspected),Far left,2010
+Stockholm,Sweden,11/12/2010,1,Unaffiliated Individual(s),Islamic,2010
+Frankfurt,Germany,02/03/2011,2,Unaffiliated Individual(s),Islamic,2011
+Omagh,United Kingdom,02/04/2011,1,Oglaigh na hEireann (suspected),Nationalist,2011
+Clondalkin,Ireland,09/06/2011,1,Real Irish Republican Army (RIRA) (suspected),Nationalist,2011
+Utoya,Norway,22/07/2011,69,Unaffiliated Individual(s),Far right,2011
+Oslo,Norway,22/07/2011,8,Unaffiliated Individual(s),Far right,2011
+Toulouse,France,11/03/2012,1,"Jund al-Khilafa,Unaffiliated Individual(s)",Islamic,2012
+Brussels,Belgium,12/03/2012,1,Unaffiliated Individual(s),Islamic,2012
+Montauban,France,15/03/2012,3,"Jund al-Khilafa,Unaffiliated Individual(s)",Islamic,2012
+Toulouse,France,19/03/2012,4,"Jund al-Khilafa,Unaffiliated Individual(s)",Islamic,2012
+Portadown,United Kingdom,01/11/2012,1,The New Irish Republican Army,Nationalist,2012
+Birmingham,United Kingdom,29/04/2013,1,Unaffiliated Individual(s),Far right,2013
+London,United Kingdom,22/05/2013,1,Unaffiliated Individual(s),Islamic,2013
+Belfast,United Kingdom,08/10/2013,1,The New Irish Republican Army,Nationalist,2013
+Londonderry,United Kingdom,10/10/2013,1,The New Irish Republican Army,Nationalist,2013
+Athens,Greece,01/11/2013,2,Militant People's Revolutionary Forces,Far left,2013
+Florence,Italy,13/12/2013,3,Unaffiliated Individual(s),Far right,2013
+Brussels,Belgium,24/05/2014,4,Unaffiliated Individual(s),Islamic,2014
+Joue-les-Tours,France,20/12/2014,1,Unaffiliated Individual(s),Islamic,2014
+Balleymoney,United Kingdom,05/01/2015,1,Loyalists,Nationalist,2015
+Paris,France,07/01/2015,12,Al-Qaida in the Arabian Peninsula (AQAP),Islamic,2015
+Paris,France,08/01/2015,1,Unaffiliated Individual(s),Islamic,2015
+Paris,France,09/01/2015,5,Unaffiliated Individual(s),Islamic,2015
+Dammartin en Goele,France,09/01/2015,2,Unaffiliated Individual(s),Islamic,2015
+Copenhagen,Denmark,14/02/2015,1,Unaffiliated Individual(s),Islamic,2015
+Copenhagen,Denmark,14/02/2015,1,Unaffiliated Individual(s),Islamic,2015
+Lamia,Greece,21/02/2015,1,Anarchists,Far left,2015
+Paris,France,19/04/2015,1,Unaffiliated Individual(s),Islamic,2015
+Saint-Quentin-Fallavier,France,26/06/2015,1,Unaffiliated Individual(s),Islamic,2015
+Berlin,Germany,17/09/2015,1,Unaffiliated Individual(s),Islamic,2015
+Trollhattan,Sweden,22/10/2015,4,Unaffiliated Individual(s),Far right,2015
+Pforzheim,Germany,03/11/2015,4,Unknown,Far right,2015
+Paris,France,13/11/2015,92,Islamic State of Iraq and the Levant (ISIL),Islamic,2015
+Paris,France,13/11/2015,19,Islamic State of Iraq and the Levant (ISIL),Islamic,2015
+Paris,France,13/11/2015,15,Islamic State of Iraq and the Levant (ISIL),Islamic,2015
+Paris,France,13/11/2015,5,Islamic State of Iraq and the Levant (ISIL),Islamic,2015
+Saint Denis,France,13/11/2015,2,Islamic State of Iraq and the Levant (ISIL),Islamic,2015
+Saint Denis,France,13/11/2015,1,Islamic State of Iraq and the Levant (ISIL),Islamic,2015
+Paris,France,13/11/2015,1,Islamic State of Iraq and the Levant (ISIL),Islamic,2015
+Harburg,Germany,16/12/2015,1,Unknown,Far right,2015
+Paris,France,07/01/2016,1,Islamic State of Iraq and the Levant (ISIL),Islamic,2016
+Brussels,Belgium,22/03/2016,35,Islamic State of Iraq and the Levant (ISIL),Islamic,2016
+Magnaville,France,13/06/2016,2,Islamic State of Iraq and the Levant (ISIL),Islamic,2016
+Birstall,United Kingdom,16/06/2016,1,Unaffiliated Individual(s),Far right,2016
+Nice,France,14/07/2016,86,Islamic State of Iraq and the Levant (ISIL),Islamic,2016
+Würzburg,Germany,18/07/2016,1,Islamic State of Iraq and the Levant (ISIL),Islamic,2016
+Ansbach,Germany,24/07/2016,1,Islamic State of Iraq and the Levant (ISIL),Islamic,2016
+Normandy,France,26/07/2016,1,Islamic State of Iraq and the Levant (ISIL),Islamic,2016
+Carleroi,Belgium,06/08/2016,1,Unaffiliated Individual(s),Islamic,2016
+Hamburg,Germany,16/10/2016,1,Islamic State of Iraq and the Levant (ISIL) (suspected),Islamic,2016
+Berlin,Germany,19/12/2016,12,Islamic State of Iraq and the Levant (ISIL),Islamic,2016
+Orly,France,18/03/2017,1,Unaffiliated Individual(s),Islamic,2017
+London,United Kingdom,22/03/2017,6,Unaffiliated Individual(s),Islamic,2017
+Stockholm,Sweden,07/04/2017,5,Islamic State of Iraq and the Levant (ISIL),Islamic,2017
+Paris,France,20/04/2017,1,Islamic State of Iraq and the Levant (ISIL),Islamic,2017
+Manchester,United Kingdom,22/05/2017,22,Unknown,Islamic,2017

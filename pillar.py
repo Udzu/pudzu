@@ -190,8 +190,19 @@ class _ImageColor():
         else:
             return [cls.getrgba([int(x*255) for x in c]) for c in color]
             
+    @classmethod
+    def to_hex(cls, color):
+        """Convert an RGB(A) tuple to a color hex string. Ignores alpha channel."""
+        if non_string_sequence(color, Integral):
+            if len(color) not in [3, 4] or not all(0 <= x <= 255 for x in color): 
+                raise ValueError("Invalid RGB(A) color tuple.")
+            return "#" + "".join("{:02x}".format(c) for c in color[:3])
+        else:
+            return [cls.to_hex(c) for c in color]
+            
 ImageColor.getrgba = _ImageColor.getrgba
 ImageColor.from_floats = _ImageColor.from_floats
+ImageColor.to_hex = _ImageColor.to_hex
 
 class _Image(Image.Image):
 
@@ -215,6 +226,15 @@ class _Image(Image.Image):
         draw.text((padding.l, padding.u), text, font=font, fill=fg, spacing=line_spacing, align=align)
         return img
 
+    @classmethod
+    def from_text_dynamic(cls, text, max_size, max_font_size, font_fn, *args, **kwargs):
+        """Create image from text, reducing the font size until it fits. Inefficient."""
+        if isinstance(max_size, Integral): max_size = (max_size, max_size)
+        for size in range(max_font_size, 5, -1):
+            img = cls.from_text(text, font_fn(size), *args, **kwargs)
+            if img.width <= max_size[0] and img.height <= max_size[1]: return img
+        return None
+        
     @classmethod
     def from_pattern(cls, pattern, size, align=0, scale=(False,False), preserve_aspect=False, resample=Image.LANCZOS):
         """Create an image using a background pattern, either scaled or tiled."""
@@ -438,6 +458,7 @@ def _nparray_mask_by_color(nparray, color, num_channels=None):
     return mask
 
 Image.from_text = _Image.from_text
+Image.from_text_dynamic = _Image.from_text_dynamic
 Image.from_array = _Image.from_array
 Image.from_row = _Image.from_row
 Image.from_column = _Image.from_column

@@ -42,7 +42,7 @@ boxes = Image.from_array([
 [box(PALETTE[0]), boxtext("from the Carib platano")],
 [box(PALETTE[1]), boxtext("from the Wolof banana")],
 [box(PALETTE[2]), boxtext("from the Arabic mauz")],
-[box(PALETTE[3]), boxtext("from the Icelandic for 'sausage fruit' (uncommon)")]
+[box(PALETTE[3]), boxtext("from the Icelandic for 'bent fruit' (rare)")]
 ], bg="white", xalign=0)
 
 section = Image.from_column([sectiontext("Word origin"), boxes], bg="white", xalign=0, padding=(0,5))

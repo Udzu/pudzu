@@ -1,6 +1,6 @@
 language,word,group
 Albanian,banane,b
-Basque,banana,b
+Basque,banana/platano,b|p
 Belarusian,бана́н,b
 Breton,bananez,b
 Bulgarian,банан,b
@@ -19,12 +19,13 @@ Hungarian,banán,b
 Icelandic,banani/\nbjúgaldin,b|o
 Irish,banana,b
 Italian,banana,b
-Latin,banana,b
+Latin,musa,m
 Latvian,banāns,b
 Lithuanian,bananas,b
 Luxembourgish,Banann,b
 Macedonian,бана́на,b
 Maltese,banana,b
+Monégasque,banana,b
 Norwegian,banan,b
 Portuguese,banana,b
 Polish,banan,b

@@ -179,9 +179,16 @@ class _ImageColor():
     def getrgba(cls, color):
         """Convert color to an RGBA named tuple."""
         color = tuple(color) if non_string_iterable(color) else ImageColor.getrgb(color)
+        if len(color) not in (3, 4) or not all(0 <= x <= 255 for x in color): 
+            raise ValueError("Invalid RGB(A) color.")
         if len(color) == 3: color += (255,)
         return RGBA(*color)
         
+    @classmethod
+    def to_hex(cls, color):
+        """Convert a color to a hex string. Ignores alpha channel."""
+        return "#" + "".join("{:02x}".format(c) for c in cls.getrgba(color)[:3])
+            
     @classmethod
     def from_floats(cls, color):
         """Convert a 0-1 float color tuple (or a list of such tuples) to 0-255 ints."""
@@ -189,16 +196,6 @@ class _ImageColor():
             return cls.getrgba([int(x*255) for x in color])
         else:
             return [cls.getrgba([int(x*255) for x in c]) for c in color]
-            
-    @classmethod
-    def to_hex(cls, color):
-        """Convert an RGB(A) tuple to a color hex string. Ignores alpha channel."""
-        if non_string_sequence(color, Integral):
-            if len(color) not in [3, 4] or not all(0 <= x <= 255 for x in color): 
-                raise ValueError("Invalid RGB(A) color tuple.")
-            return "#" + "".join("{:02x}".format(c) for c in color[:3])
-        else:
-            return [cls.to_hex(c) for c in color]
             
 ImageColor.getrgba = _ImageColor.getrgba
 ImageColor.from_floats = _ImageColor.from_floats
@@ -227,12 +224,12 @@ class _Image(Image.Image):
         return img
 
     @classmethod
-    def from_text_dynamic(cls, text, max_size, max_font_size, font_fn, *args, **kwargs):
+    def from_text_bounded(cls, text, bbox, max_font_size, font_fn, *args, min_font_size = 6, **kwargs):
         """Create image from text, reducing the font size until it fits. Inefficient."""
-        if isinstance(max_size, Integral): max_size = (max_size, max_size)
-        for size in range(max_font_size, 5, -1):
+        if isinstance(bbox, Integral): bbox = (bbox, bbox)
+        for size in range(max_font_size, min_font_size-1, -1):
             img = cls.from_text(text, font_fn(size), *args, **kwargs)
-            if img.width <= max_size[0] and img.height <= max_size[1]: return img
+            if img.width <= bbox[0] and img.height <= bbox[1]: return img
         return None
         
     @classmethod
@@ -458,7 +455,7 @@ def _nparray_mask_by_color(nparray, color, num_channels=None):
     return mask
 
 Image.from_text = _Image.from_text
-Image.from_text_dynamic = _Image.from_text_dynamic
+Image.from_text_bounded = _Image.from_text_bounded
 Image.from_array = _Image.from_array
 Image.from_row = _Image.from_row
 Image.from_column = _Image.from_column

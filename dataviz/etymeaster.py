@@ -27,7 +27,7 @@ def colorfn(c):
 def labelfn(c, w, h):
     if c not in df.index: return None
     label = df.word[c].replace("\\n", "\n")
-    return Image.from_text_dynamic(label, (w, h), 24, papply(arial, bold=True), align="center", padding=(0,0,0,2))
+    return Image.from_text_bounded(label, (w, h), 24, papply(arial, bold=True), align="center", padding=(0,0,0,2))
     
 map = map_chart("maps/Eurolang.png", colorfn, labelfn)
 
@@ -46,7 +46,7 @@ boxes = Image.from_array([
 [box(PALETTE[5]), boxtext("from the word for 'resurrection'.")]
 ], bg="white", xalign=0)
 
-section = Image.from_column([sectiontext("Word origin"), boxes], bg="white", xalign=0, padding=(0,5))
+section = Image.from_column([sectiontext("Name origin"), boxes], bg="white", xalign=0, padding=(0,5))
 
 legend = Image.from_column([section], bg="white", xalign=0, padding=10).pad(1, "black")
 chart = map.place(legend, align=(1,0), padding=10)

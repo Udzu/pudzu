@@ -9,7 +9,7 @@ Czech,Velikonoce,great
 Danish,påske,pesach
 Dutch,Pasen,pesach
 English,Easter,easter
-Estonian,Lihavõtted,meat
+Estonian,lihavõtted/\nülestõusmispühad,meat|resurrection
 Finnish,Pääsiäinen,free
 French,Pâques,pesach
 Galician,Pascua,pesach
@@ -26,16 +26,16 @@ Luxembourgish,Ouschteren,easter
 Macedonian,Велигден,great
 Maltese,Għid il-Kbir,great
 Norwegian,påske,pesach
-Polish,Wielkanoc\nPascha,great|pesach
+Polish,Wielkanoc,great
 Portuguese,Páscoa,pesach
 Romanian,Paști,pesach
 Russian,Пасха,pesach
 Serbo-Croatian,Ускрс/Васкрс\nUskrs/Vaskrs,resurrection
 Slovak,Veľká Noc,great
-Slovenian,Velika noč,great
+Slovene,Velika noč,great
 Spanish,pascua,pesach
 Swedish,påsk,pesach
 Turkish,paskalya,pesach
-Ukrainian,Великдень\nПаска,great|pesach
+Ukrainian,Великдень/\nПаска,great|pesach
 Welsh,Pasg,pesach
 

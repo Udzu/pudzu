@@ -27,7 +27,7 @@ def colorfn(c):
 def labelfn(c, w, h):
     if c not in df.index: return None
     label = df.word[c].replace("\\n", "\n")
-    return Image.from_text_dynamic(label, (w, h), 24, papply(arial, bold=True), align="center", padding=(0,0,0,2))
+    return Image.from_text_bounded(label, (w, h), 24, papply(arial, bold=True), align="center", padding=(0,0,0,2))
     
 map = map_chart("maps/Eurolang.png", colorfn, labelfn)
 

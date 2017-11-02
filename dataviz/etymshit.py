@@ -14,7 +14,7 @@ CATEGORIES = [
 ("merda", 'from Proto-Italic *(s)merdā ("stench")'),
 ("govьno", 'from Proto-Slavic *govьno ("cow dung")'),
 ("lajьno", 'from Proto-Slavic *lajьno ("flax?")'),
-("paska", 'from  Proto-Finno-Ugric *pućka ("excrement?")'),
+("paska", 'from Proto-Finno-Ugric *pućka ("excrement?")'),
 ("suds", 'from Proto-Baltic ??'),
 ("other", "\n".join([
 'bok: from Proto-Turkic *bok ("dirt, dung")',

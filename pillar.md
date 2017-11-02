@@ -71,6 +71,19 @@ RGBA(red=100, green=50, blue=50, alpha=255)
 RGBA(red=100, green=50, blue=50, alpha=5)
 ```
 
+**ImageColor.to_hex**: converts an RGB or RGBA tuple to hex (ignoring any alpha channel).
+
+```python
+>> ImageColor.to_hex("yellow")
+'#ffff00'
+>> ImageColor.to_hex("#fafafa")
+'#fafafa'
+>> ImageColor.to_hex((100,50,50))
+'#643232'
+>> ImageColor.to_hex((100,50,50,5))
+'#643232'
+```
+
 ### ImageDraw
 
 **ImageDraw.textsize**: same as ImageDraw.Draw.textsize but doesn't require a drawable object. Similarly, **ImageDraw.multiline_textsize**.
@@ -116,6 +129,15 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 ```
 
 ![alt](images/fromtext3.png)
+
+**Image.from_text_bounded**: like from_text but with a bounding box, maximum font size and a size-to-font function. Successively tries smaller fonts until the result would fit in the bounding box.
+
+```python
+>> Image.from_text_bounded("The rain in Spain", 200, 48, arial, fg="white", bg="#1f5774", padding=10).show()
+```
+
+![alt](images/fromtextbounded.png)
+
 
 **Image.from_array**: create an image from an array of images. Similarly, **Image.from_row** and **Image.from_column** create images form a list of images.
 

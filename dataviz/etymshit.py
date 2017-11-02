@@ -9,7 +9,6 @@ df = pd.read_csv("datasets/etymshit.csv").split_columns("group", "|").set_index(
 
 CATEGORIES = [
 ("kakka", 'from Proto-Indo-European *kakka- ("defecate")'),
-# ("strent", 'from Proto-Indo-European *(s)terǵ- ("stiff")'),
 ("sḱer", 'from Proto-Indo-European *sḱer- ("dirt, dung")'),
 ("skita", 'from Proto-Germanic *skīta- ("to separate")'),
 ("merda", 'from Proto-Italic *(s)merdā ("stench")'),
@@ -19,7 +18,7 @@ CATEGORIES = [
 ("suds", 'from Proto-Baltic ??'),
 ("other", "\n".join([
 'bok: from Proto-Turkic *bok ("dirt, dung")',
-'hara: from Arabic ḵarāʾ ("defecate")',
+'ħara: from Arabic ḵarāʾ ("defecate")',
 'lort: from Proto-Germanic *lurtaz ("crooked")',
 'mut: from Proto-Indo-European *meu ("moist")',
 'rahat: from Turkish rahat ("comfortable")',

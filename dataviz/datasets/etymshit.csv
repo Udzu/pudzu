@@ -22,7 +22,7 @@ Russian,говно\n(govno),govьno
 Ukrainian,лайно,lajьno
 Czech,hovno,govьno
 Slovak,hovno,govьno
-Polish,gówno,govьno
+Polish,gówno/\nłajno,govьno|lajьno
 
 Basque,kaka,kakka
 Irish,cac,kakka
@@ -30,7 +30,7 @@ Welsh,cachu,kakka
 Breton,kaoc'h,kakka
 Romanian,căcat/\nrahat,kakka|rahat
 
-Slovene,govno/\nsranje,govьno|sker
+Slovene,govno/\nsranje,govьno|sḱer
 Greek,σκατά\n(skata),sḱer
 Macedonian,срање,sḱer
 Serbo-Croatian,говно/срање\ngovno/sranje,govьno|sḱer
@@ -44,4 +44,4 @@ Estonian,pask,paska
 Finnish,paska,paska
 Hungarian,szar,śarɜ
 Turkish,bok,bok
-Maltese,hara,hara
+Maltese,ħara,hara

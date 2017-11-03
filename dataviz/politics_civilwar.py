@@ -55,7 +55,7 @@ def get_votes(df, state, year, republican):
     return df.loc[state][cols].apply(ignoring_exceptions(int, 0)).sum()
 
 with open("datasets/politics_civilwar.csv", "w", encoding="utf-8") as f:
-    print("year,union_rep,union_dem,conf_rep,conf_dem", file=f)
+    print("year,union_rep,union_dem,conf_rep,conf_dem,leaning", file=f)
     for y in range(1860,2017,4):
         if y == 1864: continue
         tclass = "elections_states" if y != 1976 else "ver11"
@@ -66,6 +66,9 @@ with open("datasets/politics_civilwar.csv", "w", encoding="utf-8") as f:
         union_dem = sum(get_votes(df, s, y, False) for s in union)
         conf_rep = sum(get_votes(df, s, y, True) for s in confederate)
         conf_dem = sum(get_votes(df, s, y, False) for s in confederate)
-        print("{},{},{},{},{}".format(y, union_rep, union_dem,conf_rep, conf_dem), file=f)
+        ratio = (union_rep/union_dem)/(conf_rep/conf_dem)
+        leaning = (ratio - 1) if ratio < 1 else 1 - (1 / ratio)
+        print("{},{},{},{},{},{}".format(y, union_rep, union_dem,conf_rep, conf_dem, leaning), file=f)
+        print(y, leaning)
         
     

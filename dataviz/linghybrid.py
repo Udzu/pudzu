@@ -9,7 +9,7 @@ TFG, TBG = "white", "#00008B"
 MFG, MBG = "black", "#F5F5DC"
 GFG, GBG = "#F5F5DC", "black"
 
-df = pd.read_csv("datasets/etymhybrid.csv")
+df = pd.read_csv("datasets/linghybrid.csv")
 df.columns = COLS
 
 title = Image.from_text_bounded("Linguistic meme template #7\n— Hybrid words".upper(), 400, 36, papply(arial, bold=True), fg=TFG, bg=TBG, padding=10)
@@ -22,4 +22,4 @@ grid = grid_chart(df, lambda s: Image.from_text(s, arial(16, bold=True), GFG, GB
 grid = grid.pad_to_aspect(400, grid.height, bg=GBG)
 
 img = Image.from_column([title, description, grid])
-img.save("output/etymhybrid.png")
+img.save("output/linghybrid.png")

@@ -76,7 +76,7 @@ def clegend_entry(c):
     box = Image.from_url_with_cache(flags["un" if c == "other" else c]).resize((50,40))
     label = Image.from_text("{} ({})".format(CLABELS[c], cdata[c]), arial(32), "black", bg="white")
     return [box, label]
-clegend = make_legend([clegend_entry(c) for c in sorted(CLABELS, key=lambda c: "zz" if c=='other' else CLABELS[c])], "by country")
+clegend = make_legend([clegend_entry(c) for c in sorted(CLABELS, key=lambda c: (0 if c=='other' else cdata[c], CLABELS[c]), reverse=True)], "by country")
 
 def tlegend_entry(t):
     box = Image.open("icons/{}.png".format(t)).resize_fixed_aspect(width=50).convert("RGBA")

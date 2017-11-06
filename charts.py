@@ -15,11 +15,15 @@ class BarChartType(Enum):
     """Bar Chart types."""
     SIMPLE, STACKED, STACKED_PERCENTAGE = range(3)
 
+class BarChartLabelPosition(Enum):
+    """Bar Chart label position."""
+    AXIS, BAR, TOP, BOTTOM = range(4)
+
 def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
               fg="black", bg="white", spacing=0, group_spacing=0,
               ymin=None, ymax=None, grid_interval=None,
               tick_interval=Ellipsis, label_interval=Ellipsis, ylabels=None, yformat=None, 
-              colors=VEGA_PALETTE, clabels=None, rlabels=None,
+              colors=VEGA_PALETTE, clabels=None, clabels_pos=BarChartLabelPosition.AXIS, rlabels=None, rlabels_pos=BarChartLabelPosition.BOTTOM, 
               xlabel=None, ylabel=None, title=None,
               legend_position=(1,0), legend_labels=None, legend_box=None, legend_colors=None):
     """Plot a bar chart.
@@ -36,11 +40,13 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     - grid_interval (float): grid line interval [zero line only]
     - tick_interval (float): tick line interval [grid_interval]
     - label_interval (float): y label interval [grid_interval]
-    - ylabels (value -> font/image): font or image to use for y-axis labels [none]
-    - yformat (string/value->string): formatting for y values [3 sig figs, or % for stacked]
+    - ylabels (value -> image/font): image or font to use for y-axis labels [none]
+    - yformat (string/value->string): formatting for y values if ylabels is a font [3 sig figs, or % for stacked]
     - colors (col, row, value -> color/image/size->image): color or image to use for bars [Vega palette]
-    - clabels (col, row, value -> font/image): font or image to use for column labels [none]
-    - rlabels (row -> font/image): font or image to use for row labels [none]
+    - clabels (col, row, value -> image/font): image or font to use for column labels [none]
+    - clabels_pos (BarChartLabelPosition): where to place column labels for non-stacked charts [BarChartLabelPosition.AXIS]
+    - rlabels (row -> image/font): image or font to use for row labels [none]
+    - rlabels_pos (BarChartLabelPosition): where to place row labels [BarChartLabelPosition.BOTTOM]
     - xlabel (image): image to use for x axis label [none]
     - ylabel (image): image to use for y axis label [none]
     - title (image): image to use for title [none]
@@ -133,20 +139,16 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
             if type in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE]:
                 bar = pbar
                 if clabels is not None:
-                    label = clabel_fn(c,r,v)
-                    if isinstance(label, ImageFont.FreeTypeFont):
+                    label = clabel_fn(c,r,v,bar.width,bar.height)
+                    if label is None:
+                        continue
+                    elif isinstance(label, ImageFont.FreeTypeFont):
                         label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bgtransparent)
-                    if True: # label.width <= bar.width and label.height <= bar.height:
-                        bar = bar.place(label)
+                    bar = bar.place(label)
             else:
                 pbar = pbar.pad_to_aspect(pbar.width, positive_height_fn(ymax), align=1, bg=0)
                 nbar = nbar.pad_to_aspect(nbar.width, negative_height_fn(ymin), align=0, bg=0)
                 bar = Image.from_column([pbar, Image.new("RGBA",(0,1)), nbar])
-                if clabels is not None:
-                    label = clabel_fn(c,r,v)
-                    if isinstance(label, ImageFont.FreeTypeFont):
-                        label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bg)
-                    bar = Image.from_column([bar, Image.new("RGBA",(0,label.height//2)), label])
             group_bars.append(bar)
         if type in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE]:
             group = Image.from_column(reversed(group_bars), bg=bgtransparent)
@@ -154,11 +156,6 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
             group = group.pad((0,0,0,1), bg=0)
         else:
             group = Image.from_row(group_bars, padding=(group_spacing,0), bg=bgtransparent, yalign=0)
-        if rlabels is not None:
-            label = rlabel_fn(r)
-            if isinstance(label, ImageFont.FreeTypeFont):
-                label = Image.from_text(str(data.index[r]), label, fg=fg, bg=bg)
-            group = Image.from_column([group, Image.new("RGBA",(0,10)), label])
         groups.append(group)
     chart = Image.from_row(groups, padding=(spacing,0), bg=bgtransparent, yalign=0)
     
@@ -198,15 +195,67 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     del griddraw
     chart = Image.alpha_composite(grid, chart)
     
+    # TODO: refactor to make less fragile, especially regarding offset calculations
+    
     # Numeric labels
+    grid_width = chart.width
     if label_interval is not None and ylabels is not None:
-        initial_width = chart.width
         for i in range(ceil(ymin / label_interval), floor(ymax / label_interval) + 1):
             y = i * label_interval
             label = ylabel_fn(y)
             if isinstance(label, ImageFont.FreeTypeFont):
                 label = Image.from_text(yformat_fn(y), label, fg=fg, bg=bg)
-            chart = chart.pin(label, (chart.width-initial_width-10, y_coordinate_fn(y)), align=(1,0.5), bg=bg)
+            old_height = chart.height
+            chart = chart.pin(label, (chart.width-grid_width-10, y_coordinate_fn(y)), align=(1,0.5), bg=bg)
+            if i == floor(ymax / label_interval): yoff = chart.height - old_height
+       
+    # Column labels
+    xoff = chart.width - grid_width + tick_size
+    if clabels is not None and type not in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE]:
+        for r, row in enumerate(data.values):
+            if r == 1: xoff = chart.width - grid_width + tick_size
+            for c, v in enumerate(row):
+                label = clabel_fn(c,r,v)
+                if label is None:
+                    continue
+                elif isinstance(label, ImageFont.FreeTypeFont):
+                    label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bg, padding=(0,2))
+                x = (xoff +
+                     r * (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) +
+                     spacing + c * (bar_width + 2 * group_spacing) + group_spacing + bar_width // 2)
+                if clabels_pos == BarChartLabelPosition.AXIS:
+                    y = yoff + y_coordinate_fn(0) + int(v >= 0)
+                elif clabels_pos == BarChartLabelPosition.BAR:
+                    y = yoff + y_coordinate_fn(v) + int(v < 0)
+                elif clabels_pos ==  BarChartLabelPosition.TOP:
+                    y = yoff + y_coordinate_fn(ymax) + int(v <= 0)
+                elif clabels_pos ==  BarChartLabelPosition.BOTTOM:
+                    y = yoff + y_coordinate_fn(ymin) + int(v <= 0)
+                old_height, label_at_top = chart.height, (y <= yoff + y_coordinate_fn(0))
+                chart = chart.pin(label, (x, y), align=(0.5,int(label_at_top)), bg=bg)
+                if label_at_top: yoff += chart.height - old_height
+    
+    # Row labels
+    chart_size = chart.size
+    if rlabels is not None:
+        for r, row in enumerate(data.values):
+            if r == 1: xoff += chart.width - chart_size[0]
+            label = rlabel_fn(r)
+            if label is None:
+                continue
+            elif isinstance(label, ImageFont.FreeTypeFont):
+                label = Image.from_text(str(data.index[r]), label, fg=fg, bg=bg, padding=(0,2))
+            if type in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE]:
+                x = (xoff + r * (bar_width + 2 * spacing) + (bar_width + 2 * spacing) // 2)
+            else:
+                x = (xoff +
+                     r * (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) +
+                     (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) // 2)
+            if rlabels_pos ==  BarChartLabelPosition.TOP:
+                chart = chart.pin(label, (x, chart.height - chart_size[1]), align=(0.5,1), bg=bg)
+            elif rlabels_pos ==  BarChartLabelPosition.BOTTOM:
+                chart = chart.pin(label, (x, chart_size[1]), align=(0.5,0), bg=bg)
+            # TODO: support BAR in stacked mode
         
     # Background
     background = Image.new("RGBA", (chart.width, chart.height), bg)

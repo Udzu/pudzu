@@ -6,7 +6,7 @@ CONFEDERATE = ["South Carolina", "Mississippi", "Florida", "Alabama", "Georgia",
 UNION = ["California", "Connecticut", "Illinois", "Indiana", "Iowa", "Kansas", "Maine", "Massachusetts", "Michigan", "Minnesota", "Nevada", "New Hampshire", "New Jersey", "New York", "Ohio", "Oregon", "Pennsylvania", "Rhode Island", "Vermont", "Dist. of Col.", "Wisconsin"]
 
 try:
-    votes = pd.read_csv("cache/politics_civilwar.csv")
+    votes = pd.read_csv("cache/politics_civilwar.csv").set_index("year")
 except OSError:
     votes = pd.read_csv("datasets/uselections_ucsb.csv", dtype={"rep_col": str, "dem_col": str}).split_columns(("rep_col", "dem_col"), "|").set_index("year")
 
@@ -34,4 +34,12 @@ except OSError:
             print("{},{},{},{},{},{}".format(y, union_rep, union_dem,conf_rep, conf_dem, leaning))
     votes.to_csv("cache/politics_civilwar.csv")
 
-# bar_chart(votes[["leaning"]], 50, 400, spacing=5, rlabels=lambda c: Image.from_text("{}\n{}\n{}".format(votes.index[c],votes.iloc[c]["rep_can"],votes.iloc[c]["dem_can"]), arial(16), bg="white", align="center")).show()
+def color_fn(c, r, v): return VEGA_PALETTE[int(v<0)]
+
+def clabel_fn(c, r):
+    # TODO: bold winner, italics loser?
+    label = "[civil war]" if r == 1 else "{}\n{}\n{}".format(votes.index[r],votes.iloc[r]["rep_can"],votes.iloc[r]["dem_can"])
+    return Image.from_text(label, arial(16), bg="white", align="center", padding=(0,2))
+    
+bar_chart(votes[["leaning"]], 80, 400, spacing=5, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR,
+    ymin=-1, ymax=1, grid_interval=0.25, ylabels=arial(16)).show()

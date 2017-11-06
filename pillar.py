@@ -59,14 +59,20 @@ class Padding():
         elif non_string_sequence(padding, Integral) and len(padding) == 4:
             if not all(0 <= x for x in padding):
                 raise ValueError("Padding values should be positive: got {}".format(padding))
-            self.padding = padding
+            self.padding = list(padding)
         elif isinstance(padding, Padding):
-            self.padding = padding.padding
+            self.padding = list(padding.padding)
         else:
             raise TypeError("Padding expects one, two or four integers: got {}".format(padding))
             
     def __repr__(self):
         return "Padding(l={}, u={}, r={}, d={})".format(self.l, self.u, self.r, self.d)
+        
+    def __add__(self, other):
+        if isinstance(other, Padding):
+            return Padding([x + y for x,y in zip(self.padding, other.padding)])
+        else:
+            return NotImplemented
 
     @property
     def l(self): return self.padding[0]
@@ -349,19 +355,21 @@ class _Image(Image.Image):
         y = int(padding.u + align.y * (self.height - (img.height + padding.y)))
         return self.overlay(img, (x, y), mask=mask, copy=copy)
         
-    def pad(self, padding, bg="black"):
-        """Return a padded image."""
+    def pad(self, padding, bg="black", offsets=None):
+        """Return a padded image. Updates optional offset structure."""
         padding = Padding(padding)
+        if offsets is not None: offsets.padding = (offsets + padding).padding
         if padding.x == padding.y == 0: return self
         img = Image.new("RGBA", (self.width + padding.x, self.height + padding.y), bg)
         return img.overlay(self, (padding.l, padding.u), None)
         
-    def pin(self, img, position, align=0.5, bg=(0,0,0,0)):
-        """Pin an image onto another image, copying and if necessary expanding it."""
+    def pin(self, img, position, align=0.5, bg=(0,0,0,0), offsets=None):
+        """Pin an image onto another image, copying and if necessary expanding it. Uses and updates optional offset structure."""
         align = Alignment(align)
-        x = int(position[0] - align.x * img.width)
-        y = int(position[1] - align.y * img.height)
-        padded = self.pad((max(0, -x), max(0, -y), max(0, x+img.width-self.width), max(0, y+img.height-self.height)), bg=bg)
+        if offsets is None: offsets = Padding(0)
+        x = offsets.l + int(position[0] - align.x * img.width)
+        y = offsets.u + int(position[1] - align.y * img.height)
+        padded = self.pad((max(0, -x), max(0, -y), max(0, x+img.width-self.width), max(0, y+img.height-self.height)), bg=bg, offsets=offsets)
         return padded.overlay(img, (max(0, x), max(0, y)))
         
     def crop_to_aspect(self, aspect, divisor=1, align=0.5):
@@ -379,8 +387,8 @@ class _Image(Image.Image):
                          align.y * (self.height - newheight) + newheight))
         return img
 
-    def pad_to_aspect(self, aspect, divisor=1, align=0.5, bg="black"):
-        """Return a padded image with the given aspect ratio."""
+    def pad_to_aspect(self, aspect, divisor=1, align=0.5, bg="black", offsets=None):
+        """Return a padded image with the given aspect ratio. Updates optional offset structure."""
         if aspect == self.width == 0 or divisor == self.height == 0:
             return self
         align = Alignment(align)
@@ -393,6 +401,9 @@ class _Image(Image.Image):
         img = Image.new("RGBA", (newwidth, newheight), bg)
         x = int(align.x * (newwidth - self.width))
         y = int(align.y * (newheight - self.height))
+        if offsets is not None:
+            padding = Padding((x, y, img.width-self.width-x, img.height-self.height-y))
+            offsets.padding = (offsets + padding).padding
         return img.overlay(self, (x, y), None)
 
     def resize(self, size, resample=Image.LANCZOS):

@@ -1,9 +1,13 @@
 import sys
 sys.path.append('..')
 from charts import *
+import seaborn as sns
 
 CONFEDERATE = ["South Carolina", "Mississippi", "Florida", "Alabama", "Georgia", "Louisiana", "Texas"]
 UNION = ["California", "Connecticut", "Illinois", "Indiana", "Iowa", "Kansas", "Maine", "Massachusetts", "Michigan", "Minnesota", "Nevada", "New Hampshire", "New Jersey", "New York", "Ohio", "Oregon", "Pennsylvania", "Rhode Island", "Vermont", "Dist. of Col.", "Wisconsin"]
+PALETTE = ImageColor.from_floats(sns.color_palette())
+DCOL = PALETTE[0]
+RCOL = PALETTE[2]
 
 try:
     votes = pd.read_csv("cache/politics_civilwar.csv").set_index("year")
@@ -34,12 +38,44 @@ except OSError:
             print("{},{},{},{},{},{}".format(y, union_rep, union_dem,conf_rep, conf_dem, leaning))
     votes.to_csv("cache/politics_civilwar.csv")
 
-def color_fn(c, r, v): return VEGA_PALETTE[int(v<0)]
+def color_fn(c, r, v):
+    return DCOL if v < 0 else RCOL
+
+def ylabel_fn(v):
+    if v == 0: return "same"
+    party = "Rep" if v < 0 else "Dem"
+    factor = "∞" if abs(v) == 1 else "{0:.2g}".format(1 / (1 - abs(v)))
+    return "×{}{}".format(factor, party)
+    
+SIZE = 12
 
 def clabel_fn(c, r):
-    # TODO: bold winner, italics loser?
-    label = "[civil war]" if r == 1 else "{}\n{}\n{}".format(votes.index[r],votes.iloc[r]["rep_can"],votes.iloc[r]["dem_can"])
-    return Image.from_text(label, arial(16), bg="white", align="center", padding=(0,2))
+    if r == 1: # 1864
+        img = Image.from_column([
+            Image.from_text("{}".format(votes.index[r]), arial(SIZE, bold=True), bg="white"),
+            Image.from_text("Civil War", arial(SIZE, bold=True), "grey", bg="white")
+            ], bg="white", padding=(0, 1))
+    rep = votes.iloc[r]["rep_can"] in votes.iloc[r]["president"]
+    img = Image.from_column([
+        Image.from_text("{}".format(votes.index[r]), arial(SIZE, bold=True), bg="white"),
+        Image.from_text(votes.iloc[r]["rep_can"], arial(SIZE, bold=rep), RCOL, bg="white"),
+        Image.from_text(votes.iloc[r]["dem_can"], arial(SIZE, bold=not rep), DCOL, bg="white", padding=((int(votes.iloc[r]["dem_can"] == "Wilson"), 0)))
+        ], bg="white", padding=(0, 1))
+    return img.pad((0, 0, 0, 2), 0)
     
-bar_chart(votes[["leaning"]], 80, 400, spacing=5, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR,
-    ymin=-1, ymax=1, grid_interval=0.25, ylabels=arial(16)).show()
+ylabel = Image.from_text("political leaning of the South versus the North", arial(24), padding=(0,2,0,10), bg="white").transpose(Image.ROTATE_90)
+
+title = Image.from_column([
+     Image.from_text("From Solid South to Republican heartland".upper(), arial(60), bg="white")
+    , Image.from_text("the political transition of the U.S. South in presidential elections".upper(), arial(36), bg="white")
+    ], bg="white", padding=(0, 3))
+
+img = bar_chart(votes[["leaning"]], 62, 1000, spacing=2, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR,
+    ymin=-1, ymax=1, grid_interval=0.125, ylabels=arial(SIZE), yformat=ylabel_fn, ylabel=ylabel, title=title)
+    
+# TODO: add labels
+# - Catholic
+# - Civil Rights Act
+# - Southern strategy
+    
+img.save("output/politics_northsouth.png")

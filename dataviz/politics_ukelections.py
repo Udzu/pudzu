@@ -23,11 +23,11 @@ party_data = pd.DataFrame(groups, index=df['year']).applymap(lambda d: d['party'
 def colorfn(c,r,v):
     return {"L": "#d62728", "C": "#393b79", "LD": "#e7ba52", "LB": "#e7ba52", "SLA": "#e7ba52", "UKIP": "#7b4173", "other": "grey", "noshow": "#bdbdbd"}[party_data[party_data.columns[c]][party_data.index[r]]]
     
-def clabelfn(c,r,v):
+def clabelfn(c,r,v,x,y):
     seats = seat_data[party_data.columns[c]][party_data.index[r]]
     if c == 4: label = "({:.0%})".format(v / sum(vote_data[xx][party_data.index[r]] for xx in party_data.columns))
     else: label = str(seat_data[party_data.columns[c]][party_data.index[r]])
-    return Image.from_text(label, arial(10), bg=colorfn(c,r,v), fg="white")
+    return Image.from_text_bounded(label, (x,y), 10, arial, bg=colorfn(c,r,v), fg="white")
     
 chart = bar_chart(vote_data, 40, 400, type=BarChartType.STACKED, colors=colorfn,
                   spacing=5, rlabels=arial(12), ylabels=arial(12), clabels=clabelfn,

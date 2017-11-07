@@ -55,7 +55,7 @@ except OSError:
 
 # Bar chart
 def color_fn(c, r, v):
-    return DCOL if v < 0 else RCOL
+    return RCOL if v < 0 else DCOL
 
 def ylabel_fn(v):
     if v == 0: return "same"
@@ -82,7 +82,7 @@ def clabel_fn(c, r):
 ylabel = Image.from_text("political leaning of the South versus the North*", arial(24), padding=(5,2,5,10), bg="white").transpose(Image.ROTATE_90)
 
 title = Image.from_column([
-     Image.from_text("From Solid South to Republican heartland".upper(), arial(60, bold=True), bg="white")
+     Image.from_text("From ‘Solid South’ to Republican heartland".upper(), arial(60, bold=True), bg="white")
     , Image.from_text("the political transformation of the U.S. South in presidential elections".upper(), arial(36), bg="white")
     ], bg="white", padding=(0, 5)).pad((0,0,0,10), "white")
 

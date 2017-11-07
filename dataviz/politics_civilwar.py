@@ -11,7 +11,7 @@ UNION = ["California", "Connecticut", "Illinois", "Indiana", "Iowa", "Kansas", "
 PALETTE = ImageColor.from_floats(sns.color_palette())
 DCOL = PALETTE[0]
 RCOL = PALETTE[2]
-EVENTBG = "grey"
+EVENTBG = "#555555"
 FONT_SIZE = 12
 
 EVENTS = [
@@ -20,7 +20,7 @@ EVENTS = [
 ("Redemption", "April 1, 1877", "January 1, 1910"),
 ("Jim Crow", "January 2, 1910", "July 25, 1948"), 
 ("Civil Rights", "July 26, 1948", "December 31, 1967"), 
-("Southern Strategy", "January 1, 1968", "November 7, 2017") 
+("“Southern Strategy”", "January 1, 1968", "November 7, 2017") 
 ]
 
 # Generate data
@@ -79,12 +79,12 @@ def clabel_fn(c, r):
             ], bg=0)
     return img.pad((0, 0, 0, 2), 0)
     
-ylabel = Image.from_text("political leaning of the South versus the North*", arial(24), padding=(0,2,0,10), bg="white").transpose(Image.ROTATE_90)
+ylabel = Image.from_text("political leaning of the South versus the North*", arial(24), padding=(5,2,5,10), bg="white").transpose(Image.ROTATE_90)
 
 title = Image.from_column([
-     Image.from_text("From Solid South to Republican heartland".upper(), arial(60), bg="white")
+     Image.from_text("From Solid South to Republican heartland".upper(), arial(60, bold=True), bg="white")
     , Image.from_text("the political transformation of the U.S. South in presidential elections".upper(), arial(36), bg="white")
-    ], bg="white", padding=(0, 3))
+    ], bg="white", padding=(0, 5)).pad((0,0,0,10), "white")
 
 img = bar_chart(votes[["leaning"]], 62, 1000, spacing=2, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR,
     ymin=-1, ymax=1, grid_interval=0.125, ylabels=arial(FONT_SIZE), yformat=ylabel_fn, ylabel=ylabel, title=title)
@@ -92,12 +92,12 @@ img = bar_chart(votes[["leaning"]], 62, 1000, spacing=2, colors=color_fn, clabel
 # Time chart
 events = pd.DataFrame([{ "group": "event", "name": n, "start": dateparser.parse(s).date(), "end": dateparser.parse(e).date() } for n,s,e in EVENTS])
 groups = events.groupby("group")
-chronology = time_chart(groups, "start", "end", lambda _: EVENTBG, 2600, 50, element_images=lambda d: Image.from_text(d['name'], arial(FONT_SIZE), fg="white", bg=EVENTBG), bg="white")
+chronology = time_chart(groups, "start", "end", lambda _: EVENTBG, 2620, 50, element_images=lambda d: Image.from_text(d['name'], arial(FONT_SIZE), fg="white", bg=EVENTBG), bg="white")
 img = img.place(chronology, (0, 1), padding=(150,100))
 
 # Footer
+footer = Image.from_text("* based on the ratio of Republican to Democrat votes in the South divided by the ratio in the North; South refers to ex-Confederate non-border states [AL, FL, GA, LA, MS, SC, TX]; North refers to ex-Union non-border states [CA, CT, IA, IL, IN, KS, MA, ME, MI, MN, NH, NJ, NV, NY, OH, OR, PA, RI, VT, WI + DC post 1961]; 1860 numbers combine Northern and Southern Democrats.", arial(14), padding=(2,10), bg="white")
 
-footer = Image.from_text("* Leaning based on ratio of Republican to Democrat votes in the South divided by the ratio in the North; South refers to ex-Confederate non-border states [AL, FL, GA, LA, MS, SC, TX]; North refers to ex-Union non-border states [CA, CT, IA, IL, IN, KS, MA, ME, MI, MN, NH, NJ, NV, NY, OH, OR, PA, RI, VT, WI + DC post 1961]; 1860 numbers include both Northern and Southern Democrats.", arial(14), padding=(2,5), bg="white")
-
-img = Image.from_column([img, footer], bg="white")
+img = Image.from_column([img, footer], bg="white").pad((10,0), "white")
+img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("output/politics_northsouth.png")

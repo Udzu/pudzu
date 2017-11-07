@@ -74,6 +74,12 @@ class Padding():
         else:
             return NotImplemented
 
+    def update(self, other):
+        if isinstance(other, Padding):
+            self.padding = list(other.padding)
+        else:
+            raise TypeError("update expects another Padding object: got {}".format(padding))
+        
     @property
     def l(self): return self.padding[0]
     @property
@@ -358,7 +364,7 @@ class _Image(Image.Image):
     def pad(self, padding, bg="black", offsets=None):
         """Return a padded image. Updates optional offset structure."""
         padding = Padding(padding)
-        if offsets is not None: offsets.padding = (offsets + padding).padding
+        if offsets is not None: offsets.update(offsets + padding)
         if padding.x == padding.y == 0: return self
         img = Image.new("RGBA", (self.width + padding.x, self.height + padding.y), bg)
         return img.overlay(self, (padding.l, padding.u), None)
@@ -403,7 +409,7 @@ class _Image(Image.Image):
         y = int(align.y * (newheight - self.height))
         if offsets is not None:
             padding = Padding((x, y, img.width-self.width-x, img.height-self.height-y))
-            offsets.padding = (offsets + padding).padding
+            offsets.update(offsets + padding)
         return img.overlay(self, (x, y), None)
 
     def resize(self, size, resample=Image.LANCZOS):

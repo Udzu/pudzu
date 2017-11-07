@@ -512,16 +512,16 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
         
     # generate map
     colors = [(c,namemap.get(c, c)) for _,c in img.getcolors()]
+    original = img.copy()
     for c,name in colors:
         color = color_fn(name) if callable(color_fn) else color_fn.get(name)
-        if color is None:
-            continue
-        elif isinstance(color, Image.Image):
-            mask = img.select_color(c)
+        if color is None: continue
+        mask = original.select_color(c)
+        if isinstance(color, Image.Image):
             pattern = Image.from_pattern(color, img.size)
-            img.place(pattern, mask=mask, copy=False)
         else:
-            img = img.replace_color(c, color)
+            pattern = Image.new("RGBA", img.size, color)
+        img.place(pattern, mask=mask, copy=False)
             
     # generate labels
     if label_fn is not None:

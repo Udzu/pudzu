@@ -281,7 +281,7 @@ def time_chart(groups, start_key, end_key, color_key, chart_width, timeline_heig
     - group_order (key sequence): optional group key ordering
     - group_labels (group->font/image): timeline labels on the left [none]
     - group_info (group->font/image): timeline info on the right [none]
-    - element_images (record->image): element label, only used if it fits [none]
+    - element_images (record,width,height->image): element label, only used if it fits [none]
     - grid_interval (timedelta): grid line interval from start [start and end only]
     - label_interval (timedelta): grid label interval [grid_interval]
     - grid_labels (time->font/image): grid labels [none]
@@ -319,7 +319,7 @@ def time_chart(groups, start_key, end_key, color_key, chart_width, timeline_heig
             start, end = xvalue(start_fn(d)), xvalue(end_fn(d))
             bar = Image.new("RGBA", (end-start, timeline_height), color_fn(d)).pad((1,0,0,0), bg)
             if element_images is not None:
-                img = element_images(d)
+                img = ignoring_extra_args(element_images)(d, bar.width, bar.height)
                 if img.width < bar.width and img.height < bar.height:
                     bar = bar.place(img)
             timeline.overlay(bar, (start, 0))

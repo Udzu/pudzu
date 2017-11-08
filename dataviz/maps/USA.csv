@@ -1,0 +1,53 @@
+color,name
+255|255|255|255,Borders
+255|204|204|255,California
+204|153|153|255,Oregon
+255|51|51|255,Alaska
+153|102|102|255,Washington
+255|153|153|255,Nevada
+204|102|102|255,Arizona
+102|51|51|255,Idaho
+255|102|102|255,Utah
+204|51|51|255,Montana
+153|204|51|255,Hawaii
+153|51|51|255,Wyoming
+102|0|0|255,New Mexico
+51|0|0|255,Colorado
+153|0|0|255,Texas
+255|51|0|255,Nebraska
+255|102|51|255,South Dakota
+204|51|0|255,North Dakota
+204|0|0|255,Oklahoma
+255|0|0|255,Kansas
+255|153|102|255,Minnesota
+204|102|51|255,Iowa
+153|51|0|255,Missouri
+255|102|0|255,Arkansas
+255|204|153|255,Louisiana
+255|153|0|255,Wisconsin
+204|102|0|255,Illinois
+204|153|102|255,Mississippi
+255|204|102|255,Michigan
+153|102|51|255,Tennessee
+102|51|0|255,Kentucky
+204|153|51|255,Illinois
+255|153|51|255,Alabama
+204|204|0|255,Florida
+255|204|51|255,Ohio
+102|102|0|255,Georgia
+51|51|0|255,North Carolina
+204|204|51|255,Virginia
+153|153|0|255,South Carolina
+204|153|0|255,West Virginia
+255|204|0|255,Pennsylvania
+204|204|153|255,New York
+204|255|0|255,Maryland
+153|0|102|255,District of Columbia
+51|153|153|255,Delaware
+153|204|0|255,New Jersey
+153|153|102|255,Vermont
+204|204|102|255,Massachusetts
+153|153|51|255,Connecticut
+255|255|153|255,New Hampshire
+102|102|51|255,Maine
+102|153|0|255,Rhode Island

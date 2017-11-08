@@ -8,6 +8,9 @@ import dateparser
 
 CONFEDERATE = ["South Carolina", "Mississippi", "Florida", "Alabama", "Georgia", "Louisiana", "Texas"]
 UNION = ["California", "Connecticut", "Illinois", "Indiana", "Iowa", "Kansas", "Maine", "Massachusetts", "Michigan", "Minnesota", "Nevada", "New Hampshire", "New Jersey", "New York", "Ohio", "Oregon", "Pennsylvania", "Rhode Island", "Vermont", "Dist. of Col.", "Wisconsin"]
+CONF_BORDER = ["Arkansas", "North Carolina", "Tennessee", "Virginia"]
+UNION_BORDER = ["Delaware", "Kentucky", "Maryland", "Missouri", "West Virginia"]
+
 PALETTE = ImageColor.from_floats(sns.color_palette())
 DCOL = PALETTE[0]
 RCOL = PALETTE[2]
@@ -79,7 +82,10 @@ def clabel_fn(c, r):
             ], bg=0)
     return img.pad((0, 0, 0, 2), 0)
     
-ylabel = Image.from_text("political leaning of the South versus the North*", arial(24), padding=(5,2,5,10), bg="white").transpose(Image.ROTATE_90)
+
+ylabel = Image.from_column([
+Image.from_text("political leaning of the South versus the North", arial(24), padding=(5,2,5,5), bg="white"),
+Image.from_text("based on the ratio of Republican to Democrat votes in the South divided by the ratio in the North", arial(14), padding=(5,2,5,10), bg="white")], bg="white").transpose(Image.ROTATE_90)
 
 title = Image.from_column([
      Image.from_text("From ‘Solid South’ to Republican heartland".upper(), arial(60, bold=True), bg="white")
@@ -89,15 +95,28 @@ title = Image.from_column([
 img = bar_chart(votes[["leaning"]], 62, 1000, spacing=2, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR,
     ymin=-1, ymax=1, grid_interval=0.125, ylabels=arial(FONT_SIZE), yformat=ylabel_fn, ylabel=ylabel, title=title)
     
-# Time chart
+# Add time chart
 events = pd.DataFrame([{ "group": "event", "name": n, "start": dateparser.parse(s).date(), "end": dateparser.parse(e).date() } for n,s,e in EVENTS])
 groups = events.groupby("group")
 chronology = time_chart(groups, "start", "end", lambda _: EVENTBG, 2620, 50, element_images=lambda d: Image.from_text(d['name'], arial(FONT_SIZE), fg="white", bg=EVENTBG), bg="white")
 img = img.place(chronology, (0, 1), padding=(150,100))
 
-# Footer
-footer = Image.from_text("* based on the ratio of Republican to Democrat votes in the South divided by the ratio in the North; South refers to ex-Confederate non-border states [AL, FL, GA, LA, MS, SC, TX]; North refers to ex-Union non-border states [CA, CT, IA, IL, IN, KS, MA, ME, MI, MN, NH, NJ, NV, NY, OH, OR, PA, RI, VT, WI + DC post 1961]; 1860 numbers combine Northern and Southern Democrats.", arial(14), padding=(2,10), bg="white")
+# Add state map
+UNION = ["District of Columbia" if x == "Dist. of Col." else x for x in UNION]
+def state_color_fn(c):
+    if c == "Borders": return "white"
+    elif c in UNION: return DCOL
+    elif c in CONFEDERATE: return RCOL
+    elif c in CONF_BORDER + UNION_BORDER: return "grey"
+    else: return "#BBBBBB"
+map = map_chart("maps/USA.png", state_color_fn)
+map_thumb = Image.from_column([
+    Image.from_text("‘North’ here refers to ex-Union non-border states\n‘South’ refers to ex-Confederate non-border states", arial(54, bold=True), line_spacing=5),
+    map
+], bg="white").resize_fixed_aspect(width=500)
+img = img.place(map_thumb, (1, 0), padding=(100, 200))
 
-img = Image.from_column([img, footer], bg="white").pad((10,0), "white")
+# Save
+img = img.pad((10,0), "white")
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("output/politics_northsouth.png")

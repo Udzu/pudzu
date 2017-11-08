@@ -111,10 +111,10 @@ def state_color_fn(c):
     else: return "#BBBBBB"
 map = map_chart("maps/USA.png", state_color_fn)
 map_thumb = Image.from_column([
-    Image.from_text("‘North’ here refers to ex-Union non-border states\n‘South’ refers to ex-Confederate non-border states", arial(54, bold=True), line_spacing=5),
+    Image.from_text("‘North’ here refers to ex-Union non-border states\n‘South’ refers to ex-Confederate non-border states", arial(60, bold=True), line_spacing=5),
     map
 ], bg="white").resize_fixed_aspect(width=500)
-img = img.place(map_thumb, (1, 0), padding=(100, 200))
+img = img.place(map_thumb, (1, 0), padding=(80, 200))
 
 # Save
 img = img.pad((10,0), "white")

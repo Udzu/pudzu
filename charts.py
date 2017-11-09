@@ -432,6 +432,8 @@ class ImageMapSort(Enum):
 def name_csv_path(map): return splitext(map)[0] + ".csv"
 def labelbox_img_path(map): return splitext(map)[0] + "_lbox" + splitext(map)[1]
 def labelbox_csv_path(map): return splitext(map)[0] + "_lbox.csv"
+def overlay_path(map): return splitext(map)[0] + "_ov" + splitext(map)[1]
+def overlay_mask_path(map): return splitext(map)[0] + "_ovmask" + splitext(map)[1]
 
 def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite=False):
     """Generate a name csv skeleton, for use in map_chart."""
@@ -490,7 +492,7 @@ def generate_tile_map(array, filename, size, border=0, bg="white"):
     img.save(labelbox_img_path(filename))
     generate_labelbox_csv(filename)
     
-def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"):
+def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black", overlay_fn=None):
     """Generate a map chart from a map image and color mapping. If present, this will use a name csv file with image names
     and a label csv file with label bounding boxes.
     - map (filename): map image filename (and template for the name and label csv filenames).
@@ -498,6 +500,7 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
     - label_fn (name, width, height -> text/image/None): an dict or function that returns either a text label or image. The label location is determined from the label csv file. [None]
     - label_font (font): font to use for text labels. [None]
     - label_color (color): color to use for text labels. [black]
+    - overlay_fn (name -> boolean): whether to include an overlay for a given region. [whether the region is labelled]
     """
     
     # read image and name csv
@@ -524,11 +527,13 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
         img.place(pattern, mask=mask, copy=False)
             
     # generate labels
+    labelled = set()
     if label_fn is not None:
         df = load_labelbox_csv(map)
         logger.info("Using label bounding box file {}".format(labelbox_csv_path(map)))
         labelboxes = { tuple(d["color"]) : BoundingBox(d['bbox']) for _,d in df.iterrows() }
         for c,name in colors:
+            c = c[:3]
             if c not in labelboxes:
                 if ignoring_extra_args(label_fn)(name, img.width, img.height) is not None:
                     logger.warning("No label location found for {}".format(name))
@@ -541,6 +546,23 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
             if label.width > labelboxes[c].width or label.height > labelboxes[c].height:
                 logger.warning("{}x{} label for {} too small to fit {}x{} bounding box".format(label.width, label.height, name, labelboxes[c].width, labelboxes[c].height))
             else:
+                labelled.add(c)
                 img = img.pin(label, labelboxes[c].center)
+                
+    # add overlay
+    # if os.path.exists(overlay_path(map)):
+        # logger.info("Using overlay image file {}".format(overlay_path(map)))
+        # ov = Image.open(overlay_path(map))
+        # if os.path.exists(overlay_mask_path(map)):
+            # logger.info("Using overlay mask file {}".format(overlay_mask_path(map)))
+            # ovmask = Image.open(overlay_mask_path(map))
+            # mask = Image.new("1", map.shape, "black")
+            # overlays = labelled if overlay_fn is None else [c for c,name in colors if overlay_fn(name)]
+            # for c in overlays:
+                # cmask = original.select_color(c)
+                # mask = mask.place(cmask, mask=cmask)
+            # # TODO: combine masks?
+        # img = Image.alpha_composite(img, ov)
+        
     return img
             

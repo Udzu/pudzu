@@ -5,7 +5,6 @@ import seaborn as sns
 from dates import *
 import dateparser
 
-
 CONFEDERATE = ["South Carolina", "Mississippi", "Florida", "Alabama", "Georgia", "Louisiana", "Texas"]
 UNION = ["California", "Connecticut", "Illinois", "Indiana", "Iowa", "Kansas", "Maine", "Massachusetts", "Michigan", "Minnesota", "Nevada", "New Hampshire", "New Jersey", "New York", "Ohio", "Oregon", "Pennsylvania", "Rhode Island", "Vermont", "Dist. of Col.", "Wisconsin"]
 CONF_BORDER = ["Arkansas", "North Carolina", "Tennessee", "Virginia"]
@@ -111,7 +110,7 @@ def state_color_fn(c):
     else: return "#BBBBBB"
 map = map_chart("maps/USA.png", state_color_fn)
 map_thumb = Image.from_column([
-    Image.from_text("‘North’ here refers to ex-Union non-border states\n‘South’ refers to ex-Confederate non-border states", arial(60, bold=True), line_spacing=5),
+    Image.from_text("‘North’ refers to ex-Union non-border states\n‘South’ refers to ex-Confederate non-border states", arial(60, bold=True), line_spacing=5),
     map
 ], bg="white").resize_fixed_aspect(width=500)
 img = img.place(map_thumb, (1, 0), padding=(80, 200))

@@ -136,7 +136,7 @@ def language_hyphenator(lang='en_EN'):
 
 class _ImageDraw():
 
-    _emptyImage = Image.new("RGB", (0,0))
+    _emptyImage = Image.new("RGBA", (0,0))
     _emptyDraw = ImageDraw.Draw(_emptyImage)
     
     @classmethod
@@ -344,17 +344,21 @@ class _Image(Image.Image):
             img = cls.from_url(url, filepath)
         return img
         
-    def overlay(self, img, box=(0,0), mask=Ellipsis, copy=False):
-        """Paste an image. By default this uses its alpha channel as a mask (unlike Image.paste)."""
-        if mask is Ellipsis:
-            mask = img if 'A' in img.mode else None
-        if isinstance(box, BoundingBox):
-            box = box.corners
+    def to_rgba(self):
+        """Return an RGBA copy of the image (or leave unchanged if it already is)."""
+        return self if self.mode == "RGBA" else self.convert("RGBA")
+        
+    def overlay(self, img, box=(0,0), mask=None, copy=False):
+        """Paste an image respecting alpha channels (unlike Image.paste)."""
+        if isinstance(box, BoundingBox): box = box.corners
+        if img.mode.endswith('A'):
+            if len(box) == 2: box = (box[0], box[1], min(self.width, box[0]+img.width), min(self.height, box[1]+img.height))
+            img = Image.alpha_composite(self.crop(box).to_rgba(), img.crop((0, 0, box[2]-box[0], box[3]-box[1])))
         base = self.copy() if copy else self
         base.paste(img, box, mask)
         return base
         
-    def place(self, img, align=0.5, padding=0, mask=Ellipsis, copy=True):
+    def place(self, img, align=0.5, padding=0, mask=None, copy=True):
         """Overlay an image using the given alignment and padding."""
         align, padding = Alignment(align), Padding(padding)
         x = int(padding.l + align.x * (self.width - (img.width + padding.x)))
@@ -495,7 +499,7 @@ Image.Image.resize = _Image.resize
 Image.Image.resize_fixed_aspect = _Image.resize_fixed_aspect
 Image.Image.replace_color = _Image.replace_color
 Image.Image.select_color = _Image.select_color
-Image.Image.remove_transparency = _Image.remove_transparency
+Image.Image.to_rgba = _Image.to_rgba
 
 def font(name, size, bold=False, italics=False):
     """Return a truetype font object."""

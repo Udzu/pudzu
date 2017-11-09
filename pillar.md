@@ -193,7 +193,7 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 
 ### Image.Image
 
-**Image.Image.overlay**: like Image.Image.paste, but by default uses the pasted image's alpha channel as a mask and supports a copy parameter.
+**Image.Image.overlay**: like Image.Image.paste, but by default uses the pasted image's alpha channel and supports a copy parameter.
 
 ```python
 >> base = Image.new("RGB", (100,60), "blue")

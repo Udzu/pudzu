@@ -550,19 +550,18 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
                 img = img.pin(label, labelboxes[c].center)
                 
     # add overlay
-    # if os.path.exists(overlay_path(map)):
-        # logger.info("Using overlay image file {}".format(overlay_path(map)))
-        # ov = Image.open(overlay_path(map))
-        # if os.path.exists(overlay_mask_path(map)):
-            # logger.info("Using overlay mask file {}".format(overlay_mask_path(map)))
-            # ovmask = Image.open(overlay_mask_path(map))
-            # mask = Image.new("1", map.shape, "black")
-            # overlays = labelled if overlay_fn is None else [c for c,name in colors if overlay_fn(name)]
-            # for c in overlays:
-                # cmask = original.select_color(c)
-                # mask = mask.place(cmask, mask=cmask)
-            # # TODO: combine masks?
-        # img = Image.alpha_composite(img, ov)
-        
+    if os.path.exists(overlay_path(map)):
+        logger.info("Using overlay image file {}".format(overlay_path(map)))
+        ov = Image.open(overlay_path(map))
+        mask = None
+        if os.path.exists(overlay_mask_path(map)):
+            logger.info("Using overlay mask file {}".format(overlay_mask_path(map)))
+            ovmask = Image.open(overlay_mask_path(map))
+            mask = Image.new("1", ov.size, "black")
+            overlays = labelled if overlay_fn is None else [c for c,name in colors if overlay_fn(name)]
+            for c in overlays:
+                cmask = ovmask.select_color(c)
+                mask = mask.place(cmask, mask=cmask)
+        img.overlay(ov, mask=mask)
     return img
             

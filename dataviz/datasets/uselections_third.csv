@@ -1,0 +1,41 @@
+year,candidate,party,votes,percent,electoral
+1860,John Bell,Constitutional Union Party,590901,12.6,39
+1864,,none,0,0,0
+1868,,none,0,0,0
+1872,Charles O'Conor,Straight-Out Democrats,18602,0.3,0
+1876,Peter Cooper,Greenback Party,83726,0.99,0
+1880,James B. Weaver,Greenback Party,308649,3.35,0
+1884,John St. John,Prohibition Party,147482,1.50,0
+1888,Clinton B. Fisk,Prohibition Party,249819,2.20,0
+1892,James B. Weaver,People's Party,1026595,8.51,22
+1896,John M. Palmer,National Democratic Party,134645,0.97,0
+1900,John G. Woolley,Prohibition Party,210864,1.51,0
+1904,Eugene V. Debs,Socialist Party,402810,2.98,0
+1908,Eugene V. Debs,Socialist Party,420852,2.83,0
+1912,Theodore Roosevelt,Progressive Party 1912,4122721,27.40,88
+1916,Allan L. Benson,Socialist Party,590524,3.19,0
+1920,Eugene V. Debs,Socialist Party,913693,3.41,0
+1924,Robert M. La Follette,Progressive Party 1924,4831706,16.61,13
+1928,Norman Thomas,Socialist Party,267478,0.73,0
+1932,Norman Thomas,Socialist Party,884885,2.23,0
+1936,William Lemke,Union,892378,1.95,0
+1940,Norman Thomas,Socialist Party,116599,0.23,0
+1944,(none),Texas Regulars,143238,0.30,0
+1948,Strom Thurmond,States' Rights Democratic,1175930,2.41,39
+1952,Vincent Hallinan,Progressive Party 1948,140746,0.23,0
+1956,T. Coleman Andrews,States' Rights,107929,0.17,0
+1960,Eric Hass,Socialist Labor,47522,0.07,0
+1964,Eric Hass,Socialist Labor,45189,0.06,0
+1968,George Corley Wallace,American Independent,9901118,13.53,46
+1972,John G. Schmitz,American Independent,1100868,1.42,0
+1976,Eugene McCarthy,(none),740460,0.91,0
+1980,John Bayard Anderson,Independent,5719850,6.61,0	
+1984,David Bergland,Libertarian,228111,0.25,0
+1988,Ronald Ernest Paul,Libertarian,431750,0.47,0
+1992,Henry Ross Perot,Independent,19743821,18.91,0
+1996,Henry Ross Perot,Reform,8085294,8.40,0
+2000,Ralph Nader,Green,2882955,2.74,0
+2004,Ralph Nader,independent,465151,0.38,0
+2008,Ralph Nader,independent,739034,0.56,0
+2012,Gary Johnson,Libertarian,1275971,0.99,0
+2016,Gary Johnson,Libertarian,4489221,3.28,0

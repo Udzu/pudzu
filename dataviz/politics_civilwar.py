@@ -97,7 +97,7 @@ img = bar_chart(votes[["leaning"]], 62, 1000, spacing=2, colors=color_fn, clabel
 # Add time chart
 events = pd.DataFrame([{ "group": "event", "name": n, "start": dateparser.parse(s).date(), "end": dateparser.parse(e).date() } for n,s,e in EVENTS])
 groups = events.groupby("group")
-chronology = time_chart(groups, "start", "end", lambda _: EVENTBG, 2620, 50, element_images=lambda d: Image.from_text(d['name'], arial(FONT_SIZE), fg="white", bg=EVENTBG), bg="white")
+chronology = time_chart(groups, "start", "end", lambda _: EVENTBG, 2620, 50, element_images=lambda d: Image.from_text(d['name'], arial(16), fg="white", bg=EVENTBG), bg="white")
 img = img.place(chronology, (0, 1), padding=(150,100))
 
 # Add state map

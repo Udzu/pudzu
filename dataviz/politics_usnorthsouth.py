@@ -27,7 +27,7 @@ EVENTS = [
 
 # Generate data
 try:
-    votes = pd.read_csv("cache/politics_northsouth.csv").set_index("year")
+    votes = pd.read_csv("cache/politics_usnorthsouth.csv").set_index("year")
 except OSError:
     votes = pd.read_csv("datasets/uselections_ucsb.csv", dtype={"rep_col": str, "dem_col": str}).split_columns(("rep_col", "dem_col"), "|").set_index("year")
 
@@ -53,7 +53,7 @@ except OSError:
             leaning = (ratio - 1) if ratio < 1 else 1 - (1 / ratio)
             votes.set_value(y, "leaning", leaning)
             print("{},{},{},{},{},{}".format(y, union_rep, union_dem,conf_rep, conf_dem, leaning))
-    votes.to_csv("cache/politics_northsouth.csv")
+    votes.to_csv("cache/politics_usnorthsouth.csv")
 
 # Bar chart
 def color_fn(c, r, v):
@@ -118,4 +118,4 @@ img = img.place(map_thumb, (1, 0), padding=(80, 200))
 # Save
 img = img.pad((10,0), "white")
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
-img.save("output/politics_northsouth.png")
+img.save("output/politics_usnorthsouth.png")

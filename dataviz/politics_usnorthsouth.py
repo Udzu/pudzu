@@ -5,10 +5,9 @@ import seaborn as sns
 from dates import *
 import dateparser
 
-CONFEDERATE = ["South Carolina", "Mississippi", "Florida", "Alabama", "Georgia", "Louisiana", "Texas"]
+CONFEDERATE = ["South Carolina", "Mississippi", "Florida", "Alabama", "Georgia", "Louisiana", "Texas"] + ["Arkansas", "North Carolina", "Tennessee", "Virginia"]
 UNION = ["California", "Connecticut", "Illinois", "Indiana", "Iowa", "Kansas", "Maine", "Massachusetts", "Michigan", "Minnesota", "Nevada", "New Hampshire", "New Jersey", "New York", "Ohio", "Oregon", "Pennsylvania", "Rhode Island", "Vermont", "Dist. of Col.", "Wisconsin"]
-CONF_BORDER = ["Arkansas", "North Carolina", "Tennessee", "Virginia"]
-UNION_BORDER = ["Delaware", "Kentucky", "Maryland", "Missouri", "West Virginia"]
+BORDER = ["Delaware", "Kentucky", "Maryland", "Missouri", "West Virginia"]
 
 PALETTE = ImageColor.from_floats(sns.color_palette())
 DCOL = PALETTE[0]
@@ -106,11 +105,11 @@ def state_color_fn(c):
     if c == "Borders": return "white"
     elif c in UNION: return DCOL
     elif c in CONFEDERATE: return RCOL
-    elif c in CONF_BORDER + UNION_BORDER: return "grey"
+    elif c in BORDER: return "grey"
     else: return "#BBBBBB"
 map = map_chart("maps/USA.png", state_color_fn)
 map_thumb = Image.from_column([
-    Image.from_text("‘North’ refers to ex-Union non-border states\n‘South’ refers to ex-Confederate non-border states", arial(60, bold=True), line_spacing=5),
+    Image.from_text("‘South’ refers to ex-Confederate states\n‘North’ refers to ex-Union non-border states", arial(60, bold=True), line_spacing=5),
     map
 ], bg="white").resize_fixed_aspect(width=500)
 img = img.place(map_thumb, (1, 0), padding=(80, 200))

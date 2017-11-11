@@ -68,7 +68,7 @@ title = Image.from_column([
 img = bar_chart(votes[["margin"]], 62, 1000, spacing=2, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR,
     ymin=-0.0501, ymax=0.301, label_interval=0.05, grid_interval=0.025, ylabels=arial(FONT_SIZE), yformat="{:.0%}", ylabel=ylabel, title=title)
     
-footer = Image.from_text("[1860] Northern Democrat Douglas received the second most votes in 1860, though Southern Democrat Breckinridge and Consitutional Unionist John Bell both received more electoral votes.\n[1912] Roosevelt was runner-up in both votes and electoral votes in 1912 while running for the Progressive (Bull Moose) Part\n[1960] The unusual nature of the 1960 election in Alabama makes it possible to argue that Nixon actually won the popular vote.\n[2016] In 2016, Trump lyingly claimed that he \"won the popular vote if you deduct the millions of people who voted illegally\".", arial(16), padding = 10)
+footer = Image.from_text("[1860] Northern Democrat Douglas received the second most votes in 1860, though Southern Democrat Breckinridge and Consitutional Unionist John Bell both received more electoral votes.\n[1912] Roosevelt was runner-up in both votes and electoral votes in 1912 while running for the Progressive (\"Bull Moose\") Party\n[1960] The unusual nature of the 1960 election in Alabama makes it possible to argue that Nixon actually won the popular vote.\n[2016] Trump falsely claimed that he \"won the popular vote if you deduct the millions of people who voted illegally\".", arial(16), padding = 10)
 img = Image.from_column([img, footer], bg="white")
     
 # Save

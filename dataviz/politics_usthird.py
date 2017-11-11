@@ -65,9 +65,9 @@ for p,y,d,c in LEGEND
 
 legend = legend.pad(10, "white").pad(1, "black").pad(5, "white")
 
-imgleg = img.pin(legend, (img.width, 0), align=0, bg="white")
+img = img.pin(legend, (img.width, 0), align=0, bg="white")
     
 # # Save
-img = img.pad((10,0), "white")
+img = img.pad(10, "white")
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("output/politics_usthird.png")

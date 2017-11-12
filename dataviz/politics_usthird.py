@@ -4,18 +4,35 @@ from charts import *
 import seaborn as sns
 
 PALETTE = ImageColor.from_floats(sns.color_palette())
+HLS = ImageColor.from_floats(sns.color_palette("hls", 16))
+
 FONT_SIZE = 12
 
+BLUE = PALETTE[0]
+RED = PALETTE[2]
+GREEN = PALETTE[1]
+PINK = HLS[-2]
+GREY = "grey"
+ORANGE = '#db9000'
+
 LEGEND = [
-("Constitutional Union Party", "1860", "Big tent party whose main aim was to preserve the Union. There were two Democratic candidates this year (Northern and Southern).", "orange"),
-("none", "1864/68", "No known third party candidates for 1864 and 1868, though deceased Republican elector Ellsworth Cheeseborough is recorded as getting 543 votes in 1864.", "grey"),
-("Straight-Out Democrats", "1872", "Conservative Southern Democrat faction who rejected Horace Greeley (the Liberal Republican who ran with Demoratic support).", PALETTE[0]),
-("Greenback Party", "1880/84", "Anti-monopolist labor party", "green"),
-("Prohibition Party", "1884/88/1900", "Temperance movement", "#FF00FF"),
-("People's Party", "1892", "Populist agrarian party and successor of the Greenback Party", "green"),
-("National Democratic Party", "1896", "Conservative Southern Democrat faction who rejected William Jennings Bryan (the Democratic and People's Party nominee).", PALETTE[0]),
+("Constitutional Union Party", "1860", "Big tent party whose main aim was to preserve the Union. There were two Democratic candidates this year (Northern and Southern).", ORANGE),
+("none", "1864, 68", "No known third party candidates for 1864 and 1868, though deceased Republican elector Ellsworth Cheeseborough is recorded as getting 543 votes in 1864.", GREY),
+("Straight-Out Democrats", "1872", "Conservative Southern Democrat faction who rejected Horace Greeley (the Liberal Republican who ran with Demoratic support).", BLUE),
+("Greenback Party", "1880, 84", "Anti-monopolist labor party", GREEN),
+("Prohibition Party", "1884, 88, 1900", "Temperance movement", PINK),
+("People's Party", "1892", "Populist agrarian party and successor of the Greenback Party", GREEN),
+("National Democratic Party", "1896", "Conservative Southern Democrat faction who rejected William Jennings Bryan (the Democratic and People's Party nominee).", BLUE),
 # TODO
-("Progressive Party 1912", "1912", "Roosevelt's Progressive Party", "green"),
+("Progressive Party", "1912", "Roosevelt's Progressive Party", GREEN),
+("Socialist Party", "1904, 08, 16, 20, 28, 32, 40", "Democratic socialist party", RED),
+("Progressive Party", "1924", "A diffeerent Progressive Party", GREEN),
+("Union Party", "1936", "Some", "#7F3300"),
+("Texas Regulars", "1944", "Democrats", BLUE),
+("States' Rights Democratic", "1948", "Dixiecrats", ORANGE),
+("Progressive Party", "1952", "A diffeerent Progressive Party", GREEN),
+("States' Rights Party", "1956", "Also unpledged electors", GREY),
+("Socialist Labor Party", "1960, 64", "Also unpledged electors", RED)
 ]
 
 # 1896:Bryan was People's as well as Democrat; breakaway
@@ -42,6 +59,10 @@ def clabel_fn(c, r):
         ], bg=0)
     return img.pad((0, 0, 0, 2), 0)
     
+def rlabel_fn(r):
+    ev = votes.electoral.iloc[r]
+    return None if ev == 0 else Image.from_text("{} EVs".format(ev), arial(FONT_SIZE, bold=True), bg="white", padding=(1,3))
+    
 ylabel = Image.from_text("popular vote percentage", arial(24), padding=(5,2,5,10), bg="white").transpose(Image.ROTATE_90)
 
 title = Image.from_column([
@@ -49,7 +70,7 @@ title = Image.from_column([
     , Image.from_text("non-Democrat/Republican candidate with highest popular vote since 1860".upper(), arial(36), bg="white")
     ], bg="white", padding=(0, 5)).pad((0,0,0,10), "white")
 
-img = bar_chart(votes[["percent"]], 62, 1000, spacing=2, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR,
+img = bar_chart(votes[["percent"]], 62, 1000, spacing=2, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR, rlabels=rlabel_fn,
     ymin=0, ymax=0.301, label_interval=0.05, grid_interval=0.025, ylabels=arial(FONT_SIZE), yformat="{:.0%}", ylabel=ylabel, title=title)
     
 # Legend

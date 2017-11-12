@@ -4,7 +4,7 @@ from charts import *
 from bamboo import *
 
 flags = pd.read_csv("datasets/countries.csv").filter_boolean(lambda df: df.code != "EUU").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country').drop_duplicates(subset='flag', keep='first')
-bg = "#EEEEEE"
+bg = "white"
 
 def image_flag(c):
     return Image.from_url_with_cache(flags['flag'][c]).convert("RGB")
@@ -22,7 +22,7 @@ def average_image(imgs, size, weights=None):
 def average_flag(df, size, weights=None):
     if callable(weights): weights = weights(df)
     flags = [Image.from_url_with_cache(i).convert("RGB") for i in df.flag]
-    return average_image(flags, size, weights)
+    return average_image(flags, (size[0]-2,size[1]-2), weights).pad(1, "black")
 
 continents = list(flags.groupby("continent").count().index)
 continentlabels = [ Image.from_text(continent.upper(), arial(60, bold=True), "black", bg)  for continent in continents ]

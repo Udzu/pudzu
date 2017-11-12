@@ -4,7 +4,7 @@ from charts import *
 from bamboo import *
 
 df = pd.read_csv("datasets/flagsuk.csv")
-fg, bg="black", "#EEEEEE"
+fg, bg="black", "white"
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 
 array = [[
@@ -12,7 +12,7 @@ array = [[
         Image.from_text(d['country'], arial(48, bold=True), fg=fg, bg=bg, align="center", max_width=400),
         Image.from_text("({})".format(d['dates']), arial(48, bold=False), fg=fg, bg=bg)
     ], bg=bg, padding=(0,5)),
-    Image.from_url_with_cache(d['flag']).resize((320,200)),
+    Image.from_url_with_cache(d['flag']).resize((318,198)).pad(1, "grey"),
     Image.from_text(get_non(d, 'description', 'f'), arial(48), fg=fg, bg=bg, max_width=1000, padding=(0,4,0,8))
     ]
     for _, d in df.iterrows()]

@@ -5,7 +5,7 @@ from bamboo import *
 
 df = pd.read_csv("datasets/flagseucolonised.csv")
 data = pd.DataFrame(list(generate_batches([dict(row) for _,row in df.iterrows()], 7)))
-fg, bg="black", "#EEEEEE"
+fg, bg="black", "white"
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 
 flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country')['flag']
@@ -18,7 +18,7 @@ def process(d):
                       ], padding=(5,5), bg=bg),
       Image.from_text(d['name'], arial(24, bold=True), fg=fg, bg=bg),
       Image.from_text(d['description'], arial(24, italics=True), fg=fg, bg=bg),
-      Image.from_url_with_cache(d['flag']).resize((320 if d['country'] != "Switzerland" else 200,200)),
+      Image.from_url_with_cache(d['flag']).resize((318 if d['country'] != "Switzerland" else 198,198)).pad((1,1,int(d['country'] != "Germany"), 1), "grey"),
       Image.from_text(d['dates'], arial(24), fg=fg, bg=bg)
       ], padding=4, bg=bg)
 

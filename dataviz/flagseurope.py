@@ -5,8 +5,7 @@ from bamboo import *
 
 df = pd.read_csv("datasets/eucapitals.csv")
 data = pd.DataFrame(list(generate_batches([dict(row) for _,row in df.iterrows()], 4))[:2])
-fg, bg="black", "#EEEEEE"
-#fg, bg="white", "black"
+fg, bg="black", "white"
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 
 flags = { "Kosovo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Kosovo.svg/1024px-Flag_of_Kosovo.svg.png",
@@ -38,10 +37,10 @@ def process(img, d):
       Image.from_text(d['country'], arial(24, bold=True), fg=fg, bg=bg),
       Image.from_text(d['state'], arial(24, italics=True), max_width=320, align="center", fg=fg, bg=bg),
       Image.from_text("({})".format(d['recognition']), arial(24, italics=False), max_width=320, align="center", padding=(0,0,0,4), fg=fg, bg=bg),
-      Image.from_url_with_cache(flags.get(d['country'], default_img)).resize((320,200)),
+      Image.from_url_with_cache(flags.get(d['country'], default_img)).resize((318,198)).pad(1, "grey"),
       Image.from_text(d['capital'], arial(24, bold=True), fg=fg, bg=bg),
       Image.from_text("(pop. {})".format(d['population']), arial(24, bold=False), fg=fg, bg=bg),
-      Image.from_url_with_cache(cityflags.get(d['country'], default_img)).resize((320,200)),
+      Image.from_url_with_cache(cityflags.get(d['country'], default_img)).resize((318,198)).pad(1, "grey"),
       img.crop_to_aspect(200, 200, (0.5, 0.2)).resize_fixed_aspect(width=320)
       ], padding=4, bg=bg)
 
@@ -50,5 +49,5 @@ title = Image.from_column([
     Image.from_text("de facto capital cities of unrecognised or partly recognised states", arial(48, italics=True), fg=fg, bg=bg)
     ], bg=bg)
       
-grid = grid_chart(data, lambda d: print(d) or get_non(d, "image", default_img), image_process=process, padding=(10,20), bg=bg, yalign=0, title=title).pad(20, bg)
+grid = grid_chart(data, lambda d: get_non(d, "image", default_img), image_process=process, padding=(10,20), bg=bg, yalign=0, title=title).pad(20, bg)
 grid.save("output/flagseurope.png")

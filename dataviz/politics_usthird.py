@@ -32,7 +32,13 @@ LEGEND = [
 ("States' Rights Democratic", "1948", "Dixiecrats", ORANGE),
 ("Progressive Party", "1952", "A diffeerent Progressive Party", GREEN),
 ("States' Rights Party", "1956", "Also unpledged electors", GREY),
-("Socialist Labor Party", "1960, 64", "Also unpledged electors", RED)
+("Socialist Labor Party", "1960, 64", "Also unpledged electors", RED),
+("American Independent Party", "1968", "Far-right", ORANGE),
+("Eugene McCarthy", "1972", "Independent", GREY),
+("John B. Anderson", "1976", "Independent", GREY),
+("Libertarian Party", "1984, 88, 2012, 16", "Libertarian", GREY), # YELLOW
+("Perot/Reform Party", "1992, 96", "Perot", GREY),
+("Nader/Green Party", "2000, 04, 08", "Nader", GREEN)
 ]
 
 # 1896:Bryan was People's as well as Democrat; breakaway

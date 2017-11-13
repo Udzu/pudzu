@@ -373,6 +373,12 @@ class _Image(Image.Image):
         img = Image.new("RGBA", (self.width + padding.x, self.height + padding.y), bg)
         return img.overlay(self, (padding.l, padding.u), None)
         
+    def trim(self, padding):
+        """Return a cropped image."""
+        padding = Padding(padding)
+        if padding.x == padding.y == 0: return self
+        return self.crop((padding.l, padding.u, self.width-padding.r, self.height-padding.d))
+        
     def pin(self, img, position, align=0.5, bg=(0,0,0,0), offsets=None):
         """Pin an image onto another image, copying and if necessary expanding it. Uses and updates optional offset structure."""
         align = Alignment(align)
@@ -491,6 +497,7 @@ Image.EMPTY_IMAGE = Image.new("RGBA", (0,0))
 Image.Image.overlay = _Image.overlay
 Image.Image.place = _Image.place
 Image.Image.pad = _Image.pad
+Image.Image.trim = _Image.trim
 Image.Image.pin = _Image.pin
 Image.Image.crop_to_aspect = _Image.crop_to_aspect
 Image.Image.pad_to_aspect = _Image.pad_to_aspect

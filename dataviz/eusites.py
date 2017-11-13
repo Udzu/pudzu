@@ -29,7 +29,7 @@ def make_flag(countries):
 
 array = [[
     make_flag(get_non(d, 'country')),
-    Image.from_url_with_cache(get_non(d, 'logo', default_img)).pad_to_aspect(1, bg="white").resize_fixed_aspect(width=100),
+    Image.from_url_with_cache(get_non(d, 'logo', default_img)).pad_to_aspect(4, 3, bg="white").resize_fixed_aspect(width=100),
     Image.from_column([
         Image.from_text("{}. {}".format(d['rank'], d['domain'].upper()), arial(20, bold=True), fg=fg, bg=bg, padding=(0,1)),
         Image.from_text(get_non(d, 'description', '??')+".", arial(16), fg=fg, bg=bg, padding=(0,1))

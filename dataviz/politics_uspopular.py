@@ -39,6 +39,12 @@ except OSError:
 
 # Bar chart
 
+def winner(y):
+    return votes.rep_can[y] if  votes.rep_can[y] in votes.president[y] else votes.dem_can[y]
+    
+def loser(y):
+    return votes.dem_can[y] if  votes.rep_can[y] in votes.president[y] else votes.rep_can[y]
+    
 def color_fn(c, r, v):
     y = votes.index[r]
     return RCOL if votes.rep_can[y] in votes.president[y] else DCOL
@@ -67,8 +73,38 @@ title = Image.from_column([
 
 img = bar_chart(votes[["margin"]], 62, 1000, spacing=2, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR,
     ymin=-0.0501, ymax=0.301, label_interval=0.05, grid_interval=0.025, ylabels=arial(FONT_SIZE), yformat="{:.0%}", ylabel=ylabel, title=title)
-    
-footer = Image.from_text("[1860] Northern Democrat Douglas received the second most votes in 1860, though Southern Democrat Breckinridge and Consitutional Unionist John Bell both received more electoral votes.\n[1912] Roosevelt was runner-up in both votes and electoral votes in 1912 while running for the Progressive (\"Bull Moose\") Party\n[1960] The unusual nature of the 1960 election in Alabama makes it possible to argue that Nixon actually won the popular vote.\n[2016] Trump falsely claimed that he \"won the popular vote if you deduct the millions of people who voted illegally\".", arial(16), padding = 10)
+
+# Photos
+PHOTOS = [
+(1876, "https://upload.wikimedia.org/wikipedia/commons/6/60/SamuelJonesTilden.png", "https://upload.wikimedia.org/wikipedia/commons/e/ed/RutherfordBHayes.png", "3.02%"),
+(2016, "https://upload.wikimedia.org/wikipedia/commons/2/28/Hillary_Clinton_by_Gage_Skidmore_2.jpg", "https://upload.wikimedia.org/wikipedia/commons/0/05/Official_Portrait_of_President_Donald_Trump_%28cropped%29.jpg", "2.10%"),
+(1888, "https://upload.wikimedia.org/wikipedia/commons/f/f3/Grover_Cleveland_-_NARA_-_518139_%28cropped%29.jpg", "https://upload.wikimedia.org/wikipedia/commons/7/7e/Pach_Brothers_-_Benjamin_Harrison.jpg", "0.79%"),
+(2000, "https://upload.wikimedia.org/wikipedia/commons/c/c5/Al_Gore%2C_Vice_President_of_the_United_States%2C_official_portrait_1994.jpg", "https://upload.wikimedia.org/wikipedia/commons/d/d4/George-W-Bush.jpeg", "0.51%"),
+(1960, "https://upload.wikimedia.org/wikipedia/commons/0/09/VP-Nixon_copy_%283x4%29.jpg", "https://upload.wikimedia.org/wikipedia/commons/5/5e/John_F._Kennedy%2C_White_House_photo_portrait%2C_looking_up.jpg", "??")
+]
+
+LSIZE = 20
+
+label = Image.from_text("Presidents who\nlost the\npopular vote:".upper(), arial(LSIZE, bold=True), bg="white", padding=10, align="right")
+
+photo_array = [
+ [Image.from_row([
+    Image.from_text("{}{}".format(y, "?"*int(y == 1960)), arial(LSIZE, bold=True), bg="white"),
+    Image.from_text(" (see notes)" if y == 1960 else " (by {})".format(p), arial(LSIZE), bg="white")], bg="white"),
+  Image.from_array([
+    [Image.from_url_with_cache(w).crop_to_aspect(200, 300, (0.5, 0.2)).resize_fixed_aspect(width=100),
+     Image.from_url_with_cache(l).crop_to_aspect(200, 300, (0.5, 0.2)).resize_fixed_aspect(width=100)],    
+    [Image.from_text(winner(y), arial(LSIZE, bold=True), RCOL if votes.rep_can[y] in votes.president[y] else DCOL, bg="white"),
+     Image.from_text(loser(y), arial(LSIZE, bold=False), DCOL if votes.rep_can[y] in votes.president[y] else RCOL, bg="white")]], bg="white", padding=(0,2))]
+  for (y, l, w, p) in PHOTOS]
+photos = Image.from_array(list(zip(*photo_array)), bg="white", padding=(10,2))
+
+notes = Image.from_column([
+Image.from_text("Notes", arial(LSIZE, bold=True), bg="white", padding=(0,2)),
+Image.from_text("[1824] John Quincy Adams lost the popular vote in 1824, though a third of states still didn't vote for their electors.\n[1860] Northern Democrat Douglas received the second most votes in 1860, though Southern Democrat Breckinridge and Consitutional Unionist John Bell both received more electoral votes.\n[1912] Roosevelt was runner-up in both votes and electoral votes in 1912 while running for the Progressive (\"Bull Moose\") Party\n[1960] The unusual nature of the 1960 election in Alabama makes it possible to argue that Nixon actually won the popular vote.\n[2016] Trump falsely claimed that he \"won the popular vote if you deduct the millions of people who voted illegally\".", arial(LSIZE), bg="white", max_width=1200)],
+bg="white", padding=(40,2,10,2), xalign=0)
+
+footer = Image.from_row([label, photos, notes], bg="white").pad((0,0,0,10), "white")
 img = Image.from_column([img, footer], bg="white")
     
 # Save

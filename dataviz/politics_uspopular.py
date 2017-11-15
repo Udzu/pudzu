@@ -68,7 +68,7 @@ ylabel = Image.from_text("popualr vote margin by percentage", arial(24), padding
 
 title = Image.from_column([
      Image.from_text("popular vote margin in U.S. presidential elections".upper(), arial(60, bold=True), bg="white")
-    , Image.from_text("margin by percentage between the election winner and loser with most votes".upper(), arial(36), bg="white")
+    , Image.from_text("% margin since 1860 between the election winner and loser with most votes".upper(), arial(36), bg="white")
     ], bg="white", padding=(0, 5)).pad((0,0,0,10), "white")
 
 img = bar_chart(votes[["margin"]], 62, 1000, spacing=2, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR,
@@ -85,7 +85,7 @@ PHOTOS = [
 
 LSIZE = 20
 
-label = Image.from_text("Presidents who\nlost the\npopular vote:".upper(), arial(LSIZE, bold=True), bg="white", padding=10, align="right")
+label = Image.from_text("Presidents\nwho lost the\npopular vote:".upper(), arial(LSIZE, bold=True), bg="white", padding=10, align="right")
 
 photo_array = [
  [Image.from_row([
@@ -101,8 +101,8 @@ photos = Image.from_array(list(zip(*photo_array)), bg="white", padding=(10,2))
 
 notes = Image.from_column([
 Image.from_text("Notes", arial(LSIZE, bold=True), bg="white", padding=(0,2)),
-Image.from_text("[1824] John Quincy Adams lost the popular vote in 1824, though a third of states still didn't vote for their electors.\n[1860] Northern Democrat Douglas received the second most votes in 1860, though Southern Democrat Breckinridge and Consitutional Unionist John Bell both received more electoral votes.\n[1912] Roosevelt was runner-up in both votes and electoral votes in 1912 while running for the Progressive (\"Bull Moose\") Party\n[1960] The unusual nature of the 1960 election in Alabama, where voters voted for multiple electors rather than a slate, makes it possible to argue that Nixon actually won the popular vote.\n[2016] Trump falsely claimed that he \"won the popular vote if you deduct the millions of people who voted illegally\".", arial(LSIZE), bg="white", max_width=1200)],
-bg="white", padding=(40,2,10,2), xalign=0)
+Image.from_text("[1824] John Quincy Adams also lost the popular vote in 1824, though a third of states still didn't vote for their electors.\n[1860] Northern Democrat Douglas received the second most votes in 1860, though Southern Democrat Breckinridge and Consitutional Unionist John Bell both received more electoral votes.\n[1912] Roosevelt was runner-up in both votes and electoral votes in 1912 while running for the Progressive (\"Bull Moose\") Party\n[1960] The unusual nature of the 1960 election in Alabama, where voters voted for multiple electors rather than a slate, makes it possible to argue that Nixon actually won the popular vote.\n[2016] Trump falsely claimed that he \"won the popular vote if you deduct the millions of people who voted illegally\".", arial(LSIZE), bg="white", max_width=1200, padding=(0,2))],
+bg="white", padding=(40,0,10,0), xalign=0)
 
 footer = Image.from_row([label, photos, notes], bg="white").pad((0,0,0,10), "white")
 img = Image.from_column([img, footer], bg="white")

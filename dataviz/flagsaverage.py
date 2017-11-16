@@ -4,7 +4,7 @@ from charts import *
 from bamboo import *
 
 flags = pd.read_csv("datasets/countries.csv").filter_boolean(lambda df: df.code != "EUU").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country').drop_duplicates(subset='flag', keep='first')
-bg = "white"
+bg = "#EEEEEE"
 
 def image_flag(c):
     return Image.from_url_with_cache(flags['flag'][c]).convert("RGB")

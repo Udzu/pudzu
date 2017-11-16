@@ -38,9 +38,8 @@ def split_rows(array, n):
     pad = len(array[0])
     split = list(generate_batches(array, n))
     return list(map(artial(sum, []), zip_longest(*split, fillvalue=[None]*pad)))
-    
 
-for source in ["eusites_moz", "eusites_alexa"]:
+for source in ["eusites_moz", "eusites_alexa"]: # Alexa list from http://rpki.surfnet.nl/top500.php
 
     df = pd.read_csv("datasets/{}.csv".format(source)).split_columns(('country'), "|")
 

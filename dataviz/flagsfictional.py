@@ -5,7 +5,7 @@ from bamboo import *
 
 df = pd.read_csv("datasets/flagsfictional.csv")
 data = pd.DataFrame(list(generate_batches([dict(row) for _,row in df.iterrows()], 3)))
-fg, bg="black", "white"
+fg, bg="black", "#EEEEEE"
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 
 galactic_color = sorted(Image.from_url_with_cache(df.filter_rows("place ~ Galactic").iloc[0].flag).convert("RGBA").getcolors(65536), reverse=True)[0][1]

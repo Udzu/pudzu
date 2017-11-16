@@ -4,7 +4,7 @@ from charts import *
 from bamboo import *
 
 df = pd.read_csv("datasets/flagsuk.csv")
-fg, bg="black", "white"
+fg, bg="black", "#EEEEEE"
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 
 array = [[

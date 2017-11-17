@@ -1,41 +1,41 @@
-year,president,rep_col,dem_col,rep_can,dem_can
-1860,Abraham Lincoln,2,5|8,Lincoln,Douglas
-1864,Abraham Lincoln,2,5,Lincoln,McClellan
-1868,Ulysses S. Grant,2,5,Grant,Seymour
-1872,Ulysses S. Grant,2,5,Grant,Greeley
-1876,Rutherford B. Hayes,2,5,Hayes,Tilden
-1880,James Garfield,2,5,Garfield,Hancock
-1884,Grover Cleveland,5,2,Blaine,Cleveland
-1888,Benjamin Harrison,2,5,Harrison,Cleveland
-1892,Grover Cleveland,5,2,Harrison,Cleveland
-1896,William McKinley,2,5,McKinley,Bryan
-1900,William McKinley,2,5,McKinley,Bryan
-1904,Theodore Roosevelt,2,5,Roosevelt,Parker
-1908,William Howard Taft,2,5,Taft,Bryan
-1912,Woodrow Wilson,8,2,Taft,Wilson
-1916,Woodrow Wilson,5,2,Hughes,Wilson
-1920,Warren G. Harding,2,5,Harding,Cox
-1924,Calvin Coolidge,2,5,Coolidge,Davis
-1928,Herbert Hoover,2,5,Hoover,Smith
-1932,Franklin D. Roosevelt,5,2,Hoover,Roosevelt
-1936,Franklin D. Roosevelt,5,2,Landon,Roosevelt
-1940,Franklin D. Roosevelt,5,2,Willkie,Roosevelt
-1944,Franklin D. Roosevelt,5,2,Dewey,Roosevelt
-1948,Harry S. Truman,5,2,Dewey,Truman
-1952,Dwight D. Eisenhower,2,5,Eisenhower,Stevenson
-1956,Dwight D. Eisenhower,2,5,Eisenhower,Stevenson
-1960,John F. Kennedy,5,2,Nixon,Kennedy
-1964,Lyndon B. Johnson,5,2,Goldwater,Johnson
-1968,Richard Nixon,2,5,Nixon,Humphrey
-1972,Richard Nixon,2,5,Nixon,McGovern
-1976,Jimmy Carter,5,2,Ford,Carter
-1980,Ronald Reagan,2,5,Reagan,Carter
-1984,Ronald Reagan,2,5,Reagan,Mondale
-1988,George H. W. Bush,2,5,Bush,Dukakis
-1992,Bill Clinton,5,2,Bush,Clinton
-1996,Bill Clinton,5,2,Dole,Clinton
-2000,George W. Bush,2,5,Bush,Gore
-2004,George W. Bush,2,5,Bush,Kerry
-2008,Barack Obama,5,2,McCain,Obama
-2012,Barack Obama,5,2,Romney,Obama
-2016,Donald Trump,5,2,Trump,Clinton
+year,president,rep_col,dem_col,rep_can,dem_can,pres_ev
+1860,Abraham Lincoln,2,5|8,Lincoln,Douglas,59.41
+1864,Abraham Lincoln,2,5,Lincoln,McClellan,90.99
+1868,Ulysses S. Grant,2,5,Grant,Seymour,72.79
+1872,Ulysses S. Grant,2,5,Grant,Greeley,81.95
+1876,Rutherford B. Hayes,2,5,Hayes,Tilden,50.14
+1880,James Garfield,2,5,Garfield,Hancock,57.99
+1884,Grover Cleveland,5,2,Blaine,Cleveland,54.61
+1888,Benjamin Harrison,2,5,Harrison,Cleveland,58.10
+1892,Grover Cleveland,5,2,Harrison,Cleveland,62.39
+1896,William McKinley,2,5,McKinley,Bryan,60.63
+1900,William McKinley,2,5,McKinley,Bryan,65.32
+1904,Theodore Roosevelt,2,5,Roosevelt,Parker,70.59
+1908,William Howard Taft,2,5,Taft,Bryan,66.46
+1912,Woodrow Wilson,8,2,Taft,Wilson,81.92
+1916,Woodrow Wilson,5,2,Hughes,Wilson,52.17
+1920,Warren G. Harding,2,5,Harding,Cox,76.08
+1924,Calvin Coolidge,2,5,Coolidge,Davis,71.94
+1928,Herbert Hoover,2,5,Hoover,Smith,83.62
+1932,Franklin D. Roosevelt,5,2,Hoover,Roosevelt,88.89
+1936,Franklin D. Roosevelt,5,2,Landon,Roosevelt,98.49
+1940,Franklin D. Roosevelt,5,2,Willkie,Roosevelt,84.56
+1944,Franklin D. Roosevelt,5,2,Dewey,Roosevelt,81.36
+1948,Harry S. Truman,5,2,Dewey,Truman,57.06
+1952,Dwight D. Eisenhower,2,5,Eisenhower,Stevenson,83.24
+1956,Dwight D. Eisenhower,2,5,Eisenhower,Stevenson,86.06
+1960,John F. Kennedy,5,2,Nixon,Kennedy,56.42
+1964,Lyndon B. Johnson,5,2,Goldwater,Johnson,90.33
+1968,Richard Nixon,2,5,Nixon,Humphrey,55.95
+1972,Richard Nixon,2,5,Nixon,McGovern,96.65
+1976,Jimmy Carter,5,2,Ford,Carter,55.20
+1980,Ronald Reagan,2,5,Reagan,Carter,90.89
+1984,Ronald Reagan,2,5,Reagan,Mondale,97.58
+1988,George H. W. Bush,2,5,Bush,Dukakis,79.18
+1992,Bill Clinton,5,2,Bush,Clinton,68.77
+1996,Bill Clinton,5,2,Dole,Clinton,70.45
+2000,George W. Bush,2,5,Bush,Gore,50.37
+2004,George W. Bush,2,5,Bush,Kerry,53.16
+2008,Barack Obama,5,2,McCain,Obama,67.84
+2012,Barack Obama,5,2,Romney,Obama,61.71
+2016,Donald Trump,5,2,Trump,Clinton,56.50

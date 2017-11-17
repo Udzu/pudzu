@@ -64,6 +64,11 @@ def clabel_fn(c, r):
         ], bg=0)
     return img.pad((0, 0, 0, 2), 0)
     
+def evlabel_fn(c, r, v, w, h):
+    y = votes.index[r]
+    img = Image.from_text("+{:.1%}EV".format((votes.pres_ev[y] -50) * 2 / 100), arial(FONT_SIZE, italics=True), RGBA(0,0,0,180))
+    return img if img.width <= w and img.height <= h else None
+    
 ylabel = Image.from_text("popualr vote margin by percentage", arial(24), padding=(5,2,5,10), bg="white").transpose(Image.ROTATE_90)
 
 title = Image.from_column([
@@ -71,8 +76,8 @@ title = Image.from_column([
     , Image.from_text("% margin since 1860 between the election winner and loser with most votes".upper(), arial(36), bg="white")
     ], bg="white", padding=(0, 5)).pad((0,0,0,10), "white")
 
-img = bar_chart(votes[["margin"]], 62, 1000, spacing=2, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR,
-    ymin=-0.0501, ymax=0.301, label_interval=0.05, grid_interval=0.025, ylabels=arial(FONT_SIZE), yformat="{:.0%}", ylabel=ylabel, title=title)
+img = bar_chart(votes[["margin"]], 62, 1000, spacing=2, colors=color_fn, clabels={BarChartLabelPosition.OUTSIDE : clabel_fn },
+    ymin=-0.0501, ymax=0.301, label_interval=0.05, grid_interval=0.025, ylabels=arial(FONT_SIZE), yformat=lambda v: "+"*int(v>0)+"{:.0%}".format(v), ylabel=ylabel, title=title)
 
 # Photos
 PHOTOS = [
@@ -83,7 +88,7 @@ PHOTOS = [
 (1960, "https://upload.wikimedia.org/wikipedia/commons/0/09/VP-Nixon_copy_%283x4%29.jpg", "https://upload.wikimedia.org/wikipedia/commons/5/5e/John_F._Kennedy%2C_White_House_photo_portrait%2C_looking_up.jpg", "??")
 ]
 
-LSIZE = 20
+LSIZE = 24
 
 label = Image.from_text("Presidents\nwho lost the\npopular vote:".upper(), arial(LSIZE, bold=True), bg="white", padding=10, align="right")
 
@@ -101,7 +106,7 @@ photos = Image.from_array(list(zip(*photo_array)), bg="white", padding=(10,2))
 
 notes = Image.from_column([
 Image.from_text("Notes", arial(LSIZE, bold=True), bg="white", padding=(0,2)),
-Image.from_text("[1824] John Quincy Adams also lost the popular vote in 1824, though a third of states still didn't vote for their electors.\n[1860] Northern Democrat Douglas received the second most votes in 1860, though Southern Democrat Breckinridge and Consitutional Unionist John Bell both received more electoral votes.\n[1912] Roosevelt was runner-up in both votes and electoral votes in 1912 while running for the Progressive (\"Bull Moose\") Party\n[1960] The unusual nature of the 1960 election in Alabama, where voters voted for multiple electors rather than a slate, makes it possible to argue that Nixon actually won the popular vote.\n[2016] Trump falsely claimed that he \"won the popular vote if you deduct the millions of people who voted illegally\".", arial(LSIZE), bg="white", max_width=1200, padding=(0,2))],
+Image.from_text("[1824] John Quincy Adams also lost the popular vote in 1824, though a third of states still didn't vote for their electors.\n[1860] Northern Democrat Douglas received the second most votes in 1860, though Southern Democrat Breckinridge and Consitutional Unionist John Bell both received more electoral votes.\n[1912] Roosevelt was runner-up in both votes and electoral votes in 1912 while running for the Progressive (\"Bull Moose\") Party\n[1960] The unusual nature of the 1960 election in Alabama, where voters voted for multiple electors rather than a slate, makes it possible to argue that Nixon actually won the popular vote.\n[2016] Trump falsely claimed that he \"won the popular vote if you deduct the millions of people who voted illegally\".", arial(LSIZE), bg="white", max_width=1400, padding=(0,2))],
 bg="white", padding=(40,0,10,0), xalign=0)
 
 footer = Image.from_row([label, photos, notes], bg="white").pad((0,0,0,10), "white")

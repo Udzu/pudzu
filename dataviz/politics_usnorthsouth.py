@@ -90,7 +90,7 @@ title = Image.from_column([
     , Image.from_text("the political transformation of the U.S. South in presidential elections".upper(), arial(36), bg="white")
     ], bg="white", padding=(0, 5)).pad((0,0,0,10), "white")
 
-img = bar_chart(votes[["leaning"]], 62, 1000, spacing=2, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR,
+img = bar_chart(votes[["leaning"]], 62, 1000, spacing=2, colors=color_fn, clabels={ BarChartLabelPosition.OUTSIDE : clabel_fn},
     ymin=-1, ymax=1, grid_interval=0.125, ylabels=arial(FONT_SIZE), yformat=ylabel_fn, ylabel=ylabel, title=title)
     
 # Add time chart

@@ -76,7 +76,7 @@ title = Image.from_column([
     , Image.from_text("non-Democrat/Republican candidate with highest popular vote since 1860".upper(), arial(36), bg="white")
     ], bg="white", padding=(0, 5)).pad((0,0,0,10), "white")
 
-img = bar_chart(votes[["percent"]], 62, 1000, spacing=2, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.BAR, rlabels=rlabel_fn,
+img = bar_chart(votes[["percent"]], 62, 1000, spacing=2, colors=color_fn, clabels=clabel_fn, clabels_pos=BarChartLabelPosition.OUTSIDE, rlabels=rlabel_fn,
     ymin=0, ymax=0.301, label_interval=0.05, grid_interval=0.025, ylabels=arial(FONT_SIZE), yformat="{:.0%}", ylabel=ylabel, title=title)
     
 # Legend

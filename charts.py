@@ -17,13 +17,13 @@ class BarChartType(Enum):
 
 class BarChartLabelPosition(Enum):
     """Bar Chart label position."""
-    AXIS, BAR, TOP, BOTTOM = range(4)
+    AXIS, OUTSIDE, INSIDE, ABOVE, BELOW = range(5)
 
 def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
               fg="black", bg="white", spacing=0, group_spacing=0,
               ymin=None, ymax=None, grid_interval=None,
               tick_interval=Ellipsis, label_interval=Ellipsis, ylabels=None, yformat=None, 
-              colors=VEGA_PALETTE, clabels=None, clabels_pos=BarChartLabelPosition.AXIS, rlabels=None, rlabels_pos=BarChartLabelPosition.BOTTOM, 
+              colors=VEGA_PALETTE, clabels=None, rlabels=None,
               xlabel=None, ylabel=None, title=None,
               legend_position=(1,0), legend_labels=None, legend_box=None, legend_colors=None):
     """Plot a bar chart.
@@ -43,10 +43,8 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     - ylabels (value -> image/font): image or font to use for y-axis labels [none]
     - yformat (string/value->string): formatting for y values if ylabels is a font [3 sig figs, or % for stacked]
     - colors (col, row, value -> color/image/size->image): color or image to use for bars [Vega palette]
-    - clabels (col, row, value -> image/font): image or font to use for column labels [none]
-    - clabels_pos (BarChartLabelPosition): where to place column labels for non-stacked charts [BarChartLabelPosition.AXIS]
-    - rlabels (row -> image/font): image or font to use for row labels [none]
-    - rlabels_pos (BarChartLabelPosition): where to place row labels [BarChartLabelPosition.BOTTOM]
+    - clabels (col, row, value -> image/font): image or font to use for column labels; optionally a dict keyed by position [none]
+    - rlabels (row -> image/font): image or font to use for row labels; optionally a dict keyed by position [none]
     - xlabel (image): image to use for x axis label [none]
     - ylabel (image): image to use for y axis label [none]
     - title (image): image to use for title [none]
@@ -85,6 +83,18 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
         ymin = 0
         ymax = 1
       
+    clabel_dict = make_mapping(clabels, lambda: BarChartLabelPosition.AXIS if type == BarChartType.SIMPLE else BarChartLabelPosition.INSIDE)
+    rlabel_dict = make_mapping(rlabels, lambda: BarChartLabelPosition.BELOW)
+    
+    if type == BarChartType.SIMPLE:
+        if not all(k in [BarChartLabelPosition.ABOVE, BarChartLabelPosition.BELOW] for k in rlabel_dict.keys()):
+            raise ValueError("Row labels in simple charts must above or below the chart.")
+    else:
+        if len(clabel_dict) != 1 or next(iter(clabel_dict.keys())) != BarChartLabelPosition.INSIDE:
+            raise ValueError("Column labels in stacked charts must be inside the bar.")
+        if not all(k in [BarChartLabelPosition.ABOVE, BarChartLabelPosition.BELOW, BarChartLabelPosition.OUTSIDE] for k in rlabel_dict.keys()):
+            raise ValueError("Row labels in stacked charts must above, below or outside the bar.")
+            
     if grid_interval is None:
         grid_interval = max(abs(ymin), ymax) * 2
     if tick_interval is Ellipsis:
@@ -98,12 +108,12 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
         else: return ignoring_extra_args(input)
 
     color_fn = make_fn_arg(colors)
-    rlabel_fn = make_fn_arg(rlabels)
-    clabel_fn = make_fn_arg(clabels)
+    clabel_dict = valmap(make_fn_arg, clabel_dict)
+    rlabel_dict = valmap(make_fn_arg, rlabel_dict)
     ylabel_fn = make_fn_arg(ylabels)
-    
     llabel_fn = make_fn_arg(legend_labels)
     lbox_fn = make_fn_arg(legend_box)
+
     lalign = Alignment(legend_position)
     lcolor_fn = (lambda c: color_fn(c,0,0)) if legend_colors is None else make_fn_arg(legend_colors)
 
@@ -136,16 +146,21 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
             else:
                 pbar = Image.new("RGBA", (bar_width, positive_height_fn(v)), fill)
                 nbar = Image.new("RGBA", (bar_width, negative_height_fn(v)), fill)
+
+            def with_inside_label(bar):
+                if BarChartLabelPosition.INSIDE in clabel_dict:
+                    label = clabel_dict[BarChartLabelPosition.INSIDE](c,r,v,bar.width,bar.height)
+                    if label is not None:
+                        if isinstance(label, ImageFont.FreeTypeFont):
+                            label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bgtransparent)
+                        return bar.place(label)
+                return bar
+                    
             if type in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE]:
-                bar = pbar
-                if clabels is not None:
-                    label = clabel_fn(c,r,v,bar.width,bar.height)
-                    if label is None:
-                        continue
-                    elif isinstance(label, ImageFont.FreeTypeFont):
-                        label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bgtransparent)
-                    bar = bar.place(label)
+                bar = with_inside_label(pbar)
             else:
+                if nbar.height > 0: nbar = with_inside_label(nbar)
+                else: pbar = with_inside_label(pbar)
                 pbar = pbar.pad_to_aspect(pbar.width, positive_height_fn(ymax), align=1, bg=0)
                 nbar = nbar.pad_to_aspect(nbar.width, negative_height_fn(ymin), align=0, bg=0)
                 bar = Image.from_column([pbar, Image.new("RGBA",(0,1)), nbar])
@@ -208,7 +223,8 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
             chart = chart.pin(label, (-tick_size-10, y_coordinate_fn(y)), align=(1,0.5), bg=bg, offsets=offsets)
        
     # Column labels
-    if clabels is not None and type not in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE]:
+    for clabels_pos, clabel_fn in clabel_dict.items():
+        if clabels_pos == BarChartLabelPosition.INSIDE: continue
         for r, row in enumerate(data.values):
             for c, v in enumerate(row):
                 label = clabel_fn(c,r,v)
@@ -220,17 +236,17 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
                      spacing + c * (bar_width + 2 * group_spacing) + group_spacing + bar_width // 2)
                 if clabels_pos == BarChartLabelPosition.AXIS:
                     y = y_coordinate_fn(0) + int(v >= 0)
-                elif clabels_pos == BarChartLabelPosition.BAR:
+                elif clabels_pos == BarChartLabelPosition.OUTSIDE:
                     y = y_coordinate_fn(v) + int(v < 0)
-                elif clabels_pos ==  BarChartLabelPosition.TOP:
+                elif clabels_pos == BarChartLabelPosition.ABOVE:
                     y = y_coordinate_fn(ymax) + int(v <= 0)
-                elif clabels_pos ==  BarChartLabelPosition.BOTTOM:
+                elif clabels_pos == BarChartLabelPosition.BELOW:
                     y = y_coordinate_fn(ymin) + int(v <= 0)
                 label_at_top = y <= y_coordinate_fn(0)
                 chart = chart.pin(label, (x, y), align=(0.5,int(label_at_top)), bg=bg, offsets=offsets)
     
     # Row labels
-    if rlabels is not None:
+    for rlabels_pos, rlabel_fn in rlabel_dict.items():
         for r, row in enumerate(data.values):
             label = rlabel_fn(r)
             if label is None:
@@ -242,11 +258,11 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
             else:
                 x = (r * (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) +
                      (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) // 2)
-            if rlabels_pos ==  BarChartLabelPosition.TOP:
+            if rlabels_pos ==  BarChartLabelPosition.ABOVE:
                 chart = chart.pin(label, (x, 0), align=(0.5,1), bg=bg, offsets=offsets)
-            elif rlabels_pos ==  BarChartLabelPosition.BOTTOM:
+            elif rlabels_pos ==  BarChartLabelPosition.BELOW:
                 chart = chart.pin(label, (x, chart.height - offsets.y), align=(0.5,0), bg=bg, offsets=offsets)
-            # TODO: support BAR in stacked mode
+            # TODO: support OUTSIDE rlabels in stacked mode
         
     # Background
     background = Image.new("RGBA", (chart.width, chart.height), bg)

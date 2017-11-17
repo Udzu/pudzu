@@ -302,7 +302,8 @@ def make_mapping(v, key_fn=identity):
     """Return a mapping from an object, using a function to generate keys if needed.
     Mappings are left as is, iterables are split into elements, everything else is
     wrapped in a singleton map."""
-    if isinstance(v, Mapping): return v
+    if v is None: return {}
+    elif isinstance(v, Mapping): return v
     elif non_string_iterable(v): return { ignoring_extra_args(key_fn)(i, x) : x for (i,x) in enumerate(v) }
     else: return { ignoring_extra_args(key_fn)(None, v) : v }
 

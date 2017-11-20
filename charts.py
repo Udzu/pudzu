@@ -90,7 +90,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
         if not all(k in [BarChartLabelPosition.ABOVE, BarChartLabelPosition.BELOW] for k in rlabel_dict.keys()):
             raise ValueError("Row labels in simple charts must above or below the chart.")
     else:
-        if len(clabel_dict) != 1 or next(iter(clabel_dict.keys())) != BarChartLabelPosition.INSIDE:
+        if any(k != BarChartLabelPosition.INSIDE for k in clabel_dict.keys()):
             raise ValueError("Column labels in stacked charts must be inside the bar.")
         if not all(k in [BarChartLabelPosition.ABOVE, BarChartLabelPosition.BELOW, BarChartLabelPosition.OUTSIDE] for k in rlabel_dict.keys()):
             raise ValueError("Row labels in stacked charts must above, below or outside the bar.")

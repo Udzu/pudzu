@@ -114,17 +114,29 @@ def icon_to_array(file="icons/color.png", width=64):
     img = Image.open(file).remove_transparency().resize_fixed_aspect(width=width).convert('L')
     return np.array(ImageOps.invert(img)) / 256
     
-def array_to_img(arr, base="red"):
+def array_to_img(arr, base="grey"):
     rgba = ImageColor.getrgba(base)
     def colfn(channel): return np.uint8(255 - ((255 - channel) * arr / arr.max()))
     stacked = np.stack((colfn(rgba.red), colfn(rgba.green), colfn(rgba.blue)), axis=2)
     return Image.fromarray(stacked)
 
-# plt.plot: mag[63], np.diag(mag), etc
-# - figure out why magnitutde seems to need to be squared
-# - zero at centre and scale diagonals appropriately
-# - set axis limits and remove labels
+def plot_box(data, width, filename):
+    # TODO: zero at center, set axis limits?
+    fig = plt.figure(figsize=(1,1), dpi=width)
+    ax = fig.add_axes((0,0,1,1))
+    ax.set_axis_off()    
+    ax.plot(data)
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+    plt.savefig(filename, bbox_inches="tight", pad_inches=0, dpi=width)
 
-# TODO: circle, ellipse, core, hollow, mountain, plateau, two, weighted, square, rectangle, ?, reddit
+# TODO
+# - figure out why magnitutde seems to need to be squared!
+# - circle, ellipse, core, hollow, mountain, plateau, two, weighted, square, rectangle, ?, reddit
 
+# circle1 = pad(ellipse(48,48),15,15)
+# grav1 = qtree_gravity_array(circle1)
+# hmap1 = heatmap(grav1)
+# mag1 = magnitude_array(grav1)
+# plot_box(mag1[63], 127, "cache/gravity.png")
 

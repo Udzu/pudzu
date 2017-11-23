@@ -445,11 +445,17 @@ class ImageMapSort(Enum):
     """Image map color sort in name CSV file."""
     USAGE, HORIZONTAL, VERTICAL = range(3)
     
-def name_csv_path(map): return splitext(map)[0] + ".csv"
 def labelbox_img_path(map): return splitext(map)[0] + "_lbox" + splitext(map)[1]
+def overlay_img_path(map): return splitext(map)[0] + "_ov" + splitext(map)[1]
+def overlay_mask_img_path(map): return splitext(map)[0] + "_ovmask" + splitext(map)[1]
+
+def name_csv_path(map): return splitext(map)[0] + ".csv"
+def boundingbox_csv_path(map): return splitext(map)[0] + "_bbox.csv"
 def labelbox_csv_path(map): return splitext(map)[0] + "_lbox.csv"
-def overlay_path(map): return splitext(map)[0] + "_ov" + splitext(map)[1]
-def overlay_mask_path(map): return splitext(map)[0] + "_ovmask" + splitext(map)[1]
+
+def load_name_csv(map): return pd.read_csv(name_csv_path(map)).split_columns('color', '|', int)
+def load_boundingbox_csv(map): return pd.read_csv(boundingbox_csv_path(map)).split_columns(('bbox', 'color'), '|', int)
+def load_labelbox_csv(map): return pd.read_csv(labelbox_csv_path(map)).split_columns(('bbox', 'color'), '|', int)
 
 def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite=False):
     """Generate a name csv skeleton, for use in map_chart."""
@@ -469,15 +475,13 @@ def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite
         cols = list(coldict)
     cols = list(presorted) + [c for c in cols if c not in presorted]
     rs = [{ 'color': "|".join(str(x) for x in c), 'name': "color{}".format(i) } for i,c in enumerate(cols)]
-    pd.DataFrame(rs).to_csv(name_csv_path(map), index=False)
+    pd.DataFrame(rs).to_csv(name_csv_path(map), index=False, encoding="utf-8")
 
-def load_name_csv(map):
-    return pd.read_csv(name_csv_path(map)).split_columns('color', '|', int)
-    
-def generate_labelbox_csv(map):
-    """Generate a label bounding box csv, for use in map_chart."""
-    img = Image.open(labelbox_img_path(map))
-    logger.info("Generating labelbox CSV file at {}".format(labelbox_csv_path(map)))
+def generate_bbox_csv(map, labels=True):
+    """Generate a bounding box csv either for labels or for the map itself, for use in map_chart."""
+    csv_path = labelbox_csv_path(map) if labels else boundingbox_csv_path(map)
+    img = Image.open(labelbox_img_path(map) if labels else map)
+    logger.info("Generating bounding box CSV file at {}".format(csv_path))
     data = np.array(img)
     xmin, xmax, ymin, ymax = {}, {}, {}, {}
     for y,row in enumerate(data):
@@ -488,14 +492,10 @@ def generate_labelbox_csv(map):
             ymin[c] = min(ymin.get(c,img.height), y)
             ymax[c] = max(ymax.get(c,0), y)
     rs = [{ 'color': "|".join(str(x) for x in c[:3]), 'bbox': "|".join(str(x) for x in (xmin[c], ymin[c], xmax[c], ymax[c])) } for c in xmin if ImageColor.getrgba(c).alpha == 255 ]
-    pd.DataFrame(rs).to_csv(labelbox_csv_path(map), index=False)
+    pd.DataFrame(rs).to_csv(csv_path, index=False, encoding="utf-8")
 
-def load_labelbox_csv(map):
-    return pd.read_csv(labelbox_csv_path(map)).split_columns(('bbox', 'color'), '|', int)
-    
 def generate_tile_map(array, filename, size, border=0, bg="white"):
-    """Generate a map image and related files from an array of labels."""
-    # TODO: border, namefile, lboxfile
+    """Generate a grid-based map image and related files from an array of labels."""
     if isinstance(size, Integral): size = (size, size)
     labels = { l for row in array for l in row if not non(l) }
     colmap = lambda i: ((i%40)*5+(i//40), (i%40)*5+(i//40), 200-(i//100)*5)
@@ -504,11 +504,11 @@ def generate_tile_map(array, filename, size, border=0, bg="white"):
     img = Image.from_array(imgarray, bg=bg).convert("RGB")
     img.save(filename)
     names = [{ 'color': "|".join(str(x) for x in c), 'name': l } for l,c in palette.items()]
-    pd.DataFrame(names).to_csv(name_csv_path(filename), index=False)
+    pd.DataFrame(names).to_csv(name_csv_path(filename), index=False, encoding="utf-8")
     img.save(labelbox_img_path(filename))
-    generate_labelbox_csv(filename)
+    generate_bbox_csv(filename)
     
-def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black", overlay_fn=None):
+def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black", overlay_fn=None, resize_patterns=False):
     """Generate a map chart from a map image and color mapping. If present, this will use a name csv file with image names
     and a label csv file with label bounding boxes.
     - map (filename): map image filename (and template for the name and label csv filenames).
@@ -516,10 +516,11 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
     - label_fn (name, width, height -> text/image/None): an dict or function that returns either a text label or image. The label location is determined from the label csv file. [None]
     - label_font (font): font to use for text labels. [None]
     - label_color (color): color to use for text labels. [black]
-    - overlay_fn (name -> boolean): whether to include an overlay for a given region. [whether the region is labelled]
+    - overlay_fn (name -> boolean): whether to include an overlay for a given region. [only if the region is labelled]
+    - resize_patterns (boolean): whether pattern images should be resized rather than tiled. [False]
     """
     
-    # read image and name csv
+    # read image, name and bbox csv
     img = Image.open(map)
     try:
         df = load_name_csv(map)
@@ -528,6 +529,9 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
     except FileNotFoundError:
         logger.warning("No color name file found at {}".format(name_csv_path(map)))
         namemap = {}
+    if resize_patterns:
+        df = load_boundingbox_csv(map)
+        bboxes = { tuple(d["color"]) : BoundingBox(d['bbox']) for _,d in df.iterrows() }
         
     # generate map
     colors = [(c,namemap.get(c, c)) for _,c in img.getcolors()]
@@ -536,10 +540,13 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
         color = color_fn(name) if callable(color_fn) else color_fn.get(name)
         if color is None: continue
         mask = original.select_color(c)
-        if isinstance(color, Image.Image):
+        if not isinstance(color, Image.Image):
+            pattern = Image.new("RGBA", img.size, color)
+        elif not resize_patterns:
             pattern = Image.from_pattern(color, img.size)
         else:
-            pattern = Image.new("RGBA", img.size, color)
+            bbox = bboxes[c[:3]]
+            pattern = color.resize((bbox.width, bbox.height)).pad((bbox.l, bbox.u, img.width - bbox.r, img.height - bbox.d), 0)
         img.place(pattern, mask=mask, copy=False)
             
     # generate labels
@@ -566,13 +573,13 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
                 img = img.pin(label, labelboxes[c].center)
                 
     # add overlay
-    if os.path.exists(overlay_path(map)):
-        logger.info("Using overlay image file {}".format(overlay_path(map)))
-        ov = Image.open(overlay_path(map))
+    if os.path.exists(overlay_img_path(map)):
+        logger.info("Using overlay image file {}".format(overlay_img_path(map)))
+        ov = Image.open(overlay_img_path(map))
         mask = None
-        if os.path.exists(overlay_mask_path(map)):
-            logger.info("Using overlay mask file {}".format(overlay_mask_path(map)))
-            ovmask = Image.open(overlay_mask_path(map))
+        if os.path.exists(overlay_mask_img_path(map)):
+            logger.info("Using overlay mask file {}".format(overlay_mask_img_path(map)))
+            ovmask = Image.open(overlay_mask_img_path(map))
             mask = Image.new("1", ov.size, "black")
             overlays = labelled if overlay_fn is None else [c for c,name in colors if overlay_fn(name)]
             for c in overlays:

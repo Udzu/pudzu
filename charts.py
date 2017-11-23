@@ -190,7 +190,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
             if isinstance(label, ImageFont.FreeTypeFont):
                 label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bg)
             labels.append([box, label])
-        legend = Image.from_array(labels, padding=(2,5), xalign=[0.5, 0], bg=bg).pad(2,bg).pad(1, fg).pad(10)
+        legend = Image.from_array(labels, padding=(2,5), xalign=[0.5, 0], bg=bg).pad(2,bg).pad(1, fg).pad(10, 0)
         chart = chart.place(legend, lalign)
 
     # Keep track of offsets relative to chart

@@ -84,6 +84,15 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 '#643232'
 ```
 
+**ImageColor.brighten**: brighten or darken a color by a given amount, from -1 (completely dark) to 1 (completely bright).
+
+```python
+>> ImageColor.brighten("yellow", 0.25)
+RGBA(red=255, green=255, blue=63, alpha=255)
+>> ImageColor.brighten("yellow", -0.5)
+RGBA(red=127, green=127, blue=0, alpha=255)
+```
+
 ### ImageDraw
 
 **ImageDraw.textsize**: same as ImageDraw.Draw.textsize but doesn't require a drawable object. Similarly, **ImageDraw.multiline_textsize**.

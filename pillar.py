@@ -202,6 +202,17 @@ class _ImageColor():
         return "#" + "".join("{:02x}".format(c) for c in cls.getrgba(color)[:3])
             
     @classmethod
+    def brighten(cls, color, amount):
+        """Brighten a color by a given amount from -1 (completely dark) to 1 (completely bright)."""
+        color = cls.getrgba(color)
+        if not -1 < amount < 1:
+            raise ValueError("Brightness amount must be between -1 and 1: got {}".format(amount))
+        if amount < 0:
+            return RGBA(*[int(c*(1+amount)) for c in color[:3]], color[-1])
+        else:
+            return RGBA(*[int(255-(255-c)*(1-amount)) for c in color[:3]], color[-1])
+            
+    @classmethod
     def from_floats(cls, color):
         """Convert a 0-1 float color tuple (or a list of such tuples) to 0-255 ints."""
         if non_string_sequence(color, Real):
@@ -212,6 +223,7 @@ class _ImageColor():
 ImageColor.getrgba = _ImageColor.getrgba
 ImageColor.from_floats = _ImageColor.from_floats
 ImageColor.to_hex = _ImageColor.to_hex
+ImageColor.brighten = _ImageColor.brighten
 
 class _Image(Image.Image):
 

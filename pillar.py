@@ -202,15 +202,27 @@ class _ImageColor():
         return "#" + "".join("{:02x}".format(c) for c in cls.getrgba(color)[:3])
             
     @classmethod
+    def to_linear(cls, srgb):
+        """Convert a single sRGB color value between 0 and 255 to a linear value between 0 and 1."""
+        c = srgb / 255
+        return c / 12.92 if c <= 0.04045 else ((c+0.055)/1.055)**2.4 
+        
+    @classmethod
+    def from_linear(cls, lrgb):
+        """Convert a single linear RGB value between 0 and 1 to an sRGB value between 0 and 255."""
+        c = 12.92 * lrgb if lrgb <= 0.0031308 else (1.055)*lrgb**(1/2.4)-0.055
+        return round(c * 255)
+            
+    @classmethod
     def brighten(cls, color, amount):
         """Brighten a color by a given amount from -1 (completely dark) to 1 (completely bright)."""
         color = cls.getrgba(color)
-        if not -1 < amount < 1:
+        if not -1 <= amount <= 1:
             raise ValueError("Brightness amount must be between -1 and 1: got {}".format(amount))
         if amount < 0:
-            return RGBA(*[int(c*(1+amount)) for c in color[:3]], color[-1])
+            return RGBA(*[cls.from_linear(cls.to_linear(c)*(1+amount)) for c in color[:3]], color[-1])
         else:
-            return RGBA(*[int(255-(255-c)*(1-amount)) for c in color[:3]], color[-1])
+            return RGBA(*[cls.from_linear(1-(1-cls.to_linear(c))*(1-amount)) for c in color[:3]], color[-1])
             
     @classmethod
     def from_floats(cls, color):
@@ -223,6 +235,8 @@ class _ImageColor():
 ImageColor.getrgba = _ImageColor.getrgba
 ImageColor.from_floats = _ImageColor.from_floats
 ImageColor.to_hex = _ImageColor.to_hex
+ImageColor.to_linear = _ImageColor.to_linear
+ImageColor.from_linear = _ImageColor.from_linear
 ImageColor.brighten = _ImageColor.brighten
 
 class _Image(Image.Image):

@@ -84,11 +84,11 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 '#643232'
 ```
 
-**ImageColor.brighten**: brighten or darken a color by a given amount, from -1 (completely dark) to 1 (completely bright).
+**ImageColor.blend**: blend two colors together, using gamma correction. Similarly, **ImageColor.brighten** and **ImageColor.darken** blend with white and black, while preserving alpha.
 
 ```python
->> ImageColor.brighten("yellow", 0)
-RGBA(red=255, green=255, blue=0, alpha=255)
+>> ImageColor.blend("blue", "red", 0.5)
+RGBA(red=188, green=0, blue=188, alpha=255)
 >> ImageColor.brighten("yellow", 0.5)
 RGBA(red=255, green=255, blue=188, alpha=255)
 >> ImageColor.brighten("yellow", -0.5)

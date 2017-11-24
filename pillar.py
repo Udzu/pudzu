@@ -214,15 +214,24 @@ class _ImageColor():
         return round(c * 255)
             
     @classmethod
-    def brighten(cls, color, amount):
-        """Brighten a color by a given amount from -1 (completely dark) to 1 (completely bright)."""
+    def blend(cls, color1, color2, p=0.5):
+        """Blend two colours with gamma correction."""
+        color1, color2 = cls.getrgba(color1), cls.getrgba(color2)
+        return RGBA(*[fl(tl(c1) + (tl(c2)-tl(c1))*p) for c1,c2,fl,tl in zip_longest(color1,color2,[cls.from_linear]*3,[cls.to_linear]*3,fillvalue=round)])
+        
+    @classmethod
+    def brighten(cls, color, p):
+        """Brighten a color. Same as blending with white (but preserving alpha)."""
         color = cls.getrgba(color)
-        if not -1 <= amount <= 1:
-            raise ValueError("Brightness amount must be between -1 and 1: got {}".format(amount))
-        if amount < 0:
-            return RGBA(*[cls.from_linear(cls.to_linear(c)*(1+amount)) for c in color[:3]], color[-1])
-        else:
-            return RGBA(*[cls.from_linear(1-(1-cls.to_linear(c))*(1-amount)) for c in color[:3]], color[-1])
+        white = cls.getrgba("white")._replace(alpha=color.alpha)
+        return cls.blend(color, white, p)
+            
+    @classmethod
+    def darken(cls, color, p):
+        """Darken a color. Same as blending with black (but preserving alpha)."""
+        color = cls.getrgba(color)
+        white = cls.getrgba("black")._replace(alpha=color.alpha)
+        return cls.blend(color, white, p)
             
     @classmethod
     def from_floats(cls, color):
@@ -237,7 +246,9 @@ ImageColor.from_floats = _ImageColor.from_floats
 ImageColor.to_hex = _ImageColor.to_hex
 ImageColor.to_linear = _ImageColor.to_linear
 ImageColor.from_linear = _ImageColor.from_linear
+ImageColor.blend = _ImageColor.blend
 ImageColor.brighten = _ImageColor.brighten
+ImageColor.darken = _ImageColor.darken
 
 class _Image(Image.Image):
 

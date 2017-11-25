@@ -12,7 +12,7 @@ basketball = Image.open("icons/basketball.png").convert("RGBA").resize((18,18))
 def colorfn(c):
     if c not in df.index:
         return "white" if c in ['Sea', 'Borders'] else "grey"
-    return palette[(df['height'][c] - 172) // 2]
+    return palette[(int(df['height'][c]) - 172) // 2]
     
 def labelfn(c):
     if c not in df.index or df['eurobasket'][c] == 0:
@@ -24,8 +24,8 @@ map = map_chart("maps/Europe.png", colorfn, labelfn)
 # legend
 legendboxes = Image.from_array([
 [Image.new("RGBA", (40,40), palette[i]),
- Image.from_text("{}-{} cm".format(i * 2 + 172, str(i * 2 + 173)[-1]), arial(16))]
- for i in reversed(range(7))] + [
+ Image.from_text("{}-{} cm".format(i * 2 + 172, str(i * 2 + 174)[-1]), arial(16))]
+ for i in reversed(range(6))] + [
 [Image.new("RGBA", (40,40), "grey"), Image.from_text("No data", arial(16))],
 [Image.new("RGBA", (40,40), "white").place(basketball), Image.from_text("Eurobasket wins\nsince 1993*", arial(16))]
 ], xalign=(0.5, 0), padding=(3,0), bg="white")
@@ -38,7 +38,7 @@ chart = map.place(legend, align=(1,0), padding=10)
 
 # title
 title = Image.from_column([
-Image.from_text("AVERAGE MALE HEIGHT IN EUROPE", arial(48, bold=True)),
+Image.from_text("AVERAGE 18 YEAR OLD MALE HEIGHT (2014)", arial(48, bold=True)),
 Image.from_text("and number of Eurobasket wins since 1993", arial(36))],
 bg="white")
 

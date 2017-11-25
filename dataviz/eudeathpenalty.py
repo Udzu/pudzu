@@ -27,9 +27,7 @@ legendboxes = Image.from_array([
 
 legend = Image.from_column([
 Image.from_text("Methods", arial(16, bold=True), padding=5),
-legendboxes,
-Image.from_text("* Sweden used a guillotine for its last execution, but beheading before.\n\n* Spain used a firing squad for its last execution, but garrotte before.", arial(16, italics=True), align="left", max_width=150, padding=(0,0,0,2))
-], bg="white", xalign=0, padding=(0,2)).pad(5, "white").pad(1, "black")
+legendboxes], bg="white", xalign=0, padding=(0,2)).pad(5, "white").pad(1, "black")
 chart = map.place(legend, align=(1,0), padding=10)
 
 # title
@@ -38,7 +36,9 @@ Image.from_text("DEATH PENALTY IN EUROPE", arial(48, bold=True)),
 Image.from_text("method and year of last peacetime execution", arial(36))],
 bg="white")
 
+footer = Image.from_text("* 1910: Sweden used a guillotine for its last execution, but beheading before.\n* 1975: Spain used a firing squad for its last execution, but garrotte before.\n* 1981: Germany's last execution was in East Germany; the last in the West was in 1949, by guillotine.", arial(16, italics=True), align="left", padding=(5))
+
 # title = Image.from_text("Europe by number of, and longest borders", arial(48, bold=True), bg="white")
-img = Image.from_column([title, chart], bg="white", padding=2)
+img = Image.from_column([title, chart, footer], bg="white", padding=2)
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("output/eudeathpenalty.png")

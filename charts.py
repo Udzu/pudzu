@@ -7,6 +7,54 @@ from enum import Enum
 
 logger = logging.getLogger('charts')
 
+# Legends # TODO: refactor scripts, text on boxes?, masks?, gradient legend?
+
+def category_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16),
+                    fg="black", bg="white", header=None, footer=None, max_width=None, spacing=0, border=True):
+    """Generate a chart category legend.
+    - boxes (list of colors/images): colors or images to use
+    - labels (list of strings/images): labels to use
+    - box_sizes (int/(int,int)/list of (int,int)): size(s) of boxes to use for colors [40x40]
+    - fonts (list of three fonts/font function): normal, bold and italics fonts [16-point arial]
+    - fg (color): text and border color [black]
+    - bg (color): background color [white]
+    - header (string/image/None): header at top of legend, bolded if text [None]
+    - footer (string/image/None): footer at bottom of legend, italicised if text [None]
+    - max_width (int/None): legend width limit, excluding border and padding [None]
+    - spacing (int): vertical spacing between categories [0]
+    - border (boolean): whether to include a border [True]
+    """
+    if len(labels) != len(boxes):
+        raise ValueError("Different number of labels ({}) to boxes ({})".format(len(labels), len(boxes)))
+    if isinstance(box_sizes, Integral):
+        box_sizes = (box_sizes, box_sizes)
+    if non_string_sequence(box_sizes, Integral):
+        box_sizes = [box_sizes]*len(labels)
+    if callable(fonts):
+        fonts = [fonts(), fonts(bold=True), fonts(italics=True)]
+    if isinstance(header, str):
+        header = Image.from_text(header, fonts[1], fg=fg, bg=bg, max_width=max_width)
+    if isinstance(footer, str):
+        footer = Image.from_text(footer, fonts[2], fg=fg, bg=bg, max_width=max_width)
+        
+    box_imgs = []
+    for box, label, size in zip_longest(boxes, labels, box_sizes):
+        if not isinstance(box, Image.Image):
+            box = Image.new("RGBA", size, box)
+        box_imgs.append(box)
+      
+    box_label_array = []
+    max_label_width = None if max_width is None else max_width - max(box.width for box in box_imgs) - 8
+    for box, label in zip_longest(box_imgs, labels):
+        if  not isinstance(label, Image.Image):
+            label = Image.from_text(label, fonts[0], fg=fg, bg=bg, max_width=max_label_width)
+        box_label_array.append([box, label])
+    label_img = Image.from_array(box_label_array, padding=(2,spacing), xalign=[0.5, 0], bg=bg)
+    
+    legend = Image.from_column([i for i in [header, label_img, footer] if i is not None], padding=(2,5), xalign=0, bg=bg)
+    if border: legend = legend.pad(2,bg).pad(1, fg).pad(10, 0)
+    return legend
+    
 # Bar charts
 
 VEGA_PALETTE = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]

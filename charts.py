@@ -336,25 +336,25 @@ def time_chart(groups, start_key, end_key, color_key, chart_width, timeline_heig
                group_order=None, group_labels=None, group_info=None, element_images=None,
                grid_interval=None, label_interval=Ellipsis, grid_labels=None, label_format=str):
     """Plot a time chart. Times can be numeric, dates or anything that supports arithmetic.
-    - groups (pandas groupby): group map containing time series
-    - start_key (key or row->time): start time for a given record
-    - end_key (key or row->time): end time for a given record
-    - color_key (key or row->color): color for a given record
-    - chart_width (int): chart width
-    - timeline_height (int): height for each timeline
-    - fg (color): text and grid color [white]
-    - bg (color): background color [black]
+    - timelines (pandas dataframes): one or more dataframes containing time series
+    - width (int): chart width
+    - height (int): height for each timeline
+    - start_key (key or series->time): start time for a given row
+    - end_key (key or series->time): end time for a given row
+    - color_key (key or series->color): color for a given row
+    - element_images (series,width,height->image): element label for a given row [none]
     - xmin (time): chart start time [auto]
     - xmax (time): chart end time [auto]
-    - title (image): image to use for title [none]
-    - group_order (key sequence): optional group key ordering
-    - group_labels (group->font/image): timeline labels on the left [none]
-    - group_info (group->font/image): timeline info on the right [none]
-    - element_images (record,width,height->image): element label, only used if it fits [none]
+    - fg (color): text and grid color [white]
+    - bg (color): background color [black]
     - grid_interval (timedelta): grid line interval from start [start and end only]
-    - label_interval (timedelta): grid label interval [grid_interval]
-    - grid_labels (time->font/image): grid labels [none]
-    - label_format (time->string): grid label format if using fonts [str]
+    - grid_font (font): font to use for grid time labels [none]
+    - grid_labels (time->image/string): grid time labels [str]
+    - grid_label_interval (timedelta): grid time label interval [grid_interval]
+    - label_font (font): font to use for text timeline labels [none]
+    - labels_left (images/strings): timeline labels on the left [none]
+    - labels_right (images/strings): timeline info on the right [none]
+    - title (image): image to use for title [none]
     Functional arguments don't need to accept all the arguments and can also be passed in as
     constants.
     """

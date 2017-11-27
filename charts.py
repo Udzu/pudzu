@@ -7,15 +7,15 @@ from enum import Enum
 
 logger = logging.getLogger('charts')
 
-# Legends # TODO: refactor scripts, text on boxes?, masks?, gradient legend?
+# Legends # TODO: boxesm mask, lined gradients
 
-def category_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16),
+def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16),
                     fg="black", bg="white", header=None, footer=None, max_width=None, spacing=0, border=True):
     """Generate a chart category legend.
-    - boxes (list of colors/images): colors or images to use
-    - labels (list of strings/images): labels to use
-    - box_sizes (int/(int,int)/list of (int,int)): size(s) of boxes to use for colors [40x40]
-    - fonts (list of three fonts/font function): normal, bold and italics fonts [16-point arial]
+    - boxes (list of colors/images): colors or images to use as boxes
+    - labels (list of strings/images/lists): labels to use beside the boxes
+    - box_sizes (int/(int,int)/list of (int,int)): size(s) of boxes to use for colors; height can be set to ... [40x40]
+    - fonts (font/three fonts/font function): normal, bold and italics fonts [16-point arial]
     - fg (color): text and border color [black]
     - bg (color): background color [white]
     - header (string/image/None): header at top of legend, bolded if text [None]
@@ -28,31 +28,43 @@ def category_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16),
         raise ValueError("Different number of labels ({}) to boxes ({})".format(len(labels), len(boxes)))
     if isinstance(box_sizes, Integral):
         box_sizes = (box_sizes, box_sizes)
-    if non_string_sequence(box_sizes, Integral):
+    if non_string_sequence(box_sizes, (Integral, type(...))):
         box_sizes = [box_sizes]*len(labels)
+    if len(boxes) != len(box_sizes):
+        raise ValueError("Different number of boxes ({}) to box sizes ({})".format(len(boxes), len(box_sizes)))
+    if any(not isinstance(box, Image.Image) and non_string_sequence(label) and size[1] == ... for box, label, size in zip(boxes, labels, box_sizes)):
+        raise ValueError("Cannot specify both list of labels and ... height for the same box")
     if callable(fonts):
         fonts = [fonts(), fonts(bold=True), fonts(italics=True)]
+    elif isinstance(fonts, ImageFont.FreeTypeFont):
+        fonts = [fonts]*3
     if isinstance(header, str):
-        header = Image.from_text(header, fonts[1], fg=fg, bg=bg, max_width=max_width)
+        header = Image.from_text(header, fonts[1], fg=fg, bg=bg, max_width=max_width, padding=2)
     if isinstance(footer, str):
-        footer = Image.from_text(footer, fonts[2], fg=fg, bg=bg, max_width=max_width)
+        footer = Image.from_text(footer, fonts[2], fg=fg, bg=bg, max_width=max_width, padding=2)
         
-    box_imgs = []
-    for box, label, size in zip_longest(boxes, labels, box_sizes):
-        if not isinstance(box, Image.Image):
-            box = Image.new("RGBA", size, box)
-        box_imgs.append(box)
-      
-    box_label_array = []
-    max_label_width = None if max_width is None else max_width - max(box.width for box in box_imgs) - 8
-    for box, label in zip_longest(box_imgs, labels):
-        if  not isinstance(label, Image.Image):
-            label = Image.from_text(label, fonts[0], fg=fg, bg=bg, max_width=max_label_width)
-        box_label_array.append([box, label])
-    label_img = Image.from_array(box_label_array, padding=(2,spacing), xalign=[0.5, 0], bg=bg)
+    max_box_width = max(box.width if isinstance(box, Image.Image) else size[0] for box, size in zip(boxes, box_sizes))
+    max_label_width = None if max_width is None else max_width - max_box_width - 8
     
-    legend = Image.from_column([i for i in [header, label_img, footer] if i is not None], padding=(2,5), xalign=0, bg=bg)
-    if border: legend = legend.pad(2,bg).pad(1, fg).pad(10, 0)
+    box_label_array = []
+    for box, label, size in zip(boxes, labels, box_sizes):
+        if isinstance(label, str):
+            label = Image.from_text(label, fonts[0], fg=fg, bg=bg, max_width=max_label_width, padding=2)
+        if not isinstance(box, Image.Image):
+            box = Image.new("RGBA", (size[0], size[1] if size[1] != ... else label.height + 6), box)
+        if non_string_sequence(label):
+            labels = label
+            label = Image.new("RGBA", box.size, bg)
+            offsets = Padding(0)
+            for i, l in enumerate(labels):
+                if isinstance(l, str):
+                    l = Image.from_text(l, fonts[0], fg=fg, bg=bg, max_width=max_label_width, padding=2)
+                label = label.pin(l, (0, (box.height * i) // (len(labels) - 1)), align=(0, 0.5), bg=bg, offsets=offsets)
+        box_label_array.append([box, label])
+    label_img = Image.from_array(box_label_array, padding=(1,spacing), xalign=[0.5, 0], bg=bg)
+    
+    legend = Image.from_column([i for i in [header, label_img, footer] if i is not None], padding=(2,3), xalign=0, bg=bg)
+    if border: legend = legend.pad(2,bg).pad(1, fg)
     return legend
     
 # Bar charts
@@ -73,7 +85,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
               tick_interval=Ellipsis, label_interval=Ellipsis, ylabels=None, yformat=None, 
               colors=VEGA_PALETTE, clabels=None, rlabels=None,
               xlabel=None, ylabel=None, title=None,
-              legend_position=(1,0), legend_labels=None, legend_box=None, legend_colors=None):
+              legend_position=None, legend_fonts=papply(arial, 16),legend_box_sizes=(40,40)):
     """Plot a bar chart.
     - data (pandas dataframe): table to plot
     - bar_width (int): bar width
@@ -96,10 +108,9 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     - xlabel (image): image to use for x axis label [none]
     - ylabel (image): image to use for y axis label [none]
     - title (image): image to use for title [none]
-    - legend_position (alignment): legend alignment [top-right]
-    - legend_labels (col->font/image): font or image to use for legend labels [none]
-    - legend_box (col->size/image): size or mask to use for legend boxes [none]
-    - legend_colors (col->color/image/size->image): color or image to use for legend boxes [colors]
+    - legend_position (alignment): legend alignment [None]
+    - legend_fonts (font/three fonts/font function): normal, bold and italics fonts [16-point arial]
+    - legend_box_sizes (col->int/(int,int)): sizes to use for legend boxes [40x40]
     Functional arguments don't need to accept all the arguments and can also be passed in as
     constants or lists instead.
     """
@@ -159,11 +170,8 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     clabel_dict = valmap(make_fn_arg, clabel_dict)
     rlabel_dict = valmap(make_fn_arg, rlabel_dict)
     ylabel_fn = make_fn_arg(ylabels)
-    llabel_fn = make_fn_arg(legend_labels)
-    lbox_fn = make_fn_arg(legend_box)
-
+    lsize_fn = make_fn_arg(legend_box_sizes)
     lalign = Alignment(legend_position)
-    lcolor_fn = (lambda c: color_fn(c,0,0)) if legend_colors is None else make_fn_arg(legend_colors)
 
     if yformat is None:
         yformat = "{:.0%}" if type == BarChartType.STACKED_PERCENTAGE else "{0:.3g}"
@@ -177,6 +185,11 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     y_coordinate_fn = lambda v: int(chart_height - ((v - ymin) * factor))
     bgtransparent = ImageColor.getrgba(bg)._replace(alpha=0)
     
+    def make_box(fill, size):
+        if callable(fill): return fill(size)
+        elif isinstance(fill, Image.Image): return fill.resize(size)
+        else: return Image.new("RGBA", size, fill)
+    
     # Bars
     groups = []
     for r, row in enumerate(data.values):
@@ -185,16 +198,9 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
             if type == BarChartType.STACKED_PERCENTAGE:
                 v = v / sum(row)
             fill = color_fn(c,r,v)
-            if callable(fill):
-                pbar = fill((bar_width, positive_height_fn(v)))
-                nbar = fill((bar_width, negative_height_fn(v)))
-            elif isinstance(fill, Image.Image):
-                pbar = fill.resize((bar_width, positive_height_fn(v)))
-                nbar = fill.resize((bar_width, negative_height_fn(v)))
-            else:
-                pbar = Image.new("RGBA", (bar_width, positive_height_fn(v)), fill)
-                nbar = Image.new("RGBA", (bar_width, negative_height_fn(v)), fill)
-
+            pbar = make_box(fill, (bar_width, positive_height_fn(v)))
+            nbar = make_box(fill, (bar_width, negative_height_fn(v)))
+            
             def with_inside_label(bar):
                 if BarChartLabelPosition.INSIDE in clabel_dict:
                     label = clabel_dict[BarChartLabelPosition.INSIDE](c,r,v,bar.width,bar.height)
@@ -223,23 +229,15 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     chart = Image.from_row(groups, padding=(spacing,0), bg=bgtransparent, yalign=0)
     
     # Legend
-    if legend_labels is not None and legend_box is not None:
-        labels = []
+    if legend_position is not None:
+        boxes, labels, box_sizes = [], [], []
         for c in range(len(data.columns)):
-            box = lbox_fn(c)
-            if not isinstance(box, Image.Image):
-                box = Image.new("RGBA", box, bg)
-            fill = lcolor_fn(c)
-            if callable(fill): fill = fill(box.size)
-            elif isinstance(fill, Image.Image): fill = fill.resize(box.size)
-            else: fill = Image.new("RGBA", box.size, fill)
-            box.overlay(fill, mask=box)
-            label = llabel_fn(c)
-            if isinstance(label, ImageFont.FreeTypeFont):
-                label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bg)
-            labels.append([box, label])
-        legend = Image.from_array(labels, padding=(2,5), xalign=[0.5, 0], bg=bg).pad(2,bg).pad(1, fg).pad(10, 0)
-        chart = chart.place(legend, lalign)
+            fill = color_fn(c,0,0)
+            boxes.append(make_box(fill, lsize_fn(c)) if callable(fill) or isinstance(fill, Image.Image) else fill)
+            box_sizes.append(lsize_fn(c))
+            labels.append(str(data.columns[c]))
+        legend = generate_legend(boxes=boxes, labels=labels, box_sizes=box_sizes, fonts=legend_fonts,  fg=fg, bg=bg, header="Legend")
+        chart = chart.place(legend.pad(10,0), lalign)
 
     # Keep track of offsets relative to chart
     offsets = Padding(0)

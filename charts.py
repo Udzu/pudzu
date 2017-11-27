@@ -7,10 +7,10 @@ from enum import Enum
 
 logger = logging.getLogger('charts')
 
-# Legends # TODO: boxesm mask, lined gradients
+# Legends
 
-def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16),
-                    fg="black", bg="white", header=None, footer=None, max_width=None, spacing=0, border=True):
+def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16), fg="black", bg="white",
+                    header=None, footer=None, max_width=None, spacing=0, box_mask=None, border=True):
     """Generate a chart category legend.
     - boxes (list of colors/images): colors or images to use as boxes
     - labels (list of strings/images/lists): labels to use beside the boxes
@@ -22,6 +22,7 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16),
     - footer (string/image/None): footer at bottom of legend, italicised if text [None]
     - max_width (int/None): legend width limit, excluding border and padding [None]
     - spacing (int): vertical spacing between categories [0]
+    - box_mask(image): optional mask to apply over the boxes [None]
     - border (boolean): whether to include a border [True]
     """
     if len(labels) != len(boxes):
@@ -63,7 +64,12 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16),
         box_label_array.append([box, label])
     label_img = Image.from_array(box_label_array, padding=(1,spacing), xalign=[0.5, 0], bg=bg)
     
+    if box_mask is not None:
+        boxes_size = (max_box_width, label_img.height - 2*spacing*len(box_label_array))
+        label_img = label_img.overlay(Image.new("RGBA", boxes_size, bg), (1,spacing), mask=box_mask.resize(boxes_size).invert_mask())
+    
     legend = Image.from_column([i for i in [header, label_img, footer] if i is not None], padding=(2,3), xalign=0, bg=bg)
+    
     if border: legend = legend.pad(2,bg).pad(1, fg)
     return legend
     
@@ -102,7 +108,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     - label_interval (float): y label interval [grid_interval]
     - ylabels (value -> image/font): image or font to use for y-axis labels [none]
     - yformat (string/value->string): formatting for y values if ylabels is a font [3 sig figs, or % for stacked]
-    - colors (col, row, value -> color/image/size->image): color or image to use for bars [Vega palette]
+    - colors (col, row, value -> color/image/(size->image)): color or image to use for bars [Vega palette]
     - clabels (col, row, value -> image/font): image or font to use for column labels; optionally a dict keyed by position [none]
     - rlabels (row -> image/font): image or font to use for row labels; optionally a dict keyed by position [none]
     - xlabel (image): image to use for x axis label [none]
@@ -431,7 +437,7 @@ def time_chart(groups, start_key, end_key, color_key, chart_width, timeline_heig
 def grid_chart(data, image_key, image_process=None,
                fg="white", bg="black", xalign=0.5, yalign=0.5, padding=(0,0,0,0),
                row_label=None, col_label=None, title=None):
-    """Plot an image grid chart.
+    """Plot an image grid chart. A fairly simple wrapper for Image.from_array.
     - data (pandas dataframe): table to base chart on
     - image_key (datavalue,row,column->image/url/None): image, cached url or None for each grid cell
     - image_process (image,datavalue,row,column->image): post-processing for all images [none]

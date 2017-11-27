@@ -11,7 +11,7 @@ from numbers import Real, Integral
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-from PIL import Image, ImageDraw, ImageFont, ImageColor
+from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageOps
 from utils import *
 
 pyphen = optional_import("pyphen")
@@ -315,6 +315,7 @@ class _Image(Image.Image):
     @classmethod
     def from_gradient(cls, colormap, size, direction=(1,0)):
         """Create a gradient image using a matplotlib color map. Requires numpy."""
+        size = list(reversed(size)) # numpy ordering
         valmin = min((x * direction[0] + y * direction[1]) for x in (0, size[1]-1) for y in (0, size[0]-1))
         valrange = max((x * direction[0] + y * direction[1]) for x in (0, size[1]-1) for y in (0, size[0]-1)) - valmin
         grad_array = np.fromfunction(lambda y, x: ((x * direction[0] + y * direction[1]) - valmin) / valrange, size, dtype=float)
@@ -508,6 +509,21 @@ class _Image(Image.Image):
         img = Image.new("RGBA", self.size, bg)
         img.paste(self, mask=alpha)
         return img
+        
+    def invert_mask(self):
+        """Invert image for use as a mask"""
+        return ImageOps.invert(self.split()[-1].convert("L"))
+        
+    def add_grid(self, lines, width=1, bg="black", copy=True):
+        """Add grid lines to an image"""
+        if isinstance(lines, Integral): lines = (lines, lines)
+        base = self.copy() if copy else self
+        draw = ImageDraw.Draw(base)
+        for x in range(lines[0] and lines[0]+1):
+            draw.line([((base.width-1) * x // lines[0], 0), ((base.width-1) * x // lines[0], base.height)], fill=bg, width=width)
+        for y in range(lines[1] and lines[1]+1):
+            draw.line([(0, (base.height-1) * y // lines[1]), (base.width, (base.height-1) * y // lines[1])], fill=bg, width=width)
+        return base
 
 def _nparray_mask_by_color(nparray, color, num_channels=None):
     if len(nparray.shape) != 3: raise NotImplementedError
@@ -531,6 +547,7 @@ Image.from_url = _Image.from_url
 Image.from_url_with_cache = _Image.from_url_with_cache
 Image.EMPTY_IMAGE = Image.new("RGBA", (0,0))
 
+Image.Image.to_rgba = _Image.to_rgba
 Image.Image.overlay = _Image.overlay
 Image.Image.place = _Image.place
 Image.Image.pad = _Image.pad
@@ -538,12 +555,15 @@ Image.Image.trim = _Image.trim
 Image.Image.pin = _Image.pin
 Image.Image.crop_to_aspect = _Image.crop_to_aspect
 Image.Image.pad_to_aspect = _Image.pad_to_aspect
-Image.Image.resize_nonempty = Image.Image.resize
+if not hasattr(Image.Image, 'resize_nonempty'):
+    Image.Image.resize_nonempty=Image.Image.resize
 Image.Image.resize = _Image.resize
 Image.Image.resize_fixed_aspect = _Image.resize_fixed_aspect
 Image.Image.replace_color = _Image.replace_color
 Image.Image.select_color = _Image.select_color
-Image.Image.to_rgba = _Image.to_rgba
+Image.Image.remove_transparency = _Image.remove_transparency
+Image.Image.invert_mask = _Image.invert_mask
+Image.Image.add_grid = _Image.add_grid
 
 def font(name, size, bold=False, italics=False):
     """Return a truetype font object."""

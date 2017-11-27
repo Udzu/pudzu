@@ -91,7 +91,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
               tick_interval=Ellipsis, label_interval=Ellipsis, ylabels=None, yformat=None, 
               colors=VEGA_PALETTE, clabels=None, rlabels=None,
               xlabel=None, ylabel=None, title=None,
-              legend_position=None, legend_fonts=papply(arial, 16),legend_box_sizes=(40,40)):
+              legend_position=None, legend_fonts=papply(arial, 16),legend_box_sizes=(40,40), legend_args={}):
     """Plot a bar chart.
     - data (pandas dataframe): table to plot
     - bar_width (int): bar width
@@ -117,6 +117,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     - legend_position (alignment): legend alignment [None]
     - legend_fonts (font/three fonts/font function): normal, bold and italics fonts [16-point arial]
     - legend_box_sizes (col->int/(int,int)): sizes to use for legend boxes [40x40]
+    - legend_args (dict): additional arguments to generate legends [none]
     Functional arguments don't need to accept all the arguments and can also be passed in as
     constants or lists instead.
     """
@@ -242,7 +243,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
             boxes.append(make_box(fill, lsize_fn(c)) if callable(fill) or isinstance(fill, Image.Image) else fill)
             box_sizes.append(lsize_fn(c))
             labels.append(str(data.columns[c]))
-        legend = generate_legend(boxes=boxes, labels=labels, box_sizes=box_sizes, fonts=legend_fonts,  fg=fg, bg=bg, header="Legend")
+        legend = generate_legend(boxes=boxes, labels=labels, box_sizes=box_sizes, fonts=legend_fonts,  fg=fg, bg=bg, **legend_args)
         chart = chart.place(legend.pad(10,0), lalign)
 
     # Keep track of offsets relative to chart

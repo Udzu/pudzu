@@ -21,7 +21,7 @@ combined = pd.concat([congress, pd.DataFrame([{}], index=[""]), senate]).fillna(
 
 img = bar_chart(combined, 80, 800, spacing=5, type=BarChartType.STACKED, colors=(RCOL, DCOL, ICOL), ymax=250,
     grid_interval=50, tick_interval=25, ylabels=arial(FONT_SIZE), rlabels=arial(FONT_SIZE), clabels=lambda c,r,v,w,h: None if v < 3 else Image.from_text_bounded(str(int(v)), (w,h), FONT_SIZE, papply(arial, bold=True), fg="white", padding=(0,0,0,1)),
-    legend_box_sizes=(50,50), legend_fonts=papply(arial, FONT_SIZE), legend_position=(1, 0))
+    legend_box_sizes=(50,50), legend_fonts=papply(arial, FONT_SIZE), legend_position=(1, 0), legend_args={'header': "Party"})
 h = img.height
 img = img.pin(Image.from_text("HOUSE VOTE", arial(FONT_SIZE)), (200, h), align=(0.5,0))
 img = img.pin(Image.from_text("SENATE VOTE", arial(FONT_SIZE)), (550, h), align=(0.5,0))

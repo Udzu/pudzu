@@ -109,8 +109,8 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     - ylabels (value -> image/font): image or font to use for y-axis labels [none]
     - yformat (string/value->string): formatting for y values if ylabels is a font [3 sig figs, or % for stacked]
     - colors (col, row, value -> color/image/(size->image)): color or image to use for bars [Vega palette]
-    - clabels (col, row, value -> image/font): image or font to use for column labels; optionally a dict keyed by position [none]
-    - rlabels (row -> image/font): image or font to use for row labels; optionally a dict keyed by position [none]
+    - clabels (col, row, value -> image/font): image or font to use for column labels; optionally a dict keyed by BarChartLabelPosition [none]
+    - rlabels (row -> image/font): image or font to use for row labels; optionally a dict keyed by BarChartLabelPosition [none]
     - xlabel (image): image to use for x axis label [none]
     - ylabel (image): image to use for y axis label [none]
     - title (image): image to use for title [none]
@@ -178,7 +178,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     rlabel_dict = valmap(make_fn_arg, rlabel_dict)
     ylabel_fn = make_fn_arg(ylabels)
     lsize_fn = make_fn_arg(legend_box_sizes)
-    lalign = Alignment(legend_position)
+    if legend_position: lalign = Alignment(legend_position)
 
     if yformat is None:
         yformat = "{:.0%}" if type == BarChartType.STACKED_PERCENTAGE else "{0:.3g}"
@@ -331,18 +331,19 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
 
 # Time charts
 
-def time_chart(groups, start_key, end_key, color_key, chart_width, timeline_height,
-               fg="white", bg="black", xmin=None, xmax=None, title=None,
-               group_order=None, group_labels=None, group_info=None, element_images=None,
-               grid_interval=None, label_interval=Ellipsis, grid_labels=None, label_format=str):
+def time_chart(data, chart_width, timeline_height, start_key, end_key, color_key, 
+               element_images=None, xmin=None, xmax=None, fg="white", bg="black",
+               grid_interval=None, grid_font=None, grid_labels=str, grid_label_interval=Ellipsis, 
+               label_font=None, labels_left=None, labels_right=None, title=None):
     """Plot a time chart. Times can be numeric, dates or anything that supports arithmetic.
-    - timelines (pandas dataframes): one or more dataframes containing time series
-    - width (int): chart width
-    - height (int): height for each timeline
-    - start_key (key or series->time): start time for a given row
-    - end_key (key or series->time): end time for a given row
-    - color_key (key or series->color): color for a given row
-    - element_images (series,width,height->image): element label for a given row [none]
+    - data (pandas dataframes): one or more dataframes containing time series
+    - chart_width (int): chart width
+    - timeline_height (int): height for each timeline
+    - start_key (key or series->time): start time for a given entry
+    - end_key (key or series->time): end time for a given entry
+    - color_key (key or series->color): color for a given entry
+    - element_images (series,width,height->image): element label for a given entry [none]
+    - element_positions # TODO
     - xmin (time): chart start time [auto]
     - xmax (time): chart end time [auto]
     - fg (color): text and grid color [white]
@@ -359,32 +360,31 @@ def time_chart(groups, start_key, end_key, color_key, chart_width, timeline_heig
     constants.
     """
 
+    data, labels_left, labels_right = make_sequence(data), make_sequence(labels_left), make_sequence(labels_right),
     start_fn = start_key if callable(start_key) else lambda d: get_non(d, start_key)
     end_fn = end_key if callable(end_key) else lambda d: get_non(d, end_key)
     color_fn = color_key if callable(color_key) else lambda d: get_non(d, color_key)
-    group_label_fn = group_labels if callable(group_labels) else lambda g: group_labels
-    group_info_fn = group_info if callable(group_info) else lambda g, r: group_info
     grid_label_fn = grid_labels if callable(grid_labels) else lambda v: grid_labels
     
     if xmin is None:
-        xmin = min(start_fn(d) for _,df in groups for _,d in df.iterrows())
+        xmin = min(start_fn(d) for df in data for _,d in df.iterrows())
     if xmax is None:
-        xmax = max(end_fn(d) for _,df in groups for _,d in df.iterrows())
+        xmax = max(end_fn(d) for df in data for _,d in df.iterrows())
     if xmin >= xmax:
         raise ValueError("Mininum x value {0:.3g} must be smaller than maximum x vaue {0:.3g}".format(xmin, xmax))
     def xvalue(x):
         return int((delimit(x,xmin,xmax) - xmin) / (xmax - xmin) * chart_width )
     if grid_interval is None:
         grid_interval = xmax-xmin
-    if label_interval is Ellipsis:
-        label_interval = grid_interval
+    if grid_label_interval is Ellipsis:
+        grid_label_interval = grid_interval
     
     # chart
+    logger.info("Generating time chart")
     timelines = []
-    for g in group_order or groups.groups:
-        r = groups.get_group(g)
+    for df, llabel, rlabel in zip_longest(data, labels_left, labels_right):
         timeline = Image.new("RGBA", (chart_width, timeline_height), bg)
-        for _,d in r.iterrows():
+        for _,d in df.iterrows():
             start, end = xvalue(start_fn(d)), xvalue(end_fn(d))
             bar = Image.new("RGBA", (end-start, timeline_height), color_fn(d)).pad((1,0,0,0), bg)
             if element_images is not None:
@@ -393,21 +393,20 @@ def time_chart(groups, start_key, end_key, color_key, chart_width, timeline_heig
                     bar = bar.place(img)
             timeline.overlay(bar, (start, 0))
         row, xalign = [timeline], [0.5]
-        if group_labels is not None:
-            label = group_label_fn(g)
-            if isinstance(label, ImageFont.FreeTypeFont):
-                label = Image.from_text(str(g), label, fg=fg, bg=bg)
-            row, xalign = [label] + row, [1] + xalign
-        if group_info is not None:
-            info = group_info_fn(g,r)
-            if not isinstance(info, Image.Image):
-                info = Image.from_text(str(info), group_label_fn(g), fg=fg, bg=bg)
-            row, xalign = row + [info], xalign + [0]
+        if any(labels_left):
+            if isinstance(llabel, str):
+                llabel = Image.from_text(llabel, label_font, fg=fg, bg=bg, padding=2)
+            row, xalign = [llabel] + row, [1] + xalign
+        if any(labels_right):
+            if not isinstance(rlabel, Image.Image):
+                rlabel = Image.from_text(rlabel, label_font, fg=fg, bg=bg, padding=2)
+            row, xalign = row + [rlabel], xalign + [0]
         timelines.append(row)
     chart = Image.from_array(timelines, padding=(4,5), bg=bg, xalign=xalign)
     
     # grid
-    xoffset = 0 if group_labels is None else max(row[0].width for row in timelines)+4*3
+    logger.info("Generating time chart grid and labels")
+    xoffset = max(row[0].width for row in timelines)+4*3 if any(labels_left) else 0
     grid = Image.new("RGBA", (chart.width, chart.height), (255,255,255,0))
     gridcolor = ImageColor.getrgba(fg)._replace(alpha=127)
     griddraw = ImageDraw.Draw(grid)
@@ -420,15 +419,16 @@ def time_chart(groups, start_key, end_key, color_key, chart_width, timeline_heig
     chart = Image.alpha_composite(chart, grid)
     
     # grid labels
-    if label_interval is not None and grid_labels is not None:
+    if grid_label_interval is not None and grid_font is not None:
+        offsets = Padding(0)
         yoffset = chart.height
         grid_val = xmin
         while grid_val <= xmax:
             label = grid_label_fn(grid_val)
-            if isinstance(label, ImageFont.FreeTypeFont):
-                label = Image.from_text(label_format(grid_val), label, fg=fg, bg=bg, padding=(0,5,0,0))
-            chart = chart.pin(label, (xoffset+xvalue(grid_val), yoffset), align=(0.5,0), bg=bg)
-            grid_val += label_interval
+            if isinstance(label, str):
+                label = Image.from_text(label, grid_font, fg=fg, bg=bg, padding=(0,5,0,0))
+            chart = chart.pin(label, (xoffset+xvalue(grid_val), yoffset), align=(0.5,0), bg=bg, offsets=offsets)
+            grid_val += grid_label_interval
     
     if title is not None: chart = Image.from_column((title, chart), bg=bg)
     return chart

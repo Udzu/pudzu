@@ -193,7 +193,7 @@ def make_iterable(v):
 def non_string_sequence(v, types=None):
     """Return whether the object is a Sequence other than str, optionally 
     with the given element types."""
-    return isinstance(v, Sequence) and (types is None or all(any(isinstance(x, t) for t in make_iterable(types)) for x in v))
+    return isinstance(v, Sequence) and not isinstance(v, str) and (types is None or all(any(isinstance(x, t) for t in make_iterable(types)) for x in v))
     
 def make_sequence(v):
     """Return a sequence from an object, wrapping it in a tuple if needed."""

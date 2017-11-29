@@ -1,0 +1,44 @@
+period,start,end,type
+proto-Canaanites,-4000,-1500,pagan
+Egyptian New Kingdom,-1500,-1150,pagan
+Jebusites,-1150,-1000,pagan
+United Monarchy,-1000,-930,jewish
+Kingdom of Judah,-930,-733,jewish
+Neo-Assyrian Empire,-733,-627,pagan
+Neo-Babylonian Empire,-627,-539,pagan
+Achaemenid Empire,-539,-332,pagan
+Hellenistic Kingdoms,-332,-320,pagan
+Ptolemaic kingdom,-320,-198,pagan
+Seleucid Empire,-198,-141,pagan
+Hasmoneans,-141,-37,jewish
+Herodian kingdom,-37,6,pagan
+Iudaea,6,132,pagan
+Bar Kokhba,132,135,jewish
+Syria Palaestina,135,390,pagan
+Palmyrene Empire,270,273,pagan
+Byzantine Empire,390,637,christian
+Sasanian Empire,614,628,pagan
+Rashidun Caliphate,637,661,muslim
+Umayyad Caliphate,661,750,muslim
+Abbasid Caliphate...,750,878,muslim
+Tulunids,878,904,muslim
+...,904,939,muslim
+Ikhshidids,939,969,muslim
+Fatimid Caliphate        ,969,1099,muslim
+Seljuk Empire,1073,1086,muslim
+Damascus,1086,1098,muslim
+Kingdom of Jerusalem,1099,1187,christian
+Ayyubids...,1187,1229,muslim
+Kingdom of Jerusalem,1229,1244,christian
+Khwarezmians,1244,1246,muslim
+...,1246,1260,muslim
+Mamluk Sultanate,1260,1516,muslim
+Mongol Empire,1300,1301,muslim
+Ottoman Empire...,1516,1771,muslim
+Egypt Eyalet,1771,1772,muslim
+...,1772,1834,muslim
+Muhammad Ali,1834,1840,muslim
+...,1840,1917,muslim
+Mandatory Palestine,1917,1948,christian
+Jordan & Israel,1948,1967,muslim|jewish
+Israel,1967,2017,jewish

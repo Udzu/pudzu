@@ -28,7 +28,7 @@ labelfn = lambda d: Image.from_text(d['name'].split(" ")[-1], arial(10), padding
 labels = ["{:.0%}".format(percentage_left(df)) for df in data]
 title = Image.from_text("G7 countries by time spent under left-of-centre governments (1960-present)", arial(30, bold=True), fg="white").pad((0,5,0,30),bg="black")
 
-chart = time_chart(data, 1200, 40, startfn, endfn, colorfn, element_images=labelfn,
+chart = time_chart(data, 1200, 40, startfn, endfn, colorfn, labels=labelfn,
                    xmin=START, label_font=arial(16), labels_left=group_order, labels_right=labels, title=title,
                    grid_interval=DateInterval(years=10), grid_font=arial(16), grid_labels=lambda v: str(v.year)).pad(5, "black")
 

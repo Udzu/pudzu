@@ -331,8 +331,12 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
 
 # Time charts
 
+class TimeChartLabelPosition(Enum):
+    """Time Chart label position."""
+    INSIDE, ABOVE, BELOW = range(3)
+
 def time_chart(data, chart_width, timeline_height, start_key, end_key, color_key, 
-               element_images=None, xmin=None, xmax=None, fg="white", bg="black",
+               labels=None, xmin=None, xmax=None, fg="white", bg="black",
                grid_interval=None, grid_font=None, grid_labels=str, grid_label_interval=Ellipsis, 
                label_font=None, labels_left=None, labels_right=None, title=None):
     """Plot a time chart. Times can be numeric, dates or anything that supports arithmetic.
@@ -341,9 +345,8 @@ def time_chart(data, chart_width, timeline_height, start_key, end_key, color_key
     - timeline_height (int): height for each timeline
     - start_key (key or series->time): start time for a given entry
     - end_key (key or series->time): end time for a given entry
-    - color_key (key or series->color): color for a given entry
-    - element_images (series,width,height->image): element label for a given entry [none]
-    - element_positions # TODO
+    - color_key (key or series,width,height->color/image): background for a given entry
+    - labels (series,width,height->image/string): label for a given entry; optionally a dict keyed by TimeChartLabelPosition(s) [none]
     - xmin (time): chart start time [auto]
     - xmax (time): chart end time [auto]
     - fg (color): text and grid color [white]
@@ -365,6 +368,8 @@ def time_chart(data, chart_width, timeline_height, start_key, end_key, color_key
     end_fn = end_key if callable(end_key) else lambda d: get_non(d, end_key)
     color_fn = color_key if callable(color_key) else lambda d: get_non(d, color_key)
     grid_label_fn = grid_labels if callable(grid_labels) else lambda v: grid_labels
+    labels_dict = make_mapping(labels, lambda: TimeChartLabelPosition.INSIDE)
+    labels_dict = { frozenset(make_iterable(k)): v for k,v in labels_dict.items() }
     
     if xmin is None:
         xmin = min(start_fn(d) for df in data for _,d in df.iterrows())
@@ -381,32 +386,52 @@ def time_chart(data, chart_width, timeline_height, start_key, end_key, color_key
     
     # chart
     logger.info("Generating time chart")
-    timelines = []
+    timelines, llabels, rlabels, toffsets = [], [], [], []
     for df, llabel, rlabel in zip_longest(data, labels_left, labels_right):
         timeline = Image.new("RGBA", (chart_width, timeline_height), bg)
+        nextpos = { pos: None for pos in labels_dict }
+        offsets = Padding(0)
         for _,d in df.iterrows():
             start, end = xvalue(start_fn(d)), xvalue(end_fn(d))
-            bar = Image.new("RGBA", (end-start, timeline_height), color_fn(d)).pad((1,0,0,0), bg)
-            if element_images is not None:
-                img = ignoring_extra_args(element_images)(d, bar.width, bar.height)
-                if img.width < bar.width and img.height < bar.height:
-                    bar = bar.place(img)
-            timeline.overlay(bar, (start, 0))
-        row, xalign = [timeline], [0.5]
+            w, h = end-start, timeline_height
+            if w == 0: continue
+            color = ignoring_extra_args(color_fn)(d, w, h)
+            bar = color.resize((w, h)) if isinstance(color, Image.Image) else Image.new("RGBA", (w, h), color)
+            bar = bar.trim((1,0, 0, 0)).pad((1,0), bg)
+            timeline.overlay(bar, (start+offsets.l, offsets.u))
+            for pos, label in labels_dict.items():
+                img = ignoring_extra_args(label if callable(label) else lambda d: label)(d, bar.width, bar.height)
+                if isinstance(img, str):
+                    img = Image.from_text(img, label_font, fg=fg, padding=2)
+                if TimeChartLabelPosition.INSIDE in pos and img.width < bar.width and img.height < bar.height:
+                    timeline = timeline.pin(img, ((start+end)//2, timeline_height//2), bg=bg, offsets=offsets)
+                elif TimeChartLabelPosition.ABOVE in pos and nextpos[pos] != TimeChartLabelPosition.BELOW:
+                    timeline = timeline.pin(img, ((start+end)//2, 0), align=(0.5,1), bg=bg, offsets=offsets)
+                    if TimeChartLabelPosition.BELOW in pos: nextpos[pos] = TimeChartLabelPosition.BELOW
+                elif TimeChartLabelPosition.BELOW in pos:
+                    timeline = timeline.pin(img, ((start+end)//2, timeline_height), align=(0.5,0), bg=bg, offsets=offsets)
+                    if TimeChartLabelPosition.ABOVE in pos: nextpos[pos] = TimeChartLabelPosition.ABOVE
+        timelines.append(timeline)
+        toffsets.append(offsets)
+        
         if any(labels_left):
             if isinstance(llabel, str):
                 llabel = Image.from_text(llabel, label_font, fg=fg, bg=bg, padding=2)
-            row, xalign = [llabel] + row, [1] + xalign
+            llabels.append(llabel)
         if any(labels_right):
             if not isinstance(rlabel, Image.Image):
                 rlabel = Image.from_text(rlabel, label_font, fg=fg, bg=bg, padding=2)
-            row, xalign = row + [rlabel], xalign + [0]
-        timelines.append(row)
-    chart = Image.from_array(timelines, padding=(4,5), bg=bg, xalign=xalign)
+            rlabels.append(rlabel)
+        
+    maxoffset = max(o.l for o in toffsets)
+    timelines = [ t.pad((maxoffset - o.l,0,0,0), bg=bg) for t,o in zip(timelines, toffsets) ]
+    array = list(zip(*[x for x in (llabels, timelines, rlabels) if x]))
+    xalign = [a for a,x in zip((1, 0, 0), (llabels, timelines, rlabels)) if x]
+    chart = Image.from_array(array, padding=(4,5), bg=bg, xalign=xalign)
     
     # grid
     logger.info("Generating time chart grid and labels")
-    xoffset = max(row[0].width for row in timelines)+4*3 if any(labels_left) else 0
+    xoffset = maxoffset + 4 + (max(label.width for label in llabels)+4*2 if llabels else 0)
     grid = Image.new("RGBA", (chart.width, chart.height), (255,255,255,0))
     gridcolor = ImageColor.getrgba(fg)._replace(alpha=127)
     griddraw = ImageDraw.Draw(grid)

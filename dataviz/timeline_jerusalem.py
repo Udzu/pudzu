@@ -14,9 +14,9 @@ def stripes(colors): return Image.from_column([Image.new("RGBA", (100, 4), c) fo
 
 def labelfn(d, w): # hack to handle 500 year cutoffs
     if "Herod" in d['period'] and w < 50: return " "
-    elif "Achaemenid" in d['period'] and w < 200: return "8→"
-    elif "Fatimid" in d['period'] and w < 100: return "26→"
-    elif "Mamluk" in d['period'] and w < 50: return "33"
+    elif "Achaemenid" in d['period'] and w < 200: return "7→"
+    elif "Fatimid" in d['period'] and w < 100: return "25→"
+    elif "Mamluk" in d['period'] and w < 50: return "32"
     return d['period'].replace("\\n", "\n")
     
 colorfn = lambda d, w, h: Image.from_pattern(stripes([COLORS[t] for t in d['type']]), (w, h))

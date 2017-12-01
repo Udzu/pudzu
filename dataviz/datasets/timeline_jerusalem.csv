@@ -3,44 +3,43 @@ period,start,end,type
 2. Egyptian New Kingdom,-1500,-1150,pagan
 3. Jebusites,-1150,-1000,pagan
 4. United Monarchy,-1000,-930,jewish
-5. Kingdom of Judah,-930,-733,jewish
-6. Neo-Assyrian vassal,-733,-627,pagan|jewish
-7. Neo-Babylonian vassal\n    then province,-627,-539,pagan
-8. Achaemenid Empire,-539,-332,pagan
-9. Macedon,-332,-323,pagan
-10. Syria,-323,-320,pagan
-11. Ptolemaic kingdom\n12. Antigonid dynasty,-320,-198,pagan
-13. Seleucids,-198,-141,pagan
-14. Hasmoneans,-141,-37,jewish
-15. Herod,-37,6,jewish
-16. Roman province (Iudaea),6,132,pagan
-17. Bar Kokhba,132,135,jewish
+5. Kingdom of Judah,-930,-586,jewish
+6. Neo-Babylonian Empire,-586,-539,pagan
+7. Achaemenid Empire,-539,-332,pagan
+8. Macedon,-332,-323,pagan
+9. Syria,-323,-320,pagan
+10. Ptolemaic kingdom\n11. Antigonid dynasty,-320,-198,pagan
+12. Seleucids,-198,-141,pagan
+13. Hasmoneans,-141,-37,jewish
+14. Herod,-37,6,jewish
+15. Roman province (Iudaea),6,132,pagan
+16. Bar Kokhba,132,135,jewish
 (Syria Palaestina),135,390,pagan
-18. Palmyrene Empire,270,273,pagan
-19. Byzantine Empire,390,637,christian
-20. Sasanian Empire,614,628,pagan
-21. Rashidun Caliphate,637,661,muslim
-22. Umayyad Caliphate,661,750,muslim
-23. Abbasid Caliphate,750,878,muslim
-24. Tulunids,878,904,muslim
-23,904,939,muslim
-25. Ikhshidids,939,969,muslim
-26. Fatimid Caliphate           ,969,1099,muslim
-27. Seljuk Empire,1073,1086,muslim
-28. Damascus,1086,1098,muslim
-29. Kingdom of Jerusalem,1099,1187,christian
-30. Ayyubids,1187,1229,muslim
-31. KoJ,1229,1244,christian
-32. Khwarezmians,1244,1246,muslim
-30,1246,1260,muslim
-33→,1260,1300,muslim
-34. Mongol Empire,1300,1301,muslim
-33. Mamluk Sultanate,1301,1516,muslim
-35. Ottoman Empire,1516,1771,muslim
-36. Egypt Eyalet,1771,1772,muslim
-35,1772,1834,muslim
-37. Muhammad Ali,1834,1840,muslim
-35,1840,1917,muslim
-38. Mandatory Palestine,1917,1948,christian
-39. Jordan/40. Israel,1948,1967,muslim|jewish
-40*,1967,2017,jewish
+17. Palmyrene Empire,270,273,pagan
+18. Byzantine Empire,390,637,christian
+19. Sasanian Empire,614,628,pagan
+20. Rashidun Caliphate,637,661,muslim
+21. Umayyad Caliphate,661,750,muslim
+22. Abbasid Caliphate,750,878,muslim
+23. Tulunids,878,904,muslim
+22,904,939,muslim
+24. Ikhshidids,939,969,muslim
+25. Fatimid Caliphate           ,969,1099,muslim
+26. Seljuk Empire,1073,1086,muslim
+27. Damascus,1086,1098,muslim
+28. Kingdom of Jerusalem,1099,1187,christian
+29. Ayyubids,1187,1229,muslim
+30. KoJ,1229,1244,christian
+31. Khwarezmians,1244,1246,muslim
+29,1246,1260,muslim
+32→,1260,1300,muslim
+33. Mongol Empire,1300,1301,muslim
+32. Mamluk Sultanate,1301,1516,muslim
+34. Ottoman Empire,1516,1771,muslim
+35. Egypt Eyalet,1771,1772,muslim
+34,1772,1834,muslim
+36. Muhammad Ali,1834,1840,muslim
+34,1840,1917,muslim
+37. Mandatory Palestine,1917,1948,christian
+38. Jordan/39. Israel,1948,1967,muslim|jewish
+39*,1967,2017,jewish

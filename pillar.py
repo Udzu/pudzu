@@ -565,9 +565,9 @@ Image.Image.remove_transparency = _Image.remove_transparency
 Image.Image.invert_mask = _Image.invert_mask
 Image.Image.add_grid = _Image.add_grid
 
-def font(name, size, bold=False, italics=False):
+def font(name, size, bold=False, italics=False, **kwargs):
     """Return a truetype font object."""
     variants = [["", "i"], ["bd", "bi"]]
-    return ImageFont.truetype("{}{}.ttf".format(name, variants[bold][italics]), size)
+    return ImageFont.truetype("{}{}.ttf".format(name, variants[bold][italics]), size, **kwargs)
 
 arial = partial(font, "arial")

@@ -27,7 +27,7 @@ title = Image.from_column([
 Image.from_text("% of European countries’ area which is in Europe".upper(), arial(40, bold=True), padding=(5,10,5,2)),
 Image.from_text("using the Bosporus/Caucasus/Ural definition of Europe, and grouping islands with nearby continents", arial(24, bold=False), padding=(5,2,5,10))], bg="white")
 
-footer = Image.from_text("* most of the populations of Russia and Denmark live in Europe. ** <0.1% of the area of Italy is off Africa; countries’ Antarctic claims and non-integral colonies are excluded.", arial(14), "black", padding=10)
+footer = Image.from_text("* most of the populations of Russia and Denmark live in Europe. ** <0.1% of the area of Italy is off Africa; countries’ Antarctic claims are excluded.", arial(14), "black", padding=10)
 
 img = Image.from_column([title, chart, footer], bg="white")
 img.place(Image.from_text("/u/Udzu", font("arial", 14), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)

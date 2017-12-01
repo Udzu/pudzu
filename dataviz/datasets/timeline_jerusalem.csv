@@ -4,16 +4,16 @@ period,start,end,type
 3. Jebusites,-1150,-1000,pagan
 4. United Monarchy,-1000,-930,jewish
 5. Kingdom of Judah,-930,-733,jewish
-6. Neo-Assyrian Empire,-733,-627,pagan
-7. Neo-Babylonian Empire,-627,-539,pagan
+6. Neo-Assyrian vassal,-733,-627,pagan|jewish
+7. Neo-Babylonian vassal\n    then province,-627,-539,pagan
 8. Achaemenid Empire,-539,-332,pagan
 9. Macedon,-332,-323,pagan
 10. Syria,-323,-320,pagan
 11. Ptolemaic kingdom\n12. Antigonid dynasty,-320,-198,pagan
 13. Seleucids,-198,-141,pagan
 14. Hasmoneans,-141,-37,jewish
-15. Herod,-37,6,pagan
-16. Iudaea,6,132,pagan
+15. Herod,-37,6,jewish
+16. Roman province (Iudaea),6,132,pagan
 17. Bar Kokhba,132,135,jewish
 (Syria Palaestina),135,390,pagan
 18. Palmyrene Empire,270,273,pagan

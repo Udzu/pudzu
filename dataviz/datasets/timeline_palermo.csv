@@ -1,0 +1,32 @@
+period,start,end,type
+1. Phoenicians,-734,-600,semitic
+... Carthaginians,-600,-409,semitic
+2. Syracuse,-409,-408,classical
+...,-409,-276,semitic
+3. Epirus,-276,-275,classical
+...,-275,-254,semitic
+4. Rome,-254,440,classical
+5. Vandals,440,450,german
+6. Ostrogoths,450,535,german
+7. Byzantium,535,831,classical
+8. Aghlabids,831,1072,semitic
+9. Norman Sicily,1072,1194,french
+10. Hohenstaufen Sicily,1194,1266,german
+11. Angevin Sicily,1266,1282,french
+12. Aragon Sicily,1282,1302,spanish
+13. Aragon Trinacria,1302,1409,spanish
+14. Crown of Aragon,1409,1516,spanish
+15. Spain,1516,1713,spanish
+16. Savoy Sicily,1713,1720,italian
+17. Hapsburg Sicily,1720,1735,german
+18. Bourbon Sicily,1735,1816,spanish
+19. Two\nSicilies,1816,1848,spanish
+20. Sicilan revolution,1848,1849,italian
+...,1848,1860,spanish
+21. Kingdom of Italy,1860,1943
+22. Allied occupation,1943,1944,german
+ ,1944,1946,italian
+23. Italian\nRepublic,1946,2017
+
+
+

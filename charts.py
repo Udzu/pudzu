@@ -607,15 +607,19 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
     except FileNotFoundError:
         logger.warning("No color name file found at {}".format(name_csv_path(map)))
         namemap = {}
-    if resize_patterns:
+    try:
         df = load_boundingbox_csv(map)
         bboxes = { tuple(d["color"]) : BoundingBox(d['bbox']) for _,d in df.iterrows() }
+    except FileNotFoundError:
+        logger.warning("No bounding box file found at {}".format(boundingbox_csv_path(map)))
+        bboxes = { }
         
     # generate map
     colors = [(c,namemap.get(c, c)) for _,c in img.getcolors()]
     original = img.copy()
     for c,name in colors:
-        color = color_fn(name) if callable(color_fn) else color_fn.get(name)
+        bbox = bboxes.get(c[:3], BoundingBox(img))
+        color = ignoring_extra_args(color_fn)(name, bbox.width, bbox.height) if callable(color_fn) else color_fn.get(name)
         if color is None: continue
         mask = original.select_color(c)
         if not isinstance(color, Image.Image):
@@ -623,7 +627,6 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
         elif not resize_patterns:
             pattern = Image.from_pattern(color, img.size)
         else:
-            bbox = bboxes[c[:3]]
             pattern = color.resize((bbox.width, bbox.height)).pad((bbox.l, bbox.u, img.width - bbox.r, img.height - bbox.d), 0)
         img.place(pattern, mask=mask, copy=False)
             

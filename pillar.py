@@ -98,7 +98,9 @@ class BoundingBox():
         
     def __init__(self, box, padding=None):
         padding = Padding(padding)
-        if non_string_sequence(box, Integral) and len(box) == 4:
+        if isinstance(box, Image.Image):
+            self.corners = (0, 0, box.width-1, box.height-1)
+        elif non_string_sequence(box, Integral) and len(box) == 4:
             self.corners = tuple(box)
         elif non_string_sequence(box) and all(non_string_sequence(point, Integral) and len(point) == 2 for point in box):
             self.corners = (min(x for x,y in box), min(y for x,y in box), max(x for x,y in box), max(y for x,y in box))

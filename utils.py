@@ -289,6 +289,10 @@ def non(x):
     """Whether the object is None or a float nan."""
     return x is None or isinstance(x, float) and math.isnan(x)
     
+def nnn(x):
+    """Whether the object is neither None nor a float nan."""
+    return not non(x)
+    
 def get_non(d, k, default=None):
     """Like get but treats None and nan as missing values."""
     v = d.get(k, default)

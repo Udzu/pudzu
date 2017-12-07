@@ -125,6 +125,13 @@ class BoundingBox():
     def size(self): return (self.width, self.height)
     @property
     def center(self): return ((self.l + self.r + 1) // 2, (self.u + self.d + 1) // 2)
+            
+    def __contains__(self, other):
+        if non_string_sequence(other, Integral) and len(other) == 2:
+            return self.l <= other[0] <= self.r and self.u <= other[1] <= self.d
+        else:
+            return NotImplemented
+            
     
 def whitespace_span_tokenize(text):
     """Whitespace span tokenizer."""

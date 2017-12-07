@@ -44,29 +44,32 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16), fg="bl
     if isinstance(footer, str):
         footer = Image.from_text(footer, fonts[2], fg=fg, bg=bg, max_width=max_width, padding=2)
         
-    max_box_width = max(box.width if isinstance(box, Image.Image) else size[0] for box, size in zip(boxes, box_sizes))
-    max_label_width = None if max_width is None else max_width - max_box_width - 8
-    
-    box_label_array = []
-    for box, label, size in zip(boxes, labels, box_sizes):
-        if isinstance(label, str):
-            label = Image.from_text(label, fonts[0], fg=fg, bg=bg, max_width=max_label_width, padding=2)
-        if not isinstance(box, Image.Image):
-            box = Image.new("RGBA", (size[0], size[1] if size[1] != ... else label.height + 6), box)
-        if non_string_sequence(label):
-            labels = label
-            label = Image.new("RGBA", box.size, bg)
-            offsets = Padding(0)
-            for i, l in enumerate(labels):
-                if isinstance(l, str):
-                    l = Image.from_text(l, fonts[0], fg=fg, bg=bg, max_width=max_label_width, padding=2)
-                label = label.pin(l, (0, (box.height * i) // (len(labels) - 1)), align=(0, 0.5), bg=bg, offsets=offsets)
-        box_label_array.append([box, label])
-    label_img = Image.from_array(box_label_array, padding=(1,spacing), xalign=[0.5, 0], bg=bg)
-    
-    if box_mask is not None:
-        boxes_size = (max_box_width, label_img.height - 2*spacing*len(box_label_array))
-        label_img = label_img.overlay(Image.new("RGBA", boxes_size, bg), (1,spacing), mask=box_mask.resize(boxes_size).invert_mask())
+    if len(boxes) > 0:
+        max_box_width = max(box.width if isinstance(box, Image.Image) else size[0] for box, size in zip(boxes, box_sizes))
+        max_label_width = None if max_width is None else max_width - max_box_width - 8
+        
+        box_label_array = []
+        for box, label, size in zip(boxes, labels, box_sizes):
+            if isinstance(label, str):
+                label = Image.from_text(label, fonts[0], fg=fg, bg=bg, max_width=max_label_width, padding=2)
+            if not isinstance(box, Image.Image):
+                box = Image.new("RGBA", (size[0], size[1] if size[1] != ... else label.height + 6), box)
+            if non_string_sequence(label):
+                labels = label
+                label = Image.new("RGBA", box.size, bg)
+                offsets = Padding(0)
+                for i, l in enumerate(labels):
+                    if isinstance(l, str):
+                        l = Image.from_text(l, fonts[0], fg=fg, bg=bg, max_width=max_label_width, padding=2)
+                    label = label.pin(l, (0, (box.height * i) // (len(labels) - 1)), align=(0, 0.5), bg=bg, offsets=offsets)
+            box_label_array.append([box, label])
+        label_img = Image.from_array(box_label_array, padding=(1,spacing), xalign=[0.5, 0], bg=bg)
+        
+        if box_mask is not None:
+            boxes_size = (max_box_width, label_img.height - 2*spacing*len(box_label_array))
+            label_img = label_img.overlay(Image.new("RGBA", boxes_size, bg), (1,spacing), mask=box_mask.resize(boxes_size).invert_mask())
+    else:
+        label_img = None
     
     legend = Image.from_column([i for i in [header, label_img, footer] if i is not None], padding=(2,3), xalign=0, bg=bg)
     

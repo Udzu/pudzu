@@ -1,0 +1,23 @@
+city,state,population,x,y,above
+London,Ontario,383822,1081,271,True
+Athens,Georgia,115452,1075,600
+Berne,Indiana,3999,988,375
+Paris,Texas,25175,711,634
+Berlin,New Hampshire,10051,1302,199
+Rome,Georgia,36303,1023,597,True
+Lisbon,North Dakota,2154,682,186,True
+Warsaw,Indiana,13559,972,360,True
+Madrid,Iowa,2543,769,342
+Vienna,West Virginia,10749,1089,409
+Stockholm,New Jersey,3457,1251,321
+Brussels,Wisconsin,1112,923,244,True
+Prague,Oklahoma,2386,702,559
+Dublin,California,49890,49,394
+Riga,New York,5590,1155,267
+Wilna,New York,6427,1206,233
+Luxemburg,Wisconsin,2515,918,253
+Amsterdam,New York,18620,1243,253
+Moscow,Idaho,23800,246,134
+San Marino,California,13147,123,534
+Belgrade,Montana,7389,372,180
+

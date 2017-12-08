@@ -332,3 +332,21 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 >> red.remove_transparency("grey").show()
 ```
 ![alt](images/removetransparency.png)
+
+### ImageShape
+
+An abstract base class for encapsulating simple geometric shape generation (mostly implemented with numpy). Shapes may be generated either as masks, by calling their mask method, or as images, by using their constructor. Note that the shape classes act as factories only: masks are returned as mode "L" images, shapes as mode "RGBA" images.
+
+**Rectangle**: [...]
+
+**Ellipse**: [...]
+
+**Triangle**: [...]
+
+**Parallelogram**: [...]
+
+**Diamond**: [...]
+
+**MaskUnion**: [...]
+
+**MaskIntersection**: [...]

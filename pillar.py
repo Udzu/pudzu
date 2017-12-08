@@ -2,6 +2,7 @@ import re
 import os
 import os.path
 import logging
+import abc as ABC
 
 from collections import namedtuple
 from functools import partial
@@ -111,6 +112,9 @@ class BoundingBox():
     def __repr__(self):
         return "Box(l={}, u={}, r={}, d={})".format(self.l, self.u, self.r, self.d)
 
+    def __iter__(self):
+        return iter(self.corners)
+        
     @property
     def l(self): return self.corners[0]
     @property
@@ -258,6 +262,11 @@ ImageColor.from_linear = _ImageColor.from_linear
 ImageColor.blend = _ImageColor.blend
 ImageColor.brighten = _ImageColor.brighten
 ImageColor.darken = _ImageColor.darken
+
+RGBA.to_hex = papply(ImageColor.to_hex)
+RGBA.blend = papply(ImageColor.blend)
+RGBA.brighten = papply(ImageColor.brighten)
+RGBA.darken = papply(ImageColor.darken)
 
 class _Image(Image.Image):
 
@@ -469,12 +478,12 @@ class _Image(Image.Image):
             offsets.update(offsets + padding)
         return img.overlay(self, (x, y), None)
 
-    def resize(self, size, resample=Image.LANCZOS):
-        """Return a resized copy of the image, handling zero-width/height sizes."""
+    def resize(self, size, resample=Image.LANCZOS, *args, **kwargs):
+        """Return a resized copy of the image, handling zero-width/height sizes and defaulting to LANCZOS resampling."""
         if size[0] == 0 or size[1] == 0:
             return Image.new(self.mode, size)
         else:
-            return self.resize_nonempty(size, resample=resample)
+            return self.resize_nonempty(size, resample, *args, **kwargs)
         
     def resize_fixed_aspect(self, *, width=None, height=None, scale=None, resample=Image.LANCZOS):
         """Return a resized image with an unchanged aspect ratio."""
@@ -580,3 +589,36 @@ def font(name, size, bold=False, italics=False, **kwargs):
     return ImageFont.truetype("{}{}.ttf".format(name, variants[bold][italics]), size, **kwargs)
 
 arial = partial(font, "arial")
+
+class Shape(object):
+    """Abstract base class for generating simple geometric shapes."""
+    __metaclass__ = ABC.ABCMeta
+    
+    @classmethod
+    @ABC.abstractmethod
+    def mask(cls, size, **kwargs):
+        """Generate a mask of the appropriate shape and size. Additional parameters should be size-independent."""
+    
+    def __new__(cls, size, fg, bg=0, alias=4, **kwargs): # TODO: transpose
+        """Generate an image of the appropriate shape, size and color."""
+        if isinstance(size, Integral): size = (size, size)
+        asize = tuple(round(s * alias) for s in size)
+        base = Image.new("RGBA", asize, bg)
+        fore = Image.new("RGBA", asize, fg)
+        mask = cls.mask(asize, **kwargs)
+        return base.overlay(fore, mask=mask).resize(size, resample=Image.LANCZOS if alias > 2 else Image.NEAREST)
+        
+class Rectangle(Shape):
+    @classmethod
+    def mask(cls, size):
+        return Image.new("L", size, 255)
+    
+class Ellipse(Shape):
+    @classmethod
+    def mask(cls, size):
+        x, y = size
+        rx, ry = (x-1)/2, (y-1)/2
+        array = np.fromfunction(lambda j, i: ((rx-i)**2/rx**2+(ry-j)**2/ry**2 <= 1), (y,x))
+        return Image.fromarray(255 * array.view('uint8'))
+        
+# TODO: Rhombus/kite, Paralellogram, Triangle, Ring

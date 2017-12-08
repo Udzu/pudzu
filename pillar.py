@@ -597,28 +597,77 @@ class Shape(object):
     @classmethod
     @ABC.abstractmethod
     def mask(cls, size, **kwargs):
-        """Generate a mask of the appropriate shape and size. Additional parameters should be size-independent."""
+        """Generate a mask of the appropriate shape and size. Additional parameters should be size-independent
+        (or cls.antialiasing should be set to False)."""
+        
+    antialiasing = True
     
-    def __new__(cls, size, fg, bg=0, alias=4, **kwargs): # TODO: transpose
+    def __new__(cls, size, fg="black", bg=0, alias=4, **kwargs):
         """Generate an image of the appropriate shape, size and color."""
         if isinstance(size, Integral): size = (size, size)
-        asize = tuple(round(s * alias) for s in size)
-        base = Image.new("RGBA", asize, bg)
-        fore = Image.new("RGBA", asize, fg)
-        mask = cls.mask(asize, **kwargs)
-        return base.overlay(fore, mask=mask).resize(size, resample=Image.LANCZOS if alias > 2 else Image.NEAREST)
+        msize = tuple(round(s * alias) for s in size) if cls.antialiasing else size
+        mask = cls.mask(msize, **kwargs)
+        base = Image.new("RGBA", mask.size, bg)
+        fore = Image.new("RGBA", mask.size, fg)
+        img = base.overlay(fore, mask=mask)
+        if cls.antialiasing: img = img.resize(size, resample=Image.LANCZOS if alias > 1 else Image.NEAREST)
+        return img
         
 class Rectangle(Shape):
     @classmethod
     def mask(cls, size):
+        """Rectangle mask"""
         return Image.new("L", size, 255)
     
 class Ellipse(Shape):
     @classmethod
     def mask(cls, size):
-        x, y = size
-        rx, ry = (x-1)/2, (y-1)/2
-        array = np.fromfunction(lambda j, i: ((rx-i)**2/rx**2+(ry-j)**2/ry**2 <= 1), (y,x))
+        """Ellipse mask"""
+        w, h = size
+        rx, ry = (w-1)/2, (h-1)/2
+        array = np.fromfunction(lambda j, i: ((rx-i)**2/rx**2+(ry-j)**2/ry**2 <= 1), (h,w))
         return Image.fromarray(255 * array.view('uint8'))
         
-# TODO: Rhombus/kite, Paralellogram, Triangle, Ring
+class Triangle(Shape):
+    @classmethod
+    def mask(cls, size, p=0.5):
+        """Acute triangle mask with 2 vertices at the bottom and one p along the top"""
+        w, h = size
+        x, y, n = w-1, h-1, p*(w-1)
+        left = np.fromfunction(lambda j,i: j*n >= y*(n-i), (h,w))
+        right = np.fromfunction(lambda j,i: j*(x-n) >= y*(i-n), (h,w))
+        return Image.fromarray(255 * (left * right).view('uint8'))
+        
+class Parallelogram(Shape):
+    @classmethod
+    def mask(cls, size, p=0.5):
+        """Right-leaning parallelogram mask with top-left vertex p along the top"""
+        w, h = size
+        x, y, n = w-1, h-1, p*(w-1)
+        left = np.fromfunction(lambda j,i: j*n >= y*(n-i), (h,w))
+        right = np.fromfunction(lambda j,i: (y-j)*n >= y*(i-(x-n)), (h,w))
+        return Image.fromarray(255 * (left * right).view('uint8'))
+
+class Diamond(Shape):
+    @classmethod
+    def mask(cls, size, p=0.5):
+        """Diamong mask with the left-right vertices p down from the top"""
+        w, h = size
+        x, y, m, n = w-1, h-1, (w-1)/2, p*(h-1)
+        top = np.fromfunction(lambda j, i: j*m >= n*abs(m-i), (h,w))
+        bottom = np.fromfunction(lambda j, i: (y-j)*m >= (y-n)*abs(m-i), (h,w))
+        return Image.fromarray(255 * (top * bottom).view('uint8'))
+        
+class MaskUnion(Shape):
+    @classmethod
+    def mask(cls, size, masks):
+        """A union of superimposed masks. Size is automatically calculated if set to ..."""
+        if size == ...:
+            size = (max(m.width for m in masks), max(m.height for m in masks))
+        img = Image.new("L", size, 0)
+        for m in masks:
+            img = img.place(Image.new("L", m.size, 255), mask=m)
+        return img
+    antialiasing = False
+        
+# TODO: MaskIntersection (also MaskSubtract, since invert_mask doesn't resize?)

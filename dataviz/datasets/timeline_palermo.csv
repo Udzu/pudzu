@@ -11,7 +11,7 @@ period,start,end,type
 7. Byzantium,535,831,classical
 8. Aghlabids,831,1072,semitic
 9. Norman Sicily,1072,1194,french
-10. Hohenstaufen Sicily,1194,1266,german
+10. Hohenstaufen\nSicily,1194,1266,german
 11. Angevin Sicily,1266,1282,french
 12. Aragon Sicily,1282,1302,spanish
 13. Aragon Trinacria,1302,1409,spanish
@@ -23,10 +23,10 @@ period,start,end,type
 19. Two\nSicilies,1816,1848,spanish
 20. Sicilan revolution,1848,1849,italian
 ...,1848,1860,spanish
-21. Kingdom of Italy,1860,1943
+21. Kingdom of Italy,1860,1943,italian
 22. Allied occupation,1943,1944,german
  ,1944,1946,italian
-23. Italian\nRepublic,1946,2017
+23. Italian\nRepublic,1946,2017,italian
 
 
 

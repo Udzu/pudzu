@@ -19,8 +19,8 @@ Various Pillow utilities. These are monkey-patched on, allowing continued use of
 Padding(l=10, u=10, r=10, d=10)
 >> Padding((10,0))
 Padding(l=10, u=0, r=10, d=0)
->> Padding((10,0,0,5))
-Padding(l=10, u=0, r=0, d=5)
+>> Padding((10,0,0,5)) + Padding((0,10,0,0))
+Padding(l=10, u=10, r=0, d=5)
 ```
 
 **Alignment**: a class representing element alignment, initialized from one or two floats between 0 and 1. Any function below that has an element alignment parameter can be passed one of these.
@@ -106,7 +106,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ### Image
 
-**Image.from_url**: create an image from a URL. **Image.from_url_with_cache** does the same but uses a file cache (with a default filename structure of cache_directory/hostname/hash_of_path.extension).
+**Image.from_url**: create an image from a URL. **Image.from_url_with_cache** does the same but uses a file cache (with a default filename structure of cache_directory/hostname/hash_of_path.extension, plus an accompanying .source file containing the URL).
 
 ```python
 >> Image.from_url('https://assets-cdn.github.com/images/modules/logos_page/Octocat.png')
@@ -204,7 +204,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ### Image.Image
 
-**Image.Image.overlay**: like Image.Image.paste, but by default uses the pasted image's alpha channel and supports a copy parameter.
+**Image.Image.overlay**: like Image.Image.paste, but respects the pasted image's alpha channel and supports a copy parameter.
 
 ```python
 >> base = Image.new("RGB", (100,60), "blue")
@@ -256,7 +256,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/pad2.png)
 
-**Image.Image.resize**: monkey-patched to handle zero-width/height sizes.
+**Image.Image.resize**: monkey-patched to handle zero-width/height sizes and default to LANCZOS resampling.
 
 ```python
 >> flag.resize((0,100))
@@ -335,18 +335,63 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ### ImageShape
 
-An abstract base class for encapsulating simple geometric shape generation (mostly implemented with numpy). Shapes may be generated either as masks, by calling their mask method, or as images, by using their constructor. Note that the shape classes act as factories only: masks are returned as mode "L" images, shapes as mode "RGBA" images.
+An abstract base class for encapsulating simple geometric shape generation (mostly implemented with numpy). Shapes may be generated either as masks, by calling their `mask` method, or as images, by using their constructor. Note that the shape classes act as factories only: masks are returned as mode "L" images, shapes as mode "RGBA" images.
 
-**Rectangle**: [...]
+**Rectangle**: generate rectangular shapes or masks.
 
-**Ellipse**: [...]
+```python
+>> Rectangle((100,50), "grey").show()
+```
+![alt](images/shaperectangle.png)
 
-**Triangle**: [...]
+```python
+>> Rectangle((100,50), flag.resize_fixed_aspect(width=30)).show()
+```
+![alt](images/shaperectangle2.png)
 
-**Parallelogram**: [...]
+**Triangle**: generate triangular shapes or masks, with a parameter p indicating how far along the top (if p>0) or bottom-left (if p<0) vertices are.
 
-**Diamond**: [...]
+```python
+>> Image.from_array([[Triangle(40, "grey", p=i*n/4) for n in range(5)] for i in [1,-1]], padding=5).show()
+```
+![alt](images/shapetriangle.png)
 
-**MaskUnion**: [...]
+**Diamond**: generate diamond shapes or masks, with a parameter p indicating how far down the left-right vertices are.
 
-**MaskIntersection**: [...]
+```python
+>> Image.from_row([Diamond(40, "grey", p=n/4) for n in range(5)], padding=5).show()
+```
+![alt](images/shapediamond.png)
+
+**Parallelogram**: generate parallelogram shapes or masks, with a parameter p indicating how far along the top-left (if p>0) or bottom-left (if p<0) vertices are.
+
+```python
+>> Image.from_array([[Parallelogram(40, "grey", p=i*n/4) for n in range(5)] for i in [1,-1]], padding=5).show()
+```
+![alt](images/shapeparallelogram.png)
+
+**Ellipse**: generate elliptical (or circular) shapes or masks.
+
+```python
+>> Ellipse((80,50), Diamond(10, "black", "grey")).show()
+```
+![alt](images/shapeellipse.png)
+
+**MaskUnion**: generate a shape from the union of a collection of masks (mode "L" images or alpha channels of other images). Automatically calculates the size if set to `...`.
+
+```python
+>>  MaskUnion(..., Rectangle(10, "black").place(Ellipse(8, "grey")), masks=(Triangle(50), Ellipse(40))).show()
+```
+![alt](images/shapeunion.png)
+
+**MaskIntersection**:  generate a shape from the intersection of a collection of masks (mode "L" images or alpha channels of other images). Automatically calculates the size if set to `...`. The `include_missing` parameters specifies how to treat areas that are missing from smaller masks.
+
+```python
+>> MaskIntersection(..., masks=(Triangle(50), Ellipse(40))).show()
+```
+![alt](images/shapeintersection1.png)
+
+```python
+>> MaskIntersection(..., masks=(Diamond(50), Ellipse(20).invert_mask()), include_missing=True).show()
+```
+![alt](images/shapeintersection2.png)

@@ -608,55 +608,76 @@ class ImageShape(object):
     antialiasing = True
     
     def __new__(cls, size, fg="black", bg=0, alias=4, **kwargs):
-        """Generate an image of the appropriate shape, size and color."""
+        """Generate an image of the appropriate shape. See mask method for additional shape-specific parameters.
+        - size (int/(int,int)): image size
+        - fg (color/pattern): image foreground [black]
+        - bg (color/pattern): image background [0]
+        - alias (x>0): level of antialiasing (if supported), where 1 is none [4]
+        """
         if isinstance(size, Integral): size = (size, size)
-        msize = tuple(round(s * alias) for s in size) if cls.antialiasing else size
-        mask = cls.mask(msize, **kwargs)
-        base = Image.new("RGBA", mask.size, bg)
-        fore = Image.new("RGBA", mask.size, fg)
+        if cls.antialiasing:
+            orig_size, size = size, [round(s * alias) for s in size]
+            if isinstance(bg, Image.Image): bg = bg.resize([round(s * alias) for s in bg.size], Image.NEAREST)
+            if isinstance(fg, Image.Image): fg = fg.resize([round(s * alias) for s in fg.size], Image.NEAREST)
+        mask = cls.mask(size, **kwargs)
+        base = Image.from_pattern(bg, mask.size) if isinstance(bg, Image.Image) else Image.new("RGBA", mask.size, bg)
+        fore = Image.from_pattern(fg, mask.size) if isinstance(fg, Image.Image) else  Image.new("RGBA", mask.size, fg)
         img = base.overlay(fore, mask=mask)
-        if cls.antialiasing: img = img.resize(size, resample=Image.LANCZOS if alias > 1 else Image.NEAREST)
+        if cls.antialiasing:
+            img = img.resize(orig_size, resample=Image.LANCZOS if alias > 1 else Image.NEAREST)
         return img
         
 class Rectangle(ImageShape):
+    __doc__ = ImageShape.__new__.__doc__
     @classmethod
     def mask(cls, size):
-        """Rectangle mask"""
+        """Rectangular mask."""
         return Image.new("L", size, 255)
     
 class Ellipse(ImageShape):
+    __doc__ = ImageShape.__new__.__doc__
     @classmethod
     def mask(cls, size):
-        """Ellipse mask"""
+        """Elliptical mask."""
         w, h = size
         rx, ry = (w-1)/2, (h-1)/2
         array = np.fromfunction(lambda j, i: ((rx-i)**2/rx**2+(ry-j)**2/ry**2 <= 1), (h,w))
         return Image.fromarray(255 * array.view('uint8'))
         
 class Triangle(ImageShape):
+    __doc__ = ImageShape.__new__.__doc__
     @classmethod
     def mask(cls, size, p=0.5):
-        """Acute triangle mask with 2 vertices at the bottom and one p along the top"""
+        """Triangular mask with 2 vertices at the bottom and one on top, with p > 0 
+        for how far along the top the top vertex is, or p < 0 for how far along
+        the bottom the bottom-left vertex is."""
         w, h = size
-        x, y, n = w-1, h-1, p*(w-1)
-        left = np.fromfunction(lambda j,i: j*n >= y*(n-i), (h,w))
-        right = np.fromfunction(lambda j,i: j*(x-n) >= y*(i-n), (h,w))
+        x, y, n = w-1, h-1, abs(p * (w-1))
+        if p >= 0:
+            left = np.fromfunction(lambda j,i: j*n >= y*(n-i), (h,w))
+            right = np.fromfunction(lambda j,i: j*(x-n) >= y*(i-n), (h,w))
+        else:
+            left = np.fromfunction(lambda j,i: (y-j)*n >= y*(n-i), (h,w))
+            right = np.fromfunction(lambda j,i: j*x >= y*i, (h,w))
         return Image.fromarray(255 * (left * right).view('uint8'))
         
 class Parallelogram(ImageShape):
+    __doc__ = ImageShape.__new__.__doc__
     @classmethod
     def mask(cls, size, p=0.5):
-        """Right-leaning parallelogram mask with top-left vertex p along the top"""
+        """Parallelogram-shaped mask, with p > 0 for how far along the top the top-left vertex is,
+        or p < 0 for how far along the bottom the bottom-left vertex is."""
         w, h = size
-        x, y, n = w-1, h-1, p*(w-1)
-        left = np.fromfunction(lambda j,i: j*n >= y*(n-i), (h,w))
-        right = np.fromfunction(lambda j,i: (y-j)*n >= y*(i-(x-n)), (h,w))
+        x, y, n = w-1, h-1, abs(p*(w-1))
+        left = np.fromfunction(lambda j,i: (j if p > 0 else y-j)*n >= y*(n-i), (h,w))
+        right = np.fromfunction(lambda j,i: (j if p < 0 else y-j)*n >= y*(i-(x-n)), (h,w))
         return Image.fromarray(255 * (left * right).view('uint8'))
 
 class Diamond(ImageShape):
+    __doc__ = ImageShape.__new__.__doc__
     @classmethod
     def mask(cls, size, p=0.5):
-        """Diamong mask with the left-right vertices p down from the top"""
+        """Diamong-shaped mask with the left-right vertices p down from the top."""
         w, h = size
         x, y, m, n = w-1, h-1, (w-1)/2, p*(h-1)
         top = np.fromfunction(lambda j, i: j*m >= n*abs(m-i), (h,w))
@@ -664,6 +685,7 @@ class Diamond(ImageShape):
         return Image.fromarray(255 * (top * bottom).view('uint8'))
         
 class MaskUnion(ImageShape):
+    __doc__ = ImageShape.__new__.__doc__
     @classmethod
     def mask(cls, size, masks):
         """A union of superimposed masks. Size is automatically calculated if set to ..."""
@@ -676,6 +698,7 @@ class MaskUnion(ImageShape):
     antialiasing = False
         
 class MaskIntersection(ImageShape):
+    __doc__ = ImageShape.__new__.__doc__
     @classmethod
     def mask(cls, size, masks, include_missing=False):
         """An intersection of superimposed masks. Size is automatically calculated if set to ..."""

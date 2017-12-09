@@ -2,6 +2,7 @@ import re
 import os
 import os.path
 import logging
+import abc as ABC
 
 from collections import namedtuple
 from functools import partial
@@ -111,6 +112,9 @@ class BoundingBox():
     def __repr__(self):
         return "Box(l={}, u={}, r={}, d={})".format(self.l, self.u, self.r, self.d)
 
+    def __iter__(self):
+        return iter(self.corners)
+        
     @property
     def l(self): return self.corners[0]
     @property
@@ -258,6 +262,11 @@ ImageColor.from_linear = _ImageColor.from_linear
 ImageColor.blend = _ImageColor.blend
 ImageColor.brighten = _ImageColor.brighten
 ImageColor.darken = _ImageColor.darken
+
+RGBA.to_hex = papply(ImageColor.to_hex)
+RGBA.blend = papply(ImageColor.blend)
+RGBA.brighten = papply(ImageColor.brighten)
+RGBA.darken = papply(ImageColor.darken)
 
 class _Image(Image.Image):
 
@@ -469,12 +478,12 @@ class _Image(Image.Image):
             offsets.update(offsets + padding)
         return img.overlay(self, (x, y), None)
 
-    def resize(self, size, resample=Image.LANCZOS):
-        """Return a resized copy of the image, handling zero-width/height sizes."""
+    def resize(self, size, resample=Image.LANCZOS, *args, **kwargs):
+        """Return a resized copy of the image, handling zero-width/height sizes and defaulting to LANCZOS resampling."""
         if size[0] == 0 or size[1] == 0:
             return Image.new(self.mode, size)
         else:
-            return self.resize_nonempty(size, resample=resample)
+            return self.resize_nonempty(size, resample, *args, **kwargs)
         
     def resize_fixed_aspect(self, *, width=None, height=None, scale=None, resample=Image.LANCZOS):
         """Return a resized image with an unchanged aspect ratio."""
@@ -519,9 +528,13 @@ class _Image(Image.Image):
         img.paste(self, mask=alpha)
         return img
         
+    def as_mask(self):
+        """Convert image for use as a mask"""
+        return self.split()[-1].convert("L")
+        
     def invert_mask(self):
         """Invert image for use as a mask"""
-        return ImageOps.invert(self.split()[-1].convert("L"))
+        return ImageOps.invert(self.as_mask())
         
     def add_grid(self, lines, width=1, bg="black", copy=True):
         """Add grid lines to an image"""
@@ -571,6 +584,7 @@ Image.Image.resize_fixed_aspect = _Image.resize_fixed_aspect
 Image.Image.replace_color = _Image.replace_color
 Image.Image.select_color = _Image.select_color
 Image.Image.remove_transparency = _Image.remove_transparency
+Image.Image.as_mask = _Image.as_mask
 Image.Image.invert_mask = _Image.invert_mask
 Image.Image.add_grid = _Image.add_grid
 
@@ -580,3 +594,96 @@ def font(name, size, bold=False, italics=False, **kwargs):
     return ImageFont.truetype("{}{}.ttf".format(name, variants[bold][italics]), size, **kwargs)
 
 arial = partial(font, "arial")
+
+class ImageShape(object):
+    """Abstract base class for generating simple geometric shapes."""
+    __metaclass__ = ABC.ABCMeta
+    
+    @classmethod
+    @ABC.abstractmethod
+    def mask(cls, size, **kwargs):
+        """Generate a mask of the appropriate shape and size. Additional parameters should be size-independent
+        (or cls.antialiasing should be set to False)."""
+        
+    antialiasing = True
+    
+    def __new__(cls, size, fg="black", bg=0, alias=4, **kwargs):
+        """Generate an image of the appropriate shape, size and color."""
+        if isinstance(size, Integral): size = (size, size)
+        msize = tuple(round(s * alias) for s in size) if cls.antialiasing else size
+        mask = cls.mask(msize, **kwargs)
+        base = Image.new("RGBA", mask.size, bg)
+        fore = Image.new("RGBA", mask.size, fg)
+        img = base.overlay(fore, mask=mask)
+        if cls.antialiasing: img = img.resize(size, resample=Image.LANCZOS if alias > 1 else Image.NEAREST)
+        return img
+        
+class Rectangle(ImageShape):
+    @classmethod
+    def mask(cls, size):
+        """Rectangle mask"""
+        return Image.new("L", size, 255)
+    
+class Ellipse(ImageShape):
+    @classmethod
+    def mask(cls, size):
+        """Ellipse mask"""
+        w, h = size
+        rx, ry = (w-1)/2, (h-1)/2
+        array = np.fromfunction(lambda j, i: ((rx-i)**2/rx**2+(ry-j)**2/ry**2 <= 1), (h,w))
+        return Image.fromarray(255 * array.view('uint8'))
+        
+class Triangle(ImageShape):
+    @classmethod
+    def mask(cls, size, p=0.5):
+        """Acute triangle mask with 2 vertices at the bottom and one p along the top"""
+        w, h = size
+        x, y, n = w-1, h-1, p*(w-1)
+        left = np.fromfunction(lambda j,i: j*n >= y*(n-i), (h,w))
+        right = np.fromfunction(lambda j,i: j*(x-n) >= y*(i-n), (h,w))
+        return Image.fromarray(255 * (left * right).view('uint8'))
+        
+class Parallelogram(ImageShape):
+    @classmethod
+    def mask(cls, size, p=0.5):
+        """Right-leaning parallelogram mask with top-left vertex p along the top"""
+        w, h = size
+        x, y, n = w-1, h-1, p*(w-1)
+        left = np.fromfunction(lambda j,i: j*n >= y*(n-i), (h,w))
+        right = np.fromfunction(lambda j,i: (y-j)*n >= y*(i-(x-n)), (h,w))
+        return Image.fromarray(255 * (left * right).view('uint8'))
+
+class Diamond(ImageShape):
+    @classmethod
+    def mask(cls, size, p=0.5):
+        """Diamong mask with the left-right vertices p down from the top"""
+        w, h = size
+        x, y, m, n = w-1, h-1, (w-1)/2, p*(h-1)
+        top = np.fromfunction(lambda j, i: j*m >= n*abs(m-i), (h,w))
+        bottom = np.fromfunction(lambda j, i: (y-j)*m >= (y-n)*abs(m-i), (h,w))
+        return Image.fromarray(255 * (top * bottom).view('uint8'))
+        
+class MaskUnion(ImageShape):
+    @classmethod
+    def mask(cls, size, masks):
+        """A union of superimposed masks. Size is automatically calculated if set to ..."""
+        if size == ...:
+            size = (max(m.width for m in masks), max(m.height for m in masks))
+        img = Image.new("L", size, 0)
+        for m in masks:
+            img = img.place(Image.new("L", m.size, 255), mask=m)
+        return img
+    antialiasing = False
+        
+class MaskIntersection(ImageShape):
+    @classmethod
+    def mask(cls, size, masks, include_missing=False):
+        """An intersection of superimposed masks. Size is automatically calculated if set to ..."""
+        if size == ...:
+            size = (max(m.width for m in masks), max(m.height for m in masks))
+        img = Image.new("L", size, 255)
+        for m in masks:
+            mask = Image.new("L", size, 255 if include_missing else 0).place(m.as_mask())
+            img = img.place(Image.new("L", size, 0), mask=mask.invert_mask())
+        return img
+    antialiasing = False

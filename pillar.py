@@ -633,6 +633,7 @@ class Rectangle(ImageShape):
     def mask(cls, size):
         """Rectangular mask."""
         return Image.new("L", size, 255)
+    antialiasing = False # no need
     
 class Ellipse(ImageShape):
     __doc__ = ImageShape.__new__.__doc__

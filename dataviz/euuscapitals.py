@@ -63,7 +63,7 @@ nfooter = "\n• ".join(["Pronunciations are as expected, with the following exc
 "Prague is PRAYG, not PRAHG.",
 "Riga is RYE-guh, not REE-guh.\n",
 "(Athens is pronounced normally, unlike Athens IL or Athens KY, which are pronounced AY-thens)",
-"(Vienna is pronounced normally, unlike Vienna IL or Vienna SD, which are pronounced vie-eh-nuh)"
+"(Vienna is pronounced normally, unlike Vienna IL or Vienna SD, which are pronounced vye-EH-nuh)"
 ])
 note = generate_legend([], [], footer=nfooter, header="By pronunciation", max_width=280)
 

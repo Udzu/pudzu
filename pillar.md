@@ -71,20 +71,20 @@ RGBA(red=100, green=50, blue=50, alpha=255)
 RGBA(red=100, green=50, blue=50, alpha=5)
 ```
 
-**ImageColor.to_hex**: converts an RGB or RGBA tuple to hex (ignoring any alpha channel).
+**ImageColor.to_hex**: converts an RGB or RGBA tuple to hex (ignoring any alpha channel). Can be called directly on RGBA named tuples.
 
 ```python
 >> ImageColor.to_hex("yellow")
 '#ffff00'
->> ImageColor.to_hex("#fafafa")
-'#fafafa'
+>> ImageColor.getrgba("yellow").to_hex()
+'#ffff00'
 >> ImageColor.to_hex((100,50,50))
 '#643232'
 >> ImageColor.to_hex((100,50,50,5))
 '#643232'
 ```
 
-**ImageColor.blend**: blend two colors together, using gamma correction. Similarly, **ImageColor.brighten** and **ImageColor.darken** blend with white and black, while preserving alpha.
+**ImageColor.blend**: blend two colors together, using gamma correction. Similarly, **ImageColor.brighten** and **ImageColor.darken** blend with white and black, while preserving alpha. Can be called directly on RGBA named tuples.
 
 ```python
 >> ImageColor.blend("blue", "red", 0.5)
@@ -332,3 +332,21 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 >> red.remove_transparency("grey").show()
 ```
 ![alt](images/removetransparency.png)
+
+### ImageShape
+
+An abstract base class for encapsulating simple geometric shape generation (mostly implemented with numpy). Shapes may be generated either as masks, by calling their mask method, or as images, by using their constructor. Note that the shape classes act as factories only: masks are returned as mode "L" images, shapes as mode "RGBA" images.
+
+**Rectangle**: [...]
+
+**Ellipse**: [...]
+
+**Triangle**: [...]
+
+**Parallelogram**: [...]
+
+**Diamond**: [...]
+
+**MaskUnion**: [...]
+
+**MaskIntersection**: [...]

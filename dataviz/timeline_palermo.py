@@ -15,7 +15,7 @@ COLORS = {
 "german": "#999999", 
 "semitic": "#4daf4a"
  }
-PHOTOS = ["http://www.sicily.co.uk/wp-content/uploads/palermo-body-11-3000x1500.jpg", "https://pbs.twimg.com/media/C3kUcTRWEAEpwXN.jpg"]
+PHOTOS = ["http://cdn-image.travelandleisure.com/sites/default/files/videos/gettyimages-557663623_0.jpg", "https://pbs.twimg.com/media/C3kUcTRWEAEpwXN.jpg"]
 
 def stripes(colors): return Image.from_column([Image.new("RGBA", (100, 4), c) for c in colors])
 

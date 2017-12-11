@@ -12,7 +12,7 @@ from numbers import Real, Integral
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageOps
+from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageOps, ImageFilter
 from utils import *
 
 pyphen = optional_import("pyphen")
@@ -152,7 +152,6 @@ class BoundingBox():
             return self.l <= other[0] <= self.r and self.u <= other[1] <= self.d
         else:
             return NotImplemented
-            
     
 def whitespace_span_tokenize(text):
     """Whitespace span tokenizer."""
@@ -561,6 +560,20 @@ class _Image(Image.Image):
         for y in range(lines[1] and lines[1]+1):
             draw.line([(0, (base.height-1) * y // lines[1]), (base.width, (base.height-1) * y // lines[1])], fill=bg, width=width)
         return base
+        
+    def add_shadow(self, color="black", blur=2, offset=(0,0), resize=True, shadow_only=False):
+        """Add a drop shadow to an image"""
+        if not self.mode.endswith('A'): return self
+        shadow = Image.from_pattern(color, self.size) if isinstance(color, Image.Image) else Image.new("RGBA", self.size, color)
+        shadow.putalpha(self.split()[-1])
+        offsets = Padding(0)
+        shadow = shadow.pad(blur, 0, offsets=offsets)
+        if blur: shadow = shadow.filter(ImageFilter.GaussianBlur(blur))
+        img = Image.new("RGBA", shadow.size, 0)
+        img = img.pin(shadow, offset, align=0, offsets=offsets)
+        if not shadow_only: img = img.pin(self, (0,0), align=0, offsets=offsets)
+        if not resize: img = img.crop((offsets[0], offsets[1], img.width-offsets[2], img.height-offsets[3]))
+        return img
 
 def _nparray_mask_by_color(nparray, color, num_channels=None):
     if len(nparray.shape) != 3: raise NotImplementedError
@@ -602,6 +615,7 @@ Image.Image.remove_transparency = _Image.remove_transparency
 Image.Image.as_mask = _Image.as_mask
 Image.Image.invert_mask = _Image.invert_mask
 Image.Image.add_grid = _Image.add_grid
+Image.Image.add_shadow = _Image.add_shadow
 
 def font(name, size, bold=False, italics=False, **kwargs):
     """Return a truetype font object."""

@@ -333,6 +333,35 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 ```
 ![alt](images/removetransparency.png)
 
+**Image.Image.as_mask**: convert the image for use as a mask (returning an "L"-mode representation of the alpha channel for RGBA images, while leaving "1" and "L" mode images unchanged).
+
+```python
+>> red.as_mask().show()
+```
+![alt](images/asmask.png)
+
+**Image.Image.invert_mask**: like as_mask, but inverts the result.
+
+```python
+>> red.invert_mask().show()
+```
+![alt](images/invertmask.png)
+
+
+**Image.Image.add_grid**: add grid lines to an image.
+
+```python
+>> Image.from_text("grid", arial(24), "grey", "white", padding=10).add_grid((4,3)).show()
+```
+![alt](images/addgrid.png)
+
+**Image.Image.add_shadow**: add a drop shadow to a transparent image.
+
+```python
+>> Image.from_text("The rain", arial(24, bold=True), "#1f5774", padding=10).add_shadow("grey", offset=(2,2)).show()
+```
+![alt](images/addshadow.png)
+
 ### ImageShape
 
 An abstract base class for encapsulating simple geometric shape generation (mostly implemented with numpy). Shapes may be generated either as masks, by calling their `mask` method, or as images, by using their constructor. Note that the shape classes act as factories only: masks are returned as mode "L" images, shapes as mode "RGBA" images.

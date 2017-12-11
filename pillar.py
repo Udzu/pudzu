@@ -41,6 +41,12 @@ class Alignment():
             
     def __repr__(self):
         return "Alignment(x={:.0f}%, y={:.0f}%)".format(self.x * 100, self.y * 100)
+        
+    def __getitem__(self, key):
+        return self.xy[key]
+        
+    def __len__(self):
+        return 2
 
     @property
     def x(self): return self.xy[0]
@@ -68,6 +74,12 @@ class Padding():
             
     def __repr__(self):
         return "Padding(l={}, u={}, r={}, d={})".format(self.l, self.u, self.r, self.d)
+        
+    def __getitem__(self, key):
+        return self.padding[key]
+        
+    def __len__(self):
+        return 4
         
     def __add__(self, other):
         if isinstance(other, Padding):
@@ -112,8 +124,11 @@ class BoundingBox():
     def __repr__(self):
         return "Box(l={}, u={}, r={}, d={})".format(self.l, self.u, self.r, self.d)
 
-    def __iter__(self):
-        return iter(self.corners)
+    def __getitem__(self, key):
+        return self.corners[key]
+        
+    def __len__(self):
+        return 4
         
     @property
     def l(self): return self.corners[0]

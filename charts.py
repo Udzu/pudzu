@@ -88,7 +88,7 @@ class BarChartLabelPosition(Enum):
     """Bar Chart label position."""
     AXIS, OUTSIDE, INSIDE, ABOVE, BELOW = range(5)
 
-def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
+def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizontal=False, 
               fg="black", bg="white", spacing=0, group_spacing=0,
               ymin=None, ymax=None, grid_interval=None,
               tick_interval=Ellipsis, label_interval=Ellipsis, ylabels=None, yformat=None, 
@@ -100,6 +100,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     - bar_width (int): bar width
     - chart_height (int): chart height
     - type (BarChartType): type of bar chart [BarChartType.SIMPLE]
+    - horizontal (Boolean): whether the chart is horizontal or vertical [False]
     - fg (color): axes and font color [black]
     - bg (color): background color [white]
     - spacing (int): column spacing either side of groups [0]
@@ -195,9 +196,16 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
     y_coordinate_fn = lambda v: int(chart_height - ((v - ymin) * factor))
     bgtransparent = ImageColor.getrgba(bg)._replace(alpha=0)
     
-    def make_box(fill, size):
-        if callable(fill): return fill(size)
-        elif isinstance(fill, Image.Image): return fill.resize(size)
+    # (Horizontal charts were sort of tacked on, sorry!)
+    def hzimg(img, horizontal=horizontal):
+        return img.transpose(Image.ROTATE_90) if horizontal and isinstance(img, Image.Image) else img
+    def hzsize(size, horizontal=horizontal):
+        return tuple(reversed(size)) if horizontal else size
+    def hzalign(align):
+        return Alignment((align.y, (1-align.x))) if horizontal else align
+    def make_box(fill, size, horizontal=horizontal):
+        if callable(fill): return hzimg(fill(hzsize(size, horizontal=horizontal)), horizontal=horizontal)
+        elif isinstance(fill, Image.Image): return hzimg(fill.resize(hzsize(size, horizontal=horizontal)), horizontal=horizontal)
         else: return Image.new("RGBA", size, fill)
     
     # Bars
@@ -217,7 +225,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
                     if label is not None:
                         if isinstance(label, ImageFont.FreeTypeFont):
                             label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bgtransparent)
-                        return bar.place(label)
+                        return bar.place(hzimg(label))
                 return bar
                     
             if type in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE]:
@@ -243,11 +251,11 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
         boxes, labels, box_sizes = [], [], []
         for c in range(len(data.columns)):
             fill = color_fn(c,0,0)
-            boxes.append(make_box(fill, lsize_fn(c)) if callable(fill) or isinstance(fill, Image.Image) else fill)
+            boxes.append(make_box(fill, lsize_fn(c), False) if callable(fill) or isinstance(fill, Image.Image) else fill)
             box_sizes.append(lsize_fn(c))
             labels.append(str(data.columns[c]))
         legend = generate_legend(boxes=boxes, labels=labels, box_sizes=box_sizes, fonts=legend_fonts,  fg=fg, bg=bg, **legend_args)
-        chart = chart.place(legend.pad(10,0), lalign)
+        chart = chart.place(hzimg(legend.pad(10,0)), hzalign(lalign))
 
     # Keep track of offsets relative to chart
     offsets = Padding(0)
@@ -276,7 +284,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
             label = ylabel_fn(y)
             if isinstance(label, ImageFont.FreeTypeFont):
                 label = Image.from_text(yformat_fn(y), label, fg=fg, bg=bg)
-            chart = chart.pin(label, (-tick_size-10, y_coordinate_fn(y)), align=(1,0.5), bg=bg, offsets=offsets)
+            chart = chart.pin(hzimg(label), (-tick_size-10, y_coordinate_fn(y)), align=(1,0.5), bg=bg, offsets=offsets)
        
     # Column labels
     for clabels_pos, clabel_fn in clabel_dict.items():
@@ -287,7 +295,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
                 if label is None:
                     continue
                 elif isinstance(label, ImageFont.FreeTypeFont):
-                    label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bg, padding=(0,2))
+                    label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bg, padding=hzsize((0,2)))
                 x = (r * (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) +
                      spacing + c * (bar_width + 2 * group_spacing) + group_spacing + bar_width // 2)
                 if clabels_pos == BarChartLabelPosition.AXIS:
@@ -299,7 +307,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
                 elif clabels_pos == BarChartLabelPosition.BELOW:
                     y = y_coordinate_fn(ymin) + int(v <= 0)
                 label_at_top = y <= y_coordinate_fn(0)
-                chart = chart.pin(label, (x, y), align=(0.5,int(label_at_top)), bg=bg, offsets=offsets)
+                chart = chart.pin(hzimg(label), (x, y), align=(0.5,int(label_at_top)), bg=bg, offsets=offsets)
     
     # Row labels
     for rlabels_pos, rlabel_fn in rlabel_dict.items():
@@ -308,25 +316,27 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE,
             if label is None:
                 continue
             elif isinstance(label, ImageFont.FreeTypeFont):
-                label = Image.from_text(str(data.index[r]), label, fg=fg, bg=bg, padding=(0,2))
+                label = Image.from_text(str(data.index[r]), label, fg=fg, bg=bg, padding=hzsize((0,2)))
             if type in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE]:
                 x = (r * (bar_width + 2 * spacing) + (bar_width + 2 * spacing) // 2)
             else:
                 x = (r * (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) +
                      (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) // 2)
             if rlabels_pos ==  BarChartLabelPosition.ABOVE:
-                chart = chart.pin(label, (x, 0), align=(0.5,1), bg=bg, offsets=offsets)
+                chart = chart.pin(hzimg(label), (x, 0), align=(0.5,1), bg=bg, offsets=offsets)
             elif rlabels_pos ==  BarChartLabelPosition.BELOW:
-                chart = chart.pin(label, (x, chart.height - offsets.y), align=(0.5,0), bg=bg, offsets=offsets)
+                chart = chart.pin(hzimg(label), (x, chart.height - offsets.y), align=(0.5,0), bg=bg, offsets=offsets)
             # TODO: support OUTSIDE rlabels in stacked mode
         
     # Background
     background = Image.new("RGBA", (chart.width, chart.height), bg)
     chart = Image.alpha_composite(background, chart)
     
-    # Labels and title
+    # Labels, rotation and title
     if xlabel is not None or ylabel is not None:
-        chart = Image.from_array([[ylabel or Image.EMPTY_IMAGE, chart], [Image.EMPTY_IMAGE, xlabel or Image.EMPTY_IMAGE]], bg=bg)
+        chart = Image.from_array([[hzimg(ylabel) or Image.EMPTY_IMAGE, chart], [Image.EMPTY_IMAGE, hzimg(xlabel) or Image.EMPTY_IMAGE]], bg=bg)
+    if horizontal:
+        chart = chart.transpose(Image.ROTATE_270)
     if title is not None:
         chart = Image.from_column((title, chart), bg=bg)
     

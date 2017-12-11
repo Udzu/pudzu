@@ -566,11 +566,11 @@ class _Image(Image.Image):
         if not self.mode.endswith('A'): return self
         shadow = Image.from_pattern(color, self.size) if isinstance(color, Image.Image) else Image.new("RGBA", self.size, color)
         shadow.putalpha(self.split()[-1])
-        offsets = Padding(0)
-        shadow = shadow.pad(blur, 0, offsets=offsets)
+        shadow = shadow.pad(blur, 0)
         if blur: shadow = shadow.filter(ImageFilter.GaussianBlur(blur))
-        img = Image.new("RGBA", shadow.size, 0)
-        img = img.pin(shadow, offset, align=0, offsets=offsets)
+        offsets = Padding(0)
+        img = Image.new("RGBA", self.size, 0)
+        img = img.pin(shadow, (offset[0]-blur,offset[1]-blur), align=0, offsets=offsets)
         if not shadow_only: img = img.pin(self, (0,0), align=0, offsets=offsets)
         if not resize: img = img.crop((offsets[0], offsets[1], img.width-offsets[2], img.height-offsets[3]))
         return img

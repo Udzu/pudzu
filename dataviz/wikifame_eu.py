@@ -25,7 +25,9 @@ for i in range(3):
 
     DEFAULT_IMG = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
         
-    def cell(img, name):
+    def cell(name):
+        if not name: return None
+        img = Image.from_url_with_cache(get_non(dfi['image'], n, DEFAULT_IMG))
         box = Image.new("RGB", (180,200), bg)
         box = box.place(Image.from_column([
           img.crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=160),
@@ -37,7 +39,7 @@ for i in range(3):
     def flag(column):
         return Image.from_url_with_cache(countries.flag[table.columns[column]]).resize((160,100)).pad((0,20), "black")
 
-    grid = grid_chart(table, lambda n: n and get_non(dfi['image'], n, DEFAULT_IMG), image_process=cell, col_label=flag, bg=bg)
+    grid = grid_chart(table, cell, col_label=flag, bg=bg)
     entitle(grid, i=i).save("output/wikifame_eu{}.jpg".format(i))
     grids.append(grid)
     

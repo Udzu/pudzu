@@ -405,7 +405,6 @@ class _Image(Image.Image):
     @classmethod
     def from_url_with_cache(cls, url, cache_dir='cache', filename=None):
         """Create an image from a url, using a file cache."""
-        uparse = urlparse(url)
         filepath = os.path.join(cache_dir, filename or url_to_filepath(url))
         if os.path.isfile(filepath):
             logger.debug("Loading cached image at {}".format(filepath))

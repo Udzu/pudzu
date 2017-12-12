@@ -29,5 +29,3 @@ title = Image.from_column([
 
 grid = grid_chart(data, process, padding=(10,20), bg=bg, yalign=0, title=title).pad(20, bg)
 grid.save("output/flagseucolonised.png")
-
-# Bulgaria,Ottoman Bulgaria,????-1878,Ottoman rule,http://www.crwflags.com/fotw/images/t/tr~o-civ.gif

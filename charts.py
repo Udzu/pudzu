@@ -473,13 +473,12 @@ def time_chart(data, chart_width, timeline_height, start_key, end_key, color_key
 
 # Image grids
 
-def grid_chart(data, image_key, image_process=None,
+def grid_chart(data, cell=None,
                fg="white", bg="black", xalign=0.5, yalign=0.5, padding=(0,0,0,0),
                row_label=None, col_label=None, title=None):
-    """Plot an image grid chart. A fairly simple wrapper for Image.from_array.
+    """Plot an image grid chart. A pretty thin wrapper for Image.from_array.
     - data (pandas dataframe): table to base chart on
-    - image_key (datavalue,row,column->image/url/None): image, cached url or None for each grid cell
-    - image_process (image,datavalue,row,column->image): post-processing for all images [none]
+    - cell (datavalue,row,column->image/None): content of each grid cell
     - fg (color): font color [white]
     - bg (color): background color [black]
     - xalign (0 to 1): cell x alignment [center]
@@ -492,22 +491,11 @@ def grid_chart(data, image_key, image_process=None,
     constants.
     """
     
-    image_fn = ignoring_extra_args(image_key) if callable(image_key) else lambda v: image_key
-    process_fn = ignoring_extra_args(image_process) if callable(image_process) else lambda i, v: image_process
+    cell_fn = ignoring_extra_args(cell) if callable(cell) else lambda v, r, c: cell
     row_label_fn = ignoring_extra_args(row_label) if callable(row_label) else lambda r, vs: row_label
     col_label_fn = ignoring_extra_args(col_label) if callable(col_label) else lambda c, vs: col_label
     
-    img_array = [[None for _ in data.columns] for _ in data.index]
-    for r, row in enumerate(data.values):
-        for c, v in enumerate(row):
-            img = image_fn(v, r, c)
-            if img is None:
-                continue
-            elif isinstance(img, str):
-                img = Image.from_url_with_cache(img) if urlparse(img).netloc != "" else Image.open(img)
-            if image_process is not None:
-                img = process_fn(img, v, r, c)
-            img_array[r][c] = img
+    img_array = [[cell_fn(v, r, c) for c, v in enumerate(row)] for r, row in enumerate(data.values)]
 
     if row_label is not None:
         for r, row in enumerate(data.values):

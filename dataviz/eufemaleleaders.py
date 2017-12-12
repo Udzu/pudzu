@@ -54,15 +54,16 @@ flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld
 flags[".kv"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Kosovo.svg/1024px-Flag_of_Kosovo.svg.png"
 flags[".yu"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_SFR_Yugoslavia.svg/1000px-Flag_of_SFR_Yugoslavia.svg.png"
 
-def process(img, d):
+def process(d):
+    if non(d): return None
     return Image.from_column([
-      img.crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=100),
+      Image.from_url_with_cache(d["url"]).crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=100),
       Image.from_text(d['name'].split(" ")[-1], arial(10, bold=True), fg="black", bg="white"),
       Image.from_row([Image.from_url_with_cache(flags[".{}".format(d['country'])]).resize((15,9)),
                       Image.from_text(str(d['year']), arial(10, bold=True), fg="black", bg="white")], bg="white", padding=3, yalign=1)
       ], bg="white")
     
-grid = grid_chart(tdata, lambda d: None if non(d) else d["url"], process, bg="white", padding=1)
+grid = grid_chart(tdata, process, bg="white", padding=1)
 
 # put it all together
 title = Image.from_text("40 Years of Women Leaders in Europe".upper(), arial(52, bold=True), "black", "white", padding=(0,20))

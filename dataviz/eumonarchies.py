@@ -57,14 +57,15 @@ df = pd.read_csv("datasets/eumonarchies_timeline.csv")
 tdata = pd.DataFrame([[df.loc[i+j] for j in range(12) if i + j < len(df)] for i in range(0,24,12)])
 DEFAULT_IMG = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 
-def process(img, d):
+def process(d):
+    if non(d): return None
     return Image.from_column([
-      img.crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=100),
+      Image.from_url_with_cache(get_non(d, "image_url", DEFAULT_IMG)).crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=100),
       Image.from_text(d['name'], arial(11, bold=True), max_width=100, fg="black", bg="white", align="center", padding=1),
       Image.from_text(d['description'], arial(11), max_width=100, fg="black", bg="white", align="center", padding=1)],
       bg="white")
     
-grid = grid_chart(tdata, lambda d: None if non(d) else get_non(d, "image_url", DEFAULT_IMG), process, yalign=0, bg="white", padding=1)
+grid = grid_chart(tdata, process, yalign=0, bg="white", padding=1)
 
 # title
 title = Image.from_column([

@@ -32,7 +32,7 @@ cityflags = { "Kosovo": "http://www.crwflags.com/fotw/images/r/rs-prist.gif",
           "Luhansk People's Republic": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Flag_of_Luhansk.svg/1024px-Flag_of_Luhansk.svg.png"
 }     
 
-def process(img, d):
+def process(d):
     return Image.from_column([
       Image.from_text(d['country'], arial(24, bold=True), fg=fg, bg=bg),
       Image.from_text(d['state'], arial(24, italics=True), max_width=320, align="center", fg=fg, bg=bg),
@@ -41,7 +41,7 @@ def process(img, d):
       Image.from_text(d['capital'], arial(24, bold=True), fg=fg, bg=bg),
       Image.from_text("(pop. {})".format(d['population']), arial(24, bold=False), fg=fg, bg=bg),
       Image.from_url_with_cache(cityflags.get(d['country'], default_img)).resize((318,198)).pad(1, "grey"),
-      img.crop_to_aspect(200, 200, (0.5, 0.2)).resize_fixed_aspect(width=320)
+      Image.from_url_with_cache(get_non(d, "image", default_img)).crop_to_aspect(200, 200, (0.5, 0.2)).resize_fixed_aspect(width=320)
       ], padding=4, bg=bg)
 
 title = Image.from_column([
@@ -49,5 +49,5 @@ title = Image.from_column([
     Image.from_text("de facto capital cities of unrecognised or partly recognised states", arial(48, italics=True), fg=fg, bg=bg)
     ], bg=bg)
       
-grid = grid_chart(data, lambda d: get_non(d, "image", default_img), image_process=process, padding=(10,20), bg=bg, yalign=0, title=title).pad(20, bg)
+grid = grid_chart(data, process, padding=(10,20), bg=bg, yalign=0, title=title).pad(20, bg)
 grid.save("output/flagseurope.png")

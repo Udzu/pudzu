@@ -16,7 +16,9 @@ table = pd.crosstab(df.century, df.language, df.name, aggfunc=lambda i : i.iloc[
 table = table[['de', 'en', 'fr', 'es','ru', 'zh', 'ja']]
 gb =  df.groupby(['name', 'language']).first()
 
-def process(img, name, row, column):
+def process(name, row, column):
+    if not name: return None
+    img = Image.from_url_with_cache(get_non(gb['image_url'], (name, table.columns[column]), DEFAULT_IMG))
     box = Image.new("RGB", (180,200), bg)
     box = box.place(Image.from_column([
       img.crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=160),
@@ -33,8 +35,7 @@ flags[".zh"] = flags[".cn"]
 def language_flag(column):
     return Image.from_url_with_cache(flags[".{}".format(table.columns[column])]).resize((160,100)).pad((0,20), "black")
     
-# TODO: use flag for language labels
-grid = grid_chart(table, lambda n, r, c: n and get_non(gb['image_url'], (n, table.columns[c]), DEFAULT_IMG), image_process=process, row_label=arial(20, bold=True), col_label=language_flag, bg=bg)
+grid = grid_chart(table, process, row_label=arial(20, bold=True), col_label=language_flag, bg=bg)
 
 title = Image.from_column([
 Image.from_text(TITLE, arial(60, bold=True), fg=fg, bg=bg).pad((10,0), bg=bg),

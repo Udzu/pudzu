@@ -12,9 +12,9 @@ categories = remove_duplicates(df['category'])
 data = pd.DataFrame([[dict(row) for _,row in df[df['category'] == cat].iterrows()] for cat in categories], index=categories)
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 
-def process(img, d):
+def process(d):
     return Image.from_column([
-      img.crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=160),
+      Image.from_url_with_cache(d.get("image_url", default_img)).crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=160),
       Image.from_text(d['name'], arial(12, bold=True), padding=(2, 5, 2, 0), fg="white", bg="black"),
       Image.from_text("{}, {}".format(d['age'], d['cause']), font("arial", 12), padding=(2,1,2,0), fg="white", bg="black")
       ])
@@ -29,6 +29,6 @@ footer = Image.from_row([
     Image.from_text("/u/Udzu", font("arial", 14), fg="white", bg="black", padding=5).pad((1,1,0,0), "white")
     ], bg="black")
       
-grid = grid_chart(data, lambda d: d.get("image_url", default_img), image_process=process, padding=5, row_label=arial(20, bold=True), bg="black", title=title).pad((0,0,10,0), "black")
+grid = grid_chart(data, process, padding=5, row_label=arial(20, bold=True), bg="black", title=title).pad((0,0,10,0), "black")
 img = Image.from_column([grid, footer], bg="black", xalign=1, padding=5)
 img.save("output/40under40.png")

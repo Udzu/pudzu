@@ -358,7 +358,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 **Image.Image.add_shadow**: add a drop shadow to a transparent image.
 
 ```python
->> Image.from_text("The rain", arial(24, bold=True), "#1f5774", padding=10).add_shadow("grey", offset=(2,2)).show()
+>> Image.from_text("The rain", arial(24, bold=True), "#1f5774", padding=10).add_shadow("#00000080", offset=(2,2)).show()
 ```
 ![alt](images/addshadow.png)
 

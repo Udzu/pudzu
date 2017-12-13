@@ -12,14 +12,14 @@ from numbers import Real, Integral
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageOps, ImageFilter
+from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageOps, ImageFilter, ImageChops
 from utils import *
 
 pyphen = optional_import("pyphen")
 requests = optional_import("requests")
 np = optional_import("numpy")
 
-# Various pillow utilities, monkey patched onto the Image, ImageDraw and ImageColor classes
+# Various pillow utilities, moslty monkey patched onto the Image, ImageDraw and ImageColor classes
 
 logger = logging.getLogger('pillar')
 logger.setLevel(logging.DEBUG)
@@ -564,7 +564,7 @@ class _Image(Image.Image):
         """Add a drop shadow to an image"""
         if not self.mode.endswith('A'): return self
         shadow = Image.from_pattern(color, self.size) if isinstance(color, Image.Image) else Image.new("RGBA", self.size, color)
-        shadow.putalpha(self.split()[-1])
+        shadow.putalpha(ImageChops.multiply(self.split()[-1], shadow.split()[-1]))
         shadow = shadow.pad(blur, 0)
         if blur: shadow = shadow.filter(ImageFilter.GaussianBlur(blur))
         offsets = Padding(0)

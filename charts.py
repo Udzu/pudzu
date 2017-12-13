@@ -78,8 +78,6 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16), fg="bl
     
 # Bar charts
 
-VEGA_PALETTE = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
-
 class BarChartType(Enum):
     """Bar Chart types."""
     SIMPLE, STACKED, STACKED_PERCENTAGE = range(3)
@@ -92,7 +90,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
               fg="black", bg="white", spacing=0, group_spacing=0,
               ymin=None, ymax=None, grid_interval=None,
               tick_interval=Ellipsis, label_interval=Ellipsis, ylabels=None, yformat=None, 
-              colors=VEGA_PALETTE, clabels=None, rlabels=None,
+              colors=VegaPalette10, clabels=None, rlabels=None,
               xlabel=None, ylabel=None, title=None,
               legend_position=None, legend_fonts=papply(arial, 16),legend_box_sizes=(40,40), legend_args={}):
     """Plot a bar chart.

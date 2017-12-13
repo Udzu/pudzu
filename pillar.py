@@ -5,6 +5,7 @@ import logging
 import abc as ABC
 
 from collections import namedtuple
+from enum import Enum
 from functools import partial
 from io import BytesIO
 from itertools import zip_longest
@@ -152,6 +153,41 @@ class BoundingBox():
             return self.l <= other[0] <= self.r and self.u <= other[1] <= self.d
         else:
             return NotImplemented
+ 
+class NamedPaletteMeta(type):
+    """Metaclass for named color palettes. Allows palette lookup by name or index."""
+
+    def __new__(metacls, cls, bases, classdict):
+        simple_enum_cls = super().__new__(metacls, cls, bases, classdict)
+        simple_enum_cls._colors_ = list(v for c, v in classdict.items() if c not in dir(type(cls, (object,), {})) and not c.startswith("_"))
+        return simple_enum_cls
+        
+    def __iter__(cls): return iter(cls._colors_)
+    def __len__(cls): return len(cls._colors_)
+    def __getitem__(cls, c): return getattr(cls, c.upper()) if isinstance(c, str) else cls._colors_[c]
+        
+class VegaPalette10(metaclass=NamedPaletteMeta):
+    BLUE = "#1f77b4"
+    ORANGE = "#ff7f0e"
+    GREEN = "#2ca02c"
+    RED = "#d62728"
+    PURPLE = "#9467bd"
+    BROWN = "#8c564b"
+    PINK = "#e377c2"
+    GREY = "#7f7f7f"
+    LIGHTGREEN = "#bcbd22"
+    LIGHTBLUE = "#17becf"
+ 
+class Set1Class9(metaclass=NamedPaletteMeta):
+    RED = "#e41a1c"
+    BLUE = "#377eb8"
+    GREEN = "#4daf4a"
+    PURPLE = "#984ea3"
+    ORANGE = "#ff7f00"
+    YELLOW = "#ffff33"
+    BROWN = "#a65628"
+    PINK = "#f781bf"
+    GREY = "#999999"
     
 def whitespace_span_tokenize(text):
     """Whitespace span tokenizer."""

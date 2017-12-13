@@ -6,13 +6,13 @@ Various Pillow utilities. These are monkey-patched on, allowing continued use of
 ## Dependencies
 *Required*: [pillow](http://pillow.readthedocs.io/en/4.2.x/index.html), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
 
-*Optional*: [pyphen](http://pyphen.org/) (for text hyphenation), [requests](http://docs.python-requests.org/en/master/) (for HTTP request headers).
+*Optional*: [numpy](http://www.numpy.org/) (for a few color and shape features), [pyphen](http://pyphen.org/) (for text hyphenation), [requests](http://docs.python-requests.org/en/master/) (for HTTP request headers).
 
 ## Documentation
 
-### Helper functions
+### Helper classes and functions
 
-**Padding**: a class representing box padding, initialized from one, two or four integers. Any function below that has a padding parameter can be passed any of these.
+**Padding**: a class representing box padding, initialized from one, two or four integers. Any function below that has a padding parameter can be passed any of these. A few functions such as pin also accept one to indicate and update coordinate offsets when expanding images.
 
 ```python
 >> Padding(10)
@@ -41,6 +41,23 @@ Box(l=10, u=8, r=15, d=15)
 25
 >> BoundingBox((5,5,10,10), padding=2)
 Box(l=3, u=3, r=12, d=12)
+```
+
+**NamedPaletteMeta**: a metaclass to help define named palettes.
+
+```python
+>> class RGBPalette(metaclass=NamedPaletteMeta):
+       RED = "#e41a1c"
+       GREEN = "#4daf4a"
+       BLUE = "#377eb8"
+>> RGBPalette.RED
+'#e41a1c'
+>> RGBPalette["green"]
+'#4daf4a'
+>> RGBPalette[2]
+'#377eb8'
+>> list(RGBPalette)
+['#e41a1c', '#4daf4a', '#377eb8']
 ```
 
 **font**: shorthand function for generating a truetype font object with standard variant naming (e.g. arialbd for bold). Also, **arial** is defined explicitly for the Arial family.

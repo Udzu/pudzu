@@ -88,10 +88,9 @@ Image.from_text(d, arial(12), "black", "white", max_width=400, padding=(0,2))
 
 legend = generate_legend(boxes, labels, header="By political party".upper(), spacing=0, fonts=papply(arial, 20))
 
-img = Image.from_row([img, legend], bg="white", padding=10, yalign=0.65)
+img = Image.from_row([img, legend], bg="white", padding=10, yalign=0.75)
 img = Image.from_column([title, img], bg="white", padding=(0,10))
     
 # # Save
-img = img.pad(10, "white")
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("output/politics_usthird.png")

@@ -26,10 +26,10 @@ def labelfn(d, w):
     
 colorfn = lambda d, w, h: Image.from_pattern(stripes([COLORS[t] for t in d['type']]), (w, h))
 labeld = {frozenset({TimeChartLabelPosition.ABOVE, TimeChartLabelPosition.INSIDE, TimeChartLabelPosition.BELOW}): labelfn,
-          TimeChartLabelPosition.ABOVE: " ", TimeChartLabelPosition.BELOW: " "}
+          TimeChartLabelPosition.ABOVE: lambda: " ", TimeChartLabelPosition.BELOW: lambda: " "}
 data = [df.filter_rows("start<{} and end>{}".format(start+INTERVAL, start)).update_columns(start=lambda v: v-start, end=lambda v: v-start) for start in range(START, END, INTERVAL)]
 llabels = ["{} BC".format(-start) if start< 0 else "AD {}".format(start+int(start==0)) for start in range(START, END, INTERVAL)]
-chart = time_chart(data, 800, 40, "start", "end", colorfn, labels=labeld, label_font=arial(10), 
+chart = time_chart(800, 40, data, "start", "end", colorfn, interval_label_key=labeld, label_font=arial(10), 
                    xmin=0, xmax=INTERVAL, grid_font=arial(10), grid_labels=lambda v: "+{}".format(v), grid_interval=100, labels_left=llabels).pad(2, bg="black")
 
 # # Title, etc

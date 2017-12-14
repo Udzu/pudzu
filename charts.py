@@ -95,10 +95,10 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
               legend_position=None, legend_fonts=papply(arial, 16),legend_box_sizes=(40,40), legend_args={}):
     """Plot a bar chart.
     - data (pandas dataframe): table to plot
-    - bar_width (int): bar width
-    - chart_height (int): chart height
+    - bar_width (int): bar width (or height, if horizontal)
+    - chart_height (int): chart height (or width, if horizontal)
     - type (BarChartType): type of bar chart [BarChartType.SIMPLE]
-    - horizontal (Boolean): whether the chart is horizontal or vertical [False]
+    - horizontal (Boolean): orientation of bar chart [False]
     - fg (color): axes and font color [black]
     - bg (color): background color [white]
     - spacing (int): column spacing either side of groups [0]
@@ -331,8 +331,10 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
     chart = Image.alpha_composite(background, chart)
     
     # Labels, rotation and title
-    if xlabel is not None or ylabel is not None:
-        chart = Image.from_array([[hzimg(ylabel) or Image.EMPTY_IMAGE, chart], [Image.EMPTY_IMAGE, hzimg(xlabel) or Image.EMPTY_IMAGE]], bg=bg)
+    if xlabel is not None:
+        chart = chart.pin(hzimg(xlabel), (int((chart.width - offsets.x)/2), chart.height - offsets.u), align=(0.5,0), bg=bg, offsets=offsets)
+    if ylabel is not None:
+        chart = chart.pin(hzimg(ylabel), (-offsets.l, int((chart.height - offsets.y)/2)), align=(1,0.5), bg=bg, offsets=offsets)
     if horizontal:
         chart = chart.transpose(Image.ROTATE_270)
     if title is not None:

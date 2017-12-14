@@ -15,13 +15,13 @@ PURPLE = "#984ea3"
 
 LEGEND = [
 ("Constitutional Union Party", "1860", "Big tent party whose main aim was to preserve the Union. There were also two Democratic candidates this year (Northern and Southern).", ORANGE, "https://upload.wikimedia.org/wikipedia/commons/8/8c/John-bell-brady-handy-cropped.jpg"),
-("none", "1864, 68", "No third party candidates for 1864/1868, though deceased Republican elector Ellsworth Cheeseborough is recorded as getting 543 votes in 1864.", GREY, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Flag_of_None.svg/1024px-Flag_of_None.svg.png"),
+("none", "1864, 68", "No third party candidates for 1864/1868, though deceased Republican elector Ellsworth Cheeseborough received 543 votes in 1864.", GREY, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Flag_of_None.svg/1024px-Flag_of_None.svg.png"),
 ("Straight-Out Democrats", "1872", "Conservative Southern Democrat faction who rejected Horace Greeley (the Liberal Republican who ran with Demoratic support). Their candidate, O'Conor, declined their nomination.", BLUE, "https://upload.wikimedia.org/wikipedia/commons/9/90/Charles_OConor_-_Brady-Handy.jpg"),
 ("Greenback Party", "1880, 84", "Anti-monopolist labor party.", GREEN, "https://upload.wikimedia.org/wikipedia/commons/c/c6/James_Weaver_-_Brady-Handy.jpg"),
 ("Prohibition Party", "1884, 88, 1900", "Temperance movement party.", PINK, "https://upload.wikimedia.org/wikipedia/commons/e/eb/CBFisk.jpg"),
 ("People's Party", "1892", "Populist agrarian party and successor of the Greenback Party.", GREEN, "https://upload.wikimedia.org/wikipedia/en/6/6b/Weaver-James-1870s.jpg"),
 ("National Democratic Party", "1896", "Conservative Southern Democrat faction who rejected William Jennings Bryan (the Democratic and People's Party nominee).", BLUE, "https://upload.wikimedia.org/wikipedia/commons/f/f9/JohnMPalmer_small.png"),
-("Progressive Party", "1912", "Roosevelt's progressive \"Bull Moose Party\", founded after Roosevelt failed to capture the Republican nomination. Came second in the elections.", GREEN, "https://upload.wikimedia.org/wikipedia/commons/9/95/Theodore_Roosevelt-Pach.jpg"),
+("Progressive Party", "1912", "Roosevelt's \"Bull Moose Party\", founded after Roosevelt failed to capture the Republican nomination. Came second in the elections.", GREEN, "https://upload.wikimedia.org/wikipedia/commons/9/95/Theodore_Roosevelt-Pach.jpg"),
 ("Socialist Party", "1904, 08, 16, 20, 28, 32, 40", "A multi-tendency democratic-socialist and social-democratic party.", RED, "https://upload.wikimedia.org/wikipedia/commons/4/4b/Eugene_V_Debs_1912.jpg"),
 ("Progressive Party", "1924", "Populist agragrian party unconnected to the Bull Moose Party.", GREEN, "https://upload.wikimedia.org/wikipedia/commons/2/20/Robert_M_La_Follette%2C_Sr.jpg"),
 ("Union Party", "1936", "Populist isolationist party opposed to FDR's New Deal.", BROWN, "http://usamericanaauctions.com/ItemImages/000001/1320_lg.jpeg"),
@@ -65,11 +65,11 @@ def pc_label_fn(c, r):
     pc = votes.percent.iloc[r]
     return None if pc < 0.01 else Image.from_text("{:.1%}".format(pc), arial(FONT_SIZE, bold=True), fg="white", padding=1)
     
-ylabel = Image.from_text("popular vote percentage", arial(24), padding=(5,2,5,10), bg="white")
+ylabel = Image.from_text("popular vote share", arial(24), padding=(5,2,5,10), bg="white")
 
 title = Image.from_column([
      Image.from_text("top third party candidates in U.S. presidential elections".upper(), arial(48, bold=True), bg="white", padding=3)
-    , Image.from_text("non-Democrat/Republican candidates with highest popular vote since 1860".upper(), arial(32), bg="white", padding=2)
+    , Image.from_text("non-Democrat/Republican candidates with highest popular vote share since 1860".upper(), arial(32), bg="white", padding=2)
     ], bg="white").pad((0,0,0,10), "white")
 
 img = bar_chart(votes[["percent"]], 30, 1000, spacing=1, colors=color_fn, clabels={BarChartLabelPosition.OUTSIDE: ep_label_fn, BarChartLabelPosition.INSIDE: pc_label_fn, BarChartLabelPosition.AXIS: name_label_fn},

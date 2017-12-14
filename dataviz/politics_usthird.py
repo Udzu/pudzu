@@ -56,7 +56,7 @@ def name_label_fn(c, r):
 def ep_label_fn(c, r):
     ev = votes.electoral.iloc[r]
     pc = votes.percent.iloc[r]
-    if ev > 0: return Image.from_text("{} Electoral Votes".format(ev), arial(FONT_SIZE, bold=True), bg="white", padding=(3,1))
+    if ev > 0: return Image.from_text("{} EVs ({:.1%})".format(ev, ev / votes.electoral_total.iloc[r]), arial(FONT_SIZE, bold=True), bg="white", padding=(3,1))
     elif pc > 0.05: return Image.from_text("(no Electoral Votes)", arial(FONT_SIZE, bold=True), bg="white", padding=(3,1))
     elif 0 < pc < 0.01: return Image.from_text("{:.1%}".format(pc), arial(FONT_SIZE, bold=True), bg="white", padding=(3,1))
     else: return None

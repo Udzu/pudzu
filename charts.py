@@ -348,18 +348,24 @@ class TimeChartLabelPosition(Enum):
     """Time Chart label position."""
     INSIDE, ABOVE, BELOW = range(3)
 
-def time_chart(data, chart_width, timeline_height, start_key, end_key, color_key, 
-               labels=None, xmin=None, xmax=None, fg="white", bg="black",
+def time_chart(timeline_width, timeline_height,
+               interval_data=None, interval_start_key="start", interval_end_key="end", interval_color_key="color", interval_label_key=None, 
+               event_data=None, event_time_key="time", event_image_key=None, event_label_key=None,
+               xmin=None, xmax=None, fg="white", bg="black",
                grid_interval=None, grid_font=None, grid_labels=str, grid_label_interval=Ellipsis, 
                label_font=None, labels_left=None, labels_right=None, title=None):
     """Plot a time chart. Times can be numeric, dates or anything that supports arithmetic.
-    - data (pandas dataframes): one or more dataframes containing time series
-    - chart_width (int): chart width
-    - timeline_height (int): height for each timeline
-    - start_key (key or series->time): start time for a given entry
-    - end_key (key or series->time): end time for a given entry
-    - color_key (key or series,width,height->color/image): background for a given entry
-    - labels (series,width,height->image/string): label for a given entry; optionally a dict keyed by TimeChartLabelPosition(s) [none]
+    - timeline_width (int): base width for each timeline
+    - timeline_height (int): base height for each timeline
+    - interval_data (pandas dataframes): one or more dataframes containing time intervals [none]
+    - interval_start_key (key or series->time): start time for a given interval ["start"]
+    - interval_end_key (key or series->time): end time for a given interval ["end"]
+    - interval_color_key (key or series,width,height->color/image): background for a given interval ["color"]
+    - interval_label_key (key or series,width,height->image/string): label for a given interval; optionally a dict keyed by TimeChartLabelPosition(s) [none]
+    - event_data: (pandas dataframes): one or more dataframes containing time events [none]
+    - event_time_key (key or series->time): time for a given event ["time"]
+    - event_image_key (key or series,width,height->image): image for a given event [none]
+    - event_label_key (key or series,width,height->image/string): label for a given event; optionally a dict keyed by TimeChartLabelPosition(s) [none]
     - xmin (time): chart start time [auto]
     - xmax (time): chart end time [auto]
     - fg (color): text and grid color [white]
@@ -370,28 +376,47 @@ def time_chart(data, chart_width, timeline_height, start_key, end_key, color_key
     - grid_label_interval (timedelta): grid time label interval [grid_interval]
     - label_font (font): font to use for text timeline labels [none]
     - labels_left (images/strings): timeline labels on the left [none]
-    - labels_right (images/strings): timeline info on the right [none]
+    - labels_right (images/strings): timeline labels on the right [none]
     - title (image): image to use for title [none]
     Functional arguments don't need to accept all the arguments and can also be passed in as
     constants.
     """
 
-    data, labels_left, labels_right = make_sequence(data), make_sequence(labels_left), make_sequence(labels_right),
-    start_fn = start_key if callable(start_key) else lambda d: get_non(d, start_key)
-    end_fn = end_key if callable(end_key) else lambda d: get_non(d, end_key)
-    color_fn = color_key if callable(color_key) else lambda d: get_non(d, color_key)
+    # arguments and defaults
+    interval_data = make_sequence(interval_data)
+    event_data = make_sequence(event_data)
+    labels_right = make_sequence(labels_right)
+    labels_left = make_sequence(labels_left)
+    
+    if len(interval_data) == len(event_data) == 0:
+        raise ValueError("At least one of interval data and event data must be specified.")
+    if len(set(len(t) for t in (interval_data, event_data, labels_right, labels_left) if len(t) > 0)) != 1:
+        raise ValueError("Interval data, event data and timeline labels must have the same length if specified")
+        
+    def make_key_arg(key):
+        if callable(key): return key
+        elif isinstance(key, str): return lambda d: get_non(d, key)
+        else: return lambda : key
+    
+    interval_start_fn = make_key_arg(interval_start_key)
+    interval_end_fn = make_key_arg(interval_end_key)
+    interval_color_fn = make_key_arg(interval_color_key)
+    interval_labels_dict = make_mapping(interval_label_key, lambda: TimeChartLabelPosition.INSIDE)
+    interval_labels_dict = { frozenset(make_iterable(k)): make_key_arg(v) for k,v in interval_labels_dict.items() }
+    event_time_fn = make_key_arg(event_time_key)
+    event_image_fn = make_key_arg(event_image_key)
+    event_labels_dict = make_mapping(event_label_key, lambda: TimeChartLabelPosition.INSIDE)
+    event_labels_dict = { frozenset(make_iterable(k)): make_key_arg(v) for k,v in event_labels_dict.items() }
     grid_label_fn = grid_labels if callable(grid_labels) else lambda v: grid_labels
-    labels_dict = make_mapping(labels, lambda: TimeChartLabelPosition.INSIDE)
-    labels_dict = { frozenset(make_iterable(k)): v for k,v in labels_dict.items() }
     
     if xmin is None:
-        xmin = min(start_fn(d) for df in data for _,d in df.iterrows())
+        xmin = min(fn(d) for fn, data in ((interval_start_fn, interval_data), (event_time_fn, event_data)) for df in data for _,d in df.iterrows())
     if xmax is None:
-        xmax = max(end_fn(d) for df in data for _,d in df.iterrows())
+        xmax = max(fn(d) for fn, data in ((interval_end_fn, interval_data), (event_time_fn, event_data)) for df in data for _,d in df.iterrows())
     if xmin >= xmax:
-        raise ValueError("Mininum x value {0:.3g} must be smaller than maximum x vaue {0:.3g}".format(xmin, xmax))
+        raise ValueError("Mininum x value {} must be smaller than maximum x vaue {}".format(xmin, xmax))
     def xvalue(x):
-        return int((delimit(x,xmin,xmax) - xmin) / (xmax - xmin) * chart_width )
+        return int((x - xmin) / (xmax - xmin) * timeline_width)
     if grid_interval is None:
         grid_interval = xmax-xmin
     if grid_label_interval is Ellipsis:
@@ -400,30 +425,57 @@ def time_chart(data, chart_width, timeline_height, start_key, end_key, color_key
     # chart
     logger.info("Generating time chart")
     timelines, llabels, rlabels, toffsets = [], [], [], []
-    for df, llabel, rlabel in zip_longest(data, labels_left, labels_right):
-        timeline = Image.new("RGBA", (chart_width, timeline_height), bg)
-        nextpos = { pos: None for pos in labels_dict }
+    for intervals, events, llabel, rlabel in zip_longest(interval_data, event_data, labels_left, labels_right):
+        timeline = Image.new("RGBA", (timeline_width, timeline_height), bg)
         offsets = Padding(0)
-        for _,d in df.iterrows():
-            start, end = xvalue(start_fn(d)), xvalue(end_fn(d))
-            w, h = end-start, timeline_height
-            if w == 0: continue
-            color = ignoring_extra_args(color_fn)(d, w, h)
-            bar = color.resize((w, h)) if isinstance(color, Image.Image) else Image.new("RGBA", (w, h), color)
-            bar = bar.trim((1,0, 0, 0)).pad((1,0), bg)
-            timeline.overlay(bar, (start+offsets.l, offsets.u))
-            for pos, label in labels_dict.items():
-                img = ignoring_extra_args(label if callable(label) else lambda d: label)(d, bar.width, bar.height)
-                if isinstance(img, str):
-                    img = Image.from_text(img, label_font, fg=fg, padding=2)
-                if TimeChartLabelPosition.INSIDE in pos and img.width < bar.width and img.height < bar.height:
-                    timeline = timeline.pin(img, ((start+end)//2, timeline_height//2), bg=bg, offsets=offsets)
-                elif TimeChartLabelPosition.ABOVE in pos and nextpos[pos] != TimeChartLabelPosition.BELOW:
-                    timeline = timeline.pin(img, ((start+end)//2, 0), align=(0.5,1), bg=bg, offsets=offsets)
-                    if TimeChartLabelPosition.BELOW in pos: nextpos[pos] = TimeChartLabelPosition.BELOW
-                elif TimeChartLabelPosition.BELOW in pos:
-                    timeline = timeline.pin(img, ((start+end)//2, timeline_height), align=(0.5,0), bg=bg, offsets=offsets)
-                    if TimeChartLabelPosition.ABOVE in pos: nextpos[pos] = TimeChartLabelPosition.ABOVE
+        
+        if intervals is not None:
+            nextpos = { pos: None for pos in interval_labels_dict }
+            for _,d in intervals.iterrows():
+                start, end = interval_start_fn(d), interval_end_fn(d)
+                if end < xmin or start > xmax: continue
+                start, end = xvalue(delimit(start, xmin, xmax)), xvalue(delimit(end, xmin, xmax))
+                w, h = end-start, timeline_height
+                color = ignoring_extra_args(interval_color_fn)(d, w, h)
+                bar = Image.from_pattern(color, (w, h)) if isinstance(color, Image.Image) else Image.new("RGBA", (w, h), color)
+                bar = bar.trim((1,0, 0, 0)).pad((1,0), bg)
+                timeline.overlay(bar, (start+offsets.l, offsets.u))
+                for pos, label_fn in interval_labels_dict.items():
+                    img = ignoring_extra_args(label_fn)(d, bar.width, bar.height)
+                    if img is None: continue
+                    if isinstance(img, str):
+                        img = Image.from_text(img, label_font, fg=fg, padding=2)
+                    if TimeChartLabelPosition.INSIDE in pos and img.width < (bar.width - 3) and img.height < bar.height:
+                        timeline = timeline.pin(img, ((start+end)//2, timeline_height//2), bg=bg, offsets=offsets)
+                    elif TimeChartLabelPosition.ABOVE in pos and nextpos[pos] != TimeChartLabelPosition.BELOW:
+                        timeline = timeline.pin(img, ((start+end)//2, 0), align=(0.5,1), bg=bg, offsets=offsets)
+                        if TimeChartLabelPosition.BELOW in pos: nextpos[pos] = TimeChartLabelPosition.BELOW
+                    elif TimeChartLabelPosition.BELOW in pos:
+                        timeline = timeline.pin(img, ((start+end)//2, timeline_height), align=(0.5,0), bg=bg, offsets=offsets)
+                        if TimeChartLabelPosition.ABOVE in pos: nextpos[pos] = TimeChartLabelPosition.ABOVE
+                        
+        if events is not None:
+            nextpos = { pos: None for pos in event_labels_dict }
+            for _,d in events.iterrows():
+                middle = event_time_fn(d)
+                if middle < xmin or middle > xmax: continue
+                middle = xvalue(middle)
+                event_img = ignoring_extra_args(event_image_fn)(d, w, h) or Image.EMPTY_IMAGE
+                timeline = timeline.pin(event_img, (middle, timeline_height/2), bg=bg, offsets=offsets)
+                for pos, label_fn in event_labels_dict.items():
+                    img = ignoring_extra_args(label_fn)(d, event_img.width, event_img.height)
+                    if img is None: continue
+                    if isinstance(img, str):
+                        img = Image.from_text(img, label_font, fg=fg, padding=2)
+                    if TimeChartLabelPosition.INSIDE in pos and img.width < event_img.width and img.height < event_img.height:
+                        timeline = timeline.pin(img, (middle, timeline_height//2), bg=bg, offsets=offsets)
+                    elif TimeChartLabelPosition.ABOVE in pos and nextpos[pos] != TimeChartLabelPosition.BELOW:
+                        timeline = timeline.pin(img, (middle, min(0, (timeline_height - event_img.height) // 2)), align=(0.5,1), bg=bg, offsets=offsets)
+                        if TimeChartLabelPosition.BELOW in pos: nextpos[pos] = TimeChartLabelPosition.BELOW
+                    elif TimeChartLabelPosition.BELOW in pos:
+                        timeline = timeline.pin(img, (middle, max(timeline_height, (timeline_height + event_img.height) // 2)), align=(0.5,0), bg=bg, offsets=offsets)
+                        if TimeChartLabelPosition.ABOVE in pos: nextpos[pos] = TimeChartLabelPosition.ABOVE
+            
         timelines.append(timeline)
         toffsets.append(offsets)
         

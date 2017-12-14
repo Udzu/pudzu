@@ -3,7 +3,6 @@ sys.path.append('..')
 from charts import *
 
 FONT_SIZE = 16
-
 BLUE = "#377eb8"
 RED = "#e41a1c"
 GREEN = "#4daf4a"
@@ -28,11 +27,11 @@ LEGEND = [
 ("Union Party", "1936", "Populist isolationist party opposed to FDR's New Deal.", BROWN, "http://usamericanaauctions.com/ItemImages/000001/1320_lg.jpeg"),
 ("Texas Regulars", "1944", "Conservative Texan Democrat faction opposed to FDR's New Deal. Didn't field a candidate.", BLUE, "https://img.newspapers.com/img/thumbnail/44949096/400/400/0_0_4987_6825.jpg"),
 ("States' Rights Democratic", "1948", "Segregationist \"Dixiecrat\" party opposed to racial integration.", ORANGE, "https://upload.wikimedia.org/wikipedia/commons/1/10/StromThurmond.png"),
-("Progressive Party", "1952", "Left-wing party in favour of welfare state reforms and unconnected to the two prevsious Progressive Parties.", GREEN, "http://guardiansofthecity.org/sheriff/images/inmates/vincent_hallinan.jpg"),
+("Progressive Party", "1952", "Left-wing party in favour of welfare state reforms and unconnected to the two previous Progressive Parties.", GREEN, "http://guardiansofthecity.org/sheriff/images/inmates/vincent_hallinan.jpg"),
 ("States' Rights Party", "1956", "Populist right-wing party. Beaten by the 0.3% of the vote which went to unpledged Southern electors.", GREY, "http://www.azquotes.com/public/pictures/authors/8c/9f/8c9fb968141f6140b28b203eefc6dbac/547c40dd474f1_t_coleman_andrews.jpg"),
-("Socialist Labor Party", "1960, 64", "De Leonist socialist party. Beaten by the 0.4%/0.3% of the vote which went to unpledged Southern electors.", RED, "https://pastdaily.com/wp-content/uploads/2017/11/Eric-Hass-1-resize.jpg"),
+("Socialist Labor Party", "1960, 64", "Syndicalist Marxist party. Beaten by the ~0.3% of the vote which went to unpledged Southern electors.", RED, "https://pastdaily.com/wp-content/uploads/2017/11/Eric-Hass-1-resize.jpg"),
 ("American Independent Party", "1968, 72", "Right-wing segregationist party.", PURPLE, "https://upload.wikimedia.org/wikipedia/commons/c/c9/George_C_Wallace.jpg"),
-("Eugene McCarthy", "1976", "Independent campaign by McCarthy, who'd previously sought the Democratic nomination, focused on ballot access.", GREY, "http://www.historycentral.com/Bio/people/images/mccarthy.gif"),
+("Eugene McCarthy", "1976", "Independent campaign by McCarthy, who'd previously sought the Democratic nomination, largely focused on ballot access.", GREY, "http://www.historycentral.com/Bio/people/images/mccarthy.gif"),
 ("John B. Anderson", "1980", "Independent campaign by Anderson, who'd sought the Republican nomination, running as a moderate counterpoint to Reagan.", GREY, "https://upload.wikimedia.org/wikipedia/commons/c/ca/JohnAnderson.png"),
 ("Libertarian Party", "1984, 88, 2012, 16", "Libertarian party.", YELLOW, "https://www.nationalreview.com/sites/default/files/gary-johnson-profile.jpg"),
 ("Perot/Reform Party", "1992, 96", "Protectionist, fiscally conservative campaigns by billionaire Ross Perot.", PURPLE, "https://i.ytimg.com/vi/Tz651SPuyck/hqdefault.jpg"),
@@ -41,10 +40,8 @@ LEGEND = [
 
 PARTY_COL = { p : c for p, _, _, c, *i in LEGEND }
 
-# Generate data
-votes = pd.read_csv("datasets/uselections_third.csv").set_index("year").update_columns(percent=lambda p: p / 100)
-
 # Bar chart
+votes = pd.read_csv("datasets/uselections_third.csv").set_index("year").update_columns(percent=lambda p: p / 100)
 
 def color_fn(c, r, v):
     return PARTY_COL.get(votes.party.iloc[r], GREY)
@@ -60,7 +57,7 @@ def ep_label_fn(c, r):
     ev = votes.electoral.iloc[r]
     pc = votes.percent.iloc[r]
     if ev > 0: return Image.from_text("{} Electoral Votes".format(ev), arial(FONT_SIZE, bold=True), bg="white", padding=(3,1))
-    elif pc > 0.05: return Image.from_text("(no Electoral Votes!)", arial(FONT_SIZE, bold=True), bg="white", padding=(3,1))
+    elif pc > 0.05: return Image.from_text("(no Electoral Votes)", arial(FONT_SIZE, bold=True), bg="white", padding=(3,1))
     elif 0 < pc < 0.01: return Image.from_text("{:.1%}".format(pc), arial(FONT_SIZE, bold=True), bg="white", padding=(3,1))
     else: return None
     
@@ -71,26 +68,21 @@ def pc_label_fn(c, r):
 ylabel = Image.from_text("popular vote percentage", arial(24), padding=(5,2,5,10), bg="white")
 
 title = Image.from_column([
-     Image.from_text("top third party candidates in U.S. presidential elections".upper(), arial(60, bold=True), bg="white", padding=3)
-    , Image.from_text("non-Democrat/Republican candidates with highest popular vote since 1860".upper(), arial(36), bg="white", padding=2)
+     Image.from_text("top third party candidates in U.S. presidential elections".upper(), arial(48, bold=True), bg="white", padding=3)
+    , Image.from_text("non-Democrat/Republican candidates with highest popular vote since 1860".upper(), arial(32), bg="white", padding=2)
     ], bg="white").pad((0,0,0,10), "white")
 
-img = bar_chart(votes[["percent"]], 30, 1500, spacing=1, colors=color_fn, clabels={BarChartLabelPosition.OUTSIDE: ep_label_fn, BarChartLabelPosition.INSIDE: pc_label_fn, BarChartLabelPosition.AXIS: name_label_fn},
+img = bar_chart(votes[["percent"]], 30, 1000, spacing=1, colors=color_fn, clabels={BarChartLabelPosition.OUTSIDE: ep_label_fn, BarChartLabelPosition.INSIDE: pc_label_fn, BarChartLabelPosition.AXIS: name_label_fn},
     ymin=0, ymax=0.301, label_interval=0.05, grid_interval=0.01, ylabels=arial(FONT_SIZE), yformat="{:.0%}", ylabel=ylabel, horizontal=True)
     
-# Legend
-
 boxes = [Rectangle(56, c).place(Image.EMPTY_IMAGE if len(i) == 0 else Image.from_url_with_cache(i[0]).crop_to_aspect(1).resize_fixed_aspect(width=48)) for _,_,_,c,*i in LEGEND]
 labels = [Image.from_column([
 Image.from_text("{} [{}]".format(p, y), arial(16, bold=True), "black", "white"),
 Image.from_text(d, arial(12), "black", "white", max_width=400, padding=(0,2))
 ], xalign=0) for p,y,d,_,*i in LEGEND]
-
 legend = generate_legend(boxes, labels, header="By political party".upper(), spacing=0, fonts=papply(arial, 20))
 
-img = Image.from_row([img, legend], bg="white", padding=10, yalign=0.75)
+img = Image.from_row([img, legend], bg="white", padding=10)
 img = Image.from_column([title, img], bg="white", padding=(0,10))
-    
-# # Save
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("output/politics_usthird.png")

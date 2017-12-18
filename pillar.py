@@ -476,7 +476,8 @@ class _Image(Image.Image):
         if offsets is not None: offsets.update(offsets + padding)
         if padding.x == padding.y == 0: return self
         img = Image.new("RGBA", (self.width + padding.x, self.height + padding.y), bg)
-        return img.overlay(self, (padding.l, padding.u), None)
+        img.paste(self, (padding.l, padding.u))
+        return img
         
     def trim(self, padding):
         """Return a cropped image."""
@@ -708,7 +709,15 @@ class Ellipse(ImageShape):
         rx, ry = (w-1)/2, (h-1)/2
         array = np.fromfunction(lambda j, i: ((rx-i)**2/rx**2+(ry-j)**2/ry**2 <= 1), (h,w))
         return Image.fromarray(255 * array.view('uint8'))
-        
+
+class Quadrant(ImageShape):
+    __doc__ = ImageShape.__new__.__doc__
+    @classmethod
+    def mask(cls, size, invert=False):
+        """Top-left quadrant mask."""
+        m = Ellipse.mask((max(0,size[0]*2-1),max(size[1]*2-1,0))).crop((0,0,size[0],size[1]))
+        return m.invert_mask() if invert else m
+
 class Triangle(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod

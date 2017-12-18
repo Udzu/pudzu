@@ -236,7 +236,7 @@ def generate_leafs(iterable):
     """Generator that yields all the leaf nodes of an iterable."""
     for x in iterable:
         if non_string_iterable(x):
-            yield from leafs(x)
+            yield from generate_leafs(x)
         else:
             yield x
             

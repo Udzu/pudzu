@@ -21,6 +21,7 @@ def colorfn2(c):
     if df.bigram[c] in ["de"]: return Set1Class9[0]
     if df.bigram[c] in ["en", "er", "es"]: return Set1Class9[1]
     if df.bigram[c] in ["на", "na"]: return Set1Class9[2]
+    if df.bigram[c] in ["ie", "je", "је"]: return Set1Class9[3]
     return "grey"
 
 def colorfn3(c):

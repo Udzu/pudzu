@@ -523,19 +523,24 @@ def time_chart(timeline_width, timeline_height,
     if title is not None: chart = Image.from_column((title, chart), bg=bg)
     return chart
 
-# Image grids
+# Image grids # TODO: group labels and borders?
 
-def grid_chart(data, cell=None,
-               fg="white", bg="black", xalign=0.5, yalign=0.5, padding=(0,0,0,0),
-               row_label=None, col_label=None, title=None):
-    """Plot an image grid chart. A pretty thin wrapper for Image.from_array.
+def grid_chart(data, cell=None, group=None,
+               fg="white", bg="black", group_colors=tuple(VegaPalette10), xalign=0.5, yalign=0.5,
+               padding=(0,0,0,0), group_padding=(0,0,0,0), group_rounded=True,
+               row_label=None, col_label=None, group_label=None, title=None):
+    """Plot an image grid chart with optional Venn-like groupings.
     - data (pandas dataframe): table to base chart on
-    - cell (datavalue,row,column->image/None): content of each grid cell
+    - cell (datavalue,row,column->image/None): content of each grid cell [None]
+    - group (datavalue,row,column->groups/None): optional group of each grid cell [None]
     - fg (color): font color [white]
     - bg (color): background color [black]
+    - group_colors (group->color): dict or mapping of groups to colors, or sequence of colors [VegaPalette10]
     - xalign (0 to 1): cell x alignment [center]
     - yalign (0 to 1): cell y alignment [center]
     - padding (Padding): cell padding [0]
+    - group_padding (Padding): group edge padding [0]
+    - group_rounded (Boolean): round group edges [True]
     - row_label (row, rowvalues -> image/font): image or font for row labels [none]
     - col_label (col, colvalues -> image/font): image or font for column labels [none]
     - title (image): image to use for title [none]
@@ -543,18 +548,78 @@ def grid_chart(data, cell=None,
     constants.
     """
     
+    padding = Padding(padding)
+    gp = Padding(group_padding)
+    tbg = ImageColor.getrgba(bg)._replace(alpha=0)
+    
     cell_fn = ignoring_extra_args(cell) if callable(cell) else lambda v, r, c: cell
+    group_fn = ignoring_extra_args(group) if callable(group) else lambda v, r, c: group
     row_label_fn = ignoring_extra_args(row_label) if callable(row_label) else lambda r, vs: row_label
     col_label_fn = ignoring_extra_args(col_label) if callable(col_label) else lambda c, vs: col_label
     
     img_array = [[cell_fn(v, r, c) for c, v in enumerate(row)] for r, row in enumerate(data.values)]
+    img_heights = [max(img.height if img is not None else 0 for img in row) + padding.y for row in img_array]
+    img_widths = [max(img.width if img is not None else 0 for img in column) + padding.x for column in zip_longest(*img_array)]
+
+    group_array = [[remove_duplicates(make_sequence(group_fn(v, r, c))) for c, v in enumerate(row)] for r, row in enumerate(data.values)]
+    groups = remove_duplicates(generate_leafs(group_array))
+    group_col_fn = (group_colors if callable(group_colors) else 
+                    (lambda g: group_colors[g]) if isinstance(group_colors, Mapping) else
+                    (lambda g: group_colors[groups.index(g)]) if non_string_sequence(group_colors) else
+                    (lambda g: group_colors))
+                    
+    def group_cmp(group, *same, diff=()):
+        return (all(0<=r<len(img_heights) and 0<=c<len(img_widths) and group in group_array[r][c] for r,c in same) and
+                not any(0<=r<len(img_heights) and 0<=c<len(img_widths) and group in group_array[r][c] for r,c in diff))
+    
+    for r, row in enumerate(data.values):
+        for c, v in enumerate(row):
+            base = Image.new("RGBA", (img_widths[c], img_heights[r]), bg)
+            if len(group_array[r][c]) > 0:
+                venn = Image.new("RGBA", (img_widths[c], img_heights[r]), ImageColor.getrgba(bg)._replace(alpha=0))
+                for g in group_array[r][c]:
+                    col = group_col_fn(g)
+                    
+                    mid = Rectangle((base.width-gp.x, base.height-gp.y), col)
+                    if group_rounded and group_cmp(g,diff=[(r-1,c),(r,c-1)]):
+                        mid.paste(Quadrant((gp.r, gp.d), col, tbg), (0,0))
+                    if group_rounded and group_cmp(g,diff=[(r-1,c),(r,c+1)]):
+                        mid.paste(Quadrant((gp.l, gp.d), col, tbg).transpose(Image.FLIP_LEFT_RIGHT), (mid.width-gp.l,0))
+                    if group_rounded and group_cmp(g,diff=[(r+1,c),(r,c-1)]):
+                        mid.paste(Quadrant((gp.r, gp.u), col, tbg).transpose(Image.FLIP_TOP_BOTTOM), (0,mid.height-gp.u))
+                    if group_rounded and group_cmp(g,diff=[(r+1,c),(r,c+1)]):
+                        mid.paste(Quadrant((gp.l, gp.u), col, tbg).transpose(Image.ROTATE_180), (mid.width-gp.l,mid.height-gp.u))
+                    
+                    top = Rectangle((base.width-gp.x, gp.u), col if group_cmp(g,(r-1,c)) else tbg)
+                    left = Rectangle((gp.l, base.height-gp.y), col if group_cmp(g,(r,c-1)) else tbg)
+                    right = Rectangle((gp.r, base.height-gp.y), col if group_cmp(g,(r,c+1)) else tbg)
+                    bottom = Rectangle((base.width-gp.x, gp.d), col if group_cmp(g,(r+1,c)) else tbg)
+                    
+                    top_left = (Quadrant((gp.l, gp.u), col, tbg, invert=True).transpose(Image.ROTATE_180)
+                                 if group_rounded and group_cmp(g,(r-1,c),(r,c-1),diff=[(r-1,c-1)])
+                                 else Rectangle((gp.l, gp.u), col if group_cmp(g,(r-1,c),(r,c-1),(r-1,c-1)) else tbg))
+                    top_right = (Quadrant((gp.r, gp.u), col, tbg, invert=True).transpose(Image.FLIP_TOP_BOTTOM)
+                                 if group_rounded and group_cmp(g,(r-1,c),(r,c+1),diff=[(r-1,c+1)])
+                                 else Rectangle((gp.r, gp.u), col if group_cmp(g,(r-1,c),(r,c+1),(r-1,c+1)) else tbg))
+                    bottom_left = (Quadrant((gp.l, gp.d), col, tbg, invert=True).transpose(Image.FLIP_LEFT_RIGHT)
+                                 if group_rounded and group_cmp(g,(r+1,c),(r,c-1),diff=[(r+1,c-1)])
+                                 else Rectangle((gp.l, gp.d), col if group_cmp(g,(r+1,c),(r,c-1),(r+1,c-1)) else tbg))
+                    bottom_right = (Quadrant((gp.r, gp.d), col, tbg, invert=True)
+                                 if group_rounded and group_cmp(g,(r+1,c),(r,c+1),diff=[(r+1,c+1)])
+                                 else Rectangle((gp.r, gp.d), col if group_cmp(g,(r+1,c),(r,c+1),(r+1,c+1)) else tbg))
+                                 
+                    venn.place(Image.from_array([[top_left, top, top_right],[left,mid,right],[bottom_left,bottom,bottom_right]]), copy=False)
+                base.place(venn, copy=False)
+            if img_array[r][c]:
+                base.place(img_array[r][c], align=(xalign,yalign), copy=False)
+            img_array[r][c] = base
 
     if row_label is not None:
         for r, row in enumerate(data.values):
             label = row_label_fn(r, list(row))
             if isinstance(label, ImageFont.FreeTypeFont):
                 label = Image.from_text(str(data.index[r]), label, fg=fg, bg=bg, padding=(10,2))
-            img_array[r].insert(0, label)
+            img_array[r].insert(0, label.pad(padding, bg=bg))
             
     if col_label is not None:
         col_labels = [] if row_label is None else [None]
@@ -562,10 +627,10 @@ def grid_chart(data, cell=None,
             label = col_label_fn(c, list(col))
             if isinstance(label, ImageFont.FreeTypeFont):
                 label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bg, padding=(2,10))
-            col_labels.append(label)
+            col_labels.append(label.pad(padding, bg=bg))
         img_array.insert(0, col_labels)
             
-    chart = Image.from_array(img_array, padding=padding, xalign=xalign, yalign=yalign, bg=bg)
+    chart = Image.from_array(img_array, xalign=xalign, yalign=yalign, bg=bg)
     
     if title is not None: chart = Image.from_column((title, chart), bg=bg)
     return chart

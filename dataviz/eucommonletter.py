@@ -50,7 +50,7 @@ chart = Image.from_row([map1, map2, map3])
 
 title = Image.from_column([
 Image.from_text("The most common letters, letter pairs and letter triplets".upper(), arial(96, bold=True), padding=2),
-Image.from_text("in different European languages, based on that language's Wikipedia (source: http://simia.net/letters)", arial(60), padding=2)],
+Image.from_text("in different European languages, based on each language's Wikipedia (source: http://simia.net/letters)", arial(60), padding=2)],
 bg="white")
 
 img = Image.from_column([title, chart], bg="white", padding=5)

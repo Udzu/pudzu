@@ -2,7 +2,8 @@ from bamboo import *
 from pillar import *
 from os.path import splitext
 from enum import Enum
-
+from dates import *
+    
 # Random collection of Pillow-based charting functions
 
 logger = logging.getLogger('charts')
@@ -696,22 +697,21 @@ def grid_chart(data, cell=None, group=None,
 
 # Map charts
 
-class ImageMapSort(Enum):
-    """Image map color sort in name CSV file."""
-    USAGE, HORIZONTAL, VERTICAL = range(3)
-    
-def labelbox_img_path(map): return splitext(map)[0] + "_lbox" + splitext(map)[1]
-def overlay_img_path(map): return splitext(map)[0] + "_ov" + splitext(map)[1]
-def overlay_mask_img_path(map): return splitext(map)[0] + "_ovmask" + splitext(map)[1]
-
 def name_csv_path(map): return splitext(map)[0] + ".csv"
 def boundingbox_csv_path(map): return splitext(map)[0] + "_bbox.csv"
+def labelbox_img_path(map): return splitext(map)[0] + "_lbox" + splitext(map)[1]
 def labelbox_csv_path(map): return splitext(map)[0] + "_lbox.csv"
+def overlay_img_path(map): return splitext(map)[0] + "_ov" + splitext(map)[1]
+def overlay_mask_img_path(map): return splitext(map)[0] + "_ovmask" + splitext(map)[1]
 
 def load_name_csv(map): return pd.read_csv(name_csv_path(map)).split_columns('color', '|', int)
 def load_boundingbox_csv(map): return pd.read_csv(boundingbox_csv_path(map)).split_columns(('bbox', 'color'), '|', int)
 def load_labelbox_csv(map): return pd.read_csv(labelbox_csv_path(map)).split_columns(('bbox', 'color'), '|', int)
 
+class ImageMapSort(Enum):
+    """Image map color sort in name CSV file."""
+    USAGE, HORIZONTAL, VERTICAL = range(3)
+    
 def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite=False):
     """Generate a name csv skeleton, for use in map_chart."""
     if not overwrite and os.path.exists(name_csv_path(map)):
@@ -846,3 +846,54 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
         img.overlay(ov, mask=mask)
     return img
             
+# Calendar charts
+
+def month_chart(month, cell_width=80, cell_height=20, cell_padding=1, fg="black", fonts=papply(arial, 16),
+                day_bg="white", day_label="{D}", day_overlay=None, day_start=0,
+                out_of_month_bg=..., out_of_month_label=None, out_of_month_overlay=None,
+                weekday_height=..., weekday_bg="grey", weekday_label="{W}", weekday_overlay=None,
+                month_height=..., month_bg="grey", month_label="{M} {Y}", month_overlay=None, month_image=None):
+           
+    # Arguments and defaults
+    if month_height == Ellipsis: month_height = cell_height
+    if weekday_height == Ellipsis: weekday_height = cell_height
+    if out_of_month_bg == Ellipsis: out_of_month_bg = day_bg
+    if out_of_month_label == Ellipsis: out_of_month_label = day_label
+    if out_of_month_overlay == Ellipsis: out_of_month_overlay = day_overlay
+    
+    cell_padding = Padding(cell_padding)
+    if callable(fonts): fonts = [fonts(bold=True), fonts(italics=True), fonts()]
+    elif isinstance(fonts, ImageFont.FreeTypeFont): fonts = [fonts]*3
+    
+    def make_label_fn(label): return label if callable(label) else lambda d: d.date_format(label) if isinstance(label, str) else lambda d: label
+    day_label_fn = make_label_fn(day_label)
+    out_of_month_label_fn = make_label_fn(out_of_month_label)
+    weekday_label_fn = make_label_fn(weekday_label)
+    month_label_fn = make_label_fn(month_label)
+    
+    if isinstance(month, DateRange):
+        start = ApproximateDate(month.start, DatePrecision.MONTH)
+        end = ApproximateDate(month.end, DatePrecision.MONTH)
+        if (start != end):
+            raise ValueError("Expected one-month date, got range including {} and {}".format(start, end))
+        month = start
+    else:
+        month = ApproximateDate(month, DatePrecision.MONTH)
+        
+    if isinstance(day_start, str): day_start = month.calendar.WEEKDAYS.index(day_start)
+    week_length = len(month.calendar.WEEKDAYS)
+    total_width = week_length * (cell_width + cell_padding.x)
+    
+    # Generate month calendar
+    month_img = Image.new("RGBA", (total_width-cell_padding.x, month_height), month_bg) # TODO: pattern
+    month_label = month_label_fn(month.start)
+    if isinstance(month_label, str): month_label = Image.from_text(month_label, fonts[0], fg)
+    month_img = month_img.place(month_label).pad(cell_padding, fg)
+    
+    return month_img
+    
+    
+    
+        
+        
+        

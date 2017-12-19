@@ -335,7 +335,7 @@ class RepublicanCalendar(Calendar):
         return 13
         
     def weekday(self, ymd, ordinal):
-        return (ordinal + 1) % len(self.WEEKDAYS)
+        return (ymd.day - 1) % len(self.WEEKDAYS)
 
     def date_to_ordinal(self, ymd):
         return floor(cdate.french_republican.to_jd(*ymd) - 1721424)

@@ -523,10 +523,11 @@ def time_chart(timeline_width, timeline_height,
     if title is not None: chart = Image.from_column((title, chart), bg=bg)
     return chart
 
-# Image grids # TODO: group labels and borders?
+# Image grids
 
 def grid_chart(data, cell=None, group=None,
-               fg="white", bg="black", group_colors=tuple(VegaPalette10), xalign=0.5, yalign=0.5,
+               fg="white", bg="black", group_colors=tuple(VegaPalette10), group_alpha=128, group_border=2,
+               xalign=0.5, yalign=0.5,
                padding=(0,0,0,0), group_padding=(0,0,0,0), group_rounded=True,
                row_label=None, col_label=None, group_label=None, title=None):
     """Plot an image grid chart with optional Venn-like groupings.
@@ -536,6 +537,8 @@ def grid_chart(data, cell=None, group=None,
     - fg (color): font color [white]
     - bg (color): background color [black]
     - group_colors (group->color): dict or mapping of groups to colors, or sequence of colors [VegaPalette10]
+    - group_alpha (int): grouping alpha value override; None to leave as is [128]
+    - group_border (int): grouping border [2]
     - xalign (0 to 1): cell x alignment [center]
     - yalign (0 to 1): cell y alignment [center]
     - padding (Padding): cell padding [0]
@@ -571,6 +574,21 @@ def grid_chart(data, cell=None, group=None,
     def group_cmp(group, *same, diff=()):
         return (all(0<=r<len(img_heights) and 0<=c<len(img_widths) and group in group_array[r][c] for r,c in same) and
                 not any(0<=r<len(img_heights) and 0<=c<len(img_widths) and group in group_array[r][c] for r,c in diff))
+             
+    def OuterCorner(size, fg, bg, bcol, bwidth=group_border):
+        if bwidth == 0: return Quadrant(size, fg, bg)
+        if size[0] <= bwidth or size[1] <= bwidth: return Quadrant(size, bcol, bg)
+        size2 = (size[0]-bwidth, size[1]-bwidth)
+        bg_img = Quadrant(size, fg, bg)
+        border_img = MaskIntersection(size, bcol, bcol._replace(alpha=0), masks=[Quadrant(size), Quadrant(size2).pad((bwidth, bwidth, 0, 0), 0).invert_mask()])
+        return bg_img.place(border_img)
+    
+    def InnerCorner(size, fg, bg, bcol, bwidth=group_border):
+        if bwidth == 0: return Quadrant(size, fg, bg, invert=True)
+        size2 = (size[0]+bwidth, size[1]+bwidth)
+        bg_img = Quadrant(size, fg, bg, invert=True).pad((bwidth, bwidth, 0, 0), fg)
+        border_img = MaskIntersection(size2, bcol, bcol._replace(alpha=0), masks=[Quadrant(size2), Quadrant(size, invert=True).pad((bwidth, bwidth, 0, 0), "white")])
+        return bg_img.place(border_img)
     
     for r, row in enumerate(data.values):
         for c, v in enumerate(row):
@@ -578,37 +596,78 @@ def grid_chart(data, cell=None, group=None,
             if len(group_array[r][c]) > 0:
                 venn = Image.new("RGBA", (img_widths[c], img_heights[r]), ImageColor.getrgba(bg)._replace(alpha=0))
                 for g in group_array[r][c]:
-                    col = group_col_fn(g)
+                    cfg = col = ImageColor.getrgba(group_col_fn(g))
+                    if group_alpha is not None: col = col._replace(alpha=group_alpha)
                     
+                    # what an unholy mess! :( could use some rewriting
                     mid = Rectangle((base.width-gp.x, base.height-gp.y), col)
+                    if group_border and group_cmp(g,diff=[(r,c-1)]):
+                        mid.place(Rectangle((group_border, base.height), cfg), align=0, copy=False)
+                    if group_border and group_cmp(g,diff=[(r,c+1)]):
+                        mid.place(Rectangle((group_border, base.height), cfg), align=1, copy=False)
+                    if group_border and group_cmp(g,diff=[(r-1,c)]):
+                        mid.place(Rectangle((base.width, group_border), cfg), align=0, copy=False)
+                    if group_border and group_cmp(g,diff=[(r+1,c)]):
+                        mid.place(Rectangle((base.width, group_border), cfg), align=1, copy=False)
+                    if not group_rounded and group_cmp(g,(r-1,c),(r,c-1),diff=[(r-1,c-1)]):
+                        mid.place(Rectangle((group_border, group_border), cfg), align=(0,0), copy=False)
+                    if not group_rounded and group_cmp(g,(r-1,c),(r,c+1),diff=[(r-1,c+1)]):
+                        mid.place(Rectangle((group_border, group_border), cfg), align=(1,0), copy=False)
+                    if not group_rounded and group_cmp(g,(r+1,c),(r,c-1),diff=[(r+1,c-1)]):
+                        mid.place(Rectangle((group_border, group_border), cfg), align=(0,1), copy=False)
+                    if not group_rounded and group_cmp(g,(r+1,c),(r,c+1),diff=[(r+1,c+1)]):
+                        mid.place(Rectangle((group_border, group_border), cfg), align=(1,1), copy=False)
                     if group_rounded and group_cmp(g,diff=[(r-1,c),(r,c-1)]):
-                        mid.paste(Quadrant((gp.r, gp.d), col, tbg), (0,0))
+                        mid.paste(OuterCorner((gp.r, gp.d), col, tbg, cfg), (0,0))
                     if group_rounded and group_cmp(g,diff=[(r-1,c),(r,c+1)]):
-                        mid.paste(Quadrant((gp.l, gp.d), col, tbg).transpose(Image.FLIP_LEFT_RIGHT), (mid.width-gp.l,0))
+                        mid.paste(OuterCorner((gp.l, gp.d), col, tbg, cfg).transpose(Image.FLIP_LEFT_RIGHT), (mid.width-gp.l,0))
                     if group_rounded and group_cmp(g,diff=[(r+1,c),(r,c-1)]):
-                        mid.paste(Quadrant((gp.r, gp.u), col, tbg).transpose(Image.FLIP_TOP_BOTTOM), (0,mid.height-gp.u))
+                        mid.paste(OuterCorner((gp.r, gp.u), col, tbg, cfg).transpose(Image.FLIP_TOP_BOTTOM), (0,mid.height-gp.u))
                     if group_rounded and group_cmp(g,diff=[(r+1,c),(r,c+1)]):
-                        mid.paste(Quadrant((gp.l, gp.u), col, tbg).transpose(Image.ROTATE_180), (mid.width-gp.l,mid.height-gp.u))
+                        mid.paste(OuterCorner((gp.l, gp.u), col, tbg, cfg).transpose(Image.ROTATE_180), (mid.width-gp.l,mid.height-gp.u))
                     
                     top = Rectangle((base.width-gp.x, gp.u), col if group_cmp(g,(r-1,c)) else tbg)
-                    left = Rectangle((gp.l, base.height-gp.y), col if group_cmp(g,(r,c-1)) else tbg)
-                    right = Rectangle((gp.r, base.height-gp.y), col if group_cmp(g,(r,c+1)) else tbg)
-                    bottom = Rectangle((base.width-gp.x, gp.d), col if group_cmp(g,(r+1,c)) else tbg)
+                    if group_border and (group_cmp(g, (r-1,c), diff=[(r,c-1)]) or group_cmp(g, (r-1,c), diff=[(r-1,c-1)])):
+                        top.place(Rectangle((group_border, gp.u), cfg), align=0, copy=False)
+                    if group_border and (group_cmp(g, (r-1,c), diff=[(r,c+1)]) or group_cmp(g, (r-1,c), diff=[(r-1,c+1)])):
+                        top.place(Rectangle((group_border, gp.u), cfg), align=1, copy=False)
                     
-                    top_left = (Quadrant((gp.l, gp.u), col, tbg, invert=True).transpose(Image.ROTATE_180)
-                                 if group_rounded and group_cmp(g,(r-1,c),(r,c-1),diff=[(r-1,c-1)])
-                                 else Rectangle((gp.l, gp.u), col if group_cmp(g,(r-1,c),(r,c-1),(r-1,c-1)) else tbg))
-                    top_right = (Quadrant((gp.r, gp.u), col, tbg, invert=True).transpose(Image.FLIP_TOP_BOTTOM)
-                                 if group_rounded and group_cmp(g,(r-1,c),(r,c+1),diff=[(r-1,c+1)])
-                                 else Rectangle((gp.r, gp.u), col if group_cmp(g,(r-1,c),(r,c+1),(r-1,c+1)) else tbg))
-                    bottom_left = (Quadrant((gp.l, gp.d), col, tbg, invert=True).transpose(Image.FLIP_LEFT_RIGHT)
-                                 if group_rounded and group_cmp(g,(r+1,c),(r,c-1),diff=[(r+1,c-1)])
-                                 else Rectangle((gp.l, gp.d), col if group_cmp(g,(r+1,c),(r,c-1),(r+1,c-1)) else tbg))
-                    bottom_right = (Quadrant((gp.r, gp.d), col, tbg, invert=True)
-                                 if group_rounded and group_cmp(g,(r+1,c),(r,c+1),diff=[(r+1,c+1)])
-                                 else Rectangle((gp.r, gp.d), col if group_cmp(g,(r+1,c),(r,c+1),(r+1,c+1)) else tbg))
-                                 
-                    venn.place(Image.from_array([[top_left, top, top_right],[left,mid,right],[bottom_left,bottom,bottom_right]]), copy=False)
+                    bottom = Rectangle((base.width-gp.x, gp.d), col if group_cmp(g,(r+1,c)) else tbg)
+                    if group_border and (group_cmp(g, (r+1,c), diff=[(r,c-1)]) or group_cmp(g, (r+1,c), diff=[(r+1,c-1)])):
+                        bottom.place(Rectangle((group_border, gp.d), cfg), align=0, copy=False)
+                    if group_border and (group_cmp(g, (r+1,c), diff=[(r,c+1)]) or group_cmp(g, (r+1,c), diff=[(r+1,c+1)])):
+                        bottom.place(Rectangle((group_border, gp.d), cfg), align=1, copy=False)
+                    
+                    left = Rectangle((gp.l, base.height-gp.y), col if group_cmp(g,(r,c-1)) else tbg)
+                    if group_border and (group_cmp(g, (r,c-1), diff=[(r-1,c)]) or group_cmp(g, (r,c-1), diff=[(r-1,c-1)])):
+                        left.place(Rectangle((gp.l, group_border), cfg), align=0, copy=False)
+                    if group_border and (group_cmp(g, (r,c-1), diff=[(r+1,c)]) or group_cmp(g, (r,c-1), diff=[(r+1,c-1)])):
+                        left.place(Rectangle((gp.l, group_border), cfg), align=1, copy=False)
+                    
+                    right = Rectangle((gp.r, base.height-gp.y), col if group_cmp(g,(r,c+1)) else tbg)
+                    if group_border and (group_cmp(g, (r,c+1), diff=[(r-1,c)]) or group_cmp(g, (r,c+1), diff=[(r-1,c+1)])):
+                        right.place(Rectangle((gp.r, group_border), cfg), align=0, copy=False)
+                    if group_border and (group_cmp(g, (r,c+1), diff=[(r+1,c)]) or group_cmp(g, (r,c+1), diff=[(r+1,c+1)])):
+                        right.place(Rectangle((gp.r, group_border), cfg), align=1, copy=False)
+                    
+                    top_left = Rectangle((gp.l, gp.u), col if group_cmp(g,(r-1,c),(r,c-1),(r-1,c-1)) else tbg)
+                    top_right = Rectangle((gp.r, gp.u), col if group_cmp(g,(r-1,c),(r,c+1),(r-1,c+1)) else tbg)
+                    bottom_left = Rectangle((gp.l, gp.d), col if group_cmp(g,(r+1,c),(r,c-1),(r+1,c-1)) else tbg)
+                    bottom_right = Rectangle((gp.r, gp.d), col if group_cmp(g,(r+1,c),(r,c+1),(r+1,c+1)) else tbg)
+                    
+                    img = Image.from_array([[top_left, top, top_right],[left,mid,right],[bottom_left,bottom,bottom_right]])
+                    
+                    if group_rounded and group_cmp(g,(r-1,c),(r,c-1),diff=[(r-1,c-1)]):
+                        img.paste(InnerCorner((gp.l, gp.u), col, tbg, cfg).transpose(Image.ROTATE_180), (0,0))
+                    if group_rounded and group_cmp(g,(r-1,c),(r,c+1),diff=[(r-1,c+1)]):
+                        img.paste(InnerCorner((gp.r, gp.u), col, tbg, cfg).transpose(Image.FLIP_TOP_BOTTOM), (img.width-gp.r-group_border,0))
+                    if group_rounded and group_cmp(g,(r+1,c),(r,c-1),diff=[(r+1,c-1)]):
+                        img.paste(InnerCorner((gp.l, gp.d), col, tbg, cfg).transpose(Image.FLIP_LEFT_RIGHT), (0,img.height-gp.d-group_border))
+                    if group_rounded and group_cmp(g,(r+1,c),(r,c+1),diff=[(r+1,c+1)]):
+                        img.paste(InnerCorner((gp.r, gp.d), col, tbg, cfg), (img.width-gp.r-group_border,img.height-gp.d-group_border))
+                        
+                    venn.place(img, copy=False)
+                    
                 base.place(venn, copy=False)
             if img_array[r][c]:
                 base.place(img_array[r][c], align=(xalign,yalign), copy=False)

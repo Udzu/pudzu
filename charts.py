@@ -860,23 +860,24 @@ def month_chart(month, cell_width=60, cell_height=40, cell_padding=1, fg="black"
     - cell_padding (int): padding between cells [1]
     - fg (color): color for labels and padding [black]
     - fonts (font/three fonts/font function): month, weekday and daily label fonts [16-point arial]
-    - day_bg (date->color/pattern): day cell background [white]
-    - day_label (format / date->string/img): day label ["1", "2", etc]
-    - day_overlay (date->img): day overlay [None]
+    - day_bg (date,width,height->color/pattern): day cell background [white]
+    - day_label (format / date,width,height->string/img): day label ["1", "2", etc]
+    - day_overlay (date,width,height->img): day overlay [None]
     - day_start (int/string): day number or name to start the week [0]
-    - out_of_month_bg (date->color/pattern): out-of-month cell background [day_bg]
-    - out_of_month_label (format / date->string/img): out-of-month cell label [None]
-    - out_of_month_overlay (date->img): out-of-month cell overlay [None]
+    - out_of_month_bg (date,width,height->color/pattern): out-of-month cell background [day_bg]
+    - out_of_month_label (format / date,width,height->string/img): out-of-month cell label [None]
+    - out_of_month_overlay (date,width,height->img): out-of-month cell overlay [None]
     - weekday_height (int): height of each weekday cell [20]
-    - weekday_bg (date->color/pattern): weekday cell background [#A0A0A0]
-    - weekday_label (format / date->string/img): weekday label ["MON", "TUE", etc]
-    - weekday_overlay (date->img): weekday overlay [None]
+    - weekday_bg (date,width,height->color/pattern): weekday cell background [#A0A0A0]
+    - weekday_label (format / date,width,height->string/img): weekday label ["MON", "TUE", etc]
+    - weekday_overlay (date,width,height->img): weekday overlay [None]
     - month_height (int): height of month cell [30]
-    - month_bg (date->color/pattern): month cell background [#606060]
-    - month_label (format / date->string/img): month label ["December 2017", etc]
-    - month_overlay (date->img): month overlay [None]
+    - month_bg (date,width,height->color/pattern): month cell background [#606060]
+    - month_label (format / date,width,height->string/img): month label ["December 2017", etc]
+    - month_overlay (date,width,height->img): month overlay [None]
     - month_image (image): optional month image [None]
-    Functional arguments can be passed in as constants.
+    Functional arguments don't need to accept all the arguments and can also be passed in as
+    constants.
     """
            
     # Arguments and defaults
@@ -890,7 +891,7 @@ def month_chart(month, cell_width=60, cell_height=40, cell_padding=1, fg="black"
     elif isinstance(fonts, ImageFont.FreeTypeFont): fonts = [fonts]*3
     padding = (cell_padding, cell_padding, 0, 0)
     
-    def make_fn(overlay): return overlay if callable(overlay) else (lambda d: overlay)
+    def make_fn(overlay): return ignoring_extra_args(overlay if callable(overlay) else (lambda d: overlay))
     day_bg_fn = make_fn(day_bg)
     day_overlay_fn = make_fn(day_overlay)
     out_of_month_bg_fn = make_fn(out_of_month_bg)
@@ -900,7 +901,7 @@ def month_chart(month, cell_width=60, cell_height=40, cell_padding=1, fg="black"
     month_bg_fn = make_fn(month_bg)
     month_overlay_fn = make_fn(month_overlay)
     
-    def make_label_fn(label): return label if callable(label) else (lambda d: d.date_format(label)) if isinstance(label, str) else (lambda d: label)
+    def make_label_fn(label): return ignoring_extra_args(label if callable(label) else (lambda d: d.date_format(label)) if isinstance(label, str) else (lambda d: label))
     day_label_fn = make_label_fn(day_label)
     out_of_month_label_fn = make_label_fn(out_of_month_label)
     weekday_label_fn = make_label_fn(weekday_label)
@@ -923,8 +924,9 @@ def month_chart(month, cell_width=60, cell_height=40, cell_padding=1, fg="black"
     fullrange = DateRange(first_day, last_day, calendar=month.calendar)
     
     # Generate month calendar
-    month_bg, month_label, month_overlay = month_bg_fn(month.start), month_label_fn(month.start), month_overlay_fn(month.start)
-    month_img = Image.from_pattern(month_bg, (total_width-2*cell_padding, month_height)) if isinstance(month_bg, Image.Image) else Image.new("RGBA", (total_width-2*cell_padding, month_height), month_bg)
+    fnargs = (month.start, total_width-2*cell_padding, month_height)
+    month_bg, month_label, month_overlay = month_bg_fn(*fnargs), month_label_fn(*fnargs), month_overlay_fn(*fnargs)
+    month_img = Image.from_pattern(month_bg, (month_width, month_height)) if isinstance(month_bg, Image.Image) else Image.new("RGBA", (total_width-2*cell_padding, month_height), month_bg)
     if isinstance(month_label, str): month_label = Image.from_text(month_label, fonts[0], fg)
     if month_label: month_img = month_img.place(month_label)
     if month_overlay: month_img = month_img.place(month_overlay)
@@ -934,7 +936,9 @@ def month_chart(month, cell_width=60, cell_height=40, cell_padding=1, fg="black"
     if weekday_height:
         weekday_imgs = []
         for day in itertools.islice(fullrange, week_length):
-            weekday_bg, weekday_label, weekday_overlay = weekday_bg_fn(day), weekday_label_fn(day), weekday_overlay_fn(day)
+            if day not in month: day += DateFilter(lambda d: d.weekday == day.weekday and d in month)
+            fnargs = (day, cell_width, weekday_height)
+            weekday_bg, weekday_label, weekday_overlay = weekday_bg_fn(*fnargs), weekday_label_fn(*fnargs), weekday_overlay_fn(*fnargs)
             weekday_img = Image.from_pattern(weekday_bg, (cell_width, weekday_height)) if isinstance(weekday_bg, Image.Image) else Image.new("RGBA", (cell_width, weekday_height), weekday_bg)
             if isinstance(weekday_label, str): weekday_label = Image.from_text(weekday_label, fonts[1], fg)
             if weekday_label: weekday_img = weekday_img.place(weekday_label)
@@ -948,7 +952,8 @@ def month_chart(month, cell_width=60, cell_height=40, cell_padding=1, fg="black"
         for day in week:
             if day in month: bg_fn, label_fn, overlay_fn = day_bg_fn, day_label_fn, day_overlay_fn
             else: bg_fn, label_fn, overlay_fn = out_of_month_bg_fn, out_of_month_label_fn, out_of_month_overlay_fn
-            bg, label, overlay = bg_fn(day), label_fn(day), overlay_fn(day)
+            fnargs = (day, cell_width, cell_height)
+            bg, label, overlay = bg_fn(*fnargs), label_fn(*fnargs), overlay_fn(*fnargs)
             day_img = Image.from_pattern(bg, (cell_width, cell_height)) if isinstance(bg, Image.Image) else Image.new("RGBA", (cell_width, cell_height), bg) 
             if isinstance(label, str): label = Image.from_text(label, fonts[2], fg)
             if label: day_img = day_img.place(label)

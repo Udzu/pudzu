@@ -391,7 +391,7 @@ An abstract base class for encapsulating simple geometric shape generation (most
 ![alt](images/shaperectangle.png)
 
 ```python
->> Rectangle((100,50), flag.resize_fixed_aspect(width=30)).show()
+>> Rectangle((100,50), flag.resize_fixed_aspect(width=30), round=0.5).show()
 ```
 ![alt](images/shaperectangle2.png)
 
@@ -416,12 +416,26 @@ An abstract base class for encapsulating simple geometric shape generation (most
 ```
 ![alt](images/shapeparallelogram.png)
 
+**Stripe**: generate tilable diagonal stripes.
+
+```python
+>> Image.from_pattern(Stripe(10, "black", "grey", p=0.25), (80, 50))
+```
+![alt](images/shapestripe.png)
+
 **Ellipse**: generate elliptical (or circular) shapes or masks.
 
 ```python
 >> Ellipse((80,50), Diamond(10, "black", "grey")).show()
 ```
 ![alt](images/shapeellipse.png)
+
+**Quadrant**: generate elliptical (or circular) quadrant shapes or masks.
+
+```python
+>> Quadrant((80,50), Diamond(10, "black", "grey")).show()
+```
+![alt](images/shapequadrant.png)
 
 **MaskUnion**: generate a shape from the union of a collection of masks (mode "L" images or alpha channels of other images). Automatically calculates the size if set to `...`.
 

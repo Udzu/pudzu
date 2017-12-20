@@ -964,6 +964,6 @@ def month_chart(month, cell_width=60, cell_height=40, cell_padding=1, fg="black"
         day_imgs.append(week_imgs)
     grid_img = Image.from_array(day_imgs)
     
-    month_image = month_img.resize_fixed_aspect(width=month_width).pad(padding, fg) if month_image else Image.EMPTY_IMAGE
+    month_image = month_image.resize_fixed_aspect(width=month_width).pad(padding, fg) if month_image else Image.EMPTY_IMAGE
     calendar_img = Image.from_column([month_img, month_image, grid_img], xalign=0).pad(padding[::-1], fg)
     return calendar_img

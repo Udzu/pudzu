@@ -1,0 +1,28 @@
+country,language1,language2,bilingual,trilingual,use,advantage
+Austria,english,french,78,27,holiday,holiday
+Belgium,french,english,72,50,holiday,work
+Bulgaria,english,russian,48,19,films,work abroad
+Cyprus,english,french,76,20,films,holiday
+Czech Republic,english,slovakian,49,22,holiday,work abroad
+Denmark,english,german,89,58,holiday,work
+Estonia,russian,english,87,52,work,work abroad
+Finland,english,swedish,75,48,holiday,work
+France,english,spanish,51,19,holiday,work abroad
+Germany,english,french,66,28,holiday,work
+Greece,english,french,57,15,internet,work abroad
+Hungary,english,german,35,13,holiday,work abroad
+Ireland,irish,french,40,18,holiday,work abroad
+Italy,english,french,38,22,holiday,work
+Latvia,russian,english,95,54,films,work abroad
+Lithuania,russian,english,92,52,films,work abroad
+Luxembourg,french,german,98,84,films,work
+Malta,english,italian,93,59,films,holiday
+Netherlands,english,german,94,77,holiday,work
+Poland,english,german,50,22,holiday,work abroad
+Portugal,english,french,39,13,friends,work abroad
+Romania,english,french,48,22,films,work abroad
+Slovakia,czech,english,80,43,films,work abroad
+Slovenia,croatian,english,92,67,films,work abroad
+Spain,english,spanish,46,18,friends,work abroad
+Sweden,english,german,91,44,holiday,work
+UK,french,english,39,14,holiday,holiday

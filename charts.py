@@ -924,9 +924,10 @@ def month_chart(month, cell_width=60, cell_height=40, cell_padding=1, fg="black"
     fullrange = DateRange(first_day, last_day, calendar=month.calendar)
     
     # Generate month calendar
-    fnargs = (month.start, total_width-2*cell_padding, month_height)
+    month_width = total_width-2*cell_padding
+    fnargs = (month.start, month_width, month_height)
     month_bg, month_label, month_overlay = month_bg_fn(*fnargs), month_label_fn(*fnargs), month_overlay_fn(*fnargs)
-    month_img = Image.from_pattern(month_bg, (month_width, month_height)) if isinstance(month_bg, Image.Image) else Image.new("RGBA", (total_width-2*cell_padding, month_height), month_bg)
+    month_img = Image.from_pattern(month_bg, (month_width, month_height)) if isinstance(month_bg, Image.Image) else Image.new("RGBA", (month_width, month_height), month_bg)
     if isinstance(month_label, str): month_label = Image.from_text(month_label, fonts[0], fg)
     if month_label: month_img = month_img.place(month_label)
     if month_overlay: month_img = month_img.place(month_overlay)
@@ -963,6 +964,6 @@ def month_chart(month, cell_width=60, cell_height=40, cell_padding=1, fg="black"
         day_imgs.append(week_imgs)
     grid_img = Image.from_array(day_imgs)
     
-    month_image = month_img.pad(padding, fg) if month_image else Image.EMPTY_IMAGE
+    month_image = month_img.resize_fixed_aspect(width=month_width).pad(padding, fg) if month_image else Image.EMPTY_IMAGE
     calendar_img = Image.from_column([month_img, month_image, grid_img], xalign=0).pad(padding[::-1], fg)
     return calendar_img

@@ -677,7 +677,7 @@ class ImageShape(object):
         - size (int/(int,int)): image size
         - fg (color/pattern): image foreground [black]
         - bg (color/pattern): image background [0]
-        - alias (x>0): level of antialiasing (if supported), where 1 is none [4]
+        - alias (x>0): level of antialiasing (if supported), where 1.0 is none [4.0]
         """
         if isinstance(size, Integral): size = (size, size)
         if cls.antialiasing:
@@ -695,10 +695,16 @@ class ImageShape(object):
 class Rectangle(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
-    def mask(cls, size):
-        """Rectangular mask."""
-        return Image.new("L", size, 255)
-    antialiasing = False # no need
+    def mask(cls, size, round=0):
+        """Rectangular mask with optional rounded corners."""
+        m = Image.new("L", size, 255)
+        if round > 0:
+            w, h = int(round * size[0] / 2), int(round * size[1] / 2)
+            m.place(Quadrant.mask((w,h)), align=(0,0), copy=False)
+            m.place(Quadrant.mask((w,h)).transpose(Image.FLIP_LEFT_RIGHT), align=(1,0), copy=False)
+            m.place(Quadrant.mask((w,h)).transpose(Image.FLIP_TOP_BOTTOM), align=(0,1), copy=False)
+            m.place(Quadrant.mask((w,h)).transpose(Image.ROTATE_180), align=(1,1), copy=False)
+        return m
     
 class Ellipse(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
@@ -758,6 +764,18 @@ class Diamond(ImageShape):
         bottom = np.fromfunction(lambda j, i: (y-j)*m >= (y-n)*abs(m-i), (h,w))
         return Image.fromarray(255 * (top * bottom).view('uint8'))
         
+class Stripe(ImageShape):
+    __doc__ = ImageShape.__new__.__doc__
+    @classmethod
+    def mask(cls, size, p=0.5):
+        """Tilable diagonal stripe mask occupying p of the tile."""
+        w, h = size
+        x, y = w-1, h-1
+        topleft = np.fromfunction(lambda j,i: i*y + j*x < p*x*y, (h,w))
+        middle = np.fromfunction(lambda j,i: i*y + j*x >= x*y, (h,w))
+        bottomright = np.fromfunction(lambda j,i: i*y + j*x >= (1+p)*x*y, (h,w))
+        return Image.fromarray(255 * (topleft + (middle - bottomright)).view('uint8'))
+
 class MaskUnion(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod

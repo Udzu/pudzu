@@ -6,7 +6,7 @@ Pillow-based charting.
 ## Dependencies
 *Required*: [pillow](http://pillow.readthedocs.io/en/4.2.x/index.html), [pandas](http://pandas.pydata.org/), [toolz](http://toolz.readthedocs.io/en/latest/index.html),  [bamboo](bamboo.md), [pillar](pillar.md), [utils](utils.md).
 
-*Optional*: [dates](dates.md) (for flexible time charts).
+*Optional*: [dates](dates.md) (for flexible time charts and month charts).
 
 ## Documentation
 
@@ -41,3 +41,7 @@ Three chart types are currently supported: **bar charts**, **time charts** and *
 **map_chart**: generate a map chart. Input is a map template with each region having a unique color. Regions can be named (see generate_name_csv), labelled (see generate_bbox_csv) and have overlays such as label arrows.
 
 ![grid chart example](images/chart_femaleleaders.png)
+
+### Calendar charts
+
+**month_chart**: generate a calendar chart for a given month.

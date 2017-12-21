@@ -53,6 +53,8 @@ def labelfn(d):
     return Image.from_text(d.date_format("{D}"), arial(16, italics=d<INAUGURATION), fg, padding=(0,0,2,0))
 
 month_imgs = [month_chart(Date((2017,m,1)), day_start=1, day_bg=bgfn, day_label=labelfn, month_image=IMAGES[m-1], month_label="{M}", month_bg="#E0E0E0") for m in range(1,13)]
+#month_imgs = [month_chart(Date((1438+(m//12),m%12 + 12*int(m==12),1), calendar=islamic), day_start=0, day_bg=bgfn, day_label=labelfn, month_image=IMAGES[(m-4)], month_label="{M}", month_bg="#E0E0E0") for m in range(4,4+12)]
+#month_imgs = [month_chart(Date((5777+(m//12),m%12 + 12*int(m==12),1), calendar=hebrew), day_start=0, day_bg=bgfn, day_label=labelfn, month_image=IMAGES[(m-4)], month_label="{M}", month_bg="#E0E0E0") for m in range(4,4+12)]
 months = Image.from_array(list(generate_batches(month_imgs, 4)), padding=10, bg="white", yalign=0)
 
 key_info = [

@@ -672,15 +672,16 @@ class ImageShape(object):
         
     antialiasing = True
     
-    def __new__(cls, size, fg="black", bg=0, antialias=4, invert=False, **kwargs):
+    def __new__(cls, size, fg="black", bg=None, antialias=4, invert=False, **kwargs):
         """Generate an image of the appropriate shape. See mask method for additional shape-specific parameters.
         - size (int/(int,int)): image size
         - fg (color/pattern): image foreground [black]
-        - bg (color/pattern): image background [0]
+        - bg (color/pattern): image background [None]
         - antialias (x>0): level of antialiasing (if supported), where 1.0 is none [4.0]
         - invert (boolean): whether to invert the shape mask [False]
         """
         if isinstance(size, Integral): size = (size, size)
+        if bg is None: bg = ImageColor.getrgba(fg)._replace(alpha=0)
         if cls.antialiasing:
             orig_size, size = size, [round(s * antialias) for s in size]
             if isinstance(bg, Image.Image): bg = bg.resize([round(s * antialias) for s in bg.size], Image.NEAREST)

@@ -230,6 +230,14 @@ def update_sequence(s, n, x):
     else:
         raise IndexError("sequence index out of range")
 
+def tmap(*args, **kwargs):
+    """Like map, but returns a tuple."""
+    return tuple(map(*args, **kwargs))
+    
+def tfilter(*args, **kwargs):
+    """Like filter, but returns a tuple."""
+    return tuple(filter(*args, **kwargs))
+        
 # Generators
 
 def generate_leafs(iterable):

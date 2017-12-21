@@ -419,6 +419,9 @@ class Date(object):
     def date_format(self, format_string):
         return self.calendar.date_format(self.ymd, self.weekday, format_string)
         
+    def __hash__(self):
+        return hash(str(self.ordinal))
+        
     def __eq__(self, other):
         if isinstance(other, Date):
             return self.ordinal == other.ordinal
@@ -700,7 +703,7 @@ class DateRange(collections.abc.Sequence):
         elif isinstance(other, Date):
             return DateRange(other, other) in self
         else:
-            return NotImplemented
+            return False
 
     def __len__(self):
         return self.end - self.start + 1

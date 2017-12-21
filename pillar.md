@@ -176,7 +176,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/fromarray1.png)
 
-**Image.from_pattern**: create an image from a background pattern, either scaled or tiled. Similarly, **Image.from_vertical_pattern** and **Image.from_horiztonal_pattern** automatically scale to the image width or height.
+**Image.from_pattern**: create an image from a background pattern, either scaled or tiled. Similarly, **Image.from_vertical_pattern** and **Image.from_horizontal_pattern** automatically scale to the image width or height.
 
 ```python
 >> flag = Image.from_url("https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/800px-Flag_of_the_United_Kingdom.svg.png")

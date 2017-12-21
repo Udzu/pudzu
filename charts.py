@@ -850,7 +850,7 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
 
 def month_chart(month, cell_width=60, cell_height=40, cell_padding=1, fg="black", fonts=papply(arial, 16),
                 day_bg="white", day_label="{D}", day_overlay=None, day_start=0,
-                out_of_month_bg=..., out_of_month_label=None, out_of_month_overlay=None,
+                out_of_month_bg="white", out_of_month_label=None, out_of_month_overlay=None,
                 weekday_height=20, weekday_bg="#A0A0A0", weekday_label=lambda d: d.date_format("{W}")[:3].upper(), weekday_overlay=None,
                 month_height=30, month_bg="#606060", month_label="{M} {Y}", month_overlay=None, month_image=None):
     """Generate a calendar chart for a single month.
@@ -864,7 +864,7 @@ def month_chart(month, cell_width=60, cell_height=40, cell_padding=1, fg="black"
     - day_label (format / date,width,height->string/img): day label ["1", "2", etc]
     - day_overlay (date,width,height->img): day overlay [None]
     - day_start (int/string): day number or name to start the week [0]
-    - out_of_month_bg (date,width,height->color/pattern): out-of-month cell background [day_bg]
+    - out_of_month_bg (date,width,height->color/pattern): out-of-month cell background [white]
     - out_of_month_label (format / date,width,height->string/img): out-of-month cell label [None]
     - out_of_month_overlay (date,width,height->img): out-of-month cell overlay [None]
     - weekday_height (int): height of each weekday cell [20]

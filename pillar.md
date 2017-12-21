@@ -364,7 +364,6 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 ```
 ![alt](images/invertmask.png)
 
-
 **Image.Image.add_grid**: add grid lines to an image.
 
 ```python
@@ -383,15 +382,17 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 An abstract base class for encapsulating simple geometric shape generation (mostly implemented with numpy). Shapes may be generated either as masks, by calling their `mask` method, or as images, by using their constructor. Note that the shape classes act as factories only: masks are returned as mode "L" images, shapes as mode "RGBA" images.
 
+The mask methods accept a size and shape-specific parameters. The constructor methods also accept foreground and background colors or patterns, as well as invert and antialias parameters.
+
 **Rectangle**: generate rectangular shapes or masks.
 
 ```python
->> Rectangle((100,50), "grey").show()
+>> Rectangle((100,50), "grey", round=0.5).show()
 ```
 ![alt](images/shaperectangle.png)
 
 ```python
->> Rectangle((100,50), flag.resize_fixed_aspect(width=30), round=0.5).show()
+>> Rectangle((100,50), flag.resize_fixed_aspect(width=30)).show()
 ```
 ![alt](images/shaperectangle2.png)
 
@@ -416,13 +417,27 @@ An abstract base class for encapsulating simple geometric shape generation (most
 ```
 ![alt](images/shapeparallelogram.png)
 
-**Stripe**: generate tilable diagonal stripes.
+**Trapezoid**: generate trapezoid shapes or masks, with a parameter p indicating how far along the top (if p>0) or bottom (if p<0) vertices are.
+
+```python
+>> Image.from_array([[Trapezoid(40, "grey", p=i*n/4) for n in range(5)] for i in [1,-1]], padding=5).show()
+```
+![alt](images/shapetrapezoid.png)
+
+**Stripe**: generate tilable diagonal stripes of a given width.
 
 ```python
 >> Image.from_pattern(Stripe(10, "black", "grey", p=0.25), (80, 50))
 ```
 ![alt](images/shapestripe.png)
 
+**Checkers**: generate a checkers grid pattern of a given shape.
+
+```python
+>> Checkers((80,50), "black", "grey", shape=(8,5)).show()
+```
+![alt](images/shapecheckers.png)
+ 
 **Ellipse**: generate elliptical (or circular) shapes or masks.
 
 ```python
@@ -440,7 +455,7 @@ An abstract base class for encapsulating simple geometric shape generation (most
 **MaskUnion**: generate a shape from the union of a collection of masks (mode "L" images or alpha channels of other images). Automatically calculates the size if set to `...`.
 
 ```python
->>  MaskUnion(..., Rectangle(10, "black").place(Ellipse(8, "grey")), masks=(Triangle(50), Ellipse(40))).show()
+>>  MaskUnion(..., masks=(Triangle(50), Ellipse(40))).show()
 ```
 ![alt](images/shapeunion.png)
 
@@ -452,6 +467,6 @@ An abstract base class for encapsulating simple geometric shape generation (most
 ![alt](images/shapeintersection1.png)
 
 ```python
->> MaskIntersection(..., masks=(Diamond(50), Ellipse(20).invert_mask()), include_missing=True).show()
+>> MaskIntersection(..., masks=(Diamond(50), Ellipse(20, invert=True)), include_missing=True).show()
 ```
 ![alt](images/shapeintersection2.png)

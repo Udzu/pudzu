@@ -672,24 +672,26 @@ class ImageShape(object):
         
     antialiasing = True
     
-    def __new__(cls, size, fg="black", bg=0, alias=4, **kwargs):
+    def __new__(cls, size, fg="black", bg=0, antialias=4, invert=False, **kwargs):
         """Generate an image of the appropriate shape. See mask method for additional shape-specific parameters.
         - size (int/(int,int)): image size
         - fg (color/pattern): image foreground [black]
         - bg (color/pattern): image background [0]
-        - alias (x>0): level of antialiasing (if supported), where 1.0 is none [4.0]
+        - antialias (x>0): level of antialiasing (if supported), where 1.0 is none [4.0]
+        - invert (boolean): whether to invert the shape mask [False]
         """
         if isinstance(size, Integral): size = (size, size)
         if cls.antialiasing:
-            orig_size, size = size, [round(s * alias) for s in size]
-            if isinstance(bg, Image.Image): bg = bg.resize([round(s * alias) for s in bg.size], Image.NEAREST)
-            if isinstance(fg, Image.Image): fg = fg.resize([round(s * alias) for s in fg.size], Image.NEAREST)
+            orig_size, size = size, [round(s * antialias) for s in size]
+            if isinstance(bg, Image.Image): bg = bg.resize([round(s * antialias) for s in bg.size], Image.NEAREST)
+            if isinstance(fg, Image.Image): fg = fg.resize([round(s * antialias) for s in fg.size], Image.NEAREST)
         mask = cls.mask(size, **kwargs)
+        if invert: mask = mask.invert_mask()
         base = Image.from_pattern(bg, mask.size) if isinstance(bg, Image.Image) else Image.new("RGBA", mask.size, bg)
         fore = Image.from_pattern(fg, mask.size) if isinstance(fg, Image.Image) else  Image.new("RGBA", mask.size, fg)
         img = base.overlay(fore, mask=mask)
         if cls.antialiasing:
-            img = img.resize(orig_size, resample=Image.LANCZOS if alias > 1 else Image.NEAREST)
+            img = img.resize(orig_size, resample=Image.LANCZOS if antialias > 1 else Image.NEAREST)
         return img
         
 class Rectangle(ImageShape):
@@ -719,10 +721,10 @@ class Ellipse(ImageShape):
 class Quadrant(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
-    def mask(cls, size, invert=False):
+    def mask(cls, size):
         """Top-left quadrant mask."""
         m = Ellipse.mask((max(0,size[0]*2-1),max(size[1]*2-1,0))).crop((0,0,size[0],size[1]))
-        return m.invert_mask() if invert else m
+        return m
 
 class Triangle(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
@@ -757,13 +759,29 @@ class Diamond(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
     def mask(cls, size, p=0.5):
-        """Diamong-shaped mask with the left-right vertices p down from the top."""
+        """Diamond-shaped mask with the left-right vertices p down from the top."""
         w, h = size
         x, y, m, n = w-1, h-1, (w-1)/2, p*(h-1)
         top = np.fromfunction(lambda j, i: j*m >= n*abs(m-i), (h,w))
         bottom = np.fromfunction(lambda j, i: (y-j)*m >= (y-n)*abs(m-i), (h,w))
         return Image.fromarray(255 * (top * bottom).view('uint8'))
         
+class Trapezoid(ImageShape):
+    __doc__ = ImageShape.__new__.__doc__
+    @classmethod
+    def mask(cls, size, p=0.5):
+        """Trapezoid-shaped mask, for p > 0 for how close to the center the top vertices
+        are, or p < 0 for how close to the center the bottom vertices are."""
+        w, h = size
+        x, y, n = w-1, h-1, abs(p*(w-1)/2)
+        if p >= 0:
+            left = np.fromfunction(lambda j,i: j*n >= y*(n-i), (h,w))
+            right = np.fromfunction(lambda j,i: j*n >= y*(n-(x-i)), (h,w))
+        else:
+            left = np.fromfunction(lambda j,i: (y-j)*n >= y*(n-i), (h,w))
+            right = np.fromfunction(lambda j,i: (y-j)*n >= y*(n-(x-i)), (h,w))
+        return Image.fromarray(255 * (left * right).view('uint8'))
+
 class Stripe(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
@@ -775,6 +793,18 @@ class Stripe(ImageShape):
         middle = np.fromfunction(lambda j,i: i*y + j*x >= x*y, (h,w))
         bottomright = np.fromfunction(lambda j,i: i*y + j*x >= (1+p)*x*y, (h,w))
         return Image.fromarray(255 * (topleft + (middle - bottomright)).view('uint8'))
+
+class Checkers(ImageShape):
+    __doc__ = ImageShape.__new__.__doc__
+    @classmethod
+    def mask(cls, size, shape=2):
+        """Checker grid pattern."""
+        if isinstance(shape, Integral): shape=(shape,shape)
+        m, n = shape
+        w, h = size
+        pattern = np.fromfunction(lambda j,i: (i//(w/m) + j//(h/n)) % 2 == 0, (h,w))
+        return Image.fromarray(255 * (pattern).view('uint8'))
+    antialiasing = False
 
 class MaskUnion(ImageShape):
     __doc__ = ImageShape.__new__.__doc__

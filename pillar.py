@@ -267,22 +267,22 @@ class _ImageColor():
             
     @classmethod
     def to_linear(cls, srgb):
-        """Convert a single sRGB color value between 0 and 255 to a linear value between 0 and 1."""
+        """Convert a single sRGB color value between 0 and 255 to a linear value between 0 and 1. Numpy-aware."""
         c = srgb / 255
-        return c / 12.92 if c <= 0.04045 else ((c+0.055)/1.055)**2.4 
-        
+        return np.where(c <= 0.04045, c / 12.92, ((c+0.055)/1.055)**2.4)
+
     @classmethod
     def from_linear(cls, lrgb):
-        """Convert a single linear RGB value between 0 and 1 to an sRGB value between 0 and 255."""
-        c = 12.92 * lrgb if lrgb <= 0.0031308 else (1.055)*lrgb**(1/2.4)-0.055
-        return round(c * 255)
-            
+        """Convert a single linear RGB value between 0 and 1 to an sRGB value between 0 and 255. Numpy-aware."""
+        c = np.where(lrgb <= 0.0031308, 12.92 * lrgb, (1.055)*lrgb**(1/2.4)-0.055)
+        return np.round(c * 255).astype(int)
+
     @classmethod
     def blend(cls, color1, color2, p=0.5):
-        """Blend two colours with gamma correction."""
+        """Blend two colours with sRGB gamma correction."""
         color1, color2 = cls.getrgba(color1), cls.getrgba(color2)
         return RGBA(*[fl(tl(c1) + (tl(c2)-tl(c1))*p) for c1,c2,fl,tl in zip_longest(color1,color2,[cls.from_linear]*3,[cls.to_linear]*3,fillvalue=round)])
-        
+
     @classmethod
     def brighten(cls, color, p):
         """Brighten a color. Same as blending with white (but preserving alpha)."""
@@ -587,6 +587,27 @@ class _Image(Image.Image):
         """Invert image for use as a mask"""
         return ImageOps.invert(self.as_mask())
         
+    def blend(self, img, p=0.5):
+        """Blend two images with sRGB gamma correction. Requires numpy."""
+        if self.size != img.size or self.mode != img.mode: raise NotImplementedError
+        arrays1 = [np.array(a) for a in self.split()]
+        arrays2 = [np.array(a) for a in img.split()]
+        dims = len(arrays1) - int("A" in self.mode)
+        blended = [fl(tl(c1) + (tl(c2)-tl(c1))*p) for c1,c2,fl,tl in zip_longest(arrays1,arrays2,[ImageColor.from_linear]*dims,[ImageColor.to_linear]*dims,fillvalue=lambda a: np.round(a).astype(int))]
+        return Image.fromarray(np.uint8(np.stack(blended, axis=-1)))
+        
+    def brighten(self, p):
+        """Brighten an image. Same as blending with white (but preserving alpha)."""
+        other = Image.new("RGBA", self.size, "white")
+        if 'A' in self.mode: other.putalpha(self.split()[-1])
+        return self.blend(other, p)
+
+    def darken(self, p):
+        """Darken an image. Same as blending with black (but preserving alpha)."""
+        other = Image.new("RGBA", self.size, "black")
+        if 'A' in self.mode: other.putalpha(self.split()[-1])
+        return self.blend(other, p)
+
     def add_grid(self, lines, width=1, bg="black", copy=True):
         """Add grid lines to an image"""
         if isinstance(lines, Integral): lines = (lines, lines)
@@ -651,6 +672,9 @@ Image.Image.select_color = _Image.select_color
 Image.Image.remove_transparency = _Image.remove_transparency
 Image.Image.as_mask = _Image.as_mask
 Image.Image.invert_mask = _Image.invert_mask
+Image.Image.blend = _Image.blend
+Image.Image.brighten = _Image.brighten
+Image.Image.darken = _Image.darken
 Image.Image.add_grid = _Image.add_grid
 Image.Image.add_shadow = _Image.add_shadow
 

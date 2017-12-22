@@ -238,6 +238,10 @@ def tfilter(*args, **kwargs):
     """Like filter, but returns a tuple."""
     return tuple(filter(*args, **kwargs))
         
+def treversed(*args, **kwargs):
+    """Like reversed, but returns a tuple."""
+    return tuple(reversed(*args, **kwargs))
+    
 # Generators
 
 def generate_leafs(iterable):

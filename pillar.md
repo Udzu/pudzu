@@ -6,7 +6,7 @@ Various Pillow utilities. These are monkey-patched on, allowing continued use of
 ## Dependencies
 *Required*: [pillow](http://pillow.readthedocs.io/en/4.2.x/index.html), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
 
-*Optional*: [numpy](http://www.numpy.org/) (for a few color and shape features), [pyphen](http://pyphen.org/) (for text hyphenation), [requests](http://docs.python-requests.org/en/master/) (for HTTP request headers).
+*Optional*: [numpy](http://www.numpy.org/) (for color and shape features), [pyphen](http://pyphen.org/) (for text hyphenation), [requests](http://docs.python-requests.org/en/master/) (for HTTP request headers).
 
 ## Documentation
 

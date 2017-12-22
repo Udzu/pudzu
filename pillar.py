@@ -164,7 +164,8 @@ class NamedPaletteMeta(type):
         
     def __iter__(cls): return iter(cls._colors_)
     def __len__(cls): return len(cls._colors_)
-    def __getitem__(cls, c): return getattr(cls, c.upper()) if isinstance(c, str) else cls._colors_[c]
+    def __call__(cls, name): return getattr(cls, name.upper())
+    def __getitem__(cls, key): return getattr(cls, key.upper()) if isinstance(key, str) else cls._colors_[key]
         
 class VegaPalette10(metaclass=NamedPaletteMeta):
     BLUE = "#1f77b4"

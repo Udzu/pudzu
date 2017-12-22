@@ -52,8 +52,10 @@ Box(l=3, u=3, r=12, d=12)
        BLUE = "#377eb8"
 >> RGBPalette.RED
 '#e41a1c'
->> RGBPalette["green"]
+>> RGBPalette("green")
 '#4daf4a'
+>> RGBPalette["Blue"]
+'#377eb8'
 >> RGBPalette[2]
 '#377eb8'
 >> list(RGBPalette)

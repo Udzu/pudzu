@@ -261,9 +261,9 @@ class _ImageColor():
         return RGBA(*color)
         
     @classmethod
-    def to_hex(cls, color):
-        """Convert a color to a hex string. Ignores alpha channel."""
-        return "#" + "".join("{:02x}".format(c) for c in cls.getrgba(color)[:3])
+    def to_hex(cls, color, alpha=False):
+        """Convert a color to a hex string."""
+        return "#" + "".join("{:02x}".format(c) for c in cls.getrgba(color)[:3+int(alpha)])
             
     @classmethod
     def to_linear(cls, srgb):
@@ -319,6 +319,50 @@ RGBA.to_hex = papply(ImageColor.to_hex)
 RGBA.blend = papply(ImageColor.blend)
 RGBA.brighten = papply(ImageColor.brighten)
 RGBA.darken = papply(ImageColor.darken)
+
+class GradientColormap():
+    """A matplotlib colormap generated from a sequence of colors and optional intervals."""
+    
+    def __init__(self, *colors, intervals=None, linear_conversion=True):
+        if len(colors) == 1:
+            colors = colors * 2
+        if intervals is None: 
+            intervals = [1] * (len(colors)-1)
+        if len(colors) < 2:
+            raise ValueError("Colormap needs at least two colors, got {}".format(len(colors)))
+        if len(intervals) != len(colors) - 1: 
+            raise ValueError("Wrong number of colormap intervals: got {}, expected {}".format(len(intervals), len(colors)-1))
+        if any(i <= 0 for i in intervals): 
+            raise ValueError("Colormap intervals must be positive")
+        self.colors = tmap(ImageColor.getrgba, colors)
+        self.intervals = [x/sum(intervals) for x in intervals]
+        self.accumulated = [0] + list(itertools.accumulate(self.intervals))
+        self.linear_conversion = linear_conversion
+        
+    def __repr__(self):
+        return "GradientColormap({})".format(", ".join("{:.0%}={}".format(p, c.to_hex(True)) for p,c in zip(self.accumulated, self.colors)))
+        
+    def _choose_color(self, p, colors):
+        return np.select([np.mod(p, len(colors)) == i for i in range(len(colors))], colors)
+    def _start_color(self, p, colors):
+        return np.select([p <= self.accumulated[i+1] for i in range(len(self.intervals))], colors[:-1])
+    def _end_color(self, p, colors):
+        return np.select([p <= self.accumulated[i+1] for i in range(len(self.intervals))], colors[1:])
+    def _interval(self, p):
+        return np.select([p <= self.accumulated[i+1] for i in range(len(self.intervals))], 
+                         [(p-self.accumulated[i])/self.intervals[i] for i in range(len(self.intervals))])
+                         
+    def __call__(self, p, bytes=False):
+        channels = zip_longest(zip(*self.colors),
+                               [ImageColor.from_linear]*3*int(self.linear_conversion),
+                               [ImageColor.to_linear]*3*int(self.linear_conversion),
+                               fillvalue=lambda a: np.round(a).astype(int))
+        cols = [self._choose_color(p, cs) if isinstance(p, Integral) or getattr(getattr(p, 'dtype', None), 'kind', None) == 'i' else 
+                fl(tl(self._start_color(p,cs))+(tl(self._end_color(p,cs))-tl(self._start_color(p,cs)))*self._interval(p))
+                for cs,fl,tl in channels]
+        return np.uint8(np.stack(cols, -1)) if bytes else np.stack(cols, -1) / 255
+        
+# TODO: class CompoundColormap(): def __init__(self, *cmaps, intervals=None):
 
 class _Image(Image.Image):
 

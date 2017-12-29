@@ -147,10 +147,10 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ### ImageDraw
 
-**ImageDraw.textsize**: same as ImageDraw.Draw.textsize but doesn't require a drawable object. Similarly, **ImageDraw.multiline_textsize**.
+**ImageDraw.text_size**: same as ImageDraw.Draw.textsize but doesn't require a drawable object, and handles descenders on multiline text and negative horizontal offsets.
 
 ```python
->> ImageDraw.textsize("The rain", arial(24))
+>> ImageDraw.text_size("The rain", arial(24))
 (88, 22)
 ```
 

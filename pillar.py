@@ -202,16 +202,16 @@ class _ImageDraw():
 
     _emptyImage = Image.new("RGBA", (0,0))
     _emptyDraw = ImageDraw.Draw(_emptyImage)
+    _textsize = _emptyDraw.textsize
     
     @classmethod
-    def textsize(cls, *kargs, **kwargs):
-        """Return the size of the given string, in pixels."""
-        return cls._emptyDraw.textsize(*kargs, **kwargs)
-
-    @classmethod
-    def multiline_textsize(cls, *kargs, **kwargs):
-        """Return the size of the given string, in pixels."""
-        return cls._emptyDraw.multiline_textsize(*kargs, **kwargs)
+    def text_size(cls, text, font, *args, **kwargs):
+        """Return the size of a given string in pixels."""
+        x, y = cls._textsize(text, font, *args, **kwargs)
+        lines = text.split("\n")
+        if len(lines) > 1: y += cls._textsize(lines[-1], font, *args, **kwargs)[1] - cls._textsize("A", font)[1]
+        x += -min(0, min(font.getoffset(line)[0] for line in lines))
+        return x, y 
         
     @classmethod
     def word_wrap(cls, text, font, max_width, tokenizer=whitespace_span_tokenize, hyphenator=None):
@@ -222,14 +222,14 @@ class _ImageDraw():
         output = text[line_start:line_end]
         hyphens = lambda s: ([] if hyphenator is None else hyphenator(s)) + [len(s)]
         for (tok_start, tok_end) in spans:
-            if cls.textsize(text[line_start:tok_end], font)[0] < max_width:
+            if cls.text_size(text[line_start:tok_end], font)[0] < max_width:
                 output += text[line_end:tok_end]
                 line_end = tok_end
             else: 
                 hyphen_start = tok_start
                 for hyphen in hyphens(text[tok_start:tok_end]):
                     hopt = '' if text[tok_start+hyphen-1] == '-' else '-'
-                    if cls.textsize(text[line_start:tok_start+hyphen]+hopt, font)[0] < max_width:
+                    if cls.text_size(text[line_start:tok_start+hyphen]+hopt, font)[0] < max_width:
                         output += text[line_end:tok_start+hyphen] # no hyphen yet
                         line_end = tok_start+hyphen
                     else:
@@ -243,8 +243,7 @@ class _ImageDraw():
                         line_end = tok_start+hyphen
         return output
 
-ImageDraw.textsize = _ImageDraw.textsize
-ImageDraw.multiline_textsize = _ImageDraw.multiline_textsize
+ImageDraw.text_size = _ImageDraw.text_size
 ImageDraw.word_wrap = _ImageDraw.word_wrap
 
 RGBA = namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])
@@ -398,7 +397,7 @@ class _Image(Image.Image):
             bg = ImageColor.getrgba(fg)._replace(alpha=0)
         if max_width is not None:
             text = ImageDraw.word_wrap(text, font, max_width, tokenizer, hyphenator)
-        w,h = ImageDraw.textsize(text, font, spacing=line_spacing)
+        w,h = ImageDraw.text_size(text, font, spacing=line_spacing)
         if max_width is not None and w > max_width:
             logger.warning("Text cropped as too wide to fit: {}".format(text))
             w = max_width

@@ -62,6 +62,37 @@ Box(l=3, u=3, r=12, d=12)
 ['#e41a1c', '#4daf4a', '#377eb8']
 ```
 
+**GradientColormap** and **CompoundColormap**: generate matplotlib-style colormaps (e.g. for use with Image.from_gradient below). GradientColormap generates a colormap from a sequence of RGBA colors, and optionally the intervals between them.
+
+```python
+>> cmap1 = GradientColormap("black", RGBA(0,128,0,128), "#008000", intervals=(1,2))
+>> cmap1
+GradientColormap(0%=#000000ff, 67%=#00800080, 100%=#008000ff)
+>> RGBA(*cmap1(0.5, bytes=True))
+RGBA(red=0, green=112, blue=0, alpha=160)
+> RGBA(*cmap1(5, bytes=True)) # also a discrete colormap
+RGBA(red=0, green=128, blue=0, alpha=255)
+>> cmap1.colors
+(RGBA(red=0, green=0, blue=0, alpha=255),
+ RGBA(red=0, green=128, blue=0, alpha=128),
+ RGBA(red=0, green=128, blue=0, alpha=255))
+>> Image.from_gradient(cmap1, (100,20)).show()
+```
+
+![alt](images/colormapgradient.png)
+
+CompoundColormap generates a colormap from a sequence of other colormaps:
+
+```python
+>> import seaborn as sns
+>> cmap2 = sns.diverging_palette(0, 255, as_cmap=True)
+>> cmapmid = GradientColormap(cmap1(1., bytes=True), cmap2(0., bytes=True))
+>> cmap12 = CompoundColormap(cmap1, cmapmid, cmap2, intervals=(3,1,3))
+>> Image.from_gradient(cmap12, (100,20)).show()
+```
+
+![alt](images/colormapcompound.png)
+
 **font**: shorthand function for generating a truetype font object with standard variant naming (e.g. arialbd for bold). Also, **arial** is defined explicitly for the Arial family.
 
 ```python
@@ -199,17 +230,16 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/frompattern3.png)
 
-**Image.from_gradient**: create a gradient image using a matplotlib color map. Requires numpy.
+**Image.from_gradient**: create a gradient image using a matplotlib-style color map. Requires numpy. Also see GradientColormap and CompoundColormap above.
 
 ```python
->> import seaborn as sns
->> Image.from_gradient(sns.diverging_palette(0, 255, as_cmap=True), (100,100)).show()
+>> Image.from_gradient(cmap2, (100,100)).show()
 ```
 
 ![alt](images/fromgradient1.png)
 
 ```python
->> Image.from_gradient(sns.diverging_palette(0, 255, as_cmap=True), (100,100), direction=(-1,1)).show()
+>> Image.from_gradient(cmap2, (100,100), direction=(-1,1)).show()
 ```
 
 ![alt](images/fromgradient2.png)

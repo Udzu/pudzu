@@ -328,8 +328,6 @@ class GradientColormap():
             colors = colors * 2
         if intervals is None: 
             intervals = [1] * (len(colors)-1)
-        if len(colors) < 2:
-            raise ValueError("Colormap needs at least two colors, got {}".format(len(colors)))
         if len(intervals) != len(colors) - 1: 
             raise ValueError("Wrong number of colormap intervals: got {}, expected {}".format(len(intervals), len(colors)-1))
         if any(i <= 0 for i in intervals): 
@@ -362,7 +360,30 @@ class GradientColormap():
                 for cs,fl,tl in channels]
         return np.uint8(np.stack(cols, -1)) if bytes else np.stack(cols, -1) / 255
         
-# TODO: class CompoundColormap(): def __init__(self, *cmaps, intervals=None):
+class CompoundColormap():
+    """A matplotlib colormap generated from a sequence of other colormaps and optional intervals."""
+
+    def __init__(self, *cmaps, intervals=None):
+        if intervals is None: 
+            intervals = [1] * len(cmaps)
+        if len(intervals) != len(cmaps): 
+            raise ValueError("Wrong number of colormap intervals: got {}, expected {}".format(len(intervals), len(cmaps)))
+        if any(i <= 0 for i in intervals): 
+            raise ValueError("Colormap intervals must be positive")
+        self.cmaps = cmaps
+        self.intervals = [x/sum(intervals) for x in intervals]
+        self.accumulated = [0] + list(itertools.accumulate(self.intervals))
+        
+    def __repr__(self):
+        return "CompoundColormap({})".format(", ".join("{:.0%}={}".format(p, c) for p,c in zip(self.accumulated, self.cmaps)))
+    
+    def __call__(self, p, bytes=False):
+        condlist = [p <= self.accumulated[i+1] for i in range(len(self.intervals))]
+        choices = [np.array(self.cmaps[i]((p-self.accumulated[i])/self.intervals[i], bytes=bytes)) for i in range(len(self.intervals))]
+        channel_choices = [[c[...,i] for c in choices] for i in range(4)]
+        channel_cols = [np.select(condlist, choices) for choices in channel_choices]
+        cols = np.stack(channel_cols, -1)
+        return np.uint8(cols) if bytes else cols
 
 class _Image(Image.Image):
 

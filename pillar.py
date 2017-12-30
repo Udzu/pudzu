@@ -416,6 +416,25 @@ class _Image(Image.Image):
         return None
         
     @classmethod
+    def from_multitext(cls, texts, fonts, fgs="black", bgs=None):
+        """Create image from multiple texts, lining up the baselines. Only supports single-line texts.
+        For multline texts, combine images with Image.from_column (with equal_heights set to True)."""
+        texts = make_iterable(texts)
+        if not non_string_iterable(fonts): fonts = [fonts] * len(texts)
+        if not non_string_iterable(fgs): fgs = [fgs] * len(texts)
+        if not non_string_iterable(bgs): bgs = [bgs] * len(texts)
+        if not len(texts) == len(fonts) == len(fgs) == len(bgs):
+            raise ValueError("Number of fonts, fgs or bgs is inconsistent with number of texts.")
+        bgs = [bg if bg is not None else ImageColor.getrgba(fg)._replace(alpha=0) for fg, bg in zip(fgs, bgs)]
+        imgs = [cls.from_text(text, font, fg, bg) for text, font, fg, bg in zip(texts, fonts, fgs, bgs)]
+        ascents = [font.getmetrics()[0] for font in fonts]
+        max_ascent = max(ascents)
+        imgs = [img.pad((0,max_ascent-ascent,0,0), bg) for img, bg, ascent in zip(imgs, bgs, ascents)]
+        max_height = max(img.height for img in imgs)
+        imgs = [img.pad((0,0,0,max_height-img.height), bg) for img, bg in zip(imgs, bgs)]
+        return Image.from_row(imgs, yalign=0)
+        
+    @classmethod
     def from_pattern(cls, pattern, size, align=0, scale=(False,False), preserve_aspect=False, resample=Image.LANCZOS):
         """Create an image using a background pattern, either scaled or tiled."""
         align = Alignment(align)
@@ -456,7 +475,7 @@ class _Image(Image.Image):
         return Image.fromarray(colormap(grad_array, bytes=True))
         
     @classmethod
-    def from_array(cls, array, xalign=0.5, yalign=0.5, padding=0, bg=0):
+    def from_array(cls, array, xalign=0.5, yalign=0.5, equal_heights=False, equal_widths=False, padding=0, bg=0):
         """Create an image from an array of images."""
         if not non_string_iterable(xalign): xalign = [xalign] * max(len(r) for r in array)
         if not non_string_iterable(yalign): yalign = [yalign] * len(array)
@@ -464,6 +483,8 @@ class _Image(Image.Image):
         padding = Padding(padding)
         heights = [max(img.height if img is not None else 0 for img in row) + padding.y for row in array]
         widths = [max(img.width if img is not None else 0 for img in column) + padding.x for column in zip_longest(*array)]
+        if equal_heights: heights = [max(heights)] * len(heights)
+        if equal_widths: widths = [max(widths)] * len(widths)
         aimg = Image.new("RGBA", (sum(widths), sum(heights)), bg)
         for r,row in enumerate(array):
             for c,img in enumerate(row):
@@ -475,12 +496,12 @@ class _Image(Image.Image):
         
     @classmethod
     def from_row(cls, row, **kwargs):
-        """Create an image from a row of images."""
+        """Create an image from a row of images. See Image.from_array for passthrough parameters."""
         return cls.from_array([row], **kwargs)
         
     @classmethod
     def from_column(cls, column, **kwargs):
-        """Create an image from a column of images."""
+        """Create an image from a column of images. See Image.from_array for passthrough parameters."""
         return cls.from_array([[img] for img in column], **kwargs)
     
     @classmethod
@@ -709,6 +730,7 @@ def _nparray_mask_by_color(nparray, color, num_channels=None):
 
 Image.from_text = _Image.from_text
 Image.from_text_bounded = _Image.from_text_bounded
+Image.from_multitext = _Image.from_multitext
 Image.from_array = _Image.from_array
 Image.from_row = _Image.from_row
 Image.from_column = _Image.from_column

@@ -32,17 +32,6 @@ Alignment(x=50%, y=50%)
 Alignment(x=0%, y=100%)
 ```
 
-**BoundingBox**: a class representing a bounding box, initialized from the 4 coordinates or from a collection of points, with optional padding. Not really used at the moment.
-
-```python
->> BoundingBox([(10,10), (15,8), (12,15)])
-Box(l=10, u=8, r=15, d=15)
->> _.width
-25
->> BoundingBox((5,5,10,10), padding=2)
-Box(l=3, u=3, r=12, d=12)
-```
-
 **NamedPaletteMeta**: a metaclass to help define named palettes.
 
 ```python
@@ -199,6 +188,15 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/fromtextbounded.png)
 
+**Image.from_multitext**: creates an image from multiple texts, fonts and colors, correctly lining up baselines. Only supports single-line texts. For multline texts, combine images with Image.from_column (with equal_heights set to True).
+
+```python
+>> Image.from_multitext(["The ", "rain ", "in ", "Spain"],
+                        [arial(16), arial(16, bold=True), arial(16), arial(48)],
+                        ["white", "red", "white", "white"], "#1f5774").show()
+```
+
+![alt](images/frommultitext.png)
 
 **Image.from_array**: create an image from an array of images. Similarly, **Image.from_row** and **Image.from_column** create images form a list of images.
 

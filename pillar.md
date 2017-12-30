@@ -180,7 +180,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/fromtext3.png)
 
-**Image.from_text_bounded**: like from_text but with a bounding box, maximum font size and a size-to-font function. Successively tries smaller fonts until the result would fit in the bounding box.
+**Image.from_text_bounded**: like from_text but with a maximum image size, maximum font size and a size-to-font function. Successively tries smaller fonts until the result would fit in the bounding box.
 
 ```python
 >> Image.from_text_bounded("The rain in Spain", 200, 48, arial, fg="white", bg="#1f5774", padding=10).show()
@@ -251,7 +251,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ### Image.Image
 
-**Image.Image.overlay**: like Image.Image.paste, but respects the pasted image's alpha channel and supports a copy parameter.
+**Image.Image.overlay**: like Image.Image.paste, but alpha composites the image and supports a copy parameter.
 
 ```python
 >> base = Image.new("RGB", (100,60), "blue")
@@ -325,7 +325,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/resizefixed2.png)
 
-**Image.Image.pad_to_aspect**: pad an image so that it has the given aspect ratio.
+**Image.Image.pad_to_aspect**: pad an image so that it has the given aspect ratio (specified by one or two numbers).
 
 ```python
 >> smallflag.pad_to_aspect(1, bg="grey").show()
@@ -339,7 +339,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/padtoaspect2.png)
 
-**Image.Image.crop_to_aspect**: crop an image so that it has the given aspect ratio.
+**Image.Image.crop_to_aspect**: crop an image so that it has the given aspect ratio (specified by one or two numbers).
 
 ```python
 >> smallflag.crop_to_aspect(1).show()
@@ -372,7 +372,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 ```
 ![alt](images/colorselect.png)
 
-**Image.Image.remove_transparency**: return an flatenned image copy with any transparency removed.
+**Image.Image.remove_transparency**: return an flatenned image copy composited over a colored background.
 
 ```python
 >> red = Image.from_text("red", arial(24), "red", padding=10)

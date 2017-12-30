@@ -110,8 +110,7 @@ class Padding():
 class BoundingBox():
     """Bounding box class initialized from 4 LURD coordinates or a collection of points with optional padding. Not used much at the moment."""
         
-    def __init__(self, box, padding=None):
-        padding = Padding(padding)
+    def __init__(self, box):
         if isinstance(box, Image.Image):
             self.corners = (0, 0, box.width-1, box.height-1)
         elif non_string_sequence(box, Integral) and len(box) == 4:
@@ -119,11 +118,10 @@ class BoundingBox():
         elif non_string_sequence(box) and all(non_string_sequence(point, Integral) and len(point) == 2 for point in box):
             self.corners = (min(x for x,y in box), min(y for x,y in box), max(x for x,y in box), max(y for x,y in box))
         else:
-            raise TypeError("Box expects four coordinates or a collection of points: got {}".format(box))
-        self.corners = (self.l - padding.l, self.u - padding.u, self.r + padding.r, self.d + padding.d)        
+            raise TypeError("BoundingBox expects four coordinates or a collection of points: got {}".format(box))
             
     def __repr__(self):
-        return "Box(l={}, u={}, r={}, d={})".format(self.l, self.u, self.r, self.d)
+        return "BoundingBox(l={}, u={}, r={}, d={})".format(self.l, self.u, self.r, self.d)
 
     def __getitem__(self, key):
         return self.corners[key]
@@ -131,6 +129,12 @@ class BoundingBox():
     def __len__(self):
         return 4
         
+    def __contains__(self, other):
+        if non_string_sequence(other, Integral) and len(other) == 2:
+            return self.l <= other[0] <= self.r and self.u <= other[1] <= self.d
+        else:
+            return NotImplemented
+            
     @property
     def l(self): return self.corners[0]
     @property
@@ -148,24 +152,27 @@ class BoundingBox():
     @property
     def center(self): return ((self.l + self.r + 1) // 2, (self.u + self.d + 1) // 2)
             
-    def __contains__(self, other):
-        if non_string_sequence(other, Integral) and len(other) == 2:
-            return self.l <= other[0] <= self.r and self.u <= other[1] <= self.d
-        else:
-            return NotImplemented
+    def pad(self, padding):
+        """Return a padded bounding box."""
+        padding = Padding(padding)
+        return BoundingBox((self.l - padding.l, self.u - padding.u, self.r + padding.r, self.d + padding.d))
  
 class NamedPaletteMeta(type):
-    """Metaclass for named color palettes. Allows palette lookup by name or index."""
+    """Metaclass for named color palettes. Allows palette lookup by (case-insensitive) name or index."""
 
+    @classmethod
+    def __prepare__(metacls, name, bases, **kwds):
+        return OrderedDict()
+        
     def __new__(metacls, cls, bases, classdict):
-        simple_enum_cls = super().__new__(metacls, cls, bases, classdict)
-        simple_enum_cls._colors_ = list(v for c, v in classdict.items() if c not in dir(type(cls, (object,), {})) and not c.startswith("_"))
+        simple_enum_cls = type.__new__(metacls, cls, bases, dict(classdict))
+        simple_enum_cls._colors_ = CaseInsensitiveDict([(c, v) for c, v in classdict.items() if c not in dir(type(cls, (object,), {})) and not c.startswith("_")], base_factory=OrderedDict)
         return simple_enum_cls
         
-    def __iter__(cls): return iter(cls._colors_)
+    def __iter__(cls): return iter(cls._colors_.values())
     def __len__(cls): return len(cls._colors_)
-    def __call__(cls, name): return getattr(cls, name.upper())
-    def __getitem__(cls, key): return getattr(cls, key.upper()) if isinstance(key, str) else cls._colors_[key]
+    def __call__(cls, name): return cls._colors_[name]
+    def __getitem__(cls, key): return cls._colors_[key] if isinstance(key, str) else list(cls._colors_.values())[key]
         
 class VegaPalette10(metaclass=NamedPaletteMeta):
     BLUE = "#1f77b4"
@@ -206,7 +213,8 @@ class _ImageDraw():
     
     @classmethod
     def text_size(cls, text, font, *args, **kwargs):
-        """Return the size of a given string in pixels."""
+        """Return the size of a given string in pixels. Same as ImageDraw.Draw.textsize but doesn't
+        require a drawable object, and handles descenders on multiline text and negative horizontal offsets."""
         x, y = cls._textsize(text, font, *args, **kwargs)
         lines = text.split("\n")
         if len(lines) > 1: y += cls._textsize(lines[-1], font, *args, **kwargs)[1] - cls._textsize("A", font)[1]

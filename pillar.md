@@ -49,6 +49,8 @@ Alignment(x=0%, y=100%)
 '#377eb8'
 >> list(RGBPalette)
 ['#e41a1c', '#4daf4a', '#377eb8']
+>> RGBPalette.names
+('RED', 'GREEN', 'BLUE')
 ```
 
 **GradientColormap** and **CompoundColormap**: generate matplotlib-style colormaps (e.g. for use with Image.from_gradient below). GradientColormap generates a colormap from a sequence of RGBA colors, and optionally the intervals between them.
@@ -199,7 +201,8 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 ![alt](images/frommultitext.png)
 
 ```python
->> Image.from_multitext(("Underline", " and ", "strikethrough"), arial(24), "white", "#1f5774", underlines=(2,0,0), strikethroughs=(0,0,1)).show()
+>> Image.from_multitext(("Underline", " and ", "strikethrough"), arial(24), "white", "#1f5774",
+                        underlines=(2,0,0), strikethroughs=(0,0,1)).show()
 ```
 
 ![alt](images/frommultitext2.png)

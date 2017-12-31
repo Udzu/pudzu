@@ -109,7 +109,7 @@ class FilterExpression:
           - length comparisons: #=, #<, etc
           - string comparisons: =, !=, ~ (regex match), !~
           - containment: >> (contains), !>>
-          - existence: KEY:exists (has value that's not NaN), KEY:true (has true value)
+          - existence: KEY:exists (has value that's not NaN or None), KEY:true (has true value)
     """
     
     sign = oneOf('+ -')

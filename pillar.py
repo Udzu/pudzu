@@ -424,23 +424,28 @@ class _Image(Image.Image):
         return None
         
     @classmethod
-    def from_multitext(cls, texts, fonts, fgs="black", bgs=None):
+    def from_multitext(cls, texts, fonts, fgs="black", bgs=None, underlines=0, strikethroughs=0):
         """Create image from multiple texts, lining up the baselines. Only supports single-line texts.
         For multline texts, combine images with Image.from_column (with equal_heights set to True)."""
         texts = make_iterable(texts)
         if not non_string_iterable(fonts): fonts = [fonts] * len(texts)
         if not non_string_iterable(fgs): fgs = [fgs] * len(texts)
         if not non_string_iterable(bgs): bgs = [bgs] * len(texts)
-        if not len(texts) == len(fonts) == len(fgs) == len(bgs):
-            raise ValueError("Number of fonts, fgs or bgs is inconsistent with number of texts.")
+        if not non_string_iterable(underlines): underlines = [underlines] * len(texts)
+        if not non_string_iterable(strikethroughs): strikethroughs = [strikethroughs] * len(texts)
+        lengths = ( len(fonts), len(fgs), len(bgs), len(underlines), len(strikethroughs) )
+        if not all(l == len(texts) for l in lengths):
+            raise ValueError("Number of fonts, fgs, bgs, underlines or strikethroughs is inconsistent with number of texts: got {}, expected {}".format(lengths, len(texts)))
         bgs = [bg if bg is not None else ImageColor.getrgba(fg)._replace(alpha=0) for fg, bg in zip(fgs, bgs)]
         imgs = [cls.from_text(text, font, fg, bg) for text, font, fg, bg in zip(texts, fonts, fgs, bgs)]
         ascents = [font.getmetrics()[0] for font in fonts]
         max_ascent = max(ascents)
-        imgs = [img.pad((0,max_ascent-ascent,0,0), bg) for img, bg, ascent in zip(imgs, bgs, ascents)]
+        imgs = [img.pad((0,max_ascent-ascent,0,0), bg) for img, ascent, bg in zip(imgs, ascents, bgs)]
         max_height = max(img.height for img in imgs)
         imgs = [img.pad((0,0,0,max_height-img.height), bg) for img, bg in zip(imgs, bgs)]
-        return Image.from_row(imgs, yalign=0)
+        imgs = [img if underline == 0 else img.overlay(Rectangle((img.width, underline), fg), (0, max_ascent)) for img, fg, underline in zip(imgs, fgs, underlines)]
+        imgs = [img if strikethrough == 0 else img.overlay(Rectangle((img.width, strikethrough), fg), (0, max_ascent - round(ascent*0.4))) for img, fg, ascent, strikethrough in zip(imgs, fgs, ascents, strikethroughs)]
+        return Image.from_row(imgs)
         
     @classmethod
     def from_pattern(cls, pattern, size, align=0, scale=(False,False), preserve_aspect=False, resample=Image.LANCZOS):

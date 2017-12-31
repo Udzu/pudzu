@@ -188,7 +188,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/fromtextbounded.png)
 
-**Image.from_multitext**: creates an image from multiple texts, fonts and colors, correctly lining up baselines. Only supports single-line texts. For multline texts, combine images with Image.from_column (with equal_heights set to True).
+**Image.from_multitext**: creates an image from multiple texts, fonts and colors, correctly lining up baselines. Only supports single-line texts; for multline texts, combine images with Image.from_column (with equal_heights set to True). Supports underlining and strikethrough.
 
 ```python
 >> Image.from_multitext(["The ", "rain ", "in ", "Spain"],
@@ -197,6 +197,12 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 ```
 
 ![alt](images/frommultitext.png)
+
+```python
+>> Image.from_multitext(("Underline", " and ", "strikethrough"), arial(24), "white", "#1f5774", underlines=(2,0,0), strikethroughs=(0,0,1)).show()
+```
+
+![alt](images/frommultitext2.png)
 
 **Image.from_array**: create an image from an array of images. Similarly, **Image.from_row** and **Image.from_column** create images form a list of images.
 

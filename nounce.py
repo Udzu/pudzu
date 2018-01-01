@@ -255,13 +255,13 @@ def extract_from_wiktionary(input, output, language="en", accents=("US", "USA", 
     with open(input, "r", encoding="utf-8") as i:
         with open(output, "w", encoding="utf-8") as o:
             for line in i:
-                if match.set(re.search(title_regex, line)):
-                    title = match.value.group(1)
-                elif ((enpr and match.set(re.search(enpr_regex, line))) or 
-                      (not enpr and (match.set(re.search(ipa_regex_1, line) or re.search(ipa_regex_2, line))))):
+                if match << re.search(title_regex, line):
+                    title = match().group(1)
+                elif ((enpr and match << re.search(enpr_regex, line)) or 
+                      (not enpr and match << (re.search(ipa_regex_1, line) or re.search(ipa_regex_2, line)))):
                     if accents and not re.search(accent_regex, line) and (None not in accents or re.search(any_accent_regex, line)):
                         continue
                     elif ":" in title:
                         continue
-                    for pronunciation in match.value.group(1).split("|" if enpr else ", "):
+                    for pronunciation in match().group(1).split("|" if enpr else ", "):
                         print("{}\t{}".format(title, pronunciation), file=o)

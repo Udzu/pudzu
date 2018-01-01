@@ -58,13 +58,17 @@ class ValueCache():
     """A simple container with a returning assignment operator."""
     def __init__(self, value=None):
         self.value = value
-    def __pos__(self):
-        return self.value
     def __repr__(self):
         return "ValueCache({})".format(self.value)
     def set(self, value):
         self.value = value
         return value
+    def __call__(self):
+        return self.value
+    def __lshift__(self, value):
+        return self.set(value)
+    def __rrshift__(self, value):
+        return self.set(value)
 
 # Decorators
 
@@ -120,7 +124,7 @@ def ignoring_extra_args(fn):
 
 def ignoring_exceptions(fn, handler=None, exceptions=Exception):
     """Function decorator that catches exceptions, returning instead."""
-    handler_fn = ignoring_extra_args(handler if callable(handler) else lambda: handler)
+    handler_fn = handler if callable(handler) else ignoring_extra_args(lambda: handler)
     @wraps(fn)
     def wrapper(*args, **kwargs):
         try:
@@ -212,7 +216,7 @@ def remove_duplicates(seq, key=lambda v:v, keep_last=False):
     return tuple(d.values())
 
 def first_or_default(iterable, default=None):
-    """Return the first element of an iterable, or None if there aren't any."""
+    """Return the first element of an iterable, or a default if there aren't any."""
     try:
         return next(x for x in iter(iterable))
     except StopIteration:

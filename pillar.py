@@ -445,8 +445,8 @@ class _Image(Image.Image):
         imgs = [img.pad((0,max_ascent-ascent,0,0), bg) for img, ascent, bg in zip(imgs, ascents, bgs)]
         max_height = max(img.height for img in imgs)
         imgs = [img.pad((0,0,0,max_height-img.height), bg) for img, bg in zip(imgs, bgs)]
-        imgs = [img if underline == 0 else img.overlay(Rectangle((img.width, underline), fg), (0, max_ascent)) for img, fg, underline in zip(imgs, fgs, underlines)]
-        imgs = [img if strikethrough == 0 else img.overlay(Rectangle((img.width, strikethrough), fg), (0, max_ascent - round(ascent*0.4))) for img, fg, ascent, strikethrough in zip(imgs, fgs, ascents, strikethroughs)]
+        imgs = [img if not underline else img.overlay(Rectangle((img.width, underline), fg), (0, max_ascent)) for img, fg, underline in zip(imgs, fgs, underlines)]
+        imgs = [img if not strikethrough else img.overlay(Rectangle((img.width, strikethrough), fg), (0, max_ascent - round(ascent*0.4))) for img, fg, ascent, strikethrough in zip(imgs, fgs, ascents, strikethroughs)]
         return Image.from_row(imgs)
         
     @classmethod
@@ -960,3 +960,32 @@ class MaskIntersection(ImageShape):
             img = img.place(Image.new("L", size, 0), mask=mask.invert_mask())
         return img
     antialiasing = False
+
+# Text markup expressions (used by Image.Image.from_markup)
+
+class MarkupExpression:
+
+    MARKDOWN = { "u": "__", "i": "*", "b": "**", "s": "~~", "c": ("[", "]") }
+    MARKDOWN = { m : (v, v) if isinstance(v, str) else v for m,v in MARKDOWN.items() }
+    STARTS = { s: (m, e) for m,(s,e) in MARKDOWN.items() }
+
+    @classmethod
+    def first_unescaped_match_regex(cls, strings):
+        strings = make_iterable(strings)
+        regex = "(^|.*?[^\\\\])({})(.*)".format("|".join([re.escape(s) for s in sorted(strings, key=len, reverse=True)]))
+        return re.compile(regex)
+
+    @classmethod
+    def parse_markup(cls, text, mode=""):
+        parsed = []
+        match = ValueCache()
+        while match << re.match(cls.first_unescaped_match_regex(cls.STARTS.keys()), text):
+            pre, start, post = match().groups()
+            if pre: parsed.append((re.sub(r"\\(.)", r"\1", pre), mode))
+            if not match << re.match(cls.first_unescaped_match_regex(cls.STARTS[start][1]), post):
+                raise ValueError("Unmatch ending for {} in {}".format(start, post))
+            content, end, text = match().groups()
+            parsed += cls.parse_markup(content, mode+cls.STARTS[start][0])
+        if text: parsed.append((re.sub(r"\\(.)", r"\1", text), mode))
+        return parsed
+        

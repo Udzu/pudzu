@@ -8,8 +8,6 @@ Various utility functions and data structures.
  
 ## Documentation
 
-Selected examples below. For more, see the source.
-
 ### Classes
 
 **optional_import**: optionally load a module.
@@ -29,14 +27,14 @@ ImportError: Missing module: module
 '1'
 ```
   
-**ValueCache**: a simple data container, allowing assignment in expressions.
+**ValueCache**: a simple data container, allowing assignment in expressions. Values can be assigned with <<, >> or .set, and extracted with () or .value.
 
 ```python
 >> match = ValueCache()
->> if match.set(re.match(regex1, string)):
-       foo(match.value.group(0))
-   elif match.set(re.match(regex2, string)):    
-       bar(match.value.group(1)
+>> if match << re.match(regex1, string):
+       foo(match().group(0))
+   elif match << re.match(regex2, string):
+       bar(match().group(1)
 ```
 
 **CaseInsensitiveDict**: case-insensitive dictionary. Remembers the original case, and supports custom base dictionary containers such as OrderedDict and defaultdict. Accepts a custom normalizer, so can be used for 'other'-insensitive dictionaries too.
@@ -161,12 +159,38 @@ False
 >> remove_duplicates("she sells sea shells on the sea shore".split(" "), lambda s: s[0], keep_last=True)
 ('on', 'the', 'shore')
 ```
-    
+
+**first_or_default**: return the first element of an iterable, or a default if there aren't any.
+
+```python
+>> first_or_default(count())
+0
+>> first_or_default([])
+None
+```
+
+**is_in**: whether an object is object-identical to any member of an iterable
+
+```python
+>> x = []
+>> is_in(x, [[]])
+False
+>> is_in(x, [[], x])
+True
+```
+
 **update_sequence**: returns a tuple copy of an iterable, with the nth element updated.
 
 ```python
 >> update_sequence(range(4), 1, "bob")
 (0, "bob", 2, 3)
+```
+
+**tmap**, **tfilter**, **treversed**: like map, filter, reversed, but return tuples.
+
+```python
+>> tmap(str, (1, 2, 3))
+('1', '2', '3')
 ```
 
 ### Generators
@@ -217,6 +241,15 @@ False
 [1, 3, 5, 7, 9]
 ```
 
+**riffle_shuffle**: generator that performs a perfect riffle shuffle on the input, using a given number of subdecks.
+
+```python
+>> list(riffle_shuffle(range(10)))
+[0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
+>> list(riffle_shuffle(range(10), 3))
+[0, 3, 6, 9, 1, 4, 7, 2, 5, 8]
+```
+
 ### Functions
 
 **papply**: like functools.partial but also postpones evaluation of positional arguments with 
@@ -233,3 +266,11 @@ a value of Ellipsis (...).
 >> artial(operator.lt, 2)(1)
 True
 ```
+
+### Mappings
+
+[TODO]
+
+### Numeric
+
+[TODO]

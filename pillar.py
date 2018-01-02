@@ -450,6 +450,20 @@ class _Image(Image.Image):
         return Image.from_row(imgs)
         
     @classmethod
+    def from_markup(cls, markup, font_family, fg="black", bg=None, highlight="#0645AD", overline_widths=2, line_spacing=0, align="left"):
+        """Create image from simle markup. See MarkupExpression for details."""
+        if isinstance(overline_widths, Integral): overline_widths = (overline_widths, overline_widths)
+        rows = []
+        for line in MarkupExpression(markup).get_parsed():
+            texts = [s for s,m in line]
+            fonts = [font_family(bold=("b" in m), italics=("i" in m)) for s,m in line]
+            fgs = [highlight if "c" in m else fg for s,m in line]
+            underlines = [overline_widths[0] if "u" in m else 0 for s,m in line]
+            strikethroughs = [overline_widths[1] if "s" in m else 0 for s,m in line]
+            rows.append(cls.from_multitext(texts, fonts, fgs, bg, underlines=underlines, strikethroughs=strikethroughs))
+        return Image.from_column(rows, yalign=0, equal_heights=True, bg=bg, xalign=["left","center","right"].index(align)/2)
+        
+    @classmethod
     def from_pattern(cls, pattern, size, align=0, scale=(False,False), preserve_aspect=False, resample=Image.LANCZOS):
         """Create an image using a background pattern, either scaled or tiled."""
         align = Alignment(align)
@@ -746,6 +760,7 @@ def _nparray_mask_by_color(nparray, color, num_channels=None):
 Image.from_text = _Image.from_text
 Image.from_text_bounded = _Image.from_text_bounded
 Image.from_multitext = _Image.from_multitext
+Image.from_markup = _Image.from_markup
 Image.from_array = _Image.from_array
 Image.from_row = _Image.from_row
 Image.from_column = _Image.from_column
@@ -964,16 +979,32 @@ class MaskIntersection(ImageShape):
 # Text markup expressions (used by Image.Image.from_markup)
 
 class MarkupExpression:
+    """Simple markup syntax for use in Image.Image.from_markup. Supports
+    **bold**, //italics//, __underline__, ~~strikethrough~~ and [[colored]].
+    Attributes can be nested. Attributes and (\'s) can be escaped with a \."""
 
-    MARKDOWN = { "u": "__", "i": "*", "b": "**", "s": "~~", "c": ("[", "]") }
+    MARKDOWN = { "u": "__", "i": "//", "b": "**", "s": "~~", "c": ("[[", "]]") }
     MARKDOWN = { m : (v, v) if isinstance(v, str) else v for m,v in MARKDOWN.items() }
     STARTS = { s: (m, e) for m,(s,e) in MARKDOWN.items() }
 
+    def __init__(self, text):
+        self.text = text
+        
+    def __repr__(self):
+        return "MarkupExpression({})".format(self.text)
+        
+    def get_parsed(self):
+        return self.split_lines(self.parse_markup(self.text))
+    
+    def get_text(self):
+        return "".join(s for s,_ in self.parse_markup(self.text))
+    
     @classmethod
     def first_unescaped_match_regex(cls, strings):
+        # syntax is simple enough to be regular
         strings = make_iterable(strings)
-        regex = "(^|.*?[^\\\\])({})(.*)".format("|".join([re.escape(s) for s in sorted(strings, key=len, reverse=True)]))
-        return re.compile(regex)
+        regex = "(^|.*?[^\\\\])({})(.*)".format("|".join([re.escape(s) for s in strings]))
+        return re.compile(regex, flags=re.S)
 
     @classmethod
     def parse_markup(cls, text, mode=""):
@@ -988,4 +1019,16 @@ class MarkupExpression:
             parsed += cls.parse_markup(content, mode+cls.STARTS[start][0])
         if text: parsed.append((re.sub(r"\\(.)", r"\1", text), mode))
         return parsed
+        
+    @classmethod
+    def split_lines(cls, parsed):
+        lines = [[]]
+        for text, mode in parsed:
+            while "\n" in text:
+                pre, text = text.split("\n", 1)
+                lines[-1].append((pre, mode))
+                lines.append([])
+            lines[-1].append((text, mode))
+        return lines
+                
         

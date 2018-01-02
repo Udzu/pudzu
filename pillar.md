@@ -6,13 +6,15 @@ Various Pillow utilities. These are monkey-patched on, allowing continued use of
 ## Dependencies
 *Required*: [pillow](http://pillow.readthedocs.io/en/4.2.x/index.html), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
 
-*Optional*: [numpy](http://www.numpy.org/) (for color and shape features), [pyphen](http://pyphen.org/) (for text hyphenation), [requests](http://docs.python-requests.org/en/master/) (for HTTP request headers).
+*Recommended*: [numpy](http://www.numpy.org/) (various color and shape features).
+
+*Optional*: [pyphen](http://pyphen.org/) (for text hyphenation), [requests](http://docs.python-requests.org/en/master/) (for HTTP request headers).
 
 ## Documentation
 
 ### Helper classes and functions
 
-**Padding**: a class representing box padding, initialized from one, two or four integers. Any function below that has a padding parameter can be passed any of these. A few functions such as pin also accept one to indicate and update coordinate offsets when expanding images.
+**Padding**: a class representing box padding, initialized from one, two or four integers. Any function below that has a padding parameter can be passed any of these. A few functions such as `pin` also accept one to indicate and update coordinate offsets when expanding images.
 
 ```python
 >> Padding(10)
@@ -112,7 +114,7 @@ RGBA(red=100, green=50, blue=50, alpha=255)
 RGBA(red=100, green=50, blue=50, alpha=5)
 ```
 
-**ImageColor.to_hex**: converts an RGB or RGBA tuple to hex (ignoring any alpha channel). Can be called directly on RGBA named tuples.
+**ImageColor.to_hex**: converts an RGB or RGBA tuple to hex (ignoring any alpha channel by default). Can be called directly on RGBA named tuples.
 
 ```python
 >> ImageColor.to_hex("yellow")
@@ -123,9 +125,11 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 '#643232'
 >> ImageColor.to_hex((100,50,50,5))
 '#643232'
+>> ImageColor.to_hex((100,50,50,5), alpha=True)
+'#64323205'
 ```
 
-**ImageColor.blend**: blend two colors together, using gamma correction. Similarly, **ImageColor.brighten** and **ImageColor.darken** blend with white and black, while preserving alpha. Can be called directly on RGBA named tuples.
+**ImageColor.blend**: blend two colors together, using sRGB gamma correction by default. Similarly, **ImageColor.brighten** and **ImageColor.darken** blend with white and black, while preserving alpha. Can be called directly on RGBA named tuples.
 
 ```python
 >> ImageColor.blend("blue", "red", 0.5)
@@ -207,6 +211,15 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/frommultitext2.png)
 
+**Image.from_markup**: creates an image from simple text markup and a font family. Supported attributes are: \*\*bold\*\*, //italics//, \_\_underline\_\_, \~\~strikethrough\~\~ and \[\[color\]\]. Attributes can be nested or escaped with backslashes.
+
+```python
+>> Image.from_markup("The rain in __**Spain**__ stays //mainly in the plain//. ([[http:\\//spain.weather.com/]])",
+                     partial(arial, 16),max_width=300).show()
+```
+
+![alt](images/frommarkup.png)
+
 **Image.from_array**: create an image from an array of images. Similarly, **Image.from_row** and **Image.from_column** create images form a list of images.
 
 ```python
@@ -219,7 +232,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 **Image.from_pattern**: create an image from a background pattern, either scaled or tiled. Similarly, **Image.from_vertical_pattern** and **Image.from_horizontal_pattern** automatically scale to the image width or height.
 
 ```python
->> flag = Image.from_url("https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/800px-Flag_of_the_United_Kingdom.svg.png")
+>> flag = Image.from_url("https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/800px-Flag_of_the_United_Kingdom.svg.png").convert("RGBA")
 >> Image.from_pattern(flag.resize_fixed_aspect(width=50), (150,150)).show()
 ```
 
@@ -413,7 +426,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 **Image.Image.add_shadow**: add a drop shadow to a transparent image.
 
 ```python
->> Image.from_text("The rain", arial(24, bold=True), "#1f5774", padding=10).add_shadow("#00000080", offset=(2,2)).show()
+>> Image.from_text("The rain", arial(24, bold=True), "#1f5774", padding=10).add_shadow("#00000080", offset=(2,2), blur=2).show()
 ```
 ![alt](images/addshadow.png)
 

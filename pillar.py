@@ -397,9 +397,8 @@ class CompoundColormap():
 class _Image(Image.Image):
 
     @classmethod
-    def from_text(cls, text, font, fg="black", bg=None, padding=0,
-                  max_width=None, line_spacing=0, align="left",
-                  tokenizer=whitespace_span_tokenize, hyphenator=None):
+    def from_text(cls, text, font, fg="black", bg=None, padding=0, line_spacing=0, align="left",
+                  max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None):
         """Create image from text. If max_width is set, uses the tokenizer and optional hyphenator
         to split text across multiple lines."""
         padding = Padding(padding)
@@ -450,11 +449,17 @@ class _Image(Image.Image):
         return Image.from_row(imgs)
         
     @classmethod
-    def from_markup(cls, markup, font_family, fg="black", bg=None, highlight="#0645AD", overline_widths=2, line_spacing=0, align="left"):
-        """Create image from simle markup. See MarkupExpression for details."""
-        if isinstance(overline_widths, Integral): overline_widths = (overline_widths, overline_widths)
+    def from_markup(cls, markup, font_family, fg="black", bg=None, highlight="#0645AD", overline_widths=(2,1), line_spacing=0, align="left",
+                    max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None):
+        """Create image from simle markup. See MarkupExpression for details. Max width uses normal font to split text so is not precise."""
+        if isinstance(overline_widths, Integral):
+            overline_widths = (overline_widths, overline_widths)
+        mexpr = MarkupExpression(markup)
+        if max_width is not None:
+            text = ImageDraw.word_wrap(mexpr.get_text(), font_family(), max_width, tokenizer, hyphenator)
+            mexpr.reparse_wrapped_text(text)
         rows = []
-        for line in MarkupExpression(markup).get_parsed():
+        for line in mexpr.get_parsed():
             texts = [s for s,m in line]
             fonts = [font_family(bold=("b" in m), italics=("i" in m)) for s,m in line]
             fgs = [highlight if "c" in m else fg for s,m in line]
@@ -980,12 +985,13 @@ class MaskIntersection(ImageShape):
 
 class MarkupExpression:
     """Simple markup syntax for use in Image.Image.from_markup. Supports
-    **bold**, //italics//, __underline__, ~~strikethrough~~ and [[colored]].
-    Attributes can be nested. Attributes and (\'s) can be escaped with a \."""
+    **bold**, //italics//, __underline__, ~~strikethrough~~ and [[color]].
+    Attributes can be nested. Attributes (and \'s) can be escaped with a \."""
 
     MARKDOWN = { "u": "__", "i": "//", "b": "**", "s": "~~", "c": ("[[", "]]") }
     MARKDOWN = { m : (v, v) if isinstance(v, str) else v for m,v in MARKDOWN.items() }
-    STARTS = { s: (m, e) for m,(s,e) in MARKDOWN.items() }
+    START_MODE = { s: m for m,(s,_) in MARKDOWN.items() }
+    START_END = { s: e for _,(s,e) in MARKDOWN.items() }
 
     def __init__(self, text):
         self.text = text
@@ -993,12 +999,6 @@ class MarkupExpression:
     def __repr__(self):
         return "MarkupExpression({})".format(self.text)
         
-    def get_parsed(self):
-        return self.split_lines(self.parse_markup(self.text))
-    
-    def get_text(self):
-        return "".join(s for s,_ in self.parse_markup(self.text))
-    
     @classmethod
     def first_unescaped_match_regex(cls, strings):
         # syntax is simple enough to be regular
@@ -1010,13 +1010,13 @@ class MarkupExpression:
     def parse_markup(cls, text, mode=""):
         parsed = []
         match = ValueCache()
-        while match << re.match(cls.first_unescaped_match_regex(cls.STARTS.keys()), text):
+        while match << re.match(cls.first_unescaped_match_regex(cls.START_MODE.keys()), text):
             pre, start, post = match().groups()
             if pre: parsed.append((re.sub(r"\\(.)", r"\1", pre), mode))
-            if not match << re.match(cls.first_unescaped_match_regex(cls.STARTS[start][1]), post):
+            if not match << re.match(cls.first_unescaped_match_regex(cls.START_END[start]), post):
                 raise ValueError("Unmatch ending for {} in {}".format(start, post))
             content, end, text = match().groups()
-            parsed += cls.parse_markup(content, mode+cls.STARTS[start][0])
+            parsed += cls.parse_markup(content, mode+cls.START_MODE[start])
         if text: parsed.append((re.sub(r"\\(.)", r"\1", text), mode))
         return parsed
         
@@ -1031,4 +1031,27 @@ class MarkupExpression:
             lines[-1].append((text, mode))
         return lines
                 
-        
+    def get_parsed(self):
+        return self.split_lines(self.parse_markup(self.text))
+    
+    def get_text(self):
+        return "".join(s for s,_ in self.parse_markup(self.text))
+    
+    def reparse_wrapped_text(self, wrapped_text):
+        # text wrapping uses raw text so need to merge the result back in
+        x = ValueCache()
+        old, new, merged = self.text, wrapped_text, ""
+        while old or new:
+            if old and new and old[0] == new[0]:
+                merged, old, new = merged + old[0], old[1:], new[1:]
+            elif x << first_or_default(m for m in itertools.chain(self.START_END.keys(), self.START_END.values()) if old.startswith(m)):
+                merged, old = merged + x(), old[len(x()):]
+            elif new and new[0] in "\n-":
+                merged, new = merged + new[0], new[1:]
+            elif old and old[0] in "\\":
+                merged, old = merged + old[0], old[1:]
+            elif old and old[0] in " ":
+                old = old[1:]
+            else:
+                raise RuntimeError("Failed to merge {} with {}: difference at {} and {}".format(wrapped_text, self.text, new, old))
+        self.text = merged

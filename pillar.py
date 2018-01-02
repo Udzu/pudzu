@@ -718,13 +718,13 @@ class _Image(Image.Image):
         
     def brighten(self, p, linear_conversion=True):
         """Brighten an image. Same as blending with white (but preserving alpha)."""
-        other = Image.new("RGBA", self.size, "white")
+        other = Image.new(self.mode, self.size, "white")
         if 'A' in self.mode: other.putalpha(self.split()[-1])
         return self.blend(other, p, linear_conversion=linear_conversion)
 
     def darken(self, p, linear_conversion=True):
         """Darken an image. Same as blending with black (but preserving alpha)."""
-        other = Image.new("RGBA", self.size, "black")
+        other = Image.new(self.mode, self.size, "black")
         if 'A' in self.mode: other.putalpha(self.split()[-1])
         return self.blend(other, p, linear_conversion=linear_conversion)
 

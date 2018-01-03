@@ -37,24 +37,24 @@ ImportError: Missing module: module
        bar(match().group(1)
 ```
 
-**CaseInsensitiveDict**: case-insensitive dictionary. Remembers the original case, and supports custom base dictionary containers such as OrderedDict and defaultdict. Accepts a custom normalizer, so can be used for 'other'-insensitive dictionaries too.
+**CaseInsensitiveDict**: case-insensitive dictionary. Remembers the original case, and supports custom base dictionary containers such as OrderedDict and defaultdict. Accepts a custom normalizer, so can be used for other key equivalences too (such as Unicode equivalence).
 
 ```python
 >> d = CaseInsensitiveDict({'Bob': 4098, 'Hope': 4139})
 >> d
-{'Hope': 4139, 'Bob': 4098}
+CaseInsensitiveDict({'Hope': 4139, 'Bob': 4098}, base=dict)
 >> d['BOB']
 4098
 >> d['bOb'] = 0
 >> d
-{'Hope': 4139, 'bOb': 0}
+CaseInsensitiveDict({'Hope': 4139, 'bOb': 0}, base=dict)
 
 >> d = CaseInsensitiveDict(base_factory=OrderedDict)
 >> d['Bob'] = 1
 >> d['Hope'] = 2
 >> d['BOB'] = 3
 >> d
-{'BOB': 3, 'Hope': 2}
+CaseInsensitiveDict({'BOB': 3, 'Hope': 2}, base=OrderedDict)
 
 >> d = CaseInsensitiveDict(base_factory=partial(defaultdict, lambda: 'Smith'))
 >> d['Bob']
@@ -62,7 +62,7 @@ ImportError: Missing module: module
 >> d['BOB']
 'Smith'
 >> d
-{'Bob': 'Smith'}
+CaseInsensitiveDict({'Bob': 'Smith'}, base=defaultdict)
 ```
     
 ### Decorators
@@ -269,8 +269,72 @@ True
 
 ### Mappings
 
-[TODO]
+**make_mapping**: return a mapping from an object, using a function to generate keys if needed. Mappings are left as is, iterables are split into elements, everything else is wrapped in a singleton map.
+
+```python
+>> make_mapping(None)
+{}
+>> make_mapping("the")
+{None: 'the'}
+>> make_mapping(("rain", "in", "Spain"))
+{0: 'rain', 1: 'in', 2: 'Spain'}
+>> make_mapping({"stays": "mainly"})
+{'stays': 'mainly'}
+>> make_mapping(("on", "the", "plain"), key_fn=lambda i, v: len(v))
+{2: 'on', 3: 'the', 5: 'plain'}
+```
+
+**merge_dicts**: merge a collection of dicts using the merge function, which is a function on conflicting keys and values.
+
+```python
+>> merge_dicts({"a": 1, "b": 2}, {"a": 3, "c": 4}, {"c": 5})
+{'a': 3, 'b': 2, 'c': 5}
+>> merge_dicts({"a": 1, "b": 2}, {"a": 3, "c": 4}, {"c": 5}, merge_fn=lambda k, *vs: sum(vs))
+{'a': 4, 'b': 2, 'c': 9}
+```
 
 ### Numeric
 
-[TODO]
+**sign**: sign indication of a number.
+
+```python
+>> tmap(sign, (-4, 0, 10))
+(-1, 0, 1)
+```
+
+**delimit**: round x so that it lies between the low and high marks.
+
+```python
+>> [delimit(x, 1, 3) for x in (0, 3, 5)]
+[1, 3, 3]
+```
+
+**floor_digits**/**ceil_digits**: floor or ceil a number to a given number of decimal places.
+
+```python
+>> floor_digits(1.573, 1)
+1.5
+>> ceil_digits(1.573, -1)
+10.0
+```
+
+**round_significant**/**floor_significant**/**ceil_significant**: round, floor or ceil a number to a given number of significant figures.
+
+```python
+>> [round_significant(x, 2) for x in (1.573, 15.73, 1573)]
+[1.6, 16.0, 1600]
+```
+
+**weighted_choice(s)**: return random element(s) from a sequence, according to the given relative weights.
+
+```python
+>>  weighted_choices(["H", "T"], [9, 1], 10)
+['T', 'T', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H']
+```
+
+**Counter.random_choice(s)**: return random element(s) from a collection.Counter, weighted by count.
+
+```python
+>> Counter("HHHHHHHHHT").random_choices(10)
+['H', 'H', 'H', 'H', 'H', 'H', 'H', 'T', 'H', 'H']
+```

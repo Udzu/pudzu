@@ -124,13 +124,12 @@ def ignoring_extra_args(fn):
 
 def ignoring_exceptions(fn, handler=None, exceptions=Exception):
     """Function decorator that catches exceptions, returning instead."""
-    handler_fn = handler if callable(handler) else ignoring_extra_args(lambda: handler)
     @wraps(fn)
     def wrapper(*args, **kwargs):
         try:
             return fn(*args, **kwargs)
         except exceptions:
-            return handler_fn(*args, **kwargs)
+            return handler(*args, **kwargs) if callable(handler) else handler
     return wrapper
 
 def with_retries(fn, max_retries=None, max_duration=None, interval=0.5, exceptions=Exception):
@@ -327,10 +326,10 @@ def make_mapping(v, key_fn=identity):
     elif non_string_iterable(v): return { ignoring_extra_args(key_fn)(i, x) : x for (i,x) in enumerate(v) }
     else: return { ignoring_extra_args(key_fn)(None, v) : v }
 
-def merge_dicts(*dicts, merge_fn=lambda k, *vs: vs[-1]):
+def merge_dicts(*dicts, merge_fn=lambda k, *vs: vs[-1], merge_all=False):
     """Merge a collection of dicts using the merge function, which is
     a function on conflicting field names and values."""
-    def item_map(kv): return (kv[0], kv[1][0] if len(kv[1]) == 1 else merge_fn(kv[0], *kv[1]))
+    def item_map(kv): return (kv[0], kv[1][0] if len(kv[1]) == 1 and not merge_all else merge_fn(kv[0], *kv[1]))
     return itemmap(item_map, merge_with(list, *dicts))
 
 # Functions
@@ -405,7 +404,7 @@ class CaseInsensitiveDict(abc.MutableMapping):
         return len(self._d)
         
     def __repr__(self):
-        return "{" + ", ".join("%r: %r" % (self._k[k], v) for (k, v) in self._d.items()) + "}"
+        return "CaseInsensitiveDict({{{}}}, base={})".format(", ".join("{!r}: {!r}".format(self._k[k], v) for (k, v) in self._d.items()), type(self._d).__name__)
         
     def copy(self):
         return CaseInsensitiveDict(self)

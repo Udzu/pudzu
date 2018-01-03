@@ -9,15 +9,15 @@ CATEGORIES = ["sh", "sm", "s", "o", None]
 DESCRIPTIONS = ["from French Schtroumpfs", "from Dutch Smurfen", "other names beginning with S", "names not beginning with S", "unknown"]
 PALETTE = ['#045a8d', '#2b8cbe', '#bdc9e1', '#cc2735', 'grey']
 FOOTER = "\n".join([
-"* Schtroumpf is a neologism that happens to sound like the German for sock.",
-"* Smurf is also a neologism.",
-"* Šmoulové is based on their blue colour.",
-"* Şirinler means cute.",
-"* Barrufet is a Catalan sprite and sounds similar to Barretina, the smurf hat.",
-"* Pitufos comes from Patufet, a Catalan folktale character.",
-"* Pottokiak comes from Pottoka, the Basque pony breed.",
-"* Puffi comes from buffi (funny/strange).",
-"* Törpök means dwarves."
+"• Schtroumpf is a neologism that happens to sound like the German for sock.",
+"• Smurf is also a neologism.",
+"• Šmoulové is based on their blue colour.",
+"• Şirinler means cute.",
+"• Barrufet is a Catalan sprite and sounds similar to Barretina, the smurf hat.",
+"• Pitufos comes from Patufet, a Catalan folktale character.",
+"• Pottokiak comes from Pottoka, the Basque pony breed.",
+"• Puffi comes from buffi (funny/strange).",
+"• Törpök means dwarves."
 ])
  
 def colorfn(c):

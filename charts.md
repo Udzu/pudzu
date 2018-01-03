@@ -16,17 +16,23 @@ Three chart types are currently supported: **bar charts**, **time charts** and *
 
 **generate_legend**: generate a chart category legend.
 
+![smurf etymology legend](images/chart_legend.png)
+
 ### Bar charts
 
 **bar_chart**: generate a bar chart; supports grouped, stacked and percentage stacked charts, as well as horizontal charts and flexible coloring and labeling.
 
 ![uk elections bar chart](images/chart_elections.png)
 
+![us elections bar chart](images/chart_uspopular.jpg)
+
 ### Time charts
 
 **time_chart**: generate a time chart; supports numeric and date timelines highlighting both ranges and events.
 
-![time chart example](images/chart_g7.png)
+![g7 time chart example](images/chart_g7.png)
+
+![jerusalem time chart example](images/chart_jerusalem.jpg)
 
 ### Grid charts
 
@@ -40,8 +46,12 @@ Three chart types are currently supported: **bar charts**, **time charts** and *
 
 **map_chart**: generate a map chart. Input is a map template with each region having a unique color. Regions can be named (see generate_name_csv), labelled (see generate_bbox_csv) and have overlays such as label arrows.
 
-![grid chart example](images/chart_femaleleaders.png)
+![map chart example](images/chart_femaleleaders.png)
+
+![map chart example](images/chart_dishes.jpg)
 
 ### Calendar charts
 
 **month_chart**: generate a calendar chart for a given month.
+
+![jerusalem time chart example](images/chart_trump.jpg)

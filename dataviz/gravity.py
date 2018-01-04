@@ -2,34 +2,55 @@ import sys
 import matplotlib.pyplot as plt
 sys.path.append('..')
 from pillar import *
-from PIL import ImageOps
+from scipy import signal
 
-def magnitude_array(arr, normalised=True):
-    mag = np.vectorize(np.linalg.norm)(arr)
+# arr = mask_to_array(Ellipse(99).pad(20,0))
+# mag = gravity_magnitude(arr)
+# heatmap(mag).save("cache/gravity_heatmap.png")
+# plot_box(mag[round(mag.shape[0] / 2)], mag.shape[1], "cache/gravity_plot.png")
+
+# naive gravity calculation that's good enough because numpy
+
+np.seterr(divide='ignore', invalid='ignore')
+
+def inverse_square_components(rows, cols):
+    xs = np.fromfunction(lambda i,j: (rows-1-i), (2*rows-1, 2*cols-1))
+    ys = np.fromfunction(lambda i,j: (cols-1-j), (2*rows-1, 2*cols-1))
+    n3 = (xs**2 + ys**2) ** (3/2)
+    return np.nan_to_num(xs / n3), np.nan_to_num(ys / n3)
+
+def gravity_components(arr):
+    isqxs, isqys = inverse_square_components(*arr.shape)
+    xs = np.rot90(signal.convolve2d(np.rot90(arr, 2), isqxs, 'same'), 2)
+    ys = np.rot90(signal.convolve2d(np.rot90(arr, 2), isqys, 'same'), 2)
+    return xs, ys
+
+def gravity_magnitude(arr, normalised=True):
+    components = gravity_components(arr)
+    mag = (components[0] ** 2 + components[1] ** 2) ** 0.5
     return mag / mag.max() if normalised else mag
 
-def direction_array(arr):
-    def direction(v):
-        angle = np.arctan2(v[0], v[1]) / (2 * np.pi)
-        return angle + 1 if angle < 0 else angle
-    return np.vectorize(direction)(arr)
+# shapes TODO: circle, ellipse, core, hollow, mountain, plateau, two, two weighted, square, rectangle, ?, reddit
 
-# slow but precise calculation
+def mask_to_array(img):
+    return np.array(img.as_mask()) / 255
 
-def inverse_square_array(w, h):
-    def generate(i, j):
-        vec = np.array([w-1-i, h-1-j])
-        norm = np.linalg.norm(vec)
-        return vec / ((norm ** 3) + int(norm == 0))
-    return np.fromfunction(np.frompyfunc(generate, 2, 1), (2*w-1, 2*h-1), dtype=int)
-    
-def gravity_array(arr):
-    w,h = arr.shape
-    isq = inverse_square_array(w, h)
-    def convolve(i, j): return (arr * isq[w-1-i:w-1-i+w,h-1-j:h-1-j+h]).sum()
-    return np.fromfunction(np.frompyfunc(convolve, 2, 1), arr.shape, dtype=int)
+# visualisation
 
-# faster quadtree estimate
+def heatmap(array, cmap=plt.get_cmap("hot")):
+    return Image.fromarray(cmap(array, bytes=True))
+   
+def plot_box(data, width, filename):
+    # TODO: zero at center, set axis limits?
+    fig = plt.figure(figsize=(1,1), dpi=width)
+    ax = fig.add_axes((0,0,1,1))
+    ax.set_axis_off()    
+    ax.plot(data)
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+    plt.savefig(filename, bbox_inches="tight", pad_inches=0, dpi=width)
+
+# cleverer quadtree implementation from before I figured out how to use numpy properly
 
 class QuadTree(object):
 
@@ -61,82 +82,16 @@ class QuadTree(object):
     def __repr__(self):
         return "<QuadTree mass={} com={}>".format(self.mass, self.com)
 
-def gravity(qtree, loc, theta):
+def qtree_gravity(qtree, loc, theta):
     v = loc - qtree.com
     d = np.linalg.norm(v)
     if qtree.width == 1 or d > 0 and qtree.width / d < theta:
         return 0 if d == 0 else v * qtree.mass / (d**3)
-    return sum(gravity(c, loc, theta) for c in qtree.children if c is not None)
+    return sum(qtree_gravity(c, loc, theta) for c in qtree.children if c is not None)
    
 def qtree_gravity_array(arr, theta=0.8):
     padded_size = 1 << (max(arr.shape)-1).bit_length()
     padded = np.pad(arr, [(0, padded_size - arr.shape[0]), (0, padded_size - arr.shape[1])], mode='constant')
     qtree = QuadTree(padded)
-    def calculate(i, j): return gravity(qtree, np.array([i, j]), theta)
+    def calculate(i, j): return qtree_gravity(qtree, np.array([i, j]), theta)
     return np.fromfunction(np.frompyfunc(calculate, 2, 1), arr.shape, dtype=int)
-    
-# basic shapes
-
-def rectangle(rx, ry, val=1.):
-    return np.full((ry * 2 + 1, rx * 2 + 1), val)
-
-def ellipse(rx, ry, val=1.):
-    return np.fromfunction(lambda j, i: ((rx-i)**2/rx**2+(ry-j)**2/ry**2 <= 1)*val, (ry*2+1, rx*2+1))
-    
-def pad(arr, pad_x, pad_y, val=0.):
-    return np.pad(arr, [(pad_y, pad_y), (pad_x, pad_x)], mode='constant', constant_values=val)
-    
-def row(*arrs):
-    return np.concatenate(arrs)
-    
-def column(*arrs):
-    return np.concatenate(arrs, axis=1)
-    
-def nested_circles(circles = ((48,1), (24,2)), radius = 63):
-    arrays = [pad(ellipse(r,r,val=v), radius-r, radius-r) for r,v in circles]
-    return arrays[0] if len(arrays) == 1 else np.maximum(*arrays)
-
-# visualisation
-
-def heatmap(grav, cmap="hot", over=0, under=0):
-    cmap = plt.get_cmap(cmap)
-    cmap.set_over("green")
-    cmap.set_under("blue")
-    mag = magnitude_array(grav) * (1 + (over + under)) - under
-    return Image.fromarray(cmap(mag, bytes=True))
-    
-def hsvmap(grav):
-    hue, sat, val = direction_array(grav), np.full(grav.shape, 0.7), magnitude_array(grav)
-    stacked = np.stack((np.uint8(hue * 255), np.uint8(sat * 255), np.uint8(val * 255)), axis=2)
-    return Image.fromarray(stacked, mode="HSV").convert("RGBA")
-   
-def icon_to_array(file="icons/color.png", width=64):
-    img = Image.open(file).remove_transparency().resize_fixed_aspect(width=width).convert('L')
-    return np.array(ImageOps.invert(img)) / 256
-    
-def array_to_img(arr, base="grey"):
-    rgba = ImageColor.getrgba(base)
-    def colfn(channel): return np.uint8(255 - ((255 - channel) * arr / arr.max()))
-    stacked = np.stack((colfn(rgba.red), colfn(rgba.green), colfn(rgba.blue)), axis=2)
-    return Image.fromarray(stacked)
-
-def plot_box(data, width, filename):
-    # TODO: zero at center, set axis limits?
-    fig = plt.figure(figsize=(1,1), dpi=width)
-    ax = fig.add_axes((0,0,1,1))
-    ax.set_axis_off()    
-    ax.plot(data)
-    ax.get_xaxis().set_visible(False)
-    ax.get_yaxis().set_visible(False)
-    plt.savefig(filename, bbox_inches="tight", pad_inches=0, dpi=width)
-
-# TODO
-# - figure out why magnitutde seems to need to be squared!
-# - circle, ellipse, core, hollow, mountain, plateau, two, weighted, square, rectangle, ?, reddit
-
-# circle1 = pad(ellipse(48,48),15,15)
-# grav1 = qtree_gravity_array(circle1)
-# hmap1 = heatmap(grav1)
-# mag1 = magnitude_array(grav1)
-# plot_box(mag1[63], 127, "cache/gravity.png")
-

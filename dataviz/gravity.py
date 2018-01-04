@@ -4,11 +4,6 @@ sys.path.append('..')
 from pillar import *
 from scipy import signal
 
-# arr = mask_to_array(Ellipse(99).pad(20,0))
-# mag = gravity_magnitude(arr)
-# heatmap(mag).save("cache/gravity_heatmap.png")
-# plot_box(mag[round(mag.shape[0] / 2)], mag.shape[1], "cache/gravity_plot.png")
-
 # naive gravity calculation that's good enough because numpy
 
 np.seterr(divide='ignore', invalid='ignore')
@@ -25,18 +20,17 @@ def gravity_components(arr):
     ys = np.rot90(signal.convolve2d(np.rot90(arr, 2), isqys, 'same'), 2)
     return xs, ys
 
-def gravity_magnitude(arr, normalised=True):
+def gmag(arr, normalised=True):
+    if isinstance(arr, Image.Image): arr = mask_to_array(arr)
     components = gravity_components(arr)
     mag = (components[0] ** 2 + components[1] ** 2) ** 0.5
     return mag / mag.max() if normalised else mag
 
-# shapes TODO: circle, ellipse, core, hollow, mountain, plateau, two, two weighted, square, rectangle, ?, reddit
+# visualisation
 
 def mask_to_array(img):
     return np.array(img.as_mask()) / 255
-
-# visualisation
-
+    
 def heatmap(array, cmap=plt.get_cmap("hot")):
     return Image.fromarray(cmap(array, bytes=True))
    
@@ -44,13 +38,23 @@ def plot_box(data, width, filename):
     # TODO: zero at center, set axis limits?
     fig = plt.figure(figsize=(1,1), dpi=width)
     ax = fig.add_axes((0,0,1,1))
-    ax.set_axis_off()    
+    ax.set_axis_off()
     ax.plot(data)
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
     plt.savefig(filename, bbox_inches="tight", pad_inches=0, dpi=width)
 
-# cleverer quadtree implementation from before I figured out how to use numpy properly
+# shapes TODO: circle, ellipse, core, hollow, mountain, plateau, two, two weighted, square, rectangle, ?, reddit
+
+circle = Ellipse(95).pad(10, 0)
+ellipse = Ellipse((95,55)).pad((10,30), 0)
+core = Ellipse(95, (0,0,0,127)).place(Ellipse(31)).pad(10,0)
+
+# mag = gmag(ellipse)
+# heatmap(mag).save("cache/gravity_heatmap.png")
+# plot_box(mag[round(mag.shape[0] / 2)], mag.shape[1], "cache/gravity_plot.png")
+
+# unused quadtree implementation from before I figured out how to use numpy properly
 
 class QuadTree(object):
 

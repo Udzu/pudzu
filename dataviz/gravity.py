@@ -4,7 +4,7 @@ sys.path.append('..')
 from pillar import *
 from scipy import signal
 
-# naive gravity calculation that's good enough because numpy
+# slow gravity calculation that's fast enough because numpy :-)
 
 np.seterr(divide='ignore', invalid='ignore')
 
@@ -31,28 +31,61 @@ def gmag(arr, normalised=True):
 def mask_to_array(img):
     return np.array(img.as_mask()) / 255
     
+def mask_to_img(img, fg="grey", bg="white"):
+    return MaskUnion(..., fg, bg, masks=img)
+    
 def heatmap(array, cmap=plt.get_cmap("hot")):
     return Image.fromarray(cmap(array, bytes=True))
    
-def plot_box(data, width, filename):
-    # TODO: zero at center, set axis limits?
-    fig = plt.figure(figsize=(1,1), dpi=width)
+def minmax(array, low=2, high=10, lowcol="green", midcol="white", highcol="blue"):
+    # for figuring out low and high points; not pretty enough to actually use
+    intervals = [low/2, low/2, 100-low-high, high/2, high/2]
+    cmap = GradientColormap(lowcol, lowcol, midcol, midcol, highcol, highcol, intervals=intervals)
+    return heatmap(array, cmap)
+
+def plot_box(data, width, height, filename="cache/gravity_plot.png"):
+    fig = plt.figure(figsize=(width/100,height/100), dpi=100)
     ax = fig.add_axes((0,0,1,1))
     ax.set_axis_off()
     ax.plot(data)
+    plt.xlim((0,200))
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
-    plt.savefig(filename, bbox_inches="tight", pad_inches=0, dpi=width)
+    plt.savefig(filename, bbox_inches="tight", pad_inches=0, dpi='figure', transparent=True)
+    plt.close()
+    return Image.open(filename)
 
-# shapes TODO: circle, ellipse, core, hollow, mountain, plateau, two, two weighted, square, rectangle, ?, reddit
+def plot_shape(shape, min=None, max=None): 
+    mag = gmag(shape)
+    shape = mask_to_img(shape).place(MaskUnion(..., "green", masks=make_iterable(min))).place(MaskUnion(..., "blue", masks=make_iterable(max)))
+    # TODO: plot_box(mag[round(mag.shape[0] / 2)], mag.shape[1])
+    return Image.from_column([shape, heatmap(mag)], padding=5, bg="white")
+    
+# shapes
+
+shapes = CaseInsensitiveDict(base_factory=OrderedDict)
 
 circle = Ellipse(95).pad(10, 0)
-ellipse = Ellipse((95,55)).pad((10,30), 0)
-core = Ellipse(95, (0,0,0,127)).place(Ellipse(31)).pad(10,0)
+circle_min = dot = Ellipse(5)
+circle_max = MaskIntersection(..., masks=(Ellipse(97), Ellipse(93, invert=True)), include_missing=True)
+shapes["circle"] = (circle, circle_min, circle_max)
 
-# mag = gmag(ellipse)
-# heatmap(mag).save("cache/gravity_heatmap.png")
-# plot_box(mag[round(mag.shape[0] / 2)], mag.shape[1], "cache/gravity_plot.png")
+ellipse = Ellipse((95,55)).pad((10,30), 0)
+ellipse_min = dot
+ellipse_max = Rectangle(ellipse.size, (0,0,0,0)).pin(dot, (23,38)).pin(dot, (23,76)).pin(dot, (91, 76)).pin(dot, (91,38))
+shapes["ellipse"] = (ellipse, ellipse_min, ellipse_max)
+
+core = Ellipse(95, (0,0,0,127)).place(Ellipse(75)).pad(10,0)
+core_min = dot
+core_max = MaskIntersection(..., masks=(Ellipse(77), Ellipse(73, invert=True)), include_missing=True)
+shapes["core"] = (core, core_min, core_max)
+
+hollow = MaskIntersection(..., masks=(Ellipse(95), Ellipse(75, invert=True)), include_missing=True).pad(10,0)
+hollow_min = MaskIntersection(..., masks=(Ellipse(85), Ellipse(81, invert=True)), include_missing=True).place(dot)
+hollow_max = circle_max
+shapes["hollow"] = (hollow, hollow_min, hollow_max)
+
+# TODO: mountain, plateau, two, two weighted, square, rectangle, ?, reddit
 
 # unused quadtree implementation from before I figured out how to use numpy properly
 

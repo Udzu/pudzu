@@ -393,6 +393,12 @@ class CompoundColormap():
         channel_cols = [np.select(condlist, choices) for choices in channel_choices]
         cols = np.stack(channel_cols, -1)
         return np.uint8(cols) if bytes else cols
+        
+class ConstantColormap(CompoundColormap):
+    """A matplotlib colormap generated from constant colors and optional intervals."""
+    
+    def __init__(self, *colors, intervals=None):
+        return super().__init__(*tmap(GradientColormap, colors), intervals=intervals)
 
 class _Image(Image.Image):
 
@@ -959,8 +965,9 @@ class MaskUnion(ImageShape):
     @classmethod
     def mask(cls, size, masks):
         """A union of superimposed masks. Size is automatically calculated if set to ..."""
+        masks = make_iterable(masks)
         if size == ...:
-            size = (max(m.width for m in masks), max(m.height for m in masks))
+            size = (max((m.width for m in masks), default=0), max((m.height for m in masks), default=0))
         img = Image.new("L", size, 0)
         for m in masks:
             img = img.place(Image.new("L", m.size, 255), mask=m)
@@ -972,6 +979,7 @@ class MaskIntersection(ImageShape):
     @classmethod
     def mask(cls, size, masks, include_missing=False):
         """An intersection of superimposed masks. Size is automatically calculated if set to ..."""
+        masks = make_iterable(masks)
         if size == ...:
             size = (max(m.width for m in masks), max(m.height for m in masks))
         img = Image.new("L", size, 255)

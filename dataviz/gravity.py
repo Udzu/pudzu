@@ -34,16 +34,15 @@ def mask_to_array(img):
 def mask_to_img(img, fg="grey", bg="white"):
     return MaskUnion(..., fg, bg, masks=img)
     
-def shapeplot(shape, min=None, max=None, scanlines=()):
+def shapeplot(shape, min=None, max=None):
     shape = mask_to_img(shape)
-    shape = shape.place(MaskUnion(..., "green", masks=make_iterable(min))).place(MaskUnion(..., "blue", masks=make_iterable(max)))
-    # TODO: scanlines
+    shape = shape.place(MaskUnion(..., "green", masks=make_iterable(min))).place(MaskUnion(..., "red", masks=make_iterable(max)))
     return shape
 
 def heatmap(array, cmap=plt.get_cmap("hot")):
     return Image.fromarray(cmap(array, bytes=True))
    
-def minmax(array, low=2, high=10, lowcol="green", midcol="white", highcol="blue"):
+def minmax(array, low=2, high=10, lowcol="green", midcol="white", highcol="red"):
     # for figuring out low and high points; not pretty enough to actually use
     intervals = [low/2, low/2, 100-low-high, high/2, high/2]
     cmap = GradientColormap(lowcol, lowcol, midcol, midcol, highcol, highcol, intervals=intervals)
@@ -53,27 +52,40 @@ def minblend(shape, p=0.25, **kwargs):
     return ignoring_extra_args(shapeplot)(shape, **kwargs).blend(
         ignoring_extra_args(minmax)(ignoring_extra_args(gravity_magnitude)(shape, **kwargs), **kwargs), p=p)
 
-def linechart(data, width, height=None, cache="cache/gravity_plot.png"):
+def linechart(data, width, height, color, cache="cache/gravity_plot.png"):
     if height is None: height = width
     fig = plt.figure(figsize=(width/100,height/100), dpi=100)
     ax = fig.add_axes((0,0,1,1))
     ax.set_axis_off()
-    ax.plot(data)
+    ax.plot(data, color)
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
     plt.savefig(cache, bbox_inches="tight", pad_inches=0, dpi='figure', transparent=True)
     plt.close()
     return Image.open(cache)
 
+def scanlines(array, directions):
+    h, w = array.shape
+    x, y = round(w / 2), round(h / 2)
+    img = Rectangle((w,h//2), "white")
+    if "v" in directions: img = img.place(linechart(array[:,x], h, w//2, "#008000"))
+    if "h" in directions: img = img.place(linechart(array[y], w, h//2, "#800000"))
+    # if "d" in directions: 
+    return img
+
 def odd(n): return round(n) + (round(n)-1)%2
 
 # list of shapes
 
-WIDTH = 32 # 128
-SHAPE = namedtuple('SHAPE', ['shape', 'min', 'max', 'min_linear', 'max_linear', 'description'])
+WIDTH = 60 # 100
+PADDING = 20
 SHAPES = CaseInsensitiveDict(base_factory=OrderedDict)
 
-base = Image.new("RGBA", (WIDTH, WIDTH))
+ShapeOpts = namedtuple('ShapeOpts', ['name', 'shape', 'min', 'max', 'min_linear', 'max_linear', 'scanlines', 'description'])
+def make_shape(name, shape, min=None, max=None, min_linear=..., max_linear=..., scanlines="h", description="Some **interesting** point?"):
+    return ShapeOpts(name, shape, min, max, min if min_linear == ... else min_linear, max if max_linear == ... else max_linear, scanlines, description)
+
+base = Image.new("RGBA", (round(WIDTH*1.5), round(WIDTH*1.5)))
 pwidth = odd(WIDTH*2/3)
 ppwdith = odd(pwidth*3/4)
 dot = Ellipse(5)
@@ -81,47 +93,54 @@ dot = Ellipse(5)
 circle = base.place(Ellipse(pwidth))
 circle_min = dot
 circle_max = MaskIntersection(..., masks=(Ellipse(pwidth+2), Ellipse(pwidth-2, invert=True)), include_missing=True)
-SHAPES["circle"] = SHAPE(circle, circle_min, circle_max, ..., ..., "circle")
+SHAPES["circle"] = make_shape("circle", circle, circle_min, circle_max)
 
 ellipse = base.place(Ellipse((pwidth, odd(pwidth / 2))))
 ellipse_min = dot
 ellipse_max = None # TODO: ?!
-SHAPES["ellipse"] = SHAPE(ellipse, ellipse_min, ellipse_max, ..., ..., "circle")
+SHAPES["ellipse"] = make_shape("ellipse", ellipse, ellipse_min, ellipse_max, scanlines="vh")
 
-core = base.place(Ellipse(pwidth, (0,0,0,127))).place(Ellipse(ppwdith))
+core = base.place(Ellipse(pwidth, (0,0,0,100))).place(Ellipse(ppwdith))
 core_min = dot
 core_max = MaskIntersection(..., masks=(Ellipse(ppwdith+2), Ellipse(ppwdith-2, invert=True)), include_missing=True)
-SHAPES["dense core"] = SHAPE(core, core_min, core_max, ..., circle_max, "circle")
+SHAPES["core"] = make_shape("dense core", core, core_min, core_max)
 
 hollow = base.place(MaskIntersection(..., masks=(Ellipse(pwidth), Ellipse(ppwdith, invert=True)), include_missing=True))
 hollow_min = MaskIntersection(..., masks=(Ellipse(round(pwidth*0.85)+2), Ellipse(round(pwidth*0.85)-2, invert=True)), include_missing=True).place(dot)
 hollow_max = circle_max
 hollow_min_linear = Ellipse(ppwdith)
-SHAPES["hollow shell"] = SHAPE(hollow, hollow_min, hollow_max, hollow_min_linear, ..., "circle")
+SHAPES["hollow"] = make_shape("hollow shell", hollow, hollow_min, hollow_max, hollow_min_linear)
+
+square = base.place(Rectangle(pwidth))
+square_min = dot
+# TODO: max, diagonal
+SHAPES["square"] = make_shape("square", square, square_min)
+
+# mountain = base.place(Ellipse(pwidth)) # Triange(odd(pwdith/3))
 
 # TODO: mountain, plateau, two, two weighted, square, rectangle, ?, reddit
 # shapeplot(ellipse, ellipse_min, ellipse_max).blend(minmax(a, high=0.01), p=0.25).show()
 
-def plot_shape(name): 
-    shape, min, max, min_linear, max_linear, description = SHAPES[name]
-    if min_linear == ...: min_linear = min
-    if max_linear == ...: max_linear = max
-    mag = gravity_magnitude(shape, linear=False)
-    mag_linear = gravity_magnitude(shape, linear=True)
+def plot_shape(shape): 
+    mag = gravity_magnitude(shape.shape, linear=False)
+    mag_linear = gravity_magnitude(shape.shape, linear=True)
     w, h = mag.shape
     y = round(h / 2)
     grid = Image.from_array([
-        [shapeplot(shape, min, max), shapeplot(shape, min_linear, max_linear)],
-        [heatmap(mag), heatmap(mag_linear)],
-        [linechart(mag[y], w, w//2), linechart(mag_linear[y], w, w//2)]
-        ], padding=5, bg="white")
+        [shapeplot(shape.shape, shape.min, shape.max),
+         shapeplot(shape.shape, shape.min_linear, shape.max_linear)][::-1],
+        [heatmap(mag),
+         heatmap(mag_linear)][::-1],
+        [scanlines(mag, shape.scanlines).pad((0,PADDING),"white"),
+         scanlines(mag_linear, shape.scanlines).pad((0,PADDING),"white")][::-1]
+        ], padding=0, bg="white")
+    markup = Image.from_markup(shape.description, partial(arial, 12), max_width=w*2)
+    markup = Rectangle((w*2, markup.height), "white").place(markup, align=0)
     return Image.from_column([
-        Image.from_text(name.upper(), arial(16, bold=True)),
+        Image.from_text(shape.name.upper(), arial(16, bold=True)),
         grid,
-        Image.from_text(description, arial(12))
-        # TODO: linechart(mag[round(mag.shape[0] / 2)], mag.shape[1])
-        ], padding=5, bg="white")
-    
+        markup
+        ], padding=0, bg="white")
 
 # unused quadtree implementation from before I figured out how to use numpy properly
 

@@ -60,7 +60,7 @@ def linechart(data, width, height, color, cache="cache/gravity_plot.png"):
     ax.plot(data, color)
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
-    plt.savefig(cache, bbox_inches="tight", pad_inches=0, dpi='figure', transparent=True)
+    plt.savefig(cache, dpi='figure', transparent=True)
     plt.close()
     return Image.open(cache)
 
@@ -68,16 +68,19 @@ def scanlines(array, directions):
     h, w = array.shape
     x, y = round(w / 2), round(h / 2)
     img = Rectangle((w,h//2), "white")
+    if "d" in directions:
+        diag, omit = np.diag(array, (w-h)//2), 1 - 0.5**0.5
+        diag = diag[floor(len(diag)*omit/2):ceil(len(diag)*(1-omit/2))]
+        img = img.place(linechart(diag, w, w//2, "#000080"))
     if "v" in directions: img = img.place(linechart(array[:,x], h, w//2, "#008000"))
     if "h" in directions: img = img.place(linechart(array[y], w, h//2, "#800000"))
-    # if "d" in directions: 
     return img
 
 def odd(n): return round(n) + (round(n)-1)%2
 
 # list of shapes
 
-WIDTH = 60 # 100
+WIDTH = 100
 PADDING = 20
 SHAPES = CaseInsensitiveDict(base_factory=OrderedDict)
 
@@ -91,34 +94,36 @@ ppwdith = odd(pwidth*3/4)
 dot = Ellipse(5)
 
 circle = base.place(Ellipse(pwidth))
-circle_min = dot
 circle_max = MaskIntersection(..., masks=(Ellipse(pwidth+2), Ellipse(pwidth-2, invert=True)), include_missing=True)
-SHAPES["circle"] = make_shape("circle", circle, circle_min, circle_max)
+SHAPES["circle"] = make_shape("circle", circle, dot, circle_max)
 
 ellipse = base.place(Ellipse((pwidth, odd(pwidth / 2))))
-ellipse_min = dot
-ellipse_max = None # TODO: ?!
-SHAPES["ellipse"] = make_shape("ellipse", ellipse, ellipse_min, ellipse_max, scanlines="vh")
+# TODO
+SHAPES["ellipse"] = make_shape("ellipse", ellipse, dot, scanlines="vh")
 
 core = base.place(Ellipse(pwidth, (0,0,0,100))).place(Ellipse(ppwdith))
-core_min = dot
 core_max = MaskIntersection(..., masks=(Ellipse(ppwdith+2), Ellipse(ppwdith-2, invert=True)), include_missing=True)
-SHAPES["core"] = make_shape("dense core", core, core_min, core_max)
+SHAPES["core"] = make_shape("dense core", core, dot, core_max)
 
 hollow = base.place(MaskIntersection(..., masks=(Ellipse(pwidth), Ellipse(ppwdith, invert=True)), include_missing=True))
 hollow_min = MaskIntersection(..., masks=(Ellipse(round(pwidth*0.85)+2), Ellipse(round(pwidth*0.85)-2, invert=True)), include_missing=True).place(dot)
-hollow_max = circle_max
 hollow_min_linear = Ellipse(ppwdith)
-SHAPES["hollow"] = make_shape("hollow shell", hollow, hollow_min, hollow_max, hollow_min_linear)
+SHAPES["hollow"] = make_shape("hollow shell", hollow, hollow_min, circle_max, hollow_min_linear)
 
 square = base.place(Rectangle(pwidth))
-square_min = dot
-# TODO: max, diagonal
-SHAPES["square"] = make_shape("square", square, square_min)
+# TODO
+SHAPES["square"] = make_shape("square", square, dot, scanlines="dh")
 
-# mountain = base.place(Ellipse(pwidth)) # Triange(odd(pwdith/3))
+rectangle = base.place(Rectangle((pwidth, odd(pwidth / 2))))
+# TODO
+SHAPES["rectangle"] = make_shape("rectangle", rectangle, dot, scanlines="hv")
 
-# TODO: mountain, plateau, two, two weighted, square, rectangle, ?, reddit
+mountain = base.place(Ellipse(pwidth).pin(Triangle(odd(pwidth/3)), (pwidth//2+1, pwidth//20), align=(0.5,1)))
+# TODO
+# TODO
+SHAPES["mountain"] = make_shape("mountain", mountain, scanlines="v")
+
+# TODO: two, two weighted, ?, reddit
 # shapeplot(ellipse, ellipse_min, ellipse_max).blend(minmax(a, high=0.01), p=0.25).show()
 
 def plot_shape(shape): 
@@ -141,6 +146,13 @@ def plot_shape(shape):
         grid,
         markup
         ], padding=0, bg="white")
+
+        
+# https://physics.stackexchange.com/questions/30652/what-is-the-2d-gravity-potential
+
+# gravity in 2d
+# inverse square, squashed into plane
+# inverse, 2d version, orbits are oscillations
 
 # unused quadtree implementation from before I figured out how to use numpy properly
 

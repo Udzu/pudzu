@@ -60,6 +60,7 @@ def linechart(data, width, height, color, cache="cache/gravity_plot.png"):
     ax.plot(data, color)
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
+    plt.ylim(0,1)
     plt.savefig(cache, dpi='figure', transparent=True)
     plt.close()
     return Image.open(cache)
@@ -78,20 +79,20 @@ def scanlines(array, directions):
 
 def odd(n): return round(n) + (round(n)-1)%2
 
-# list of shapes
+# shape (max and min shapes are approximations based on minmax above but should be good enough for illustrative purposes)
 
-WIDTH = 100
+WIDTH = 60
 PADDING = 20
 SHAPES = CaseInsensitiveDict(base_factory=OrderedDict)
-
-ShapeOpts = namedtuple('ShapeOpts', ['name', 'shape', 'min', 'max', 'min_linear', 'max_linear', 'scanlines', 'description'])
-def make_shape(name, shape, min=None, max=None, min_linear=..., max_linear=..., scanlines="h", description="Some **interesting** point?"):
-    return ShapeOpts(name, shape, min, max, min if min_linear == ... else min_linear, max if max_linear == ... else max_linear, scanlines, description)
 
 base = Image.new("RGBA", (round(WIDTH*1.5), round(WIDTH*1.5)))
 pwidth = odd(WIDTH*2/3)
 ppwdith = odd(pwidth*3/4)
 dot = Ellipse(5)
+
+ShapeOpts = namedtuple('ShapeOpts', ['name', 'shape', 'min', 'max', 'min_linear', 'max_linear', 'scanlines', 'description'])
+def make_shape(name, shape, min=None, max=None, min_linear=..., max_linear=..., scanlines="h", description="Some **interesting** point?"):
+    return ShapeOpts(name, shape, min, max, min if min_linear == ... else min_linear, max if max_linear == ... else max_linear, scanlines, description)
 
 circle = base.place(Ellipse(pwidth))
 circle_max = MaskIntersection(..., masks=(Ellipse(pwidth+2), Ellipse(pwidth-2, invert=True)), include_missing=True)
@@ -110,21 +111,32 @@ hollow_min = MaskIntersection(..., masks=(Ellipse(round(pwidth*0.85)+2), Ellipse
 hollow_min_linear = Ellipse(ppwdith)
 SHAPES["hollow"] = make_shape("hollow shell", hollow, hollow_min, circle_max, hollow_min_linear)
 
-square = base.place(Rectangle(pwidth))
-# TODO
-SHAPES["square"] = make_shape("square", square, dot, scanlines="dh")
-
-rectangle = base.place(Rectangle((pwidth, odd(pwidth / 2))))
-# TODO
-SHAPES["rectangle"] = make_shape("rectangle", rectangle, dot, scanlines="hv")
-
 mountain = base.place(Ellipse(pwidth).pin(Triangle(odd(pwidth/3)), (pwidth//2+1, pwidth//20), align=(0.5,1)))
-# TODO
-# TODO
-SHAPES["mountain"] = make_shape("mountain", mountain, scanlines="v")
+mountain_min = dot.pad((0,odd(pwidth/4),0,0), 0)
+mountain_max = Rectangle((odd(pwidth*0.8),odd(pwidth*0.5)),(0,0,0,0)).pad((0,odd(pwidth/4),0,0), 0).pin(dot,(odd(pwidth*0.8),odd(pwidth/4))).pin(dot,(0,odd(pwidth/4)))
+mountain_max_linear = Rectangle((odd(pwidth*0.55),odd(pwidth*0.95)),(0,0,0,0)).pad((0,odd(pwidth/4),0,0), 0).pin(dot,(odd(pwidth*0.55),odd(pwidth*0.95+pwidth/4))).pin(dot,(0,odd(pwidth*0.95+pwidth/4)))
+SHAPES["mountain"] = make_shape("mountain", mountain, mountain_min, mountain_max, ..., mountain_max_linear, scanlines="v")
 
-# TODO: two, two weighted, ?, reddit
-# shapeplot(ellipse, ellipse_min, ellipse_max).blend(minmax(a, high=0.01), p=0.25).show()
+square = base.place(Rectangle(pwidth))
+offsets = Padding(0)
+square_max = Rectangle(pwidth,(0,0,0,0)).pin(dot,(pwidth//2+1,0),offsets=offsets).pin(dot,(pwidth//2+1,pwidth),offsets=offsets).pin(dot,(0,pwidth//2+1),offsets=offsets).pin(dot,(pwidth,pwidth//2+1),offsets=offsets)
+SHAPES["square"] = make_shape("square", square, dot, square_max, scanlines="dh")
+
+two = Image.from_row([circle, circle])
+# TODO
+SHAPES["two"] = make_shape("two circles", two)
+
+moon = Image.from_row([circle, base.place(Ellipse(odd(pwidth/2)))])
+# TODO
+SHAPES["moon"] = make_shape("moon", moon)
+
+reddit = base.convert("L").place(Image.open("icons/reddit.png").convert("L").resize_fixed_aspect(width=odd(WIDTH)))
+# TODO
+SHAPES["reddit"] = make_shape("snoo", reddit, scanlines="hv")
+
+# put it all together
+
+# TODO: legend, array, title
 
 def plot_shape(shape): 
     mag = gravity_magnitude(shape.shape, linear=False)
@@ -147,7 +159,6 @@ def plot_shape(shape):
         markup
         ], padding=0, bg="white")
 
-        
 # https://physics.stackexchange.com/questions/30652/what-is-the-2d-gravity-potential
 
 # gravity in 2d

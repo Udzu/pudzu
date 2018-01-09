@@ -57,7 +57,7 @@ class Alignment():
 class Padding():
     """Padding class, initialized from one, two or four integers."""
     
-    def __init__(self, padding):
+    def __init__(self, padding=0):
         if padding is None:
             return self.__init__((0,0,0,0))
         elif isinstance(padding, Integral):

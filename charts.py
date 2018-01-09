@@ -14,7 +14,7 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16), fg="bl
                     header=None, footer=None, max_width=None, spacing=0, box_mask=None, border=True):
     """Generate a chart category legend.
     - boxes (list of colors/images): colors or images to use as boxes
-    - labels (list of strings/images/lists): labels to use beside the boxes
+    - labels (list of markups/images/lists): labels to use beside the boxes
     - box_sizes (int/(int,int)/list of (int,int)): size(s) of boxes to use for colors; height can be set to ... [40x40]
     - fonts (font/three fonts/font function): normal, bold and italics fonts [16-point arial]
     - fg (color): text and border color [black]
@@ -36,14 +36,10 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16), fg="bl
         raise ValueError("Different number of boxes ({}) to box sizes ({})".format(len(boxes), len(box_sizes)))
     if any(not isinstance(box, Image.Image) and non_string_sequence(label) and size[1] == ... for box, label, size in zip(boxes, labels, box_sizes)):
         raise ValueError("Cannot specify both list of labels and ... height for the same box")
-    if callable(fonts):
-        fonts = [fonts(), fonts(bold=True), fonts(italics=True)]
-    elif isinstance(fonts, ImageFont.FreeTypeFont):
-        fonts = [fonts]*3
     if isinstance(header, str):
-        header = Image.from_text(header, fonts[1], fg=fg, bg=bg, max_width=max_width, padding=2)
+        header = Image.from_text(header, fonts(bold=True), fg=fg, bg=bg, max_width=max_width, padding=2)
     if isinstance(footer, str):
-        footer = Image.from_text(footer, fonts[2], fg=fg, bg=bg, max_width=max_width, padding=2)
+        footer = Image.from_text(footer, fonts(italics=True), fg=fg, bg=bg, max_width=max_width, padding=2)
         
     if len(boxes) > 0:
         max_box_width = max(box.width if isinstance(box, Image.Image) else size[0] for box, size in zip(boxes, box_sizes))
@@ -52,7 +48,7 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16), fg="bl
         box_label_array = []
         for box, label, size in zip(boxes, labels, box_sizes):
             if isinstance(label, str):
-                label = Image.from_text(label, fonts[0], fg=fg, bg=bg, max_width=max_label_width, padding=2)
+                label = Image.from_markup(label, fonts, fg=fg, bg=bg, max_width=max_label_width).pad(2, bg)
             if not isinstance(box, Image.Image):
                 box = Image.new("RGBA", (size[0], size[1] if size[1] != ... else label.height + 6), box)
             if non_string_sequence(label):
@@ -61,7 +57,7 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16), fg="bl
                 offsets = Padding(0)
                 for i, l in enumerate(labels):
                     if isinstance(l, str):
-                        l = Image.from_text(l, fonts[0], fg=fg, bg=bg, max_width=max_label_width, padding=2)
+                        l = Image.from_markup(l, fonts, fg=fg, bg=bg, max_width=max_label_width).pad(2, bg)
                     label = label.pin(l, (0, (box.height * i) // (len(labels) - 1)), align=(0, 0.5), bg=bg, offsets=offsets)
             box_label_array.append([box, label])
         label_img = Image.from_array(box_label_array, padding=(1,spacing), xalign=[0.5, 0], bg=bg)
@@ -118,7 +114,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
     - ylabel (image): image to use for y axis label [none]
     - title (image): image to use for title [none]
     - legend_position (alignment): legend alignment [None]
-    - legend_fonts (font/three fonts/font function): normal, bold and italics fonts [16-point arial]
+    - legend_fonts (font family): font family [16-point arial]
     - legend_box_sizes (col->int/(int,int)): sizes to use for legend boxes [40x40]
     - legend_args (dict): additional arguments to generate legends [none]
     Functional arguments don't need to accept all the arguments and can also be passed in as

@@ -348,7 +348,7 @@ class TimeChartLabelPosition(Enum):
 def time_chart(timeline_width, timeline_height,
                interval_data=None, interval_start_key="start", interval_end_key="end", interval_color_key="color", interval_label_key=None, 
                event_data=None, event_time_key="time", event_image_key=None, event_label_key=None,
-               xmin=None, xmax=None, fg="white", bg="black",
+               xmin=None, xmax=None, fg="white", bg="black", interval_border=1, timeline_spacing=5,
                grid_interval=None, grid_font=None, grid_labels=str, grid_label_interval=Ellipsis, 
                label_font=None, labels_left=None, labels_right=None, title=None):
     """Plot a time chart. Times can be numeric, dates or anything that supports arithmetic.
@@ -435,7 +435,7 @@ def time_chart(timeline_width, timeline_height,
                 w, h = end-start, timeline_height
                 color = ignoring_extra_args(interval_color_fn)(d, w, h)
                 bar = Image.from_pattern(color, (w, h)) if isinstance(color, Image.Image) else Image.new("RGBA", (w, h), color)
-                bar = bar.trim((1,0, 0, 0)).pad((1,0), bg)
+                bar = bar.trim((interval_border,0,0,0)).pad((interval_border,0),bg)
                 timeline.overlay(bar, (start+offsets.l, offsets.u))
                 for pos, label_fn in interval_labels_dict.items():
                     img = ignoring_extra_args(label_fn)(d, bar.width, bar.height)
@@ -489,7 +489,7 @@ def time_chart(timeline_width, timeline_height,
     timelines = [ t.pad((maxoffset - o.l,0,0,0), bg=bg) for t,o in zip(timelines, toffsets) ]
     array = list(zip(*[x for x in (llabels, timelines, rlabels) if x]))
     xalign = [a for a,x in zip((1, 0, 0), (llabels, timelines, rlabels)) if x]
-    chart = Image.from_array(array, padding=(4,5), bg=bg, xalign=xalign)
+    chart = Image.from_array(array, padding=(4,timeline_spacing), bg=bg, xalign=xalign)
     
     # grid
     logger.info("Generating time chart grid and labels")

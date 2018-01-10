@@ -8,7 +8,7 @@ import operator as op
 import os.path
 import random
 
-from collections import abc, OrderedDict, Iterable, Mapping, Counter, namedtuple
+from collections import abc, OrderedDict, Iterable, Mapping, Counter
 from collections.abc import Sequence
 from functools import wraps, partial
 from importlib import import_module

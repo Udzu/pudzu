@@ -1,0 +1,27 @@
+country,leader,birth,death,starts,ends,type
+United Kingdom,John Major,29 March 1943,,28 November 1990,2 May 1997,pm
+United Kingdom,David Lloyd George,17 January 1863,26 March 1945,6 December 1916,19 October 1922,pm
+United Kingdom,Viscount Palmerston,20 October 1784,18 October 1865,6 February 1855|12 June 1859,19 February 1858|18 October 1865,pm
+United Kingdom,Earl of Bute,25 May 1713,10 March 1792,26 May 1762,8 April 1763,pm
+France,Valéry Giscard d'Estaing,2 February 1926,,27 May 1974,21 May 1981,president
+France,Émile Loubet*,30 December 1838,20 December 1929,27 February 1892,6 December 1892,pm
+France,Louis Philippe,6 October 1773,26 August 1850,9 August 1830,24 February 1848,monarch
+France,Louis XV,15 February 1710,10 May 1774,1 September 1715,10 May 1774,monarch
+United States,George H. W. Bush,12 June 12 1924,,January 20 1989,January 20 1993,president
+United States,William Howard Taft,15 September 1857,8 March 1930,4 March 1909,4 March 1913,president
+United States,Martin Van Buren,5 December 1782,24 July 24 1862,4 March 1837,4 March 1841,president
+United States,George Washington,22 February 1732,14 December 1799,30 April 1789, 4 March 1797,president
+Russia/USSR,Mikhail Gorbachev**,2 March 1931,,10 March 1985,25 December 1991,secretary
+Russia/USSR,Joseph Stalin**,18 December 1878,5 March 1953,3 April 1922,5 March 1953,secretary
+Russia/USSR,Alexander II,29 April 1818,13 March 1881,2 March 1855,13 March 1881,monarch
+Russia/USSR,Alexander I,23 December 1777,1 December 1825,23 March 1801,1 December 1825,monarch
+Russia/USSR,Catherine the Great,2 May 1729,17 November 1796,9 July 1762,17 November 1796,monarch
+Prussia/Germany,Gerhard Schröder,7 April 1944,,27 October 1998,22 November 2005,pm
+Prussia/Germany,Wilhelm Marx,15 January 1863,5 August 1946,30 November 1923|17 May 1926,15 January 1925|12 June 1928,pm
+Prussia/Germany,Otto von Bismarck,1 April 1815,30 July 1898,21 March 1871,20 March 1890,pm
+Prussia/Germany,Frederick William III,3 July 1770,7 June 1840,16 November 1797,7 June 1840,monarch
+Prussia/Germany,Frederick the Great,24 January 1712,17 August 1786,31 May 1740,17 August 1786,monarch
+Holy See/Vatican,Benedict XVI,16 April 1927,,19 April 2005,28 Feb 2013,monarch
+Holy See/Vatican,Pius XI,31 May 1857,10 Feb 1939,6 Feb 1922,10 Feb 1939,monarch
+Holy See/Vatican,Pius IX,13 May 1792,7 Feb 1878,16 June 1846,7 Feb 1878,monarch
+Holy See/Vatican,Pius VI,25 Dec 1717,29 Aug 1799,15 Feb 1775,29 Aug 1799,monarch

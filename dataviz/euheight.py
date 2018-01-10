@@ -6,7 +6,7 @@ import seaborn as sns
 
 # generate map
 df = pd.read_csv("datasets/euheight.csv").set_index("country").fillna(0)
-palette = ImageColor.from_floats(sns.cubehelix_palette(7, start=0.5, rot=-0.85))
+palette = tmap(RGBA, sns.cubehelix_palette(7, start=0.5, rot=-0.85))
 basketball = Image.open("icons/basketball.png").convert("RGBA").resize((18,18))
 
 def colorfn(c):

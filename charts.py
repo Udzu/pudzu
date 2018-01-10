@@ -189,7 +189,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
     positive_height_fn = lambda v: int(max(0, min(v, ymax) - max(0, ymin)) * factor)
     negative_height_fn = lambda v: int(max(0, min(0, ymax) - max(v, ymin)) * factor)
     y_coordinate_fn = lambda v: int(chart_height - ((v - ymin) * factor))
-    bgtransparent = ImageColor.getrgba(bg)._replace(alpha=0)
+    bgtransparent = RGBA(bg)._replace(alpha=0)
     
     # (Horizontal charts were sort of tacked on, sorry!)
     def hzimg(img, horizontal=horizontal):
@@ -258,7 +258,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
     # Grid
     chart = chart.pad((tick_size,0,0,0), bg=0, offsets=offsets)
     grid = Image.new("RGBA", (chart.width, chart.height), (255,255,255,0))
-    gridcolor = ImageColor.getrgba(fg)._replace(alpha=80)
+    gridcolor = RGBA(fg)._replace(alpha=80)
     griddraw = ImageDraw.Draw(grid)
     griddraw.line([(tick_size, y_coordinate_fn(ymin)), (tick_size, y_coordinate_fn(ymax))], fill=fg)
     if grid_interval is not None:
@@ -495,7 +495,7 @@ def time_chart(timeline_width, timeline_height,
     logger.info("Generating time chart grid and labels")
     xoffset = maxoffset + 4 + (max(label.width for label in llabels)+4*2 if llabels else 0)
     grid = Image.new("RGBA", (chart.width, chart.height), (255,255,255,0))
-    gridcolor = ImageColor.getrgba(fg)._replace(alpha=127)
+    gridcolor = RGBA(fg)._replace(alpha=127)
     griddraw = ImageDraw.Draw(grid)
     if grid_interval is not None:
         grid_val = xmin
@@ -550,7 +550,7 @@ def grid_chart(data, cell=None, group=None,
     
     padding = Padding(padding)
     gp = Padding(group_padding)
-    tbg = ImageColor.getrgba(bg)._replace(alpha=0)
+    tbg = RGBA(bg)._replace(alpha=0)
     
     cell_fn = ignoring_extra_args(cell) if callable(cell) else lambda v, r, c: cell
     group_fn = ignoring_extra_args(group) if callable(group) else lambda v, r, c: group
@@ -591,9 +591,9 @@ def grid_chart(data, cell=None, group=None,
         for c, v in enumerate(row):
             base = Image.new("RGBA", (img_widths[c], img_heights[r]), bg)
             if len(group_array[r][c]) > 0:
-                venn = Image.new("RGBA", (img_widths[c], img_heights[r]), ImageColor.getrgba(bg)._replace(alpha=0))
+                venn = Image.new("RGBA", (img_widths[c], img_heights[r]), RGBA(bg)._replace(alpha=0))
                 for g in group_array[r][c]:
-                    cfg = col = ImageColor.getrgba(group_col_fn(g))
+                    cfg = col = RGBA(group_col_fn(g))
                     if group_alpha is not None: col = col._replace(alpha=group_alpha)
                     
                     # what an unholy mess! :( could use some rewriting
@@ -742,7 +742,7 @@ def generate_bbox_csv(map, labels=True):
             xmax[c] = max(xmax.get(c,0), x)
             ymin[c] = min(ymin.get(c,img.height), y)
             ymax[c] = max(ymax.get(c,0), y)
-    rs = [{ 'color': "|".join(str(x) for x in c[:3]), 'bbox': "|".join(str(x) for x in (xmin[c], ymin[c], xmax[c], ymax[c])) } for c in xmin if ImageColor.getrgba(c).alpha == 255 ]
+    rs = [{ 'color': "|".join(str(x) for x in c[:3]), 'bbox': "|".join(str(x) for x in (xmin[c], ymin[c], xmax[c], ymax[c])) } for c in xmin if RGBA(c).alpha == 255 ]
     pd.DataFrame(rs).to_csv(csv_path, index=False, encoding="utf-8")
 
 def generate_tile_map(array, filename, size, border=0, bg="white"):

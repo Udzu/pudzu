@@ -9,7 +9,7 @@ atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").spli
 
 
 CATEGORIES = { 2: "Africa", 3: "Europe", 4: "Europe", 7: "Soviet Union", 9: "Asia"}
-PALETTE = ImageColor.from_floats(sns.color_palette())
+PALETTE = tmap(RGBA, sns.color_palette())
 
 def colorfn(c):
     if c in ['Sea', 'Borders']: return "white"

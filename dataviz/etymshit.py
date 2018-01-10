@@ -30,7 +30,7 @@ CATEGORIES = [
 ]
 
 GROUPS = [n for n,_ in CATEGORIES]
-COLORS = ImageColor.from_floats(sns.color_palette("Set2", len(CATEGORIES)))
+COLORS = tmap(RGBA, sns.color_palette("Set2", len(CATEGORIES)))
 COLORS[-1], COLORS[7] = COLORS[7], COLORS[-1] # make grey last
 
 def catcol(cat):

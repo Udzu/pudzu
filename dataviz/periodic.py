@@ -30,7 +30,7 @@ assert(countries <= set(list(flags)))
 def table_cell(d):
     if d is None: return Image.new("RGBA", (W+2,H+2), "white")
     c = PALETTE[d['group']]
-    cbg = ImageColor.getrgba(c)._replace(alpha=0)
+    cbg = RGBA(c)._replace(alpha=0)
     flagbase = Image.new("RGBA", (W,H), c)
     n = len(d['countries'])
     flag = flagbase if n == 0 else Image.from_row([Image.from_url_with_cache(flags[d['countries'][i]]).resize((W//n,H)) for i in range(n)])

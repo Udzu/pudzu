@@ -12,7 +12,7 @@ def image_flag(c):
 def average_color(img):
     float_array = np.array(img) / 256
     float_average = [ math.sqrt((float_array[:,:,i] ** 2).mean()) for i in range(float_array.shape[-1])]
-    return ImageColor.getrgba(int(256 * f) for f in float_average)
+    return RGBA(int(256 * f) for f in float_average)
 
 def average_image(imgs, size, weights=None):
     if weights is None: weights = [1 for _ in imgs]

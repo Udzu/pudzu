@@ -109,8 +109,8 @@ city_countries = {
 
 # visualisation
 
-blues = ImageColor.from_floats(sns.color_palette("Blues", 6))
-reds = ImageColor.from_floats(sns.color_palette("Reds", 6))
+blues = tmap(RGBA, sns.color_palette("Blues", 6))
+reds = tmap(RGBA, sns.color_palette("Reds", 6))
 
 COUNTRY_BG = blues[3]
 COUNTRY_LABEL = blues[-1]

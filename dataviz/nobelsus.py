@@ -13,7 +13,7 @@ SIZE = 100
 CMAP = sns.cubehelix_palette(start=.5, rot=-.75, as_cmap=True)
 CATS = ["Physics", "Chemistry", "Physiology and Medicine", "Literature", "Peace", "Economics" ]
 CATPAL = sns.color_palette("colorblind")
-PALETTE = { cat : ImageColor.from_floats(col) for cat,col in zip(CATS, CATPAL) }
+PALETTE = { cat : RGBA(col) for cat,col in zip(CATS, CATPAL) }
 
 nobels = pd.read_csv("datasets/nobels.csv").split_columns('countries', '|').update_columns(birthplace=lambda v: 'UK' if v.startswith('UK') else v)
 uswinners = nobels.filter_boolean(lambda df: df.countries.map(lambda cs: 'US' in cs)).groupby(('birthplace', 'category')).count()['countries']
@@ -30,7 +30,7 @@ def statecell(d):
     nobels = 0 if code not in uswinners else uswinners[code].sum()
     nobelspermil = nobels * 1000000 / d['population']
     winners = sorted(Counter(uswinners[code].to_dict()).elements(), key=lambda v: CATS.index(v)) if nobels > 0 else []
-    color = ImageColor.from_floats(CMAP(nobelspermil / 5)) if nobels > 0 else "#EEEEEE"
+    color = tmap(RGBA, CMAP(nobelspermil / 5)) if nobels > 0 else "#EEEEEE"
     img = Image.new("RGBA", (W,H), color)
     name = Image.from_text("{}".format(d['code']), arial(24,bold=True), fg="black", bg=color)
     boxes = Image.from_array([[Image.new("RGBA", (SIZE//10-2,SIZE//10-2), PALETTE[winners[10*y+x]]).pad(1, 0) if 10*y+x < nobels else None for x in range(10)] for y in range(10)])
@@ -51,7 +51,7 @@ def foreigncell(c):
     if c is None: return Image.new("RGBA", (W,H), "white").pad(1, "white")
     nobels = uswinners[c].sum()
     winners = sorted(Counter(uswinners[c].to_dict()).elements(), key=lambda v: CATS.index(v))
-    img = Image.new("RGBA", (W,H), ImageColor.from_floats(CMAP(0.0)))
+    img = Image.new("RGBA", (W,H), RGBA(CMAP(0.0)))
     flag = Image.from_url_with_cache(flags[c]).resize((W,H))
     img = Image.blend(img, flag.convert("RGBA"), 0.1)
     name = Image.from_text(c, arial(16,bold=True), fg="black")

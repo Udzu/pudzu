@@ -13,7 +13,7 @@ SIZE = 50
 CMAP = sns.cubehelix_palette(start=.5, rot=-.75, as_cmap=True)
 CATS = ["Physics", "Chemistry", "Physiology and Medicine", "Literature", "Peace", "Economics" ]
 CATPAL = sns.color_palette("colorblind")
-PALETTE = { cat : ImageColor.from_floats(col) for cat,col in zip(CATS, CATPAL) }
+PALETTE = { cat : RGBA(col) for cat,col in zip(CATS, CATPAL) }
 NONNATIVE = "#EEEEAA"
 NOPRIZE = "#EEEEEE"
 
@@ -33,7 +33,7 @@ def colorfn(c):
     if cname:
         n = bycountry[cname].sum()
         nobelspermil = n * 1000000 / countries['population'][c]
-        color = ImageColor.from_floats(CMAP(nobelspermil / 5))
+        color = tmap(RGBA, CMAP(nobelspermil / 5))
     else:
         cname = first_or_default(cname for cname in countries['country'][c] if cname in nobels.groupby('birthplace').count()['name'])
         color = NONNATIVE if cname else NOPRIZE

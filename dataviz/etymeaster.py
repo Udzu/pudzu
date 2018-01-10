@@ -8,7 +8,7 @@ import seaborn as sns
 df = pd.read_csv("datasets/etymeaster.csv").split_columns("group", "|").set_index("language")
 
 CATEGORIES = ["pesach", "great", "easter", "meat", "free", "resurrection"]
-PALETTE = ImageColor.from_floats(sns.color_palette())
+PALETTE = tmap(RGBA, sns.color_palette())
 PALETTE = PALETTE[:3] + PALETTE[4:] + PALETTE[3:4]
 
 def catcol(cat):

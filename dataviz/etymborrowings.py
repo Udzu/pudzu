@@ -7,7 +7,7 @@ import seaborn as sns
 # generate map
 df = pd.read_csv("datasets/etymborrowings.csv").set_index("language").assign_rows(word_lc=lambda d: d.word.lower()).sort_values("word_lc")
 
-PALETTE = ImageColor.from_floats(sns.color_palette())
+PALETTE = tmap(RGBA, sns.color_palette())
 
 def colorfn(c):
     if c in ['Sea', 'Language Borders']: return "white"

@@ -9,7 +9,7 @@ df = pd.read_csv("datasets/euborders.csv")
 counts = df.groupby_rows(lambda d: min(10, d["borders"])).count()['country']
 df = df.set_index('country')
 
-palette = ImageColor.from_floats(sns.cubehelix_palette(11, start=0.2, rot=-0.75))
+palette = tmap(RGBA, sns.cubehelix_palette(11, start=0.2, rot=-0.75))
 
 def colorfn(c):
     if c not in df.index:

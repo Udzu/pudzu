@@ -7,7 +7,7 @@ import seaborn as sns
 # generate map
 df = pd.read_csv("datasets/eumonarchies.csv").set_index('country')
 
-republics = ImageColor.from_floats(sns.color_palette("Blues", 4))
+republics = tmap(RGBA, sns.color_palette("Blues", 4))
 monarchies = RGBA(204,85,85,255)
 never = RGBA(207,215,225,255)
 

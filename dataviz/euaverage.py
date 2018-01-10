@@ -13,7 +13,7 @@ def colorfn(c):
         return "white" if c in ['Sea', 'Borders'] else "grey"
     flag_array = np.array(Image.from_url_with_cache(flags['flag'][c]).convert("RGB")) / 256
     float_average = [ math.sqrt((flag_array[:,:,i] ** 2).mean()) for i in range(flag_array.shape[-1])]
-    return ImageColor.getrgba(int(256 * f) for f in float_average)
+    return RGBA(int(256 * f) for f in float_average)
 
 scores = { "AEIOULNSTR": 1, "DG": 2, "BCMP": 3, "FHVWY": 4, "K": 5, "JX": 8, "QZ": 10 }
 scores = { l : s for ls,s in scores.items() for l in ls }

@@ -9,9 +9,9 @@ df = pd.read_csv("datasets/eufemaleleaders.csv")
 df = df.assign_rows(assign_if='hosdate:exists or hogdate:exists', date=lambda d: min(get_non(d,'hosdate',2017), get_non(d,'hogdate',2017)))
 df = df.set_index('country')
 
-hog = ImageColor.from_floats(sns.color_palette("Blues", 6))
-hos = ImageColor.from_floats(sns.light_palette((0.7,0.2,0.1)))
-both = ImageColor.from_floats(sns.color_palette("Purples", 6))
+hog = tmap(RGBA, sns.color_palette("Blues", 6))
+hos = tmap(RGBA, sns.light_palette((0.7,0.2,0.1)))
+both = tmap(RGBA, sns.color_palette("Purples", 6))
 
 def stripe(c1, c2):
     return Image.from_column([Image.new("RGBA", (100,4), c1), Image.new("RGBA", (100,4), c2)])

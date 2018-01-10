@@ -36,7 +36,7 @@ table = table[[ # hack #1 to get nice ordering
 WIDTH = 80
 BAR = 3
 
-PALETTE = ImageColor.from_floats(sns.xkcd_palette(["windows blue", "faded green", "amber", "dusty purple", "red", "brown"]))
+PALETTE = tmap(RGBA, sns.xkcd_palette(["windows blue", "faded green", "amber", "dusty purple", "red", "brown"]))
 CONTINENTS = [ "Europe", "North America", "South America",  "Oceania", "Asia","Africa" ]
 def continent_colour(c):
     return PALETTE[CONTINENTS.index(c)]

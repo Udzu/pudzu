@@ -6,7 +6,7 @@ import seaborn as sns
 
 # generate map
 df = pd.read_csv("datasets/eudeathpenalty.csv").set_index("country")
-palette = ImageColor.from_floats(sns.color_palette())
+palette = tmap(RGBA, sns.color_palette())
 methods = sorted(set(x for x in df.method if not non(x)))
 
 def colorfn(c):

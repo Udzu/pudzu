@@ -34,6 +34,27 @@ Alignment(x=50%, y=50%)
 Alignment(x=0%, y=100%)
 ```
 
+**RGBA**: named tuple representing RGBA colors. Can be initialised by name, integer values, float values or hex strings.
+
+```python
+>> RGBA("yellow")
+RGBA(red=255, green=255, blue=0, alpha=255)
+>> RGBA("yellow")._replace(alpha=0)
+RGBA(red=255, green=255, blue=0, alpha=0)
+>> RGBA("#fafafa")
+RGBA(red=250, green=250, blue=250, alpha=255)
+>> RGBA("#fafafa80")
+RGBA(red=250, green=250, blue=250, alpha=128)
+>> RGBA((100,50,50,5))
+RGBA(red=100, green=50, blue=50, alpha=5)
+>> RGBA(100,50,50,5)
+RGBA(red=100, green=50, blue=50, alpha=5)
+>> RGBA(100,50,50)
+RGBA(red=100, green=50, blue=50, alpha=255)
+>> RGBA(None)
+RGBA(red=0, green=0, blue=0, alpha=0)
+```
+
 **NamedPaletteMeta**: a metaclass to help define named palettes.
 
 ```python
@@ -58,12 +79,12 @@ Alignment(x=0%, y=100%)
 **GradientColormap** and **CompoundColormap**: generate matplotlib-style colormaps (e.g. for use with Image.from_gradient below). GradientColormap generates a colormap from a sequence of RGBA colors, and optionally the intervals between them.
 
 ```python
->> cmap1 = GradientColormap("black", RGBA(0,128,0,128), "#008000", intervals=(1,2))
+>> cmap1 = GradientColormap("black", (0,128,0,128), "#008000", intervals=(1,2))
 >> cmap1
 GradientColormap(0%=#000000ff, 67%=#00800080, 100%=#008000ff)
->> RGBA(*cmap1(0.5, bytes=True))
+>> RGBA(*cmap1(0.5))
 RGBA(red=0, green=112, blue=0, alpha=160)
-> RGBA(*cmap1(5, bytes=True)) # also a discrete colormap
+> RGBA(*cmap1(5)) # also a discrete colormap
 RGBA(red=0, green=128, blue=0, alpha=255)
 >> cmap1.colors
 (RGBA(red=0, green=0, blue=0, alpha=255),
@@ -99,27 +120,10 @@ CompoundColormap generates a colormap from a sequence of other colormaps:
 
 ### ImageColor
 
-**ImageColor.getrgba**: converts a named color or RGB triple to an RGBA named tuple.
+**ImageColor.to_hex**: converts an RGB or RGBA color to hex (ignoring any alpha channel by default). Can be called directly on RGBA named tuples.
 
 ```python
->> ImageColor.getrgba("yellow")
-RGBA(red=255, green=255, blue=0, alpha=255)
->> ImageColor.getrgba("yellow")._replace(alpha=0)
-RGBA(red=255, green=255, blue=0, alpha=0)
->> ImageColor.getrgba("#fafafa")
-RGBA(red=250, green=250, blue=250, alpha=255)
->> ImageColor.getrgba((100,50,50))
-RGBA(red=100, green=50, blue=50, alpha=255)
->> ImageColor.getrgba((100,50,50,5))
-RGBA(red=100, green=50, blue=50, alpha=5)
-```
-
-**ImageColor.to_hex**: converts an RGB or RGBA tuple to hex (ignoring any alpha channel by default). Can be called directly on RGBA named tuples.
-
-```python
->> ImageColor.to_hex("yellow")
-'#ffff00'
->> ImageColor.getrgba("yellow").to_hex()
+>> RGBA("yellow").to_hex()
 '#ffff00'
 >> ImageColor.to_hex((100,50,50))
 '#643232'

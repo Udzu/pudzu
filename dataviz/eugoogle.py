@@ -5,7 +5,7 @@ from bamboo import *
 import seaborn as sns
 
 df = pd.read_csv("datasets/eugoogle.csv").set_index('country')
-palette = ImageColor.from_floats(sns.color_palette())
+palette = tmap(RGBA, sns.color_palette())
 
 def colorfn(c, type, bg):
     if c in ['Sea', 'Borders']: return "white"

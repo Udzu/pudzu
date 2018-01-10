@@ -13,7 +13,7 @@ cmap = sns.cubehelix_palette(start=.5, rot=-.75, as_cmap=True)
 def colorfn0(c):
     if c in ['Sea', 'Borders']: return "white"
     elif c not in df.index: return "#AAAAAA"
-    return ImageColor.from_floats(cmap(df.trilingual[c] / 100))
+    return RGBA(cmap(df.trilingual[c] / 100))
 
 def labelfn0(c, w, h):
     if c not in df.index: return None

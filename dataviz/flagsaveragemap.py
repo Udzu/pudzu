@@ -18,7 +18,7 @@ def colorfn(c, flags, *args):
     if c not in flags.index: return "white" if c in ['Sea', 'Borders'] else "grey"
     flag_array = np.array(Image.from_url_with_cache(flags['flag'][c]).convert("RGB"))
     float_average = [ from_linear(to_linear(flag_array[:,:,i]).mean()) for i in range(flag_array.shape[-1])]
-    return ImageColor.getrgba(int(f) for f in float_average)
+    return RGBA(int(f) for f in float_average)
 
 map1 = map_chart("maps/Europe.png", artial(colorfn, countries))
 map2 = map_chart("maps/USA.png", artial(colorfn, states))

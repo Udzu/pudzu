@@ -256,70 +256,68 @@ class _ImageDraw():
 ImageDraw.text_size = _ImageDraw.text_size
 ImageDraw.word_wrap = _ImageDraw.word_wrap
 
-RGBA = namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])
-
+class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
+    """Named tuple representing RGBA colors. Can be initialised by name, integer values, float values or hex strings."""
+    def __new__(cls, *color):
+        rgba = color
+        if len(rgba) == 1:
+            if not rgba[0]: rgba = (0,0,0,0)
+            elif non_string_iterable(rgba[0]): rgba = rgba[0]
+            elif isinstance(rgba[0], str) and rgba[0].startswith("#"):
+                rgba = [int("".join(v), 16) for v in generate_batches(rgba[0][1:], 2)]
+            elif isinstance(rgba[0], str): rgba = ImageColor.getrgb(rgba[0])
+        if non_string_sequence(rgba, float):
+            rgba = [int(round(x*255)) for x in rgba]
+        if len(rgba) == 3 and all(0 <= x <= 255 for x in rgba):
+            return super().__new__(cls, *rgba, 255)
+        elif len(rgba) == 4 and all(0 <= x <= 255 for x in rgba):
+            return super().__new__(cls, *rgba)
+        else:
+            raise ValueError("Invalid RGBA parameters: {}".format(", ".join(map(str, color))))
+        
 class _ImageColor():
 
     @classmethod
-    def getrgba(cls, color):
-        """Convert color to an RGBA named tuple."""
-        color = tuple(color) if non_string_iterable(color) else ImageColor.getrgb(color)
-        if len(color) not in (3, 4) or not all(0 <= x <= 255 for x in color): 
-            raise ValueError("Invalid RGB(A) color.")
-        if len(color) == 3: color += (255,)
-        return RGBA(*color)
-        
-    @classmethod
-    def to_hex(cls, color, alpha=False):
-        """Convert a color to a hex string."""
-        return "#" + "".join("{:02x}".format(c) for c in cls.getrgba(color)[:3+int(alpha)])
-            
-    @classmethod
     def to_linear(cls, srgb):
-        """Convert a single sRGB color value between 0 and 255 to a linear value between 0 and 1. Numpy-aware."""
+        """Convert a /single/ sRGB color value between 0 and 255 to a linear value between 0 and 1. Numpy-aware."""
         c = srgb / 255
         return np.where(c <= 0.04045, c / 12.92, ((c+0.055)/1.055)**2.4)
 
     @classmethod
     def from_linear(cls, lrgb):
-        """Convert a single linear RGB value between 0 and 1 to an sRGB value between 0 and 255. Numpy-aware."""
+        """Convert a /single/ linear RGB value between 0 and 1 to an sRGB value between 0 and 255. Numpy-aware."""
         c = np.where(lrgb <= 0.0031308, 12.92 * lrgb, (1.055)*lrgb**(1/2.4)-0.055)
         return np.round(c * 255).astype(int)
 
     @classmethod
+    def to_hex(cls, color, alpha=False):
+        """Convert a color to a hex string."""
+        return "#" + "".join("{:02x}".format(c) for c in RGBA(color)[:3+int(alpha)])
+            
+    @classmethod
     def blend(cls, color1, color2, p=0.5, linear_conversion=True):
         """Blend two colours with sRGB gamma correction."""
-        color1, color2 = cls.getrgba(color1), cls.getrgba(color2)
+        color1, color2 = RGBA(color1), RGBA(color2)
         srgb_dims = 3 * int(linear_conversion)
         return RGBA(*[fl(tl(c1) + (tl(c2)-tl(c1))*p) for c1,c2,fl,tl in zip_longest(color1,color2,[cls.from_linear]*srgb_dims,[cls.to_linear]*srgb_dims,fillvalue=round)])
 
     @classmethod
     def brighten(cls, color, p, linear_conversion=True):
         """Brighten a color. Same as blending with white (but preserving alpha)."""
-        color = cls.getrgba(color)
-        white = cls.getrgba("white")._replace(alpha=color.alpha)
+        color = RGBA(color)
+        white = RGBA("white")._replace(alpha=color.alpha)
         return cls.blend(color, white, p, linear_conversion=linear_conversion)
             
     @classmethod
     def darken(cls, color, p, linear_conversion=True):
         """Darken a color. Same as blending with black (but preserving alpha)."""
-        color = cls.getrgba(color)
-        white = cls.getrgba("black")._replace(alpha=color.alpha)
+        color = RGBA(color)
+        white = RGBA("black")._replace(alpha=color.alpha)
         return cls.blend(color, white, p, linear_conversion=linear_conversion)
             
-    @classmethod
-    def from_floats(cls, color):
-        """Convert a 0-1 float color tuple (or a list of such tuples) to 0-255 ints."""
-        if non_string_sequence(color, Real):
-            return cls.getrgba([int(x*255) for x in color])
-        else:
-            return [cls.getrgba([int(x*255) for x in c]) for c in color]
-            
-ImageColor.getrgba = _ImageColor.getrgba
-ImageColor.from_floats = _ImageColor.from_floats
-ImageColor.to_hex = _ImageColor.to_hex
 ImageColor.to_linear = _ImageColor.to_linear
 ImageColor.from_linear = _ImageColor.from_linear
+ImageColor.to_hex = _ImageColor.to_hex
 ImageColor.blend = _ImageColor.blend
 ImageColor.brighten = _ImageColor.brighten
 ImageColor.darken = _ImageColor.darken
@@ -341,7 +339,7 @@ class GradientColormap():
             raise ValueError("Wrong number of colormap intervals: got {}, expected {}".format(len(intervals), len(colors)-1))
         if any(i <= 0 for i in intervals): 
             raise ValueError("Colormap intervals must be positive")
-        self.colors = tmap(ImageColor.getrgba, colors)
+        self.colors = tmap(RGBA, colors)
         self.intervals = [x/sum(intervals) for x in intervals]
         self.accumulated = [0] + list(itertools.accumulate(self.intervals))
         self.linear_conversion = linear_conversion
@@ -409,7 +407,7 @@ class _Image(Image.Image):
         to split text across multiple lines."""
         padding = Padding(padding)
         if bg is None:
-            bg = ImageColor.getrgba(fg)._replace(alpha=0)
+            bg = RGBA(fg)._replace(alpha=0)
         if max_width is not None:
             text = ImageDraw.word_wrap(text, font, max_width, tokenizer, hyphenator)
         w,h = ImageDraw.text_size(text, font, spacing=line_spacing)
@@ -443,7 +441,7 @@ class _Image(Image.Image):
         lengths = ( len(fonts), len(fgs), len(bgs), len(underlines), len(strikethroughs) )
         if not all(l == len(texts) for l in lengths):
             raise ValueError("Number of fonts, fgs, bgs, underlines or strikethroughs is inconsistent with number of texts: got {}, expected {}".format(lengths, len(texts)))
-        bgs = [bg if bg is not None else ImageColor.getrgba(fg)._replace(alpha=0) for fg, bg in zip(fgs, bgs)]
+        bgs = [bg if bg is not None else RGBA(fg)._replace(alpha=0) for fg, bg in zip(fgs, bgs)]
         imgs = [cls.from_text(text, font, fg, bg) for text, font, fg, bg in zip(texts, fonts, fgs, bgs)]
         ascents = [font.getmetrics()[0] for font in fonts]
         max_ascent = max(ascents)
@@ -680,8 +678,8 @@ class _Image(Image.Image):
         if 'RGB' not in self.mode:
             raise NotImplementedError("replace_color expects RGB/RGBA image")
         n = 3 if (self.mode == 'RGB' or ignore_alpha) else 4
-        color1 = ImageColor.getrgba(color1)[:n]
-        color2 = ImageColor.getrgba(color2)[:n]
+        color1 = RGBA(color1)[:n]
+        color2 = RGBA(color2)[:n]
         data = np.array(self)
         mask = _nparray_mask_by_color(data, color1, n)
         data[:,:,:n][mask] = color2
@@ -692,14 +690,14 @@ class _Image(Image.Image):
         if 'RGB' not in self.mode:
             raise NotImplementedError("replace_color expects RGB/RGBA image")
         data = np.array(self)
-        color = ImageColor.getrgba(color)[:data.shape[-1]]
+        color = RGBA(color)[:data.shape[-1]]
         mask = _nparray_mask_by_color(data, color)
         return Image.fromarray(mask * 255).convert("1")
         
     def remove_transparency(self, bg="white"):
         """Return an image with the transparency removed"""
         if not self.mode.endswith('A'): return self
-        bg = ImageColor.getrgba(bg)._replace(alpha=255)
+        bg = RGBA(bg)._replace(alpha=255)
         alpha = self.convert("RGBA").split()[-1]
         img = Image.new("RGBA", self.size, bg)
         img.paste(self, mask=alpha)
@@ -834,7 +832,7 @@ class ImageShape(object):
         - invert (boolean): whether to invert the shape mask [False]
         """
         if isinstance(size, Integral): size = (size, size)
-        if bg is None: bg = ImageColor.getrgba(fg)._replace(alpha=0)
+        if bg is None: bg = RGBA(fg)._replace(alpha=0)
         if cls.antialiasing:
             orig_size, size = size, [round(s * antialias) for s in size]
             if isinstance(bg, Image.Image): bg = bg.resize([round(s * antialias) for s in bg.size], Image.NEAREST)

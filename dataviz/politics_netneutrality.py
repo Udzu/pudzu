@@ -3,7 +3,7 @@ sys.path.append('..')
 from charts import *
 import seaborn as sns
 
-PALETTE = ImageColor.from_floats(sns.color_palette())
+PALETTE = tmap(RGBA, sns.color_palette())
 DCOL = PALETTE[0]
 RCOL = PALETTE[2]
 ICOL = RGBA(126, 164, 226, 255)

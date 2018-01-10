@@ -9,7 +9,7 @@ CONFEDERATE = ["South Carolina", "Mississippi", "Florida", "Alabama", "Georgia",
 UNION = ["California", "Connecticut", "Illinois", "Indiana", "Iowa", "Kansas", "Maine", "Massachusetts", "Michigan", "Minnesota", "Nevada", "New Hampshire", "New Jersey", "New York", "Ohio", "Oregon", "Pennsylvania", "Rhode Island", "Vermont", "Dist. of Col.", "Wisconsin"]
 BORDER = ["Delaware", "Kentucky", "Maryland", "Missouri", "West Virginia"]
 
-PALETTE = ImageColor.from_floats(sns.color_palette())
+PALETTE = tmap(RGBA, sns.color_palette())
 DCOL = PALETTE[0]
 RCOL = PALETTE[2]
 EVENTBG = "#555555"

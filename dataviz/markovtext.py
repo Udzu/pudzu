@@ -49,8 +49,8 @@ index = sorted([(x, g1.prob_dict[(x,)] / sum(g1.prob_dict.values())) for x in LE
 array = [[(y,n / sum(g1.markov_dict[(x,)].values())) for y,n in g1.markov_dict[(x,)].most_common()] for x,_ in index]
 data = pd.DataFrame(array, index=index)
 
-pone = ImageColor.from_floats(sns.color_palette("Reds", 8))
-ptwo = ImageColor.from_floats(sns.color_palette("Blues", 8))
+pone = tmap(RGBA, sns.color_palette("Reds", 8))
+ptwo = tmap(RGBA, sns.color_palette("Blues", 8))
 color_index = lambda p: 0 if p == 0 else delimit(6 + int(log(p, 10) * 2), 0, 6)
 
 def image_fn(pair, palette, row=None, size=40):

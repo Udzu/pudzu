@@ -13,7 +13,7 @@ PALETTE_ARGS = { 'start': 0.2, 'rot': -0.75, 'hue': 0.9, 'light': 0.85 }
 
 mapnames = load_name_csv(MAP)
 uncolored = [d['name'] for _,d in mapnames.iterrows() if d['name'] not in MERGE and d['name'] not in COLOR]
-palette = ImageColor.from_floats(sns.cubehelix_palette(len(uncolored), **PALETTE_ARGS))
+palette = tmap(RGBA, sns.cubehelix_palette(len(uncolored), **PALETTE_ARGS))
 palette = riffle_shuffle(palette, 6)
 palette = { c : p for c,p in zip(uncolored, palette) }
 palette['Estonia'], palette['Belarus'] = palette['Belarus'], palette['Estonia']
@@ -24,7 +24,7 @@ def colorfn(c):
     else: return palette[c]
 
 def mask_by_color(nparray, color):
-    color = ImageColor.getrgba(color)
+    color = RGBA(color)
     channels = [nparray[...,i] for i in range(nparray.shape[-1])]
     mask = np.ones(nparray.shape[:-1], dtype=bool)
     for c,channel in zip(color, channels):

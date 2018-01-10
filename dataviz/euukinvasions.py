@@ -7,8 +7,8 @@ import seaborn as sns
 df = pd.read_csv("datasets/euukinvasions.csv").set_index('country')
 
 invaded = RGBA(204,85,85,255)
-parent = ImageColor.from_floats(sns.color_palette("Reds", 4))[1] #RGBA(204,125,85,255)
-supported = ImageColor.from_floats(sns.color_palette("Greens", 4))[-2]
+parent = tmap(RGBA, sns.color_palette("Reds", 4))[1] #RGBA(204,125,85,255)
+supported = tmap(RGBA, sns.color_palette("Greens", 4))[-2]
 
 def colorfn(c):
     if c in ['Sea', 'Borders']: return "white"

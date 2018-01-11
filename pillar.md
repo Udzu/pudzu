@@ -133,7 +133,7 @@ CompoundColormap generates a colormap from a sequence of other colormaps:
 '#64323205'
 ```
 
-**ImageColor.blend**: blend two colors together, using sRGB gamma correction by default. Similarly, **ImageColor.brighten** and **ImageColor.darken** blend with white and black, while preserving alpha. Can be called directly on RGBA named tuples.
+**ImageColor.blend**: blend two colors together, using sRGB gamma correction by default. Similarly, **ImageColor.brighten** and **ImageColor.darken** blend with white and black, while preserving alpha. Can be called directly on RGBA named tuples. Also see **Image.Image.blend**.
 
 ```python
 >> ImageColor.blend("blue", "red", 0.5)
@@ -378,6 +378,16 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 ```
 
 ![alt](images/croptoaspect2.png)
+
+**Image.Image.blend**: blends two images together, using sRGB gamma correction by default. Similarly, **ImageColor.brighten** and **ImageColor.darken** blend with white and black, while preserving alpha. Requires numpy.
+
+```python
+>>  Image.from_row([smallflag.darken(0.5),
+                    smallflag.blend(Rectangle(smallflag.size, "green"), 0.5),
+                    smallflag.brighten(0.5)]).show()
+```
+
+![alt](images/blend.png)
 
 **Image.Image.replace_color**: return an image with one color replaced by another. Requires numpy.
 

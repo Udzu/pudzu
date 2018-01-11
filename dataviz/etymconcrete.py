@@ -8,11 +8,11 @@ df = pd.read_csv("datasets/etymconcrete.csv").set_index("language")
 CATEGORIES = ["beton", "concrete", "formigon", "calcestruzzo", "skyrodema", "cruadhtan", "steypa"]
 DESCRIPTIONS = ["from French **béton**, from Latin //bitumen// (pitch)",
 "from English **concrete**, from Latin //concretus// (hardened)",
-"possibly from Latin **formicare** (mold), or perhaps from Spanish **hormigo** (cake made of bread crumbs)",
+"possibly from Latin **formicare** (mould), or perhaps from Spanish **hormigo** (cake made of bread crumbs)",
 "Italian **calcestruzzo**, from Latin //calcis structio// (limestone structure)",
 "Greek **σκυρόδεμα** (gravel-tied)",
 "Scottish Gaelic **cruadhtan**, from //cruaidh// (hard)",
-"Icelandic **steypa**, from Old Norse"]
+"Icelandic **steypa**, from Old Norse //steypa// (mould)"]
 PALETTE = VegaPalette10
 FOOTER = None
  

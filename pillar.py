@@ -805,9 +805,12 @@ Image.Image.add_grid = _Image.add_grid
 Image.Image.add_shadow = _Image.add_shadow
 
 def font(name, size, bold=False, italics=False, **kwargs):
-    """Return a truetype font object."""
-    variants = [["", "i"], ["bd", "bi"]]
-    return ImageFont.truetype("{}{}.ttf".format(name, variants[bold][italics]), size, **kwargs)
+    """Return a truetype font object. Name is either a sequence of 4 names representing
+    normal, italics, bold and bold-italics variants, or just a single name (in which the
+    suffixes i, bd and bi are used for the variants)."""
+    if isinstance(name, str): name = [name+suffix for suffix in ["", "i", "bd", "bi"]]
+    variants = list(generate_batches(name, 2))
+    return ImageFont.truetype("{}.ttf".format(variants[bold][italics]), size, **kwargs)
 
 arial = partial(font, "arial")
 

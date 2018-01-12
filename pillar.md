@@ -107,7 +107,7 @@ CompoundColormap generates a colormap from a sequence of other colormaps:
 
 ![alt](images/colormapcompound.png)
 
-**font**: shorthand function for generating a truetype font object with standard variant naming (e.g. arialbd for bold). Also, **arial** is defined explicitly for the Arial family.
+**font**: shorthand function for generating a truetype font object defaulting to standard variant naming (e.g. arialbd for bold). Also, **arial** is defined explicitly for the Arial family.
 
 ```python
 >> font("times", 24, italics=True)

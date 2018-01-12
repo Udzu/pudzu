@@ -3,6 +3,7 @@ from pillar import *
 from os.path import splitext
 from enum import Enum
 from dates import *
+from functools import reduce
     
 # Random collection of Pillow-based charting functions
 
@@ -77,7 +78,7 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16), fg="bl
 
 class BarChartType(Enum):
     """Bar Chart types."""
-    SIMPLE, STACKED, STACKED_PERCENTAGE = range(3)
+    SIMPLE, STACKED, STACKED_PERCENTAGE, OVERLAYED = range(4)
 
 class BarChartLabelPosition(Enum):
     """Bar Chart label position."""
@@ -122,7 +123,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
     """
     
     # Arguments and defaults
-    if type == BarChartType.SIMPLE:
+    if type in [BarChartType.SIMPLE, BarChartType.OVERLAYED]:
         if ymin is None:
             ymin = min(0, floor_significant(data.values.min(), 1))
         if ymax is None:
@@ -148,10 +149,12 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
         ymin = 0
         ymax = 1
       
-    clabel_dict = make_mapping(clabels, lambda: BarChartLabelPosition.AXIS if type == BarChartType.SIMPLE else BarChartLabelPosition.INSIDE)
+    clabel_dict = make_mapping(clabels, lambda: BarChartLabelPosition.AXIS if type == BarChartType.SIMPLE else 
+                                                BarChartLabelPosition.OUTSIDE if type == BarChartType.OVERLAYED else
+                                                BarChartLabelPosition.INSIDE)
     rlabel_dict = make_mapping(rlabels, lambda: BarChartLabelPosition.BELOW)
     
-    if type == BarChartType.SIMPLE:
+    if type in [BarChartType.SIMPLE, BarChartType.OVERLAYED]:
         if not all(k in [BarChartLabelPosition.ABOVE, BarChartLabelPosition.BELOW] for k in rlabel_dict.keys()):
             raise ValueError("Row labels in simple charts must above or below the chart.")
     else:
@@ -236,6 +239,9 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
             group = Image.from_column(reversed(group_bars), bg=bgtransparent)
             group = group.pad_to_aspect(group.width, chart_height, align=1, bg=0)
             group = group.pad((0,0,0,1), bg=0)
+        elif type == BarChartType.OVERLAYED:
+            ordered = [bar for bar,_ in sorted(zip(group_bars, row), key=lambda p: abs(p[1]), reverse=True)]
+            group = reduce(lambda img,bar: img.place(bar), ordered[1:], ordered[0])
         else:
             group = Image.from_row(group_bars, padding=(group_spacing,0), bg=bgtransparent, yalign=0)
         groups.append(group)
@@ -290,9 +296,12 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
                 if label is None:
                     continue
                 elif isinstance(label, ImageFont.FreeTypeFont):
-                    label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bg, padding=hzsize((0,2)))
-                x = (r * (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) +
-                     spacing + c * (bar_width + 2 * group_spacing) + group_spacing + bar_width // 2)
+                    label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bgtransparent, padding=hzsize((0,2)))
+                if type == BarChartType.SIMPLE:
+                    x = (r * (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) +
+                         spacing + c * (bar_width + 2 * group_spacing) + group_spacing + bar_width // 2)
+                else:
+                    x = r * (bar_width + 2 * spacing) + spacing + bar_width // 2
                 if clabels_pos == BarChartLabelPosition.AXIS:
                     y = y_coordinate_fn(0) + int(v >= 0)
                 elif clabels_pos == BarChartLabelPosition.OUTSIDE:
@@ -312,7 +321,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
                 continue
             elif isinstance(label, ImageFont.FreeTypeFont):
                 label = Image.from_text(str(data.index[r]), label, fg=fg, bg=bg, padding=hzsize((0,2)))
-            if type in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE]:
+            if type in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE, BarChartType.OVERLAYED]:
                 x = (r * (bar_width + 2 * spacing) + (bar_width + 2 * spacing) // 2)
             else:
                 x = (r * (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) +

@@ -6,7 +6,7 @@ Breton,skinwel,other
 Bulgarian,телеви́зия
 Catalan,televisió
 Czech,televize
-Danish,fjernsyn,calque
+Danish,tv/\nfjernsyn,calque|tv
 Dutch,televisie
 English,television
 Estonian,televisioon 
@@ -21,13 +21,13 @@ Icelandic,sjónvarp,other
 Irish,teilifís,tele
 Italian,televisione
 Latin,tēlevīsiō
-Latvian,televīzija
-Lithuanian,televizija/\ntālrāde,tv|calque
+Latvian,televīzija/\ntālrāde,tv|calque
+Lithuanian,televizija
 Luxembourgish,Televisioun
 Macedonian,телеви́зија
 Maltese,televixin
 Monégasque,televixon
-Norwegian,fjernsyn,calque
+Norwegian,tv/\nfjernsyn,calque|tv
 Polish,telewizja
 Portuguese,televisão
 Romanian,televiziune

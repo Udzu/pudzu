@@ -8,7 +8,7 @@ from collections import namedtuple
 from enum import Enum
 from functools import partial
 from io import BytesIO
-from itertools import zip_longest
+from itertools import zip_longest, chain
 from numbers import Real, Integral
 from urllib.parse import urlparse
 from urllib.request import urlopen
@@ -269,7 +269,7 @@ class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
         if non_string_sequence(rgba, float):
             rgba = [int(round(x*255)) for x in rgba]
         if len(rgba) == 3 and all(0 <= x <= 255 for x in rgba):
-            return super().__new__(cls, *rgba, 255)
+            return super().__new__(cls, *chain(rgba, [255]))
         elif len(rgba) == 4 and all(0 <= x <= 255 for x in rgba):
             return super().__new__(cls, *rgba)
         else:

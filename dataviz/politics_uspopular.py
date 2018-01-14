@@ -76,8 +76,8 @@ title = Image.from_column([
     , Image.from_text("% margin since 1860 between the election winner and loser with most votes".upper(), arial(36), bg="white")
     ], bg="white", padding=(0, 5)).pad((0,0,0,10), "white")
 
-img = bar_chart(votes[["margin"]], 62, 1000, spacing=2, colors=color_fn, clabels={BarChartLabelPosition.OUTSIDE : clabel_fn },
-    ymin=-0.0501, ymax=0.301, label_interval=0.05, grid_interval=0.025, ylabels=arial(FONT_SIZE), yformat=lambda v: "+"*int(v>0)+"{:.0%}".format(v), ylabel=ylabel, title=title)
+img = bar_chart(votes[["margin"]], 62, 1000, spacing=2, colors=color_fn, rlabels=None, clabels={BarChartLabelPosition.OUTSIDE : clabel_fn },
+    ymin=-0.0501, ymax=0.301, label_interval=0.05, grid_interval=0.025, label_font=arial(FONT_SIZE), ylabels=lambda v: "+"*int(v>0)+"{:.0%}".format(v), ylabel=ylabel, title=title)
 
 # Photos
 PHOTOS = [

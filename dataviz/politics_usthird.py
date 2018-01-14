@@ -72,8 +72,8 @@ title = Image.from_column([
     , Image.from_text("non-Democrat/Republican candidates with highest popular vote share since 1860".upper(), arial(32), bg="white", padding=2)
     ], bg="white").pad((0,0,0,10), "white")
 
-img = bar_chart(votes[["percent"]], 30, 1000, spacing=1, colors=color_fn, clabels={BarChartLabelPosition.OUTSIDE: ep_label_fn, BarChartLabelPosition.INSIDE: pc_label_fn, BarChartLabelPosition.AXIS: name_label_fn},
-    ymin=0, ymax=0.301, label_interval=0.05, grid_interval=0.01, ylabels=arial(FONT_SIZE), yformat="{:.0%}", ylabel=ylabel, horizontal=True)
+img = bar_chart(votes[["percent"]], 30, 1000, spacing=1, colors=color_fn, clabels={BarChartLabelPosition.OUTSIDE: ep_label_fn, BarChartLabelPosition.INSIDE: pc_label_fn, BarChartLabelPosition.AXIS: name_label_fn}, rlabels=None,
+    ymin=0, ymax=0.301, label_interval=0.05, grid_interval=0.01, label_font=arial(FONT_SIZE), ylabels="{:.0%}", ylabel=ylabel, horizontal=True)
     
 boxes = [Rectangle(56, c).place(Image.EMPTY_IMAGE if len(i) == 0 else Image.from_url_with_cache(i[0]).crop_to_aspect(1).resize_fixed_aspect(width=48)) for _,_,_,c,*i in LEGEND]
 labels = [Image.from_column([

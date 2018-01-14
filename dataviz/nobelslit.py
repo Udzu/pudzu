@@ -62,7 +62,7 @@ def rlabelfn(r):
     return Image.from_text(catlabels[table.index[r]], arial(14, bold=False), "black", "white", align="center", padding=2, max_width=WIDTH)
     
 ymax = 100
-chart = bar_chart(table, WIDTH, BAR*2*ymax, type=BarChartType.STACKED, spacing=10, colors=colorfn, grid_interval=10, tick_interval=5, ylabels=arial(14), rlabels=rlabelfn, bg="white", fg="black", ylabel=Image.from_text("# Nobel Literature laureates", arial(14), padding=(0,2,0,10), bg="white").transpose(Image.ROTATE_90), ymax=ymax)
+chart = bar_chart(table, WIDTH, BAR*2*ymax, type=BarChartType.STACKED, spacing=10, colors=colorfn, grid_interval=10, tick_interval=5, label_font=arial(14), rlabels=rlabelfn, bg="white", fg="black", ylabel=Image.from_text("# Nobel Literature laureates", arial(14), padding=(0,2,0,10), bg="white").transpose(Image.ROTATE_90), ymax=ymax, clabels=None)
 
 def lbox(c):
     count = counts.select(lambda cs: c in cs).sum()

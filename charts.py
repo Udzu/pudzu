@@ -316,6 +316,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
                 chart = chart.pin(hzimg(label), (x, y), align=(0.5,int(label_at_top)), bg=bg, offsets=offsets)
     
     # Row labels
+    old_offsets = Padding(offsets)
     for rlabels_pos, rlabel_fn in rlabel_dict.items():
         for r, row in enumerate(data.values):
             label = rlabel_fn(r)
@@ -329,9 +330,9 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
                 x = (r * (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) +
                      (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) // 2)
             if rlabels_pos ==  BarChartLabelPosition.ABOVE:
-                chart = chart.pin(hzimg(label), (x, 0), align=(0.5,1), bg=bg, offsets=offsets)
+                chart = chart.pin(hzimg(label), (x, -old_offsets.u), align=(0.5,1), bg=bg, offsets=offsets)
             elif rlabels_pos ==  BarChartLabelPosition.BELOW:
-                chart = chart.pin(hzimg(label), (x, chart.height - offsets.y), align=(0.5,0), bg=bg, offsets=offsets)
+                chart = chart.pin(hzimg(label), (x, chart.height-offsets.y+old_offsets.d), align=(0.5,0), bg=bg, offsets=offsets)
             # TODO: support OUTSIDE rlabels in stacked mode
         
     # Background

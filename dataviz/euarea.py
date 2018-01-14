@@ -17,11 +17,11 @@ Image.from_text(name, arial(14, bold=False), "black", align="center", padding=1)
 Image.from_text(df.description[r] if df.description[r] == " " else "({})".format(df.description[r].replace("\\n","\n")), arial(10, bold=False), "black", align="center", padding=1)
 ], bg="white")
 def clabel(c,r,v): return Image.from_text("{:.1%}".format(v), arial(14, bold=False), "white")
-def clabel_overflow(c,r,v): return None if v > 0 else Image.from_text("0%", arial(14, bold=False), "black", padding=2)
+def clabel_overflow(c,r,v): return None if v > 0 else "0%"
     
 chart = bar_chart(df[['ratio']], 90, 600, 
     spacing=5, ymax=1, colors=["#003399"], rlabels=rlabel, clabels={ BarChartLabelPosition.INSIDE : clabel, BarChartLabelPosition.OUTSIDE : clabel_overflow},
-    grid_interval=0.1, label_interval=0.1, ylabels=arial(14, bold=False), yformat="{:.0%}", ylabel=ylabel)
+    grid_interval=0.1, label_interval=0.1, label_font=arial(14, bold=False), ylabels="{:.0%}", ylabel=ylabel)
 
 title = Image.from_column([
 Image.from_text("% of European countries’ area which is in Europe".upper(), arial(40, bold=True), padding=(5,10,5,2)),

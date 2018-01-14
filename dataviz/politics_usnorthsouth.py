@@ -91,7 +91,7 @@ title = Image.from_column([
     ], bg="white", padding=(0, 5)).pad((0,0,0,10), "white")
 
 img = bar_chart(votes[["leaning"]], 62, 1000, spacing=2, colors=color_fn, clabels={ BarChartLabelPosition.OUTSIDE : clabel_fn},
-    ymin=-1, ymax=1, grid_interval=0.125, ylabels=arial(FONT_SIZE), yformat=ylabel_fn, ylabel=ylabel, title=title)
+    ymin=-1, ymax=1, grid_interval=0.125, label_font=arial(FONT_SIZE), ylabels=ylabel_fn, rlabels=None, ylabel=ylabel, title=title)
     
 # Add time chart
 events = pd.DataFrame([{ "group": "event", "name": n, "start": dateparser.parse(s).date(), "end": dateparser.parse(e).date() } for n,s,e in EVENTS])

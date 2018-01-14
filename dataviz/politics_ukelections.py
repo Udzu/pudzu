@@ -30,8 +30,8 @@ def clabelfn(c,r,v,x,y):
     return Image.from_text_bounded(label, (x,y), 10, arial, bg=colorfn(c,r,v), fg="white")
     
 chart = bar_chart(vote_data, 40, 400, type=BarChartType.STACKED, colors=colorfn,
-                  spacing=5, rlabels=arial(12), ylabels=arial(12), clabels=clabelfn,
-                  yformat=lambda v: str(v)[0:2]+" million" if v > 0 else "0",
+                  spacing=5, label_font=arial(12), clabels=clabelfn,
+                  ylabels=lambda v: str(v)[0:2]+" million" if v > 0 else "0",
                   grid_interval=10000000, tick_interval=5000000)
 
 def legend_row(label, color):

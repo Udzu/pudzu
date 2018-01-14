@@ -13,10 +13,9 @@ def rlabel(r):
         Image.from_text(df.index[r], arial(12, bold=False), "black", max_width=55)
     ], bg="white", padding=(0,2))
 
-chart = bar_chart(df, 50, 500, type=BarChartType.OVERLAYED, spacing=2,
-    clabels=lambda c,r,v: None if df.index[r] == "Iran" and v == 0.4 else Image.from_text("{}%".format(v), arial(12)).pad((0,2), 0),
-    rlabels=rlabel,
-    grid_interval=10, ylabels=arial(12), yformat="{}%",
+chart = bar_chart(df, 50, 500, type=BarChartType.OVERLAYED, spacing=2, label_font=arial(12),
+    clabels=lambda c,r,v: None if df.index[r] == "Iran" and v == 0.4 else "{}%".format(v),
+    rlabels=rlabel, grid_interval=10, ylabels="{}%",
     legend_position=(1,0), legend_fonts=papply(arial, 14), legend_box_sizes=30, legend_args={"header": "Percentages"},
     ylabel=Image.from_text("% of population that is Christian", arial(14), padding=(5,2,5,10), bg="white").transpose(Image.ROTATE_90))
     

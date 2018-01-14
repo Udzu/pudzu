@@ -86,9 +86,9 @@ class BarChartLabelPosition(Enum):
 
 def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizontal=False, 
               fg="black", bg="white", spacing=0, group_spacing=0,
-              ymin=None, ymax=None, grid_interval=None,
-              tick_interval=Ellipsis, label_interval=Ellipsis, ylabels=None, yformat=None, 
-              colors=VegaPalette10, clabels=None, rlabels=None,
+              ymin=None, ymax=None, grid_interval=None, tick_interval=Ellipsis, 
+              label_interval=Ellipsis, label_font=None, colors=VegaPalette10, 
+              ylabels=Ellipsis, clabels=Ellipsis, rlabels=Ellipsis,
               xlabel=None, ylabel=None, title=None,
               legend_position=None, legend_fonts=papply(arial, 16),legend_box_sizes=(40,40), legend_args={}):
     """Plot a bar chart.
@@ -106,11 +106,11 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
     - grid_interval (float): grid line interval [zero line only]
     - tick_interval (float): tick line interval [grid_interval]
     - label_interval (float): y label interval [grid_interval]
-    - ylabels (value -> image/font): image or font to use for y-axis labels [none]
-    - yformat (string/value->string): formatting for y values if ylabels is a font [3 sig figs, or % for stacked]
+    - label_font (font): font to use for text labels [none]
     - colors (col, row, value -> color/image/(size->image)): color or image to use for bars [Vega palette]
-    - clabels (col, row, value -> image/font): image or font to use for column labels; optionally a dict keyed by BarChartLabelPosition [none]
-    - rlabels (row -> image/font): image or font to use for row labels; optionally a dict keyed by BarChartLabelPosition [none]
+    - ylabels (format/value -> image/string): format string or image or text to use for y-axis labels [3 sig figs, or % for stacked]
+    - clabels (col,row,value,(width,height) -> image/string): image or text to use for column labels; optionally a dict keyed by BarChartLabelPosition [value]
+    - rlabels (row -> image/string): image or font to use for row labels; optionally a dict keyed by BarChartLabelPosition [row name]
     - xlabel (image): image to use for x axis label [none]
     - ylabel (image): image to use for y axis label [none]
     - title (image): image to use for title [none]
@@ -152,7 +152,9 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
     clabel_dict = make_mapping(clabels, lambda: BarChartLabelPosition.AXIS if type == BarChartType.SIMPLE else 
                                                 BarChartLabelPosition.OUTSIDE if type == BarChartType.OVERLAYED else
                                                 BarChartLabelPosition.INSIDE)
+    clabel_dict = valmap((lambda v: (lambda c,r,v: str(v)) if v == Ellipsis else v), clabel_dict)
     rlabel_dict = make_mapping(rlabels, lambda: BarChartLabelPosition.BELOW)
+    rlabel_dict = valmap((lambda v: (lambda r: str(data.index[r])) if v == Ellipsis else v), rlabel_dict)
     
     if type in [BarChartType.SIMPLE, BarChartType.OVERLAYED]:
         if not all(k in [BarChartLabelPosition.ABOVE, BarChartLabelPosition.BELOW] for k in rlabel_dict.keys()):
@@ -171,20 +173,19 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
         label_interval = grid_interval
 
     def make_fn_arg(input):
-        if non_string_iterable(input) and not all(isinstance(x, Integral) for x in input): return lambda *args: input[args[0] % len(input)]
+        if non_string_iterable(input): return lambda *args: input[args[0] % len(input)]
         elif not callable(input): return lambda *args: input
         else: return ignoring_extra_args(input)
 
     color_fn = make_fn_arg(colors)
     clabel_dict = valmap(make_fn_arg, clabel_dict)
     rlabel_dict = valmap(make_fn_arg, rlabel_dict)
-    ylabel_fn = make_fn_arg(ylabels)
     lsize_fn = make_fn_arg(legend_box_sizes)
     if legend_position: lalign = Alignment(legend_position)
 
-    if yformat is None:
-        yformat = "{:.0%}" if type == BarChartType.STACKED_PERCENTAGE else "{0:.3g}"
-    yformat_fn = yformat if callable(yformat) else lambda v: yformat.format(v)
+    if ylabels == Ellipsis:
+        ylabels = "{:.0%}" if type == BarChartType.STACKED_PERCENTAGE else "{0:.3g}"
+    ylabel_fn = ylabels if callable(ylabels) else lambda v: ylabels.format(v)
 
     # Helpers
     tick_size = 0 if tick_interval is None else bar_width // 4
@@ -220,9 +221,9 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
             def with_inside_label(bar):
                 if BarChartLabelPosition.INSIDE in clabel_dict:
                     label = clabel_dict[BarChartLabelPosition.INSIDE](c,r,v,bar.width,bar.height)
+                    if isinstance(label, str):
+                        label = Image.from_text(label, label_font, fg=fg) if label_font else None
                     if label is not None:
-                        if isinstance(label, ImageFont.FreeTypeFont):
-                            label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bgtransparent)
                         return bar.place(hzimg(label))
                 return bar
                     
@@ -283,9 +284,10 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
         for i in range(ceil(ymin / label_interval), floor(ymax / label_interval) + 1):
             y = i * label_interval
             label = ylabel_fn(y)
-            if isinstance(label, ImageFont.FreeTypeFont):
-                label = Image.from_text(yformat_fn(y), label, fg=fg, bg=bg)
-            chart = chart.pin(hzimg(label), (-tick_size-10, y_coordinate_fn(y)), align=(1,0.5), bg=bg, offsets=offsets)
+            if isinstance(label, str):
+                label = Image.from_text(label, label_font, fg=fg) if label_font else None
+            if label is not None:
+                chart = chart.pin(hzimg(label), (-tick_size-10, y_coordinate_fn(y)), align=(1,0.5), bg=bg, offsets=offsets)
        
     # Column labels
     for clabels_pos, clabel_fn in clabel_dict.items():
@@ -293,10 +295,10 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
         for r, row in enumerate(data.values):
             for c, v in enumerate(row):
                 label = clabel_fn(c,r,v)
+                if isinstance(label, str):
+                    label = Image.from_text(label, label_font, fg=fg, padding=hzsize((0,2)))  if label_font else None
                 if label is None:
                     continue
-                elif isinstance(label, ImageFont.FreeTypeFont):
-                    label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bgtransparent, padding=hzsize((0,2)))
                 if type == BarChartType.SIMPLE:
                     x = (r * (len(data.columns) * (bar_width + 2 * group_spacing) + 2 * spacing) +
                          spacing + c * (bar_width + 2 * group_spacing) + group_spacing + bar_width // 2)
@@ -317,10 +319,10 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
     for rlabels_pos, rlabel_fn in rlabel_dict.items():
         for r, row in enumerate(data.values):
             label = rlabel_fn(r)
+            if isinstance(label, str):
+                label = Image.from_text(label, label_font, fg=fg, padding=hzsize((0,2))) if label_font else None
             if label is None:
                 continue
-            elif isinstance(label, ImageFont.FreeTypeFont):
-                label = Image.from_text(str(data.index[r]), label, fg=fg, bg=bg, padding=hzsize((0,2)))
             if type in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE, BarChartType.OVERLAYED]:
                 x = (r * (bar_width + 2 * spacing) + (bar_width + 2 * spacing) // 2)
             else:

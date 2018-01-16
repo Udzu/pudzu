@@ -261,8 +261,8 @@ class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
     def __new__(cls, *color):
         rgba = color
         if len(rgba) == 1:
-            if not rgba[0]: rgba = (0,0,0,0)
-            elif non_string_iterable(rgba[0]): rgba = rgba[0]
+            if non_string_iterable(rgba[0]): rgba = rgba[0]
+            elif not rgba[0]: rgba = (0,0,0,0)
             elif isinstance(rgba[0], str) and rgba[0].startswith("#"):
                 rgba = [int("".join(v), 16) for v in generate_batches(rgba[0][1:], 2)]
             elif isinstance(rgba[0], str): rgba = ImageColor.getrgb(rgba[0])

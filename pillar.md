@@ -76,7 +76,7 @@ RGBA(red=0, green=0, blue=0, alpha=0)
 ('RED', 'GREEN', 'BLUE')
 ```
 
-**GradientColormap** and **CompoundColormap**: generate matplotlib-style colormaps (e.g. for use with Image.from_gradient below). GradientColormap generates a colormap from a sequence of RGBA colors, and optionally the intervals between them.
+**GradientColormap**: generate matplotlib-style colormap (e.g. for use with Image.from_gradient below) from a sequence of RGBA colors, and optionally the intervals between them.
 
 ```python
 >> cmap1 = GradientColormap("black", (0,128,0,128), "#008000", intervals=(1,2))
@@ -95,7 +95,7 @@ RGBA(red=0, green=128, blue=0, alpha=255)
 
 ![alt](images/colormapgradient.png)
 
-CompoundColormap generates a colormap from a sequence of other colormaps:
+**CompoundColormap**: generate a colormap from a sequence of other colormaps:
 
 ```python
 >> import seaborn as sns
@@ -106,6 +106,15 @@ CompoundColormap generates a colormap from a sequence of other colormaps:
 ```
 
 ![alt](images/colormapcompound.png)
+
+**ConstantColormap**: generate a colormap from a sequence of constant colors:
+
+```python
+>> cmap3 = ConstantColormap("#008000", cmap2(0., bytes=True), cmap2(1., bytes=True), intervals=(3,1,3))
+>> Image.from_gradient(cmap3, (100,20)).show()
+```
+
+![alt](images/colormapconstant.png)
 
 **font**: shorthand function for generating a truetype font object defaulting to standard variant naming (e.g. arialbd for bold). Also, **arial** is defined explicitly for the Arial family.
 
@@ -254,7 +263,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/frompattern3.png)
 
-**Image.from_gradient**: create a gradient image using a matplotlib-style color map. Requires numpy. Also see GradientColormap and CompoundColormap above.
+**Image.from_gradient**: create a gradient image using a matplotlib-style color map. Requires numpy. Also see colormaps above.
 
 ```python
 >> Image.from_gradient(cmap2, (100,100)).show()

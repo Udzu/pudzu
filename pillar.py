@@ -288,7 +288,7 @@ class _ImageColor():
         """Convert a /single/ linear RGB value between 0 and 1 to an sRGB value between 0 and 255. Numpy-aware."""
         c = np.where(lrgb <= 0.0031308, 12.92 * lrgb, (1.055)*lrgb**(1/2.4)-0.055)
         return np.round(c * 255).astype(int)
-
+        
     @classmethod
     def to_hex(cls, color, alpha=False):
         """Convert a color to a hex string."""
@@ -382,7 +382,7 @@ class CompoundColormap():
         self.accumulated = [0] + list(itertools.accumulate(self.intervals))
         
     def __repr__(self):
-        return "CompoundColormap({})".format(", ".join("{:.0%}={}".format(p, c) for p,c in zip(self.accumulated, self.cmaps)))
+        return "CompoundColormap({})".format(", ".join("{:.0%}-{:.0%}={}".format(p, q, c) for p,q,c in zip(self.accumulated, self.accumulated[1:], self.cmaps)))
     
     def __call__(self, p, bytes=False):
         condlist = [p <= self.accumulated[i+1] for i in range(len(self.intervals))]
@@ -397,18 +397,34 @@ class ConstantColormap(CompoundColormap):
     
     def __init__(self, *colors, intervals=None):
         return super().__init__(*tmap(GradientColormap, colors), intervals=intervals)
+        
+    def __repr__(self):
+        return "ConstantColormap({})".format(", ".join("{:.0%}-{:.0%}={}".format(p, q, c.colors[0].to_hex(True)) for p,q,c in zip(self.accumulated, self.accumulated[1:], self.cmaps)))
 
 class FunctionColormap():
     """A matplotlib colormap generated from numpy-aware channel functions."""
     
-    def __init__(self, red_fn, green_fn, blue_fn, alpha_fn=lambda i: i*0+1.):
+    def __init__(self, red_fn, green_fn, blue_fn, alpha_fn=lambda i: i*0+1, hsl=False):
         self.functions = (red_fn, green_fn, blue_fn, alpha_fn)
+        self.hsl = hsl
         
     def __repr__(self):
         return "FunctionColormap({})".format(", ".join(fn.__name__ for fn in self.functions))
         
     def __call__(self, p, bytes=False):
-        cols = np.stack([fn(p) for fn in self.functions], -1)
+        if self.hsl:
+            h,s,l,a = [fn(p) for fn in self.functions]
+            h_ = h * 6
+            c = (1 - np.abs(2*l - 1)) * s
+            x = c * (1 - np.abs(np.mod(h_, 2) - 1))
+            m = l - c / 2
+            h_conds = [h_ <= i+1 for i in range(6)]
+            r = np.select(h_conds, [c,x,c*0,c*0,x,c]) + m
+            g = np.select(h_conds, [x,c,c,x,c*0,c*0]) + m
+            b = np.select(h_conds, [c*0,c*0,x,c,c,x]) + m
+        else:
+            r,g,b,a = [fn(p) for fn in self.functions]
+        cols = np.stack([r,g,b,a], -1)
         return np.uint8(np.round(cols * 255)) if bytes else cols
 
 class _Image(Image.Image):

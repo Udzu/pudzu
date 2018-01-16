@@ -116,6 +116,15 @@ RGBA(red=0, green=128, blue=0, alpha=255)
 
 ![alt](images/colormapcompound.png)
 
+**BlendColormap**: generate a colormap blending between two other colormaps:
+
+```python
+>> cmapo12 = BlendColormap(ConstantColormap("orange"), cmap12)
+>> Image.from_gradient(cmapo12, (100,20)).show()
+```
+
+![alt](images/colorblend.png)
+
 **FunctionColormap**: generate a colormap from numpy-aware channel functions (or constants) mapping 0-1 to 0-1. Supports RGBA and HSLA.
 
 ```python

@@ -395,9 +395,10 @@ class CompoundColormap():
 class BlendColormap():
     """A matplotlib colormap generated from blending two colormaps."""
     
-    def __init__(self, cmap_start, cmap_end, linear_conversion=True):
-        self.start = cmap_start
-        self.end = cmap_end
+    def __init__(self, start, end, blend_fn=identity, linear_conversion=True):
+        self.start = start
+        self.end = end
+        self.blend = blend_fn
         self.linear_conversion = linear_conversion
         
     def __repr__(self):
@@ -409,7 +410,7 @@ class BlendColormap():
                                [ImageColor.from_linear]*3*int(self.linear_conversion),
                                [ImageColor.to_linear]*3*int(self.linear_conversion),
                                fillvalue=lambda a: np.round(a).astype(int))
-        cols = [fl(tl(cs)+(tl(ce)-tl(cs))*p) for cs,ce,fl,tl in channels]
+        cols = [fl(tl(cs)+(tl(ce)-tl(cs))*self.blend(p)) for cs,ce,fl,tl in channels]
         return np.uint8(np.stack(cols, -1)) if bytes else np.stack(cols, -1) / 255
 
 class ConstantColormap(CompoundColormap):

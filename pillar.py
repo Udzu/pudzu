@@ -328,7 +328,7 @@ RGBA.brighten = papply(ImageColor.brighten)
 RGBA.darken = papply(ImageColor.darken)
 
 class GradientColormap():
-    """A matplotlib colormap generated from a sequence of colors and optional intervals."""
+    """A matplotlib colormap generated from a sequence of colors and optional spacing intervals."""
     
     def __init__(self, *colors, intervals=None, linear_conversion=True):
         if len(colors) == 1:
@@ -368,7 +368,7 @@ class GradientColormap():
         return np.uint8(np.stack(cols, -1)) if bytes else np.stack(cols, -1) / 255
         
 class CompoundColormap():
-    """A matplotlib colormap generated from a sequence of other colormaps and optional intervals."""
+    """A matplotlib colormap generated from a sequence of other colormaps and optional spacing intervals."""
 
     def __init__(self, *cmaps, intervals=None):
         if intervals is None: 
@@ -391,18 +391,25 @@ class CompoundColormap():
         channel_cols = [np.select(condlist, choices) for choices in channel_choices]
         cols = np.stack(channel_cols, -1)
         return np.uint8(cols) if bytes else cols
-        
+
 class ConstantColormap(CompoundColormap):
-    """A matplotlib colormap generated from constant colors and optional intervals."""
+    """A matplotlib colormap generated from constant colors and optional spacing intervals."""
     
     def __init__(self, *colors, intervals=None):
-        return super().__init__(*tmap(GradientColormap, colors), intervals=intervals)
+        self.colors = tmap(RGBA, colors)
+        return super().__init__(*tmap(GradientColormap, self.colors), intervals=intervals)
         
     def __repr__(self):
-        return "ConstantColormap({})".format(", ".join("{:.0%}-{:.0%}={}".format(p, q, c.colors[0].to_hex(True)) for p,q,c in zip(self.accumulated, self.accumulated[1:], self.cmaps)))
+        return "ConstantColormap({})".format(", ".join("{:.0%}-{:.0%}={}".format(p, q, c.to_hex(True)) for p,q,c in zip(self.accumulated, self.accumulated[1:], self.colors)))
+        
+    def __call__(self, p, bytes=False):
+        if isinstance(p, Integral) or getattr(getattr(p, 'dtype', None), 'kind', None) == 'i':
+            cols = [np.select([np.mod(p, len(cs)) == i for i in range(len(cs))], cs) for cs in zip(*self.colors)]
+            return np.uint8(np.stack(cols, -1)) if bytes else np.stack(cols, -1) / 255
+        return super().__call__(p, bytes=bytes)
 
 class FunctionColormap():
-    """A matplotlib colormap generated from numpy-aware channel functions (either RGBA or HSLA)."""
+    """A matplotlib colormap generated from numpy-aware channel functions (either in RGBA or HSLA)."""
     
     def __init__(self, red_fn, green_fn, blue_fn, alpha_fn=np.ones_like, hsl=False):
         self.functions = [fn if callable(fn) else artial(np.full_like, fn) for fn in (red_fn, green_fn, blue_fn, alpha_fn)]

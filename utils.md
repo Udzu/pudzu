@@ -302,10 +302,10 @@ True
 (-1, 0, 1)
 ```
 
-**delimit**: round x so that it lies between the low and high marks.
+**clip**: clip x so that it lies between the low and high marks.
 
 ```python
->> [delimit(x, 1, 3) for x in (0, 3, 5)]
+>> [clip(x, 1, 3) for x in (0, 3, 5)]
 [1, 3, 3]
 ```
 

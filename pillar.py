@@ -398,6 +398,19 @@ class ConstantColormap(CompoundColormap):
     def __init__(self, *colors, intervals=None):
         return super().__init__(*tmap(GradientColormap, colors), intervals=intervals)
 
+class FunctionColormap():
+    """A matplotlib colormap generated from numpy-aware channel functions."""
+    
+    def __init__(self, red_fn, green_fn, blue_fn, alpha_fn=lambda i: i*0+1.):
+        self.functions = (red_fn, green_fn, blue_fn, alpha_fn)
+        
+    def __repr__(self):
+        return "FunctionColormap({})".format(", ".join(fn.__name__ for fn in self.functions))
+        
+    def __call__(self, p, bytes=False):
+        cols = np.stack([fn(p) for fn in self.functions], -1)
+        return np.uint8(np.round(cols * 255)) if bytes else cols
+
 class _Image(Image.Image):
 
     @classmethod

@@ -402,9 +402,9 @@ class ConstantColormap(CompoundColormap):
         return "ConstantColormap({})".format(", ".join("{:.0%}-{:.0%}={}".format(p, q, c.colors[0].to_hex(True)) for p,q,c in zip(self.accumulated, self.accumulated[1:], self.cmaps)))
 
 class FunctionColormap():
-    """A matplotlib colormap generated from numpy-aware channel functions."""
+    """A matplotlib colormap generated from numpy-aware channel functions (either RGBA or HSLA)."""
     
-    def __init__(self, red_fn, green_fn, blue_fn, alpha_fn=lambda i: i*0+1, hsl=False):
+    def __init__(self, red_fn, green_fn, blue_fn, alpha_fn=np.ones_like, hsl=False):
         self.functions = (red_fn, green_fn, blue_fn, alpha_fn)
         self.hsl = hsl
         

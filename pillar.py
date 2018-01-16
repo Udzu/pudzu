@@ -392,6 +392,26 @@ class CompoundColormap():
         cols = np.stack(channel_cols, -1)
         return np.uint8(cols) if bytes else cols
 
+class BlendColormap():
+    """A matplotlib colormap generated from blending two colormaps."""
+    
+    def __init__(self, cmap_start, cmap_end, linear_conversion=True):
+        self.start = cmap_start
+        self.end = cmap_end
+        self.linear_conversion = linear_conversion
+        
+    def __repr__(self):
+        return "BlendColormap({}-{})".format(self.start, self.end)
+        
+    def __call__(self, p, bytes=False):
+        channels = zip_longest(np.rollaxis(np.array(self.start(p, bytes=True)), -1),
+                               np.rollaxis(np.array(self.end(p, bytes=True)), -1),
+                               [ImageColor.from_linear]*3*int(self.linear_conversion),
+                               [ImageColor.to_linear]*3*int(self.linear_conversion),
+                               fillvalue=lambda a: np.round(a).astype(int))
+        cols = [fl(tl(cs)+(tl(ce)-tl(cs))*p) for cs,ce,fl,tl in channels]
+        return np.uint8(np.stack(cols, -1)) if bytes else np.stack(cols, -1) / 255
+
 class ConstantColormap(CompoundColormap):
     """A matplotlib colormap generated from constant colors and optional spacing intervals."""
     

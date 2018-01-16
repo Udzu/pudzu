@@ -116,6 +116,14 @@ RGBA(red=0, green=128, blue=0, alpha=255)
 
 ![alt](images/colormapconstant.png)
 
+**FunctionColormap**: generate a colormap from numpy-aware channel functions mapping 0-1 to 0-1.
+
+```python
+>> Image.from_gradient(FunctionColormap(lambda i:(np.sin(i*8*np.pi)+1)/2, identity, identity), (100,20)).show()
+```
+
+![alt](images/colormapfunction.png)
+
 **font**: shorthand function for generating a truetype font object defaulting to standard variant naming (e.g. arialbd for bold). Also, **arial** is defined explicitly for the Arial family.
 
 ```python

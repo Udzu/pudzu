@@ -446,7 +446,7 @@ def time_chart(timeline_width, timeline_height,
             for _,d in intervals.iterrows():
                 start, end = interval_start_fn(d), interval_end_fn(d)
                 if end < xmin or start > xmax: continue
-                start, end = xvalue(delimit(start, xmin, xmax)), xvalue(delimit(end, xmin, xmax))
+                start, end = xvalue(clip(start, xmin, xmax)), xvalue(clip(end, xmin, xmax))
                 w, h = end-start, timeline_height
                 color = ignoring_extra_args(interval_color_fn)(d, w, h)
                 bar = Image.from_pattern(color, (w, h)) if isinstance(color, Image.Image) else Image.new("RGBA", (w, h), color)

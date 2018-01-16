@@ -405,7 +405,7 @@ class FunctionColormap():
     """A matplotlib colormap generated from numpy-aware channel functions (either RGBA or HSLA)."""
     
     def __init__(self, red_fn, green_fn, blue_fn, alpha_fn=np.ones_like, hsl=False):
-        self.functions = (red_fn, green_fn, blue_fn, alpha_fn)
+        self.functions = [fn if callable(fn) else artial(np.full_like, fn) for fn in (red_fn, green_fn, blue_fn, alpha_fn)]
         self.hsl = hsl
         
     def __repr__(self):

@@ -116,7 +116,7 @@ RGBA(red=0, green=128, blue=0, alpha=255)
 
 ![alt](images/colormapconstant.png)
 
-**FunctionColormap**: generate a colormap from numpy-aware channel functions mapping 0-1 to 0-1. Supports RGBA and HSLA.
+**FunctionColormap**: generate a colormap from numpy-aware channel functions (or constants) mapping 0-1 to 0-1. Supports RGBA and HSLA.
 
 ```python
 >> Image.from_gradient(FunctionColormap(lambda i:(np.sin(i*8*np.pi)+1)/2, identity, identity), (100,20)).show()
@@ -125,7 +125,7 @@ RGBA(red=0, green=128, blue=0, alpha=255)
 ![alt](images/colormapfunction.png)
 
 ```python
->> Image.from_gradient(FunctionColormap(identity, np.ones_like, artial(np.full_like, 0.75), hsl=True), (100,20)).show()
+>> Image.from_gradient(FunctionColormap(identity, 1, 0.75, hsl=True), (100,20)).show()
 ```
 ![alt](images/colormapfunction2.png)
 

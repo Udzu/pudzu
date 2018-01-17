@@ -1,0 +1,26 @@
+country,city,year,historical,current
+Hungary,Budapest,1910,23,0.5
+Lithuania,Vilne\n(//Vilnius//),1916,41,0.5
+Poland,Varshe\n(//Warsaw//),1909,37,0.5
+Moldova,Keshenev\n(//Chișinău//),1897,45,2
+Belarus,Minsk,1897,52,0.5
+Ukraine,Kiev,1939,27,0.7
+Romania,Yas*\n(//Iași//),1898,51,0.2
+Greece,Salonika*\n(//Thesaloniki//),1902,49,0.2
+Bulgaria,Sofia,1878,30,0.2
+Czech Republic,Prague,1939,20,0.2
+Austria,Vienna,1923,11,0.4
+Belgium,Antwerp*,1927,12,1.2
+France,Paris,1939,2.6,2.6
+UK,London,1939,2.2,2
+Germany,Berlin,1925,4,0.4
+Turkey,Estambol\n(//Istanbul//),1923,13,0.1
+Latvia,Riga,1935,11.3,1.1
+Azerbaijan,Baku,1913,4.5,0.7
+Russia,Moscow,1939,6,0.8
+Serbia,Novi Sad*,1910,7,0.1
+Croatia,Zagreb,1940,5.5,0.1
+Slovakia,Pressburg\n(//Bratislava//),1930,12.51,0.1
+Bosnia,Sarajevo,1926,19,0.1
+Netherlands,Amsterdam,1939,9.3,1.8
+Switzerland,Zürich,1920,3.2,1.7

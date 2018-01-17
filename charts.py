@@ -21,8 +21,8 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16), fg="bl
     - fonts (font/three fonts/font function): normal, bold and italics fonts [16-point arial]
     - fg (color): text and border color [black]
     - bg (color): background color [white]
-    - header (string/image/None): header at top of legend, bolded if text [None]
-    - footer (string/image/None): footer at bottom of legend, italicised if text [None]
+    - header (markup/image/None): header at top of legend, automatically bolded if markup [None]
+    - footer (markup/image/None): footer at bottom of legend, automatically italicised if markup [None]
     - max_width (int/None): legend width limit, excluding border and padding [None]
     - spacing (int): vertical spacing between categories [0]
     - box_mask(image): optional mask to apply over the boxes [None]
@@ -39,9 +39,11 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16), fg="bl
     if any(not isinstance(box, Image.Image) and non_string_sequence(label) and size[1] == ... for box, label, size in zip(boxes, labels, box_sizes)):
         raise ValueError("Cannot specify both list of labels and ... height for the same box")
     if isinstance(header, str):
-        header = Image.from_text(header, fonts(bold=True), fg=fg, bg=bg, max_width=max_width, padding=2)
+        if "**" not in header: header = "**{}**".format(header)
+        header = Image.from_markup(header, fonts, fg=fg, bg=bg, max_width=max_width).pad(2, bg)
     if isinstance(footer, str):
-        footer = Image.from_text(footer, fonts(italics=True), fg=fg, bg=bg, max_width=max_width, padding=2)
+        if "//" not in footer: footer = "//{}//".format(footer)
+        footer = Image.from_markup(footer, fonts, fg=fg, bg=bg, max_width=max_width).pad(2, bg)
         
     if len(boxes) > 0:
         max_box_width = max(box.width if isinstance(box, Image.Image) else size[0] for box, size in zip(boxes, box_sizes))

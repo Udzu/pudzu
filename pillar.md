@@ -142,7 +142,7 @@ PaletteColormap(0%-43%=#008000ff, 43%-57%=#d43c69ff, 57%-100%=#4675caff)
 ```
 ![alt](images/colormapfunction2.png)
 
-**font**: shorthand function for generating a truetype font object defaulting to standard variant naming (e.g. arialbd for bold). Also, **arial** is defined explicitly for the Arial family.
+**font**: shorthand function for generating a truetype font object defaulting to standard variant naming (e.g. arialbd or calibrib). Also, **arial**, **calibri** and **verdana** are predefined.
 
 ```python
 >> font("times", 24, italics=True)

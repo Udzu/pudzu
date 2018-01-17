@@ -855,12 +855,20 @@ Image.Image.add_shadow = _Image.add_shadow
 def font(name, size, bold=False, italics=False, **kwargs):
     """Return a truetype font object. Name is either a sequence of 4 names representing
     normal, italics, bold and bold-italics variants, or just a single name (in which the
-    suffixes i, bd and bi are used for the variants)."""
-    if isinstance(name, str): name = [name+suffix for suffix in ["", "i", "bd", "bi"]]
-    variants = list(generate_batches(name, 2))
-    return ImageFont.truetype("{}.ttf".format(variants[bold][italics]), size, **kwargs)
+    suffixes i, b/bd and z/bi are added for the variants)."""
+    SUFFIXES = [["","i","bd","bi"],["", "i", "b", "z"]]
+    variants = [name] if non_string_sequence(name) else [[name+suffix for suffix in suffixes] for suffixes in SUFFIXES]
+    names = [list(generate_batches(variants, 2))[bold][italics] for variants in variants]
+    for name in names:
+        try:
+            return ImageFont.truetype("{}.ttf".format(name), size, **kwargs)
+        except OSError:
+            continue
+    raise OSError("Could not find TTF font: tried {}".format(", ".join(sorted(set("{}.ttf".format(n) for n in names)))))
 
 arial = partial(font, "arial")
+calibri = partial(font, "calibri")
+verdana = partial(font, "verdana")
 
 class ImageShape(object):
     """Abstract base class for generating simple geometric shapes."""

@@ -78,7 +78,7 @@ RGBA(red=0, green=0, blue=0, alpha=0)
 
 **Colormaps**: various matplotlib-compatible colormap generators, e.g. for use with Image.from_gradient below. Requires numpy. Includes the following.
 
-*GradientColormap*: generate a colormap from a sequence of RGBA colors, and optionally the spacing intervals between them. Can also be used as a discrete cycling colormap.
+*GradientColormap*: generate a colormap from a sequence of colors, and optionally the spacing intervals between them. Can also be used as a discrete cycling colormap.
 
 ```python
 >> cmap1 = GradientColormap("black", (0,128,0,128), "#008000", intervals=(1,2))
@@ -86,7 +86,7 @@ RGBA(red=0, green=0, blue=0, alpha=0)
 GradientColormap(0%=#000000ff, 67%=#00800080, 100%=#008000ff)
 >> RGBA(*cmap1(0.5))
 RGBA(red=0, green=112, blue=0, alpha=160)
-> RGBA(*cmap1(5)) # discrete
+> RGBA(*cmap1(5)) # alternatively, cmap1[5]
 RGBA(red=0, green=128, blue=0, alpha=255)
 >> cmap1.colors
 (RGBA(red=0, green=0, blue=0, alpha=255),
@@ -97,7 +97,7 @@ RGBA(red=0, green=128, blue=0, alpha=255)
 
 ![alt](images/colormapgradient.png)
 
-*CompoundColormap*: generate a colormap from a sequence of other colormaps:
+*SequenceColormap*: generate a colormap from a sequence of other colormaps, with optional spacing:
 
 ```python
 >> import seaborn as sns
@@ -109,18 +109,18 @@ RGBA(red=0, green=128, blue=0, alpha=255)
 
 ![alt](images/colormapcompound.png)
 
-*ConstantColormap*: generate a colormap from a sequence of constant colors, and optionally the spacing intervals between them. Can also be used as a discrete cycling colormap.
+*ConstantColormap*/*PaletteColormap*: generate a colormap from either one or a sequence of constant colors. The latter can also be used as a discrete cycling colormap.
 
 ```python
->> cmap3 = ConstantColormap("#008000", cmap2(0., bytes=True), cmap2(1., bytes=True), intervals=(3,1,3))
+>> cmap3 = PaletteColormap("#008000", cmap2(0., bytes=True), cmap2(1., bytes=True), intervals=(3,1,3))
 >> cmap3
-ConstantColormap(0%-43%=#008000ff, 43%-57%=#d43c69ff, 57%-100%=#4675caff)
+PaletteColormap(0%-43%=#008000ff, 43%-57%=#d43c69ff, 57%-100%=#4675caff)
 >> Image.from_gradient(cmap3, (100,20)).show()
 ```
 
 ![alt](images/colormapconstant.png)
 
-*BlendColormap*: generate a colormap blending between two other colormaps:
+*BlendColormap*: generate a colormap blending between two other colormaps, with an optional blend function:
 
 ```python
 >> cmapo12 = BlendColormap(ConstantColormap("orange"), cmap12)

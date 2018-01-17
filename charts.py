@@ -4,6 +4,7 @@ from os.path import splitext
 from enum import Enum
 from dates import *
 from functools import reduce
+from itertools import chain
     
 # Random collection of Pillow-based charting functions
 
@@ -259,7 +260,8 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
             boxes.append(make_box(fill, lsize_fn(c), False) if callable(fill) or isinstance(fill, Image.Image) else fill)
             box_sizes.append(lsize_fn(c))
             labels.append(str(data.columns[c]))
-        legend = generate_legend(boxes=boxes, labels=labels, box_sizes=box_sizes, fonts=legend_fonts,  fg=fg, bg=bg, **legend_args)
+        base_args = dict(boxes=boxes, labels=labels, box_sizes=box_sizes, fonts=legend_fonts, fg=fg, bg=bg)
+        legend = generate_legend(**merge_dicts(base_args, legend_args))
         chart = chart.place(hzimg(legend.pad(10,0)), hzalign(lalign))
 
     # Keep track of offsets relative to chart

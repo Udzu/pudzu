@@ -435,8 +435,8 @@ def ceil_significant(x, n=1):
     """Ceil x to n significant digits."""
     return 0 if x==0 else ceil_digits(x, -int(floor(log10(abs(x)))) + (n-1))
     
-def delimit(x, low, high):
-    """Delimit x so that it lies between the low and high marks."""
+def clip(x, low, high):
+    """Clip x so that it lies between the low and high marks."""
     return max(low, min(x, high))
 
 def weighted_choices(seq, weights, n):

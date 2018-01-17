@@ -76,7 +76,9 @@ RGBA(red=0, green=0, blue=0, alpha=0)
 ('RED', 'GREEN', 'BLUE')
 ```
 
-**GradientColormap** and **CompoundColormap**: generate matplotlib-style colormaps (e.g. for use with Image.from_gradient below). GradientColormap generates a colormap from a sequence of RGBA colors, and optionally the intervals between them.
+**Colormaps**: various matplotlib-compatible colormap generators, e.g. for use with Image.from_gradient below. Requires numpy. Includes the following.
+
+*GradientColormap*: generate a colormap from a sequence of RGBA colors, and optionally the spacing intervals between them. Can also be used as a discrete cycling colormap.
 
 ```python
 >> cmap1 = GradientColormap("black", (0,128,0,128), "#008000", intervals=(1,2))
@@ -84,7 +86,7 @@ RGBA(red=0, green=0, blue=0, alpha=0)
 GradientColormap(0%=#000000ff, 67%=#00800080, 100%=#008000ff)
 >> RGBA(*cmap1(0.5))
 RGBA(red=0, green=112, blue=0, alpha=160)
-> RGBA(*cmap1(5)) # also a discrete colormap
+> RGBA(*cmap1(5)) # discrete
 RGBA(red=0, green=128, blue=0, alpha=255)
 >> cmap1.colors
 (RGBA(red=0, green=0, blue=0, alpha=255),
@@ -95,7 +97,7 @@ RGBA(red=0, green=128, blue=0, alpha=255)
 
 ![alt](images/colormapgradient.png)
 
-CompoundColormap generates a colormap from a sequence of other colormaps:
+*CompoundColormap*: generate a colormap from a sequence of other colormaps:
 
 ```python
 >> import seaborn as sns
@@ -106,6 +108,39 @@ CompoundColormap generates a colormap from a sequence of other colormaps:
 ```
 
 ![alt](images/colormapcompound.png)
+
+*ConstantColormap*: generate a colormap from a sequence of constant colors, and optionally the spacing intervals between them. Can also be used as a discrete cycling colormap.
+
+```python
+>> cmap3 = ConstantColormap("#008000", cmap2(0., bytes=True), cmap2(1., bytes=True), intervals=(3,1,3))
+>> cmap3
+ConstantColormap(0%-43%=#008000ff, 43%-57%=#d43c69ff, 57%-100%=#4675caff)
+>> Image.from_gradient(cmap3, (100,20)).show()
+```
+
+![alt](images/colormapconstant.png)
+
+*BlendColormap*: generate a colormap blending between two other colormaps:
+
+```python
+>> cmapo12 = BlendColormap(ConstantColormap("orange"), cmap12)
+>> Image.from_gradient(cmapo12, (100,20)).show()
+```
+
+![alt](images/colorblend.png)
+
+*FunctionColormap*: generate a colormap from numpy-aware channel functions (or constants) mapping 0-1 to 0-1. Supports either RGBA or HSLA.
+
+```python
+>> Image.from_gradient(FunctionColormap(lambda i:(np.sin(i*8*np.pi)+1)/2, identity, identity), (100,20)).show()
+```
+
+![alt](images/colormapfunction.png)
+
+```python
+>> Image.from_gradient(FunctionColormap(identity, 1, 0.75, hsl=True), (100,20)).show()
+```
+![alt](images/colormapfunction2.png)
 
 **font**: shorthand function for generating a truetype font object defaulting to standard variant naming (e.g. arialbd for bold). Also, **arial** is defined explicitly for the Arial family.
 
@@ -254,7 +289,7 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/frompattern3.png)
 
-**Image.from_gradient**: create a gradient image using a matplotlib-style color map. Requires numpy. Also see GradientColormap and CompoundColormap above.
+**Image.from_gradient**: create a gradient image using a matplotlib-style color map. Requires numpy. Also see colormaps above.
 
 ```python
 >> Image.from_gradient(cmap2, (100,100)).show()

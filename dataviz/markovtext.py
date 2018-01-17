@@ -51,7 +51,7 @@ data = pd.DataFrame(array, index=index)
 
 pone = tmap(RGBA, sns.color_palette("Reds", 8))
 ptwo = tmap(RGBA, sns.color_palette("Blues", 8))
-color_index = lambda p: 0 if p == 0 else delimit(6 + int(log(p, 10) * 2), 0, 6)
+color_index = lambda p: 0 if p == 0 else clip(6 + int(log(p, 10) * 2), 0, 6)
 
 def image_fn(pair, palette, row=None, size=40):
     if pair is None: return None

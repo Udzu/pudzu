@@ -2,6 +2,7 @@ import sys
 import matplotlib.pyplot as plt
 sys.path.append('..')
 from pillar import *
+from charts import *
 from scipy import signal
 
 # slow gravity calculation that's fast enough because numpy
@@ -170,8 +171,17 @@ def plot_shape(shape):
 # padded = tmap_leafs(lambda img: img.pad((5,0), "white") if img.width > base.width * 2 else img, rows)
 # chart = Image.from_column([Image.from_row(row, yalign=0, padding=5, bg="white") for row in padded], bg="white", xalign=0, padding=10)
 
-# title
-# legend
+title = Image.from_text("Visualizing gravity in 2 Dimensions".upper(), arial(48, bold=True))
+
+def shape_box(alpha=0,min=None,max=None):
+    return shapeplot(Rectangle(40,(0,0,0,alpha)), min=min and Rectangle(40,0).place(min), max=max and Rectangle(40,0).place(max))
+def line_box(color):return Rectangle(40, 0).place(Rectangle((40,3), color))
+    
+introduction = generate_legend([], [], header="Some sort of blurb".upper(), footer="Some sort of explanation", border=False)
+shape_legend = generate_legend([shape_box(255), shape_box(100), shape_box(0), shape_box(min=dot), shape_box(max=dot)],["high density", "low density", "empty space", "minimum gravity", "maximum gravity"], header="SHAPES AND EXTREMA", border=False)
+heatmap_legend = generate_legend([Image.from_gradient(plt.get_cmap("hot"), (40, 180), direction=(0,-1)).add_grid((1,8))], [["max gravity", "50% gravity", "min gravity"]], header="GRAVITY HEATMAPS", border=False)
+graph_legend = generate_legend([line_box("#800000"), line_box("#008000"), line_box("#000080")], ["horizontal intersection", "vertical intersection", "diagonal intersection"], header="INTERSECTION PLOTS", border=False)
+legend=Image.from_row([introduction, shape_legend, heatmap_legend, graph_legend], bg="white", padding=10, yalign=0).pad(2, "black")
 
 # https://physics.stackexchange.com/questions/30652/what-is-the-2d-gravity-potential
 

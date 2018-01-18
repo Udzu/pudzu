@@ -245,15 +245,29 @@ def treversed(*args, **kwargs):
     """Like reversed, but returns a tuple."""
     return tuple(reversed(*args, **kwargs))
     
+def tmap_leafs(func, *iterables):
+    """Return a nested tuple resulting from applying a function to the leaves of iterables of the same shape."""
+    if all(non_string_iterable(i) for i in iterables):
+        return tuple(tmap_leafs(func, *subelts) for subelts in zip_equal(*iterables))
+    else:
+        return func(*iterables)
+
 # Generators
 
+def zip_equal(*iterables, sentinel=object()):
+    """Like zip, but throws an Exception if the arguments are of different lengths."""
+    for i, subelts in enumerate(itertools.zip_longest(*iterables, fillvalue=sentinel)):
+        if sentinel in subelts:
+            raise ValueError('Iterables have different lengths (shortest is length {})'.format(i))
+        yield subelts
+    
 def generate_leafs(iterable):
     """Generator that yields all the leaf nodes of an iterable."""
-    for x in iterable:
-        if non_string_iterable(x):
+    if non_string_iterable(iterable):
+        for x in iterable:
             yield from generate_leafs(x)
-        else:
-            yield x
+    else:
+        yield iterable
             
 def generate_batches(iterable, batch_size):
     """Generator that yields the elements of an iterable n at a time."""

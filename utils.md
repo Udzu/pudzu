@@ -120,7 +120,7 @@ True
     
 ### Iterables
 
-**non_string_iterable**: returns whether the input is an iterable other than string.
+**non_string_iterable**: returns whether the input is an iterable other than a string.
 
 ```python
 >> non_string_iterable(itertools.count())
@@ -129,7 +129,7 @@ True
 False
 ```
     
-**non_string_sequence**: returns whether the input is a sequence that is not a string (optionally with elements of a given type).
+**non_string_sequence**: returns whether the input is a sequence other than a string (optionally with elements of a given type).
 
 ```python
 >> non_string_sequence(range(10), int)
@@ -138,7 +138,7 @@ True
 False
 ```
 
-**make_iterable**: returns an iterable, putting any non-iterable (or string) input in a tuple. Useful for flexible input arguments.
+**make_iterable**: returns an iterable, putting any non-string iterable input in a tuple. Useful for flexible input arguments. Similarly, **make_sequence**.
 
 ```python
 >> make_iterable("123")
@@ -193,7 +193,23 @@ True
 ('1', '2', '3')
 ```
 
+**tmap_leafs**: applies a function to the non-string leafs inside iterables of the same shape, returning a tuple.
+
+```python
+>> tmap_leafs(op.add, [[1,2],3], [[4,5],6])
+((5, 7), 9)
+```
+
 ### Generators
+
+**zip_equal**: like zip, but throws an exception if the iterables have different lengths.
+
+```python
+>> list(zip_equal(range(2), [2,3]))
+[(0, 2), (1, 3)]
+>> list(zip_equal(range(5), itertools.count()))
+ValueError: Iterables have different lengths (shortest is length 5)
+```
 
 **generate_batches**: generator that yields items from an iterable n at a time.
 
@@ -209,7 +225,7 @@ True
 [('n', 'g'), ('g', 'r'), ('r', 'a'), ('a', 'm')]
 ```
 
-**generate_leafs**: generator that yields all the non-iterables (plus strings) inside an iterable.
+**generate_leafs**: generator that yields all the non-string leafs inside an iterable.
 
 ```python
 >> list(generate_leafs([(1,[2],3),"four"]))

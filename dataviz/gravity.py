@@ -4,7 +4,7 @@ sys.path.append('..')
 from pillar import *
 from scipy import signal
 
-# slow gravity calculation that's fast enough because numpy :-)
+# slow gravity calculation that's fast enough because numpy
 
 np.seterr(divide='ignore', invalid='ignore')
 
@@ -81,7 +81,9 @@ def odd(n): return round(n) + (round(n)-1)%2
 
 # shape config (max and min shapes are approximations based on minmax above but should be good enough for illustrative purposes)
 
-WIDTH = 60
+WIDTH = 60 # TODO
+TITLE_SIZE = 16
+TEXT_SIZE = 12
 PADDING = 20
 SHAPES = CaseInsensitiveDict(base_factory=OrderedDict)
 
@@ -98,47 +100,50 @@ dot = Ellipse(5)
 
 circle = base.place(Ellipse(pwidth))
 circle_max = MaskIntersection(..., masks=(Ellipse(pwidth+2), Ellipse(pwidth-2, invert=True)), include_missing=True)
-SHAPES["circle"] = ShapeOpts("circle", circle, dot, circle_max)
+circle_description = "With inverse force, gravity //outside// the circle behaves as if all the circle's mass were concentrated in the centre, while //inside// it decreases linearly (just like constant density spheres in the real world). With inverse-square force, the nearer parts of the shell apply more force than the further parts, resulting in greater attraction towards the surface."
+SHAPES["circle"] = ShapeOpts("circle", circle, dot, circle_max, description=circle_description)
 
 ellipse = base.place(Ellipse((pwidth, odd(pwidth / 2))))
-# TODO
-SHAPES["ellipse"] = ShapeOpts("ellipse", ellipse, dot, scanlines="vh")
+ellipse_description = "?" # TODO
+SHAPES["ellipse"] = ShapeOpts("ellipse", ellipse, dot, scanlines="vh", description=ellipse_description)
 
 core = base.place(Ellipse(pwidth, (0,0,0,100))).place(Ellipse(ppwdith))
 core_max = MaskIntersection(..., masks=(Ellipse(ppwdith+2), Ellipse(ppwdith-2, invert=True)), include_missing=True)
-SHAPES["core"] = ShapeOpts("dense core", core, dot, core_max)
+core_description = "A dense enough core (like the Earth's) can result in gravity increasing closer to the second. With inverse force this increase is linear."
+SHAPES["core"] = ShapeOpts("dense core", core, dot, core_max, description=core_description)
 
 hollow = base.place(MaskIntersection(..., masks=(Ellipse(pwidth), Ellipse(ppwdith, invert=True)), include_missing=True))
 hollow_min = MaskIntersection(..., masks=(Ellipse(round(pwidth*0.85)+2), Ellipse(round(pwidth*0.85)-2, invert=True)), include_missing=True).place(dot)
 hollow_min_linear = Ellipse(ppwdith)
-SHAPES["hollow"] = ShapeOpts("hollow shell", hollow, hollow_min, circle_max, hollow_min_linear)
+hollow_description = "With inverse force, a hollow shell applies //zero// net force to objects inside: an unintuitive result of the Shell Theorem. With inverse-square force the nearer part of the shell do attract more."
+SHAPES["hollow"] = ShapeOpts("hollow shell", hollow, hollow_min, circle_max, hollow_min_linear, description=hollow_description)
 
 mountain = base.place(Ellipse(pwidth).pin(Triangle(odd(pwidth/3)), (pwidth//2+1, pwidth//20), align=(0.5,1)))
 mountain_min = dot.pad((0,odd(pwidth/4),0,0), 0)
 mountain_max = Rectangle((odd(pwidth*0.8),odd(pwidth*0.5)),(0,0,0,0)).pad((0,odd(pwidth/4),0,0), 0).pin(dot,(odd(pwidth*0.8),odd(pwidth/4))).pin(dot,(0,odd(pwidth/4)))
 mountain_max_linear = Rectangle((odd(pwidth*0.55),odd(pwidth*0.95)),(0,0,0,0)).pad((0,odd(pwidth/4),0,0), 0).pin(dot,(odd(pwidth*0.55),odd(pwidth*0.95+pwidth/4))).pin(dot,(0,odd(pwidth*0.95+pwidth/4)))
-SHAPES["mountain"] = ShapeOpts("mountain", mountain, mountain_min, mountain_max, ..., mountain_max_linear, scanlines="v")
+mountain_description = "Not enough to offset shell effect."
+SHAPES["mountain"] = ShapeOpts("mountain", mountain, mountain_min, mountain_max, ..., mountain_max_linear, scanlines="v", description=mountain_description)
 
 square = base.place(Rectangle(pwidth))
 offsets = Padding(0)
 square_max = Rectangle(pwidth,(0,0,0,0)).pin(dot,(pwidth//2+1,0),offsets=offsets).pin(dot,(pwidth//2+1,pwidth),offsets=offsets).pin(dot,(0,pwidth//2+1),offsets=offsets).pin(dot,(pwidth,pwidth//2+1),offsets=offsets)
-SHAPES["square"] = ShapeOpts("square", square, dot, square_max, scanlines="dh")
+square_description = "Like four mountains"
+SHAPES["square"] = ShapeOpts("square", square, dot, square_max, scanlines="dh", description=square_description)
 
 two = Image.from_row([circle, circle])
-# TODO
-SHAPES["two"] = ShapeOpts("two circles", two)
+two_description = "?" #TODO
+SHAPES["two"] = ShapeOpts("two circles", two, description=two_description)
 
 moon = Image.from_row([circle, base.place(Ellipse(odd(pwidth/2)))])
-# TODO
-SHAPES["moon"] = ShapeOpts("moon", moon)
+moon_description = "?" #TODO
+SHAPES["moon"] = ShapeOpts("moon", moon, description=moon_description)
 
 reddit = base.convert("L").place(Image.open("icons/reddit.png").convert("L").resize_fixed_aspect(width=odd(WIDTH)))
-# TODO
-SHAPES["reddit"] = ShapeOpts("snoo", reddit, scanlines="hv")
+reddit_description = "?" #TODO
+SHAPES["reddit"] = ShapeOpts("snoo", reddit, scanlines="hv", description=reddit_description)
 
 # put it all together
-
-# TODO: legend, array, title
 
 def plot_shape(shape): 
     mag = gravity_magnitude(shape.shape, linear=False)
@@ -153,13 +158,20 @@ def plot_shape(shape):
         [scanlines(mag, shape.scanlines).pad((0,PADDING),"white"),
          scanlines(mag_linear, shape.scanlines).pad((0,PADDING),"white")][::-1]
         ], padding=0, bg="white")
-    markup = Image.from_markup(shape.description, partial(arial, 12), max_width=w*2)
+    markup = Image.from_markup(shape.description, partial(arial, TEXT_SIZE), max_width=w*2, hyphenator=language_hyphenator())
     markup = Rectangle((w*2, markup.height), "white").place(markup, align=0)
     return Image.from_column([
-        Image.from_text(shape.name.upper(), arial(16, bold=True)),
+        Image.from_text(shape.name.upper(), arial(TITLE_SIZE, bold=True)),
         grid,
         markup
         ], padding=0, bg="white")
+
+# rows = tmap_leafs(lambda shape: plot_shape(SHAPES[shape]), generate_batches(SHAPES, 6))
+# padded = tmap_leafs(lambda img: img.pad((5,0), "white") if img.width > base.width * 2 else img, rows)
+# chart = Image.from_column([Image.from_row(row, yalign=0, padding=5, bg="white") for row in padded], bg="white", xalign=0, padding=10)
+
+# title
+# legend
 
 # https://physics.stackexchange.com/questions/30652/what-is-the-2d-gravity-potential
 

@@ -193,7 +193,7 @@ True
 ('1', '2', '3')
 ```
 
-**tmap_leafs**: applies a function to the non-string leafs inside iterables of the same shape, returning a tuple.
+**tmap_leafs**: applies a function to the non-string leafs inside iterables of the same shape, returning a nested tuple.
 
 ```python
 >> tmap_leafs(op.add, [[1,2],3], [[4,5],6])

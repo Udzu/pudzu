@@ -245,10 +245,10 @@ def treversed(*args, **kwargs):
     """Like reversed, but returns a tuple."""
     return tuple(reversed(*args, **kwargs))
     
-def tmap_leafs(func, *iterables):
-    """Return a nested tuple resulting from applying a function to the leaves of iterables of the same shape."""
+def tmap_leafs(func, *iterables, base_factory=tuple):
+    """Return a nested tuple (or other container) containing the result of applying a function to the leaves of iterables of the same shape."""
     if all(non_string_iterable(i) for i in iterables):
-        return tuple(tmap_leafs(func, *subelts) for subelts in zip_equal(*iterables))
+        return base_factory(tmap_leafs(func, *subelts, base_factory=base_factory) for subelts in zip_equal(*iterables))
     else:
         return func(*iterables)
 

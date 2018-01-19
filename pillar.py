@@ -480,7 +480,7 @@ class _Image(Image.Image):
     def from_multitext(cls, texts, fonts, fgs="black", bgs=None, underlines=0, strikethroughs=0):
         """Create image from multiple texts, lining up the baselines. Only supports single-line texts.
         For multline texts, combine images with Image.from_column (with equal_heights set to True).
-        Texts can also include images, which are lined up to sit on the baseline."""
+        The texts parameter can also include images, which are lined up to sit on the baseline."""
         texts = make_iterable(texts)
         if not non_string_iterable(fonts): fonts = [fonts] * len(texts)
         if not non_string_iterable(fgs): fgs = [fgs] * len(texts)
@@ -628,7 +628,7 @@ class _Image(Image.Image):
         return self if self.mode == "RGBA" else self.convert("RGBA")
         
     def overlay(self, img, box=(0,0), mask=None, copy=False):
-        """Paste an image respecting alpha channels (unlike Image.paste)."""
+        """Paste an image using alpha compositing (unlike Image.paste)."""
         if isinstance(box, BoundingBox): box = box.corners
         if img.mode.endswith('A'):
             if len(box) == 2: box = (box[0], box[1], min(self.width, box[0]+img.width), min(self.height, box[1]+img.height))
@@ -746,11 +746,8 @@ class _Image(Image.Image):
     def remove_transparency(self, bg="white"):
         """Return an image with the transparency removed"""
         if not self.mode.endswith('A'): return self
-        bg = RGBA(bg)._replace(alpha=255)
-        alpha = self.convert("RGBA").split()[-1]
-        img = Image.new("RGBA", self.size, bg)
-        img.paste(self, mask=alpha)
-        return img
+        elif bg is None: return self.convert("RGB").convert("RGBA")
+        else: return Image.new("RGBA", self.size, RGBA(bg)).overlay(self)
         
     def as_mask(self):
         """Convert image for use as a mask"""

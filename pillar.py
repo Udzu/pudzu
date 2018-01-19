@@ -479,7 +479,8 @@ class _Image(Image.Image):
     @classmethod
     def from_multitext(cls, texts, fonts, fgs="black", bgs=None, underlines=0, strikethroughs=0):
         """Create image from multiple texts, lining up the baselines. Only supports single-line texts.
-        For multline texts, combine images with Image.from_column (with equal_heights set to True)."""
+        For multline texts, combine images with Image.from_column (with equal_heights set to True).
+        Texts can also include images, which are lined up to sit on the baseline."""
         texts = make_iterable(texts)
         if not non_string_iterable(fonts): fonts = [fonts] * len(texts)
         if not non_string_iterable(fgs): fgs = [fgs] * len(texts)
@@ -490,8 +491,8 @@ class _Image(Image.Image):
         if not all(l == len(texts) for l in lengths):
             raise ValueError("Number of fonts, fgs, bgs, underlines or strikethroughs is inconsistent with number of texts: got {}, expected {}".format(lengths, len(texts)))
         bgs = [bg if bg is not None else RGBA(fg)._replace(alpha=0) for fg, bg in zip(fgs, bgs)]
-        imgs = [cls.from_text(text, font, fg, bg) for text, font, fg, bg in zip(texts, fonts, fgs, bgs)]
-        ascents = [font.getmetrics()[0] for font in fonts]
+        imgs = [cls.from_text(text, font, fg, bg) if isinstance(text, str) else text.remove_transparency(bg) for text, font, fg, bg in zip(texts, fonts, fgs, bgs)]
+        ascents = [font.getmetrics()[0] if isinstance(text, str) else text.height for text, font in zip(texts, fonts)]
         max_ascent = max(ascents)
         imgs = [img.pad((0,max_ascent-ascent,0,0), bg) for img, ascent, bg in zip(imgs, ascents, bgs)]
         max_height = max(img.height for img in imgs)

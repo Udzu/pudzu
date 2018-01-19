@@ -468,12 +468,12 @@ class _Image(Image.Image):
         return img
 
     @classmethod
-    def from_text_bounded(cls, text, bbox, max_font_size, font_fn, *args, min_font_size = 6, **kwargs):
+    def from_text_bounded(cls, text, max_size, max_font_size, font_fn, *args, min_font_size=6, generator=None, **kwargs):
         """Create image from text, reducing the font size until it fits. Inefficient."""
-        if isinstance(bbox, Integral): bbox = (bbox, bbox)
+        if isinstance(max_size, Integral): max_size = (max_size, max_size)
         for size in range(max_font_size, min_font_size-1, -1):
-            img = cls.from_text(text, font_fn(size), *args, **kwargs)
-            if img.width <= bbox[0] and img.height <= bbox[1]: return img
+            img = (generator or cls.from_text)(text, font_fn(size), *args, **kwargs)
+            if img.width <= max_size[0] and img.height <= max_size[1]: return img
         return None
         
     @classmethod

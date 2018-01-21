@@ -1,0 +1,99 @@
+section,name,dates,summary,description,image
+1,Toussaint Louverture,(1743-1803),Haitian revolutionary
+1,Shaka,(1787-1828),Zulu conqueror
+1,Frederick Douglass,(1818-1895),abolitionist & writer
+1,Marcus Garvey,(1887-1940),Pan-Africanist
+1,A. Philip Randolph,(1889-1979),labor leader
+1,Haile Selassie,(1892-1975),emperor
+1,Kwame Nkrumah,(1909-1972),Pan-Africanist leader
+1,Rosa Parks,(1913-2005),civil rights activist
+1,Thurgood Marshall,(1908-1993),jurist
+1,Nelson Mandela,(born 1918),activist and president
+1,Julius Nyerere,(1922-1999),president
+1,Robert Mugabe,(born 1924),activist and president
+1,Malcolm X,(1925-1965),activist
+1,Martin Luther King, Jr.,(1929-1968),civil rights activist
+1,Mobutu Sese Seko,(1930-1997),kleptocrat
+1,Desmond Tutu,(born 1931),cleric & activist
+1,Colin Powell,(born 1937),general and politician
+1,Kofi Annan,(born 1938),diplomat,
+1,Condoleezza Rice,(born 1954),politician
+1,Barak Obama,(born 1961),US president
+2,George Washington Carver,(1864-1942),agronomist
+2,W. E. B. Du Bois,(1868-1963),academic & activist
+2,Alain Locke,(1886-1954),philosopher & arts patron
+2,Percy Lavon Julian,(1899-1975),chemist
+2,C. L. R. James,(1901-1989),Marxist theorist
+2,Charles Drew,(1904-1950),blood transfusion pioneer
+2,Vivien Thomas,(1910-1985),surgical technician
+2,W. Arthur Lewis,(1915-1991),economist
+2,David Blackwell,(1919-2010),statistician
+2,Jane C. Wright,(1919-2013),oncologist
+2,Frantz Fanon,(1925-1961),colonization thinker
+2,Samuel L. Kountz,(1930-1981),surgeon
+2,Thomas Sowell,(born 1930),economist & social commentator
+2,Patricia Bath,(born 1942),ophthalmologist
+2,Henry Louis Gates Jr.,(born 1950),literary critic
+2,Kwame Anthony Appiah,(born 1954),philosopher
+2,Neil deGrasse Tyson,(born 1958),astrophysicist & science communicator
+    Kenneth & Mamie Clark
+    John Hope Franklin
+
+3,Lewis Howard Latimer,(1848-1928),inventor
+3,Booker T. Washington,(1856-1915),community leader
+3,Madam C.J. Walker,(1867-1919),hair care entrepreneur
+3,Berry Gordy,(born 1929),Motown producer
+3,James West,(born 1931),microphone inventor
+3,Quincy Jones,(born 1933),music impressario
+3,Wangari Maathai,(born 1940),environmentalist
+3,Clarence Ellis,(1943-2014),groupware pioneer
+3,Mo Ibrahim,(born 1946),communications entrepreneur
+3,Lonnie Johnson,(born 1949),toy inventor
+3,Oprah Winfrey,(born 1954),talk show host & producer
+3,Mark Dean,(born 1957),IBM inventor
+3,Kunle Olukotun,(born 1960s),
+3,Sean Combs,(born 1969),hip-hop entrepreneur
+    Robert F. Smith
+
+
+
+
+
+4,Scott Joplin,(~1867-1917),ragtime composer
+4,Duke Ellington,(1899-1974),jazz composer
+4,Langston Hughes,(1902-1967),poet
+4,Romare Bearden,(1911-1988),collage artist
+4,Gordon Parks,(1912-2006),photographer writer director
+4,Chinua Achebe,(born 1930),author
+4,Toni Morrison,(born 1931),author
+4,Wole Soyinka,(born 1934),author
+4,August Wilson,(1945-2005),playwright
+4,Jean-Michel Basquiat,(1960-1988),graffiti artist
+    Maya Angelou
+
+
+
+
+
+
+
+
+5,Chuck Berry,(1926-2017),rock'n'roll pioneer
+5,Paul Robeson,(1898-1976),singer, actor & activist
+5,Louis Armstrong,(1901-1971),jazz musician
+5,Sidney Poitier,(born 1927),actor
+5,Ray Charles,(1930-2004),rhythm and blues musician
+5,Alvin Ailey,(1931-1989),choreographer
+5,Richard Pryor,(1940-2005),comedian
+5,Pele,(born 1940),football player
+5,Aretha Franklin,(born 1942),soul singer
+5,Muhammad Ali,(1942-2016),boxer
+5,Jimi Hendrix,(1942-1970),rock guitarist
+5,Bob Marley,(1945-1981),reggae musician
+5,Denzel Washington,(born 1954),actor
+5,Spike Lee,(born 1957),film director
+5,Michael Jackson,(1958-2009),pop singer
+5,Michael Jordan,(born 1963),basketball player
+5,Will Smith,(born 1968),actor & singer
+    Venus & Serena Williams
+    Beyoncé

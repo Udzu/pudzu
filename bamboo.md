@@ -29,12 +29,16 @@ A handful of utilities monkey-patched onto the pandas DataFrame class. Aim is co
 0         2  Fred  Flintstone
 ```
 
-**filter_rows**: filter rows by a row predicate or a filter expression (see `FilterExpression` docstring for details). Less efficient than boolean indexing.
+**filter_rows**: filter rows by a row/index predicate or a filter expression (see `FilterExpression` docstring for details). Less efficient than boolean indexing.
 
 ```python
 >> df.filter_rows(lambda r: r['name'].startswith("F"))
    children  name     surname
 0         2  Fred  Flintstone
+>> df.filter_rows(lambda r, i: i % 2 == 0)
+   children  name     surname
+0         2  Fred  Flintstone
+2        15   Dino         NaN
 >> df.filter_rows("name=Fred or children>2")
    children  name     surname
 0         2  Fred  Flintstone
@@ -60,7 +64,7 @@ A handful of utilities monkey-patched onto the pandas DataFrame class. Aim is co
 2   Dino         NaN
 ```
 
-**assign_rows**: assign or update columns using a row function or constant, with an optional row predicate condition.
+**assign_rows**: assign or update columns using a row/index function or constant, with an optional row/index predicate condition.
 
 ```python
 >> df.assign_rows(assign_if="not surname:exists", pups=lambda r: r["children"], children=None)

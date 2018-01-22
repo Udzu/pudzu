@@ -452,6 +452,10 @@ def ceil_significant(x, n=1):
 def clip(x, low, high):
     """Clip x so that it lies between the low and high marks."""
     return max(low, min(x, high))
+    
+def format_float(x, p=None):
+    """Format a float without unnecessary trailing 0s and with optional precision."""
+    return "{:f}".format(x if p is None else round_significant(x,p)).rstrip('0').rstrip('.')
 
 def weighted_choices(seq, weights, n):
     """Return random elements from a sequence, according to the given relative weights."""

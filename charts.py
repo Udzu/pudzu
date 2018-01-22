@@ -152,7 +152,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
         ymin = 0
         ymax = 1
       
-    default_format = "{:.0%}" if type == BarChartType.STACKED_PERCENTAGE else "{0:.3g}"
+    default_format = "{:.0%}".format if type == BarChartType.STACKED_PERCENTAGE else artial(format_float, 3)
     
     if isinstance(clabels, BarChartLabelPosition): clabels = { clabels : ... }
     if isinstance(rlabels, BarChartLabelPosition): rlabels = { rlabels : ... }
@@ -160,7 +160,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
                                                 BarChartLabelPosition.OUTSIDE if type == BarChartType.OVERLAYED else
                                                 BarChartLabelPosition.INSIDE)
     rlabel_dict = make_mapping(rlabels, lambda: BarChartLabelPosition.BELOW)
-    clabel_dict = valmap((lambda v: (lambda c,r,v: default_format.format(v)) if v == Ellipsis else v), clabel_dict)
+    clabel_dict = valmap((lambda v: (lambda c,r,v: default_format(v)) if v == Ellipsis else v), clabel_dict)
     rlabel_dict = valmap((lambda v: (lambda r: str(data.index[r])) if v == Ellipsis else v), rlabel_dict)
     
     if type in [BarChartType.SIMPLE, BarChartType.OVERLAYED]:

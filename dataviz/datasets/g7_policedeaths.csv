@@ -1,8 +1,8 @@
-country,guns_pc,homicide_pc,police_total
-US,101,4.88,1092
-Canada,30.8,1.68,25
-Japan,0.6,0.31,0
-France,31.2,1.58,4
-Germany,30.3,0.85,10
-Italy,11.9,0.78,2
-UK,6.2,0.92,3
+country,guns_ph,homicide_pm,police_total
+US,101,48.8,1092
+Canada,30.8,16.8,25
+Japan,0.6,3.1,0
+France,31.2,15.8,4
+Germany,30.3,8.5,10
+Italy,11.9,7.8,2
+UK,6.2,9.2,3

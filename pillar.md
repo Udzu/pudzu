@@ -563,7 +563,8 @@ The mask methods accept a size and shape-specific parameters. The constructor me
 **MaskIntersection**:  generate a shape from the intersection of a collection of masks (mode "L" images or alpha channels of other images). Automatically calculates the size if set to `...`. The `include_missing` parameters specifies how to treat areas that are missing from smaller masks.
 
 ```python
->> MaskIntersection(..., masks=(Triangle(50), Ellipse(40))).show()
+>> pizza = MaskIntersection(..., masks=(Triangle(50), Ellipse(40)))
+>> pizza.show()
 ```
 ![alt](images/shapeintersection1.png)
 
@@ -571,3 +572,10 @@ The mask methods accept a size and shape-specific parameters. The constructor me
 >> MaskIntersection(..., masks=(Diamond(50), Ellipse(20, invert=True)), include_missing=True).show()
 ```
 ![alt](images/shapeintersection2.png)
+
+**MaskBorder**: generate a border of a given width from a mask.  Automatically calculates the size if set to `...`. Requires scipy.
+
+```python
+>> MaskBorder(..., mask=pizza, width=2).show()
+```
+![alt](images/shapeborder.png)

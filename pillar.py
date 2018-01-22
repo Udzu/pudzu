@@ -19,11 +19,14 @@ from utils import *
 pyphen = optional_import("pyphen")
 requests = optional_import("requests")
 np = optional_import("numpy")
+ndimage = optional_import("scipy.ndimage")
 
 # Various pillow utilities, moslty monkey patched onto the Image, ImageDraw and ImageColor classes
 
 logger = logging.getLogger('pillar')
 logger.setLevel(logging.DEBUG)
+
+# Alignment and padding
 
 class Alignment():
     """Alignment class, initialized from one or two floats between 0 and 1."""
@@ -107,55 +110,7 @@ class Padding():
     @property
     def y(self): return self.u + self.d
 
-class BoundingBox():
-    """Bounding box class initialized from 4 LURD coordinates or a collection of points with optional padding. Not used much at the moment."""
-        
-    def __init__(self, box):
-        if isinstance(box, Image.Image):
-            self.corners = (0, 0, box.width-1, box.height-1)
-        elif non_string_sequence(box, Integral) and len(box) == 4:
-            self.corners = tuple(box)
-        elif non_string_sequence(box) and all(non_string_sequence(point, Integral) and len(point) == 2 for point in box):
-            self.corners = (min(x for x,y in box), min(y for x,y in box), max(x for x,y in box), max(y for x,y in box))
-        else:
-            raise TypeError("BoundingBox expects four coordinates or a collection of points: got {}".format(box))
-            
-    def __repr__(self):
-        return "BoundingBox(l={}, u={}, r={}, d={})".format(self.l, self.u, self.r, self.d)
-
-    def __getitem__(self, key):
-        return self.corners[key]
-        
-    def __len__(self):
-        return 4
-        
-    def __contains__(self, other):
-        if non_string_sequence(other, Integral) and len(other) == 2:
-            return self.l <= other[0] <= self.r and self.u <= other[1] <= self.d
-        else:
-            return NotImplemented
-            
-    @property
-    def l(self): return self.corners[0]
-    @property
-    def u(self): return self.corners[1]
-    @property
-    def r(self): return self.corners[2]
-    @property
-    def d(self): return self.corners[3]
-    @property
-    def width(self): return self.r - self.l + 1
-    @property
-    def height(self): return self.d - self.u + 1
-    @property
-    def size(self): return (self.width, self.height)
-    @property
-    def center(self): return ((self.l + self.r + 1) // 2, (self.u + self.d + 1) // 2)
-            
-    def pad(self, padding):
-        """Return a padded bounding box."""
-        padding = Padding(padding)
-        return BoundingBox((self.l - padding.l, self.u - padding.u, self.r + padding.r, self.d + padding.d))
+# Palettes
  
 class NamedPaletteMeta(type):
     """Metaclass for named color palettes. Allows palette lookup by (case-insensitive) name or index."""
@@ -199,6 +154,8 @@ class Set1Class9(metaclass=NamedPaletteMeta):
     PINK = "#f781bf"
     GREY = "#999999"
     
+# ImageDraw
+
 def whitespace_span_tokenize(text):
     """Whitespace span tokenizer."""
     return ((m.start(), m.end()) for m in re.finditer(r'\S+', text))
@@ -255,6 +212,8 @@ class _ImageDraw():
 
 ImageDraw.text_size = _ImageDraw.text_size
 ImageDraw.word_wrap = _ImageDraw.word_wrap
+
+# ImageColor and RGBA
 
 class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
     """Named tuple representing RGBA colors. Can be initialised by name, integer values, float values or hex strings."""
@@ -326,6 +285,8 @@ RGBA.to_hex = papply(ImageColor.to_hex)
 RGBA.blend = papply(ImageColor.blend)
 RGBA.brighten = papply(ImageColor.brighten)
 RGBA.darken = papply(ImageColor.darken)
+
+# Colormaps
 
 class SequenceColormap():
     """A matplotlib colormap generated from a sequence of other colormaps and optional spacing intervals."""
@@ -445,6 +406,8 @@ class FunctionColormap():
             r,g,b,a = [fn(p) for fn in self.functions]
         cols = np.stack([r,g,b,a], -1)
         return np.uint8(np.round(cols * 255)) if bytes else cols
+
+# Image
 
 class _Image(Image.Image):
 
@@ -629,7 +592,6 @@ class _Image(Image.Image):
         
     def overlay(self, img, box=(0,0), mask=None, copy=False):
         """Paste an image using alpha compositing (unlike Image.paste)."""
-        if isinstance(box, BoundingBox): box = box.corners
         if img.mode.endswith('A'):
             if len(box) == 2: box = (box[0], box[1], min(self.width, box[0]+img.width), min(self.height, box[1]+img.height))
             img = Image.alpha_composite(self.crop(box).to_rgba(), img.crop((0, 0, box[2]-box[0], box[3]-box[1])))
@@ -649,7 +611,7 @@ class _Image(Image.Image):
         padding = Padding(padding)
         if offsets is not None: offsets.update(offsets + padding)
         if padding.x == padding.y == 0: return self
-        img = Image.new("RGBA", (self.width + padding.x, self.height + padding.y), bg)
+        img = Image.new(self.mode, (self.width + padding.x, self.height + padding.y), bg)
         img.paste(self, (padding.l, padding.u))
         return img
         
@@ -850,6 +812,8 @@ Image.Image.darken = _Image.darken
 Image.Image.add_grid = _Image.add_grid
 Image.Image.add_shadow = _Image.add_shadow
 
+# Fonts
+
 def font(name, size, bold=False, italics=False, **kwargs):
     """Return a truetype font object. Name is either a sequence of 4 names representing
     normal, italics, bold and bold-italics variants, or just a single name (in which the
@@ -867,6 +831,8 @@ def font(name, size, bold=False, italics=False, **kwargs):
 arial = partial(font, "arial")
 calibri = partial(font, "calibri")
 verdana = partial(font, "verdana")
+
+# Shapes
 
 class ImageShape(object):
     """Abstract base class for generating simple geometric shapes."""
@@ -1044,6 +1010,21 @@ class MaskIntersection(ImageShape):
         return img
     antialiasing = False
 
+class MaskBorder(ImageShape):
+    __doc__ = ImageShape.__new__.__doc__
+    @classmethod
+    def mask(cls, size, mask, width):
+        """Edge border of a given mask. Requires scipy. Size is automatically calculated if set to ..."""
+        w = width / 2
+        if size == ...: size = tmap(lambda x: ceil(x+w), mask.size)
+        mask = Image.new("L", size, 0).place(Image.new("L", mask.size, 255), mask=mask.as_mask()).pad(1, 0)
+        a = np.round(np.array(mask) / 255)
+        d = ndimage.distance_transform_edt(a) + ndimage.distance_transform_edt(1-a)
+        b = np.select([d<=w, d<=w+1], [np.ones_like(d), 1-(d-w)], np.zeros_like(d))
+        m = Image.fromarray(np.round(255 * b).astype('uint8'))
+        return m.trim(1)
+    antialiasing = False
+    
 # Text markup expressions (used by Image.Image.from_markup)
 
 class MarkupExpression:

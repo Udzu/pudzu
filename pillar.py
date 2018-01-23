@@ -841,8 +841,9 @@ class ImageShape(object):
     @classmethod
     @ABC.abstractmethod
     def mask(cls, size, **kwargs):
-        """Generate a mask of the appropriate shape and size. Additional parameters should be size-independent
-        (or cls.antialiasing should be set to False)."""
+        """Generate a mask of the appropriate shape and size. Unless cls.antialising is set to False,
+        this may be called at a higher size and scaled down. Additional parameters should therefore
+        either be size-independent or scale according to the optional _scale parameter."""
         
     antialiasing = True
     
@@ -860,6 +861,7 @@ class ImageShape(object):
             orig_size, size = size, [round(s * antialias) for s in size]
             if isinstance(bg, Image.Image): bg = bg.resize([round(s * antialias) for s in bg.size], Image.NEAREST)
             if isinstance(fg, Image.Image): fg = fg.resize([round(s * antialias) for s in fg.size], Image.NEAREST)
+        if "_scale" in all_keyword_args(cls.mask): kwargs = {"_scale": antialias, **kwargs}
         mask = cls.mask(size, **kwargs)
         if invert: mask = mask.invert_mask()
         base = Image.from_pattern(bg, mask.size) if isinstance(bg, Image.Image) else Image.new("RGBA", mask.size, bg)
@@ -872,11 +874,13 @@ class ImageShape(object):
 class Rectangle(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
-    def mask(cls, size, round=0):
+    def mask(cls, size, round=0, _scale=1):
         """Rectangular mask with optional rounded corners."""
         m = Image.new("L", size, 255)
-        if round > 0:
-            w, h = int(round * size[0] / 2), int(round * size[1] / 2)
+        if not non_string_sequence(round): round = (round, round)
+        if all(r > 0 for r in round):
+            w = int(round[0] * size[0] / 2) if isinstance(round[0], float) else int(round[0] * _scale)
+            h = int(round[1] * size[1] / 2) if isinstance(round[1], float) else int(round[1] * _scale)
             m.place(Quadrant.mask((w,h)), align=(0,0), copy=False)
             m.place(Quadrant.mask((w,h)).transpose(Image.FLIP_LEFT_RIGHT), align=(1,0), copy=False)
             m.place(Quadrant.mask((w,h)).transpose(Image.FLIP_TOP_BOTTOM), align=(0,1), copy=False)
@@ -904,12 +908,12 @@ class Quadrant(ImageShape):
 class Triangle(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
-    def mask(cls, size, p=0.5):
+    def mask(cls, size, p=0.5, _scale=1.):
         """Triangular mask with 2 vertices at the bottom and one on top, with p > 0 
         for how far along the top the top vertex is, or p < 0 for how far along
         the bottom the bottom-left vertex is."""
         w, h = size
-        x, y, n = w-1, h-1, abs(p * (w-1))
+        x, y, n = w-1, h-1, (abs(p*(w-1)) if isinstance(p, float) else p*_scale)
         if p >= 0:
             left = np.fromfunction(lambda j,i: j*n >= y*(n-i), (h,w))
             right = np.fromfunction(lambda j,i: j*(x-n) >= y*(i-n), (h,w))
@@ -921,11 +925,11 @@ class Triangle(ImageShape):
 class Parallelogram(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
-    def mask(cls, size, p=0.5):
+    def mask(cls, size, p=0.5, _scale=1.):
         """Parallelogram-shaped mask, with p > 0 for how far along the top the top-left vertex is,
         or p < 0 for how far along the bottom the bottom-left vertex is."""
         w, h = size
-        x, y, n = w-1, h-1, abs(p*(w-1))
+        x, y, n = w-1, h-1, (abs(p*(w-1)) if isinstance(p, float) else p*_scale)
         left = np.fromfunction(lambda j,i: (j if p > 0 else y-j)*n >= y*(n-i), (h,w))
         right = np.fromfunction(lambda j,i: (j if p < 0 else y-j)*n >= y*(i-(x-n)), (h,w))
         return Image.fromarray(255 * (left * right).view('uint8'))
@@ -933,10 +937,10 @@ class Parallelogram(ImageShape):
 class Diamond(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
-    def mask(cls, size, p=0.5):
+    def mask(cls, size, p=0.5, _scale=1.):
         """Diamond-shaped mask with the left-right vertices p down from the top."""
         w, h = size
-        x, y, m, n = w-1, h-1, (w-1)/2, p*(h-1)
+        x, y, m, n = w-1, h-1, (w-1)/2, (abs(p*(h-1)) if isinstance(p, float) else p*_scale)
         top = np.fromfunction(lambda j, i: j*m >= n*abs(m-i), (h,w))
         bottom = np.fromfunction(lambda j, i: (y-j)*m >= (y-n)*abs(m-i), (h,w))
         return Image.fromarray(255 * (top * bottom).view('uint8'))
@@ -944,11 +948,11 @@ class Diamond(ImageShape):
 class Trapezoid(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
-    def mask(cls, size, p=0.5):
+    def mask(cls, size, p=0.5, _scale=1.):
         """Trapezoid-shaped mask, for p > 0 for how close to the center the top vertices
         are, or p < 0 for how close to the center the bottom vertices are."""
         w, h = size
-        x, y, n = w-1, h-1, abs(p*(w-1)/2)
+        x, y, n = w-1, h-1, (abs(p*(w-1)/2) if isinstance(p, float) else p*_scale)
         if p >= 0:
             left = np.fromfunction(lambda j,i: j*n >= y*(n-i), (h,w))
             right = np.fromfunction(lambda j,i: j*n >= y*(n-(x-i)), (h,w))

@@ -440,10 +440,10 @@ class _Image(Image.Image):
         return None
         
     @classmethod
-    def from_multitext(cls, texts, fonts, fgs="black", bgs=None, underlines=0, strikethroughs=0):
+    def from_multitext(cls, texts, fonts, fgs="black", bgs=None, underlines=0, strikethroughs=0, img_offset=0):
         """Create image from multiple texts, lining up the baselines. Only supports single-line texts.
         For multline texts, combine images with Image.from_column (with equal_heights set to True).
-        The texts parameter can also include images, which are lined up to sit on the baseline."""
+        The texts parameter can also include images, which are lined up to sit on the baseline+img_offset."""
         texts = make_iterable(texts)
         if not non_string_iterable(fonts): fonts = [fonts] * len(texts)
         if not non_string_iterable(fgs): fgs = [fgs] * len(texts)
@@ -455,7 +455,7 @@ class _Image(Image.Image):
             raise ValueError("Number of fonts, fgs, bgs, underlines or strikethroughs is inconsistent with number of texts: got {}, expected {}".format(lengths, len(texts)))
         bgs = [bg if bg is not None else RGBA(fg)._replace(alpha=0) for fg, bg in zip(fgs, bgs)]
         imgs = [cls.from_text(text, font, fg, bg) if isinstance(text, str) else text.remove_transparency(bg) for text, font, fg, bg in zip(texts, fonts, fgs, bgs)]
-        ascents = [font.getmetrics()[0] if isinstance(text, str) else text.height for text, font in zip(texts, fonts)]
+        ascents = [font.getmetrics()[0] if isinstance(text, str) else text.height+img_offset for text, font in zip(texts, fonts)]
         max_ascent = max(ascents)
         imgs = [img.pad((0,max_ascent-ascent,0,0), bg) for img, ascent, bg in zip(imgs, ascents, bgs)]
         max_height = max(img.height for img in imgs)
@@ -713,7 +713,9 @@ class _Image(Image.Image):
         
     def as_mask(self):
         """Convert image for use as a mask"""
-        return self.split()[-1].convert("L")
+        if self.mode in ["1", "L"]: return self.convert("L")
+        elif "A" in self.mode: return self.split()[-1].convert("L")
+        else: raise TypeError("Image with mode {} cannot be used as mask".format(self.mode))
         
     def invert_mask(self):
         """Invert image for use as a mask"""
@@ -740,6 +742,11 @@ class _Image(Image.Image):
         if 'A' in self.mode: other.putalpha(self.split()[-1])
         return self.blend(other, p, linear_conversion=linear_conversion)
 
+    def to_heatmap(self, colormap):
+        """Create a heatmap image from a mask using a matplotlib color map. Mask is either a mode L image or the image's alpha channel. Requires numpy."""
+        array = np.array(self.as_mask()) / 255
+        return Image.fromarray(colormap(array, bytes=True))
+        
     def add_grid(self, lines, width=1, bg="black", copy=True):
         """Add grid lines to an image"""
         if isinstance(lines, Integral): lines = (lines, lines)
@@ -809,6 +816,7 @@ Image.Image.invert_mask = _Image.invert_mask
 Image.Image.blend = _Image.blend
 Image.Image.brighten = _Image.brighten
 Image.Image.darken = _Image.darken
+Image.Image.to_heatmap = _Image.to_heatmap
 Image.Image.add_grid = _Image.add_grid
 Image.Image.add_shadow = _Image.add_shadow
 

@@ -19,12 +19,12 @@ def label_if(pred, labeler=lambda c,r,v: format_float(v, 3)): # TODO: automate t
 df = df.sort_values("guns_ph", ascending=False)
 guns = bar_chart(df[["guns_ph"]], 40, 350, bg=None, horizontal=True, spacing=2, label_font=FONT(16), rlabels=rlabel,
     clabels= { BarChartLabelPosition.INSIDE : label_if(artial(op.ge,15)), BarChartLabelPosition.OUTSIDE: label_if(artial(op.lt,15)) },
-    grid_interval=10, ymax=101, ylabel=Image.from_text("privately owned guns per 100 population (2007)", FONT(18), padding=5))
+    grid_interval=10, ymax=90, ylabel=Image.from_text("privately owned guns per 100 population (2007)", FONT(18), padding=5))
 
 df = df.sort_values("homicide_pm", ascending=False)
 homicides = bar_chart(df[["homicide_pm"]], 40, 350, bg=None, horizontal=True, spacing=2, label_font=FONT(16), rlabels=rlabel,
     clabels= { BarChartLabelPosition.INSIDE : label_if(artial(op.ge,2)), BarChartLabelPosition.OUTSIDE: lambda c,r,v: "(lower than the US police's killing rate!)" if df.index[r] == "Japan" else None },
-    grid_interval=5, ymax=50, ylabel=Image.from_text("intentional homicides per million population (2015)", FONT(18), padding=5))
+    grid_interval=5, ymax=50, ylabel=Image.from_text("intentional homicides per million population (2015*)", FONT(18), padding=5))
 
 df = df.sort_values("policedeaths_pm", ascending=False)
 policedeaths = bar_chart(df[["policedeaths_pm"]], 40, 600, bg=None, horizontal=True, spacing=2, label_font=FONT(16), rlabels=rlabel,
@@ -35,9 +35,9 @@ policedeaths = bar_chart(df[["policedeaths_pm"]], 40, 600, bg=None, horizontal=T
 chart = Image.from_column([policedeaths, Image.from_row([guns, homicides])], padding=10)
 title = Image.from_column([Image.from_text("Police killing rates in G7 members".upper(), FONT(40, bold=True)), Image.from_text("compared to gun ownership and homicide rates", FONT(36))])
 footer = Image.from_markup(
-"**Police killing estimates** from //The Counted// (US), //A Toutes Les Victimes// (France), //UK Home Office// (UK),\n  [[www.schusswaffeneinsatz.de]] (Germany), //Wikipedia// (Canada) and various media reports.\n"
-"**Gun ownership data** from the //IHEID Studies Small Arms Survey (2007)//.\n"
-"**Homicide data** from the //United Nations Office on Drugs and Crime// statistics website.", partial(FONT, 16), padding=5)
+"**Police killing estimates** from //The Counted// (US), //A Toutes Les Victimes// (France), //UK Home Office// (UK),\n  //Schusswaffeneinsatz.de// (Germany), //Wikipedia// (Canada), //ACAD// (Italy) and additional media reports.\n"
+"**Gun ownership data** from the //IHEID Small Arms Survey (2007)//.\n"
+"**Homicide data** from the //United Nations Office on Drugs and Crime// website. *Data for UK and Japan is from 2014.", partial(FONT, 16), padding=5)
 
 img = Image.from_column([title, chart, footer], padding=5)
 background = Image.from_url_with_cache("http://trueblueline.net/wp-content/uploads/2015/05/o-POLICE-LIGHTS-facebook.jpg").crop_to_aspect(img.width, img.height).resize(img.size).brighten(0.75)

@@ -466,7 +466,7 @@ class _Image(Image.Image):
         
     @classmethod
     def from_markup(cls, markup, font_family, fg="black", bg=None, highlight="#0645AD", overline_widths=(2,1), line_spacing=0, align="left",
-                    max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None):
+                    max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None, padding=0):
         """Create image from simle markup. See MarkupExpression for details. Max width uses normal font to split text so is not precise."""
         if isinstance(overline_widths, Integral):
             overline_widths = (overline_widths, overline_widths)
@@ -482,7 +482,7 @@ class _Image(Image.Image):
             underlines = [overline_widths[0] if "u" in m else 0 for s,m in line]
             strikethroughs = [overline_widths[1] if "s" in m else 0 for s,m in line]
             rows.append(cls.from_multitext(texts, fonts, fgs, bg, underlines=underlines, strikethroughs=strikethroughs))
-        return Image.from_column(rows, yalign=0, equal_heights=True, bg=bg, xalign=["left","center","right"].index(align)/2)
+        return Image.from_column(rows, yalign=0, equal_heights=True, bg=bg, xalign=["left","center","right"].index(align)/2).pad(padding, bg)
         
     @classmethod
     def from_pattern(cls, pattern, size, align=0, scale=(False,False), preserve_aspect=False, resample=Image.LANCZOS):

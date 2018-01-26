@@ -1,0 +1,19 @@
+period,start,end,type
+Kiev\nRus',1000,1018,e
+Kingdom of Hungary,1018,1280,h
+Kingdom of\nGalicia–Volhynia,1280,1321,e
+KoH,1321,1526,h
+Eastern\nHungarian\nKingdom,1526,1551,ho
+KoH,1551,1556,h
+EHK,1556,1570,ho
+Principality of Transylvania,1570,1711,ho
+(Grand) Principality of Transylvania,1711,1848,hg
+KoH,1848,1848,h
+GPT,1848,1867,hg
+Lands of the Crown of\nSaint Stephen,1867,1918,h
+Hungarian\nPeople's Republic,1918,1919,h
+Czecho-\nslovakia,1919,1938,w
+Hungarian\nRegency,1938,1944,h
+Nazi\nGermany,1944,1945,g
+USSR,1945,1991,e
+Ukr-\naine,1991,2018,e

@@ -110,6 +110,56 @@ class Padding():
     @property
     def y(self): return self.u + self.d
 
+class BoundingBox():
+    """Bounding box class initialized from 4 LURD coordinates or a collection of points with optional padding. Not used much at the moment."""
+        
+    def __init__(self, box):
+        if isinstance(box, Image.Image):
+            self.corners = (0, 0, box.width-1, box.height-1)
+        elif non_string_sequence(box, Integral) and len(box) == 4:
+            self.corners = tuple(box)
+        elif non_string_sequence(box) and all(non_string_sequence(point, Integral) and len(point) == 2 for point in box):
+            self.corners = (min(x for x,y in box), min(y for x,y in box), max(x for x,y in box), max(y for x,y in box))
+        else:
+            raise TypeError("BoundingBox expects four coordinates or a collection of points: got {}".format(box))
+            
+    def __repr__(self):
+        return "BoundingBox(l={}, u={}, r={}, d={})".format(self.l, self.u, self.r, self.d)
+
+    def __getitem__(self, key):
+        return self.corners[key]
+        
+    def __len__(self):
+        return 4
+        
+    def __contains__(self, other):
+        if non_string_sequence(other, Integral) and len(other) == 2:
+            return self.l <= other[0] <= self.r and self.u <= other[1] <= self.d
+        else:
+            return NotImplemented
+            
+    @property
+    def l(self): return self.corners[0]
+    @property
+    def u(self): return self.corners[1]
+    @property
+    def r(self): return self.corners[2]
+    @property
+    def d(self): return self.corners[3]
+    @property
+    def width(self): return self.r - self.l + 1
+    @property
+    def height(self): return self.d - self.u + 1
+    @property
+    def size(self): return (self.width, self.height)
+    @property
+    def center(self): return ((self.l + self.r + 1) // 2, (self.u + self.d + 1) // 2)
+            
+    def pad(self, padding):
+        """Return a padded bounding box."""
+        padding = Padding(padding)
+        return BoundingBox((self.l - padding.l, self.u - padding.u, self.r + padding.r, self.d + padding.d))
+        
 # Palettes
  
 class NamedPaletteMeta(type):
@@ -489,6 +539,7 @@ class _Image(Image.Image):
         """Create an image using a background pattern, either scaled or tiled."""
         align = Alignment(align)
         img = Image.new("RGBA", size)
+        if size[0] * size[1] == 0: return img
         if preserve_aspect:
             if scale[0] and scale[1]: raise ValueError("Cannot preserve aspect when scaling in both dimensions.")
             elif scale[0]: pattern = pattern.resize_fixed_aspect(width=size[0], resample=resample)

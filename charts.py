@@ -173,7 +173,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
             raise ValueError("Row labels in stacked charts must above, below or outside the bar.")
             
     if grid_interval is None:
-        grid_interval = max(abs(ymin), ymax) * 2
+        grid_interval = 1 if type == BarChartType.STACKED_PERCENTAGE else max(abs(ymin), ymax) * 2
     if tick_interval is Ellipsis:
         tick_interval = grid_interval
     if label_interval is Ellipsis:
@@ -216,13 +216,18 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
     # Bars
     groups = []
     for r, row in enumerate(data.values):
-        group_bars = []
+        group_bars, sumv = [], 0
         for c, v in enumerate(row):
             if type == BarChartType.STACKED_PERCENTAGE:
                 v = v / sum(row)
-            fill = color_fn(c,r,v)
-            pbar = make_box(fill, (bar_width, positive_height_fn(v)))
-            nbar = make_box(fill, (bar_width, negative_height_fn(v)))
+                fill = color_fn(c,r,v)
+                pbar = make_box(fill, (bar_width, positive_height_fn(v+sumv)-positive_height_fn(sumv)))
+                nbar = make_box(fill, (bar_width, 0))
+                sumv += v
+            else:
+                fill = color_fn(c,r,v)
+                pbar = make_box(fill, (bar_width, positive_height_fn(v)))
+                nbar = make_box(fill, (bar_width, negative_height_fn(v)))
             
             def with_inside_label(bar):
                 if BarChartLabelPosition.INSIDE in clabel_dict:

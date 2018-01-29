@@ -920,7 +920,7 @@ class ImageShape(object):
             orig_size, size = size, [round(s * antialias) for s in size]
             if isinstance(bg, Image.Image): bg = bg.resize([round(s * antialias) for s in bg.size], Image.NEAREST)
             if isinstance(fg, Image.Image): fg = fg.resize([round(s * antialias) for s in fg.size], Image.NEAREST)
-        if "_scale" in all_keyword_args(cls.mask): kwargs = {"_scale": antialias, **kwargs}
+        if "_scale" in all_keyword_args(cls.mask): kwargs = merge_dicts({"_scale": antialias}, kwargs)
         mask = cls.mask(size, **kwargs)
         if invert: mask = mask.invert_mask()
         base = Image.from_pattern(bg, mask.size) if isinstance(bg, Image.Image) else Image.new("RGBA", mask.size, bg)

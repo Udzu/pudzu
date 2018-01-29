@@ -44,7 +44,7 @@ grid = grid_chart(data, lambda b: [NO,YES][b].pad_to_aspect(80,50, bg="white"), 
 
 title = Image.from_column([
 Image.from_text("Non-European countries in Europe".upper(), FONT(28, bold=True)),
-Image.from_text("(where most of the population live outside the conventional borders of Europe)", FONT(18))
+Image.from_text("(countries where most of the population live outside the prevalent geographic\nborder of Europe that follows the Urals, Caucasus Mountains and Turkish Straits)", FONT(18), align="center")
 ], bg="white", padding=2)
 img = Image.from_column([title, grid, Rectangle((0,25))], bg="white", xalign=0.5, padding=10)
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)

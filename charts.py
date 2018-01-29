@@ -546,11 +546,17 @@ def time_chart(timeline_width, timeline_height,
 
 # Image grids
 
-def grid_chart(data, cell=None, group=None,
+class GridChartLabelPosition(Enum):
+    """Grid Chart label position."""
+    TOP_OR_LEFT, BOTTOM_OR_RIGHT = range(2)
+    TOP, BOTTOM = range(2)
+    LEFT, RIGHT = range(2)
+
+def grid_chart(data, cell=lambda v: str(v), group=None,
                fg="white", bg="black", group_colors=tuple(VegaPalette10), group_alpha=128, group_border=2,
                xalign=0.5, yalign=0.5,
                padding=(0,0,0,0), group_padding=(0,0,0,0), group_rounded=True,
-               row_label=None, col_label=None, group_label=None, title=None):
+               row_label=Ellipsis, col_label=Ellipsis, label_font=None, group_label=None, title=None):
     """Plot an image grid chart with optional Venn-like groupings.
     - data (pandas dataframe): table to base chart on
     - cell (datavalue,row,column->image/None): content of each grid cell [None]
@@ -565,8 +571,9 @@ def grid_chart(data, cell=None, group=None,
     - padding (Padding): cell padding [0]
     - group_padding (Padding): group edge padding [0]
     - group_rounded (Boolean): round group edges [True]
-    - row_label (row, rowvalues -> image/font): image or font for row labels [none]
-    - col_label (col, colvalues -> image/font): image or font for column labels [none]
+    - row_label (row, rowvalues -> image/string): image or string for row labels; optionally a dict keyed by GridChartLabelPosition [row name]
+    - col_label (col, colvalues -> image/string): image or string for column labels; optionally a dict keyed by GridChartLabelPosition [column name]
+    - label_font (font): font to use for text labels [none]
     - title (image): image to use for title [none]
     Functional arguments don't need to accept all the arguments and can also be passed in as
     constants.
@@ -578,10 +585,18 @@ def grid_chart(data, cell=None, group=None,
     
     cell_fn = ignoring_extra_args(cell) if callable(cell) else lambda v, r, c: cell
     group_fn = ignoring_extra_args(group) if callable(group) else lambda v, r, c: group
-    row_label_fn = ignoring_extra_args(row_label) if callable(row_label) else lambda r, vs: row_label
-    col_label_fn = ignoring_extra_args(col_label) if callable(col_label) else lambda c, vs: col_label
+    
+    if isinstance(col_label, GridChartLabelPosition): col_label = { col_label : ... }
+    if isinstance(row_label, GridChartLabelPosition): row_label = { row_label : ... }
+    clabel_dict = make_mapping(col_label, lambda: GridChartLabelPosition.TOP)
+    rlabel_dict = make_mapping(row_label, lambda: GridChartLabelPosition.LEFT)
+    clabel_dict = valmap((lambda v: (lambda c,vs: str(data.columns[c])) if v == Ellipsis else v), clabel_dict)
+    rlabel_dict = valmap((lambda v: (lambda r,vs: str(data.index[r])) if v == Ellipsis else v), rlabel_dict)
+    clabel_dict = valmap((lambda v: ignoring_extra_args(v if callable(v) else lambda: v)), clabel_dict)
+    rlabel_dict = valmap((lambda v: ignoring_extra_args(v if callable(v) else lambda: v)), rlabel_dict)
     
     img_array = [[cell_fn(v, r, c) for c, v in enumerate(row)] for r, row in enumerate(data.values)]
+    img_array = tmap_leafs(lambda s: s if isinstance(s, Image.Image) else Image.from_text(s, label_font, fg=fg, bg=bg, padding=2) if label_font else None, img_array, base_factory=list)
     img_heights = [max(img.height if img is not None else 0 for img in row) + padding.y for row in img_array]
     img_widths = [max(img.width if img is not None else 0 for img in column) + padding.x for column in zip_longest(*img_array)]
 
@@ -694,21 +709,27 @@ def grid_chart(data, cell=None, group=None,
                 base.place(img_array[r][c], align=(xalign,yalign), copy=False)
             img_array[r][c] = base
 
-    if row_label is not None:
+    for rlabel_pos, rlabel_fn in rlabel_dict.items():
         for r, row in enumerate(data.values):
-            label = row_label_fn(r, list(row))
-            if isinstance(label, ImageFont.FreeTypeFont):
-                label = Image.from_text(str(data.index[r]), label, fg=fg, bg=bg, padding=(10,2))
-            img_array[r].insert(0, label.pad(padding, bg=bg))
+            label = rlabel_fn(r, list(row))
+            if isinstance(label, str):
+                label = Image.from_text(label, label_font, fg=fg, bg=bg, padding=(10,0)) if label_font else None
+            if rlabel_pos == GridChartLabelPosition.LEFT:
+                img_array[r].insert(0, label.pad(padding, bg=bg))
+            else:
+                img_array[r].append(label.pad(padding, bg=bg))
             
-    if col_label is not None:
-        col_labels = [] if row_label is None else [None]
+    for clabel_pos, clabel_fn in clabel_dict.items():
+        col_labels = [None] * int(GridChartLabelPosition.LEFT in rlabel_dict)
         for c, col in enumerate(data.values.transpose()):
-            label = col_label_fn(c, list(col))
-            if isinstance(label, ImageFont.FreeTypeFont):
-                label = Image.from_text(str(data.columns[c]), label, fg=fg, bg=bg, padding=(2,10))
+            label = clabel_fn(c, list(col))
+            if isinstance(label, str):
+                label = Image.from_text(label, label_font, fg=fg, bg=bg, padding=(0,10)) if label_font else None
             col_labels.append(label.pad(padding, bg=bg))
-        img_array.insert(0, col_labels)
+        if clabel_pos == GridChartLabelPosition.LEFT:
+            img_array.insert(0, col_labels)
+        else:
+            img_array.append(col_labels)
             
     chart = Image.from_array(img_array, xalign=xalign, yalign=yalign, bg=bg)
     

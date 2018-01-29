@@ -566,8 +566,8 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
     - group_colors (group->color): dict or mapping of groups to colors, or sequence of colors [VegaPalette10]
     - group_alpha (int): grouping alpha value override; None to leave as is [128]
     - group_border (int): grouping border [2]
-    - xalign (0 to 1): cell x alignment [center]
-    - yalign (0 to 1): cell y alignment [center]
+    - xalign (0 to 1, or triple): cell x alignment, or three alignments for left labels, cells and right labels [center]
+    - yalign (0 to 1, or triple): cell y alignment, or three alignments for top labels, cells and bottom labels [center]
     - padding (Padding): cell padding [0]
     - group_padding (Padding): group edge padding [0]
     - group_rounded (Boolean): round group edges [True]
@@ -594,6 +594,13 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
     rlabel_dict = valmap((lambda v: (lambda r,vs: str(data.index[r])) if v == Ellipsis else v), rlabel_dict)
     clabel_dict = valmap((lambda v: ignoring_extra_args(v if callable(v) else lambda: v)), clabel_dict)
     rlabel_dict = valmap((lambda v: ignoring_extra_args(v if callable(v) else lambda: v)), rlabel_dict)
+    
+    xalign = [xalign] * 3 if isinstance(xalign, Real) else xalign
+    if not (non_string_sequence(xalign, Real) and len(xalign) == 3):
+        raise ValueError("xalign argument expected one or three alignment values, got: {}".format(xalign))
+    yalign = [yalign] * 3 if isinstance(yalign, Real) else yalign
+    if not (non_string_sequence(yalign, Real) and len(yalign) == 3):
+        raise ValueError("yalign argument expected one or three alignment values, got: {}".format(yalign))
     
     img_array = [[cell_fn(v, r, c) for c, v in enumerate(row)] for r, row in enumerate(data.values)]
     img_array = tmap_leafs(lambda s: s if isinstance(s, Image.Image) else Image.from_text(s, label_font, fg=fg, bg=bg, padding=2) if label_font else None, img_array, base_factory=list)
@@ -706,7 +713,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                     
                 base.place(venn, copy=False)
             if img_array[r][c]:
-                base.place(img_array[r][c], align=(xalign,yalign), copy=False)
+                base.place(img_array[r][c], align=(xalign[1],yalign[1]), copy=False)
             img_array[r][c] = base
 
     for rlabel_pos, rlabel_fn in rlabel_dict.items():
@@ -726,12 +733,19 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
             if isinstance(label, str):
                 label = Image.from_text(label, label_font, fg=fg, bg=bg, padding=(0,10)) if label_font else None
             col_labels.append(label.pad(padding, bg=bg))
-        if clabel_pos == GridChartLabelPosition.LEFT:
+        if clabel_pos == GridChartLabelPosition.TOP:
             img_array.insert(0, col_labels)
         else:
             img_array.append(col_labels)
-            
-    chart = Image.from_array(img_array, xalign=xalign, yalign=yalign, bg=bg)
+        col_labels += [None] * int(GridChartLabelPosition.RIGHT in rlabel_dict)
+
+    xaligns = [xalign[1]] * len(img_array[0])
+    if GridChartLabelPosition.LEFT in rlabel_dict: xaligns[0] = xalign[0]
+    if GridChartLabelPosition.RIGHT in rlabel_dict: xaligns[-1] = xalign[-1]
+    yaligns = [yalign[1]] * len(img_array)
+    if GridChartLabelPosition.TOP in clabel_dict: yaligns[0] = yalign[0]
+    if GridChartLabelPosition.BOTTOM in clabel_dict: yaligns[-1] = yalign[-1]
+    chart = Image.from_array(img_array, xalign=xaligns, yalign=yaligns, bg=bg)
     
     if title is not None: chart = Image.from_column((title, chart), bg=bg)
     return chart

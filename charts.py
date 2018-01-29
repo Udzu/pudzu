@@ -548,7 +548,7 @@ def time_chart(timeline_width, timeline_height,
 
 class GridChartLabelPosition(Enum):
     """Grid Chart label position."""
-    TOP_OR_LEFT, BOTTOM_OR_RIGHT = range(2)
+    BEFORE, AFTER = range(2)
     TOP, BOTTOM = range(2)
     LEFT, RIGHT = range(2)
 

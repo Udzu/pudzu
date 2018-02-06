@@ -1,7 +1,7 @@
 # [pillar.py](pillar.py)
 
 ## Summary 
-Various Pillow utilities. These are monkey-patched on, allowing continued use of the Image.new factory function. Most have only been tested in RGB/RGBA modes and may not work in other modes.
+Various Pillow utilities. These are monkey-patched on, allowing continued use of the Image.new factory function. Most have only been tested in RGB/RGBA modes and may not work in other modes. For full features and parameters, see docstrings.
  
 ## Dependencies
 *Required*: [pillow](http://pillow.readthedocs.io/en/4.2.x/index.html), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
@@ -51,6 +51,8 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 RGBA(red=100, green=50, blue=50, alpha=5)
 >> RGBA(100,50,50)
 RGBA(red=100, green=50, blue=50, alpha=255)
+>> RGBA(0.,0.5,0.5)
+RGBA(red=0, green=128, blue=128, alpha=255)
 >> RGBA(None)
 RGBA(red=0, green=0, blue=0, alpha=0)
 ```
@@ -76,7 +78,7 @@ RGBA(red=0, green=0, blue=0, alpha=0)
 ('RED', 'GREEN', 'BLUE')
 ```
 
-**Colormaps**: various matplotlib-compatible colormap generators, e.g. for use with Image.from_gradient below. Requires numpy. Includes the following.
+**Colormaps**: various matplotlib-compatible colormap generators, e.g. for use with Image.from_gradient below. Requires numpy. Includes the following:
 
 *GradientColormap*: generate a colormap from a sequence of colors, and optionally the spacing intervals between them. Can also be used as a discrete cycling colormap.
 
@@ -400,6 +402,14 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/padtoaspect2.png)
 
+**Image.Image.padded_resize**: resize an image, after first padding it to the right aspect ratio.
+
+```python
+>> flag.padded_resize((100,100), bg="grey").show()
+```
+
+![alt](images/padtoaspect1.png)
+
 **Image.Image.crop_to_aspect**: crop an image so that it has the given aspect ratio (specified by one or two numbers).
 
 ```python
@@ -413,6 +423,14 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 ```
 
 ![alt](images/croptoaspect2.png)
+
+**Image.Image.cropped_resize**: resize an image, after first cropping it to the right aspect ratio.
+
+```python
+>> flag.cropped_resize((100,100)).show()
+```
+
+![alt](images/croppedresize.png)
 
 **Image.Image.blend**: blends two images together, using sRGB gamma correction by default. Similarly, **ImageColor.brighten** and **ImageColor.darken** blend with white and black, while preserving alpha. Requires numpy.
 

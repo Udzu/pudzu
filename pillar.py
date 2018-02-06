@@ -221,7 +221,7 @@ class _ImageDraw():
     _textsize = _emptyDraw.textsize
     
     @classmethod
-    def text_size(cls, text, font, *args, **kwargs):
+    def text_size(cls, text, font, descenders=False, *args, **kwargs):
         """Return the size of a given string in pixels. Same as ImageDraw.Draw.textsize but doesn't
         require a drawable object, and handles descenders on multiline text and negative horizontal offsets."""
         x, y = cls._textsize(text, font, *args, **kwargs)
@@ -657,7 +657,7 @@ class _Image(Image.Image):
         y = int(padding.u + align.y * (self.height - (img.height + padding.y)))
         return self.overlay(img, (x, y), mask=mask, copy=copy)
         
-    def pad(self, padding, bg="black", offsets=None):
+    def pad(self, padding, bg, offsets=None):
         """Return a padded image. Updates optional offset structure."""
         padding = Padding(padding)
         if offsets is not None: offsets.update(offsets + padding)
@@ -734,7 +734,23 @@ class _Image(Image.Image):
             return self.resize((width, int(width * (self.height / self.width))), resample=resample)
         else:
             return self.resize((int(height * (self.width / self.height)), height), resample=resample)
-            
+
+    def cropped_resize(self, size, align=0.5, pad_up=False, bg="black", **kwargs):
+        """Return a resized image, after first cropping it to the right aspect ratio. 
+        If pad_up is set then first pad and dimensions that are too small, to avoid upscaling."""
+        if pad_up and (img.width < size[0] or img.height < size[1]):
+            self = Image.new("RGBA", (max(img.width, size[0]), max(img.height, size[1])), bg).place(self)
+        return self.crop_to_aspect(size[0], size[1], align).resize(size, **kwargs)
+        
+    def padded_resize(self, size, align=0.5, bg="black", no_pad_ratio=1, **kwargs):
+        """Return a resized image, after first padding it to the right aspect ratio.
+        Images whose aspect ratio is less than a factor of no_pad_ratio away from the target ratio
+        are not padded, just resized."""
+        ratio = (self.width / self.height) / (size[0] / size[1])
+        if max(ratio, 1 / ratio) > no_pad_ratio:
+            self = self.pad_to_aspect(size[0], size[1], align, bg)
+        return self.resize(size, **kwargs)
+    
     def replace_color(self, color1, color2, ignore_alpha=False):
         """Return an image with color1 replaced by color2. Requires numpy."""
         if 'RGB' not in self.mode:
@@ -854,7 +870,9 @@ Image.Image.pad = _Image.pad
 Image.Image.trim = _Image.trim
 Image.Image.pin = _Image.pin
 Image.Image.crop_to_aspect = _Image.crop_to_aspect
+Image.Image.cropped_resize = _Image.cropped_resize
 Image.Image.pad_to_aspect = _Image.pad_to_aspect
+Image.Image.padded_resize = _Image.padded_resize
 if not hasattr(Image.Image, 'resize_nonempty'):
     Image.Image.resize_nonempty=Image.Image.resize
 Image.Image.resize = _Image.resize

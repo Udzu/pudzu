@@ -64,7 +64,7 @@ tdata = df.split_rows('types').groupby('types').count().Z
 
 def make_legend(array, title):
     aimg = Image.from_array(array, xalign=(0.5,0), padding=(5,6), bg="white")
-    return Image.from_column([Image.from_text(title, arial(36, bold=True), "black").pad((7,0,0,10),"white"), aimg], xalign=0, bg="white").pad(12,"white").pad(2)
+    return Image.from_column([Image.from_text(title, arial(36, bold=True), "black").pad((7,0,0,10),"white"), aimg], xalign=0, bg="white").pad(12,"white").pad(2, "black")
         
 def glegend_entry(i, s):
     box = Image.new("RGBA", (50,40), PALETTE[i]).place(Image.from_text(str(gdata[i]), arial(24), "black", bg=PALETTE[i]))

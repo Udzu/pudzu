@@ -221,12 +221,15 @@ class _ImageDraw():
     _textsize = _emptyDraw.textsize
     
     @classmethod
-    def text_size(cls, text, font, descenders=False, *args, **kwargs):
+    def text_size(cls, text, font, beard_line=False, *args, **kwargs):
         """Return the size of a given string in pixels. Same as ImageDraw.Draw.textsize but doesn't
-        require a drawable object, and handles descenders on multiline text and negative horizontal offsets."""
+        require a drawable object, and handles descenders on multiline text and negative horizontal offsets.
+        Setting beard_line makes the height include the beard line even if there are no descenders."""
         x, y = cls._textsize(text, font, *args, **kwargs)
         lines = text.split("\n")
-        if len(lines) > 1: y += cls._textsize(lines[-1], font, *args, **kwargs)[1] - cls._textsize("A", font)[1]
+        last_height = cls._textsize(lines[-1], font, *args, **kwargs)[1] 
+        if len(lines) > 1: y += last_height - cls._textsize("A", font)[1]
+        if beard_line: y += cls._textsize("y", font)[1] - last_height
         x += -min(0, min(font.getoffset(line)[0] for line in lines))
         return x, y 
         
@@ -462,7 +465,7 @@ class FunctionColormap():
 class _Image(Image.Image):
 
     @classmethod
-    def from_text(cls, text, font, fg="black", bg=None, padding=0, line_spacing=0, align="left",
+    def from_text(cls, text, font, fg="black", bg=None, padding=0, line_spacing=0, beard_line=False, align="left",
                   max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None):
         """Create image from text. If max_width is set, uses the tokenizer and optional hyphenator
         to split text across multiple lines."""
@@ -471,7 +474,7 @@ class _Image(Image.Image):
             bg = RGBA(fg)._replace(alpha=0)
         if max_width is not None:
             text = ImageDraw.word_wrap(text, font, max_width, tokenizer, hyphenator)
-        w,h = ImageDraw.text_size(text, font, spacing=line_spacing)
+        w,h = ImageDraw.text_size(text, font, spacing=line_spacing, beard_line=beard_line)
         if max_width is not None and w > max_width:
             logger.warning("Text cropped as too wide to fit: {}".format(text))
             w = max_width
@@ -490,7 +493,7 @@ class _Image(Image.Image):
         return None
         
     @classmethod
-    def from_multitext(cls, texts, fonts, fgs="black", bgs=None, underlines=0, strikethroughs=0, img_offset=0):
+    def from_multitext(cls, texts, fonts, fgs="black", bgs=None, underlines=0, strikethroughs=0, img_offset=0, beard_line=False):
         """Create image from multiple texts, lining up the baselines. Only supports single-line texts.
         For multline texts, combine images with Image.from_column (with equal_heights set to True).
         The texts parameter can also include images, which are lined up to sit on the baseline+img_offset."""
@@ -504,7 +507,7 @@ class _Image(Image.Image):
         if not all(l == len(texts) for l in lengths):
             raise ValueError("Number of fonts, fgs, bgs, underlines or strikethroughs is inconsistent with number of texts: got {}, expected {}".format(lengths, len(texts)))
         bgs = [bg if bg is not None else RGBA(fg)._replace(alpha=0) for fg, bg in zip(fgs, bgs)]
-        imgs = [cls.from_text(text, font, fg, bg) if isinstance(text, str) else text.remove_transparency(bg) for text, font, fg, bg in zip(texts, fonts, fgs, bgs)]
+        imgs = [cls.from_text(text, font, fg, bg, beard_line=beard_line) if isinstance(text, str) else text.remove_transparency(bg) for text, font, fg, bg in zip(texts, fonts, fgs, bgs)]
         ascents = [font.getmetrics()[0] if isinstance(text, str) else text.height+img_offset for text, font in zip(texts, fonts)]
         max_ascent = max(ascents)
         imgs = [img.pad((0,max_ascent-ascent,0,0), bg) for img, ascent, bg in zip(imgs, ascents, bgs)]
@@ -516,7 +519,7 @@ class _Image(Image.Image):
         
     @classmethod
     def from_markup(cls, markup, font_family, fg="black", bg=None, highlight="#0645AD", overline_widths=(2,1), line_spacing=0, align="left",
-                    max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None, padding=0):
+                    max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None, padding=0, beard_line=False):
         """Create image from simle markup. See MarkupExpression for details. Max width uses normal font to split text so is not precise."""
         if isinstance(overline_widths, Integral):
             overline_widths = (overline_widths, overline_widths)
@@ -531,7 +534,7 @@ class _Image(Image.Image):
             fgs = [highlight if "c" in m else fg for s,m in line]
             underlines = [overline_widths[0] if "u" in m else 0 for s,m in line]
             strikethroughs = [overline_widths[1] if "s" in m else 0 for s,m in line]
-            rows.append(cls.from_multitext(texts, fonts, fgs, bg, underlines=underlines, strikethroughs=strikethroughs))
+            rows.append(cls.from_multitext(texts, fonts, fgs, bg, underlines=underlines, strikethroughs=strikethroughs, beard_line=beard_line))
         return Image.from_column(rows, yalign=0, equal_heights=True, bg=bg, xalign=["left","center","right"].index(align)/2).pad(padding, bg)
         
     @classmethod

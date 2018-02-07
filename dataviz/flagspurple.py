@@ -15,11 +15,14 @@ def process(d):
     if not d: return None
     description = get_non(d, 'description')
     description = "({})".format(description) if description else " "
+    flag = Image.from_url_with_cache(get_non(d, 'image', default_img)).to_rgba()
+    flag = flag.resize_fixed_aspect(height=198) if flag.width / flag.height < 1.3 else flag.resize((318,198))
+    flag = flag.pad(1, "grey")
     return Image.from_column([
-      Image.from_text(d['name'], FONT(32, bold=True), fg=fg),
+      Image.from_text(d['name'], FONT(28 if "Jewish" in d['name'] else 32, bold=True), beard_line=True, fg=fg),
       Image.from_text(description, FONT(24, italics=True), fg=fg),
-      Image.from_url_with_cache(get_non(d, 'image', default_img)).to_rgba().resize((318,198)).pad(1, "grey")
-      ], padding=2, bg=bg)
+      flag
+      ], padding=2, bg=bg, equal_widths=True)
 
 title = Image.from_text("Some flags that contain the color Purple".upper(), FONT(80, bold=True), fg=fg, bg=bg).pad(40, bg)
 

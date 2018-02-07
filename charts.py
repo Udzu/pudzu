@@ -603,7 +603,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
         raise ValueError("yalign argument expected one or three alignment values, got: {}".format(yalign))
     
     img_array = [[cell_fn(v, r, c) for c, v in enumerate(row)] for r, row in enumerate(data.values)]
-    img_array = tmap_leafs(lambda s: s if isinstance(s, Image.Image) else Image.from_text(s, label_font, fg=fg, bg=bg, padding=2) if label_font else None, img_array, base_factory=list)
+    img_array = tmap_leafs(lambda s: s if isinstance(s, Image.Image) else Image.from_text(s, label_font, fg=fg, bg=bg, padding=2) if label_font and s else None, img_array, base_factory=list)
     img_heights = [max(img.height if img is not None else 0 for img in row) + padding.y for row in img_array]
     img_widths = [max(img.width if img is not None else 0 for img in column) + padding.x for column in zip_longest(*img_array)]
 
@@ -721,10 +721,12 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
             label = rlabel_fn(r, list(row))
             if isinstance(label, str):
                 label = Image.from_text(label, label_font, fg=fg, bg=bg, padding=(10,0)) if label_font else None
+            if label is not None:
+                label = label.pad(padding, bg=bg)
             if rlabel_pos == GridChartLabelPosition.LEFT:
-                img_array[r].insert(0, label.pad(padding, bg=bg))
+                img_array[r].insert(0, label)
             else:
-                img_array[r].append(label.pad(padding, bg=bg))
+                img_array[r].append(label)
             
     for clabel_pos, clabel_fn in clabel_dict.items():
         col_labels = [None] * int(GridChartLabelPosition.LEFT in rlabel_dict)
@@ -732,7 +734,9 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
             label = clabel_fn(c, list(col))
             if isinstance(label, str):
                 label = Image.from_text(label, label_font, fg=fg, bg=bg, padding=(0,10)) if label_font else None
-            col_labels.append(label.pad(padding, bg=bg))
+            if label is not None:
+                label = label.pad(padding, bg=bg)
+            col_labels.append(label)
         if clabel_pos == GridChartLabelPosition.TOP:
             img_array.insert(0, col_labels)
         else:

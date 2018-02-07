@@ -738,10 +738,13 @@ class _Image(Image.Image):
         else:
             return self.resize((int(height * (self.width / self.height)), height), resample=resample)
 
-    def cropped_resize(self, size, align=0.5, pad_up=False, pad_align=0.5, pad_bg="black", **kwargs):
+    def cropped_resize(self, size, align=0.5, upsize=True, pad_up=False, pad_align=0.5, pad_bg="black", **kwargs):
         """Return a resized image, after first cropping it to the right aspect ratio. 
-        If pad_up is set then first pad and dimensions that are too small, to avoid upscaling."""
-        if pad_up and (self.width < size[0] or self.height < size[1]):
+        If upsize is False then avoid upscaling images that are too small. If pad_up is True
+        then pad those instead."""
+        if not upsize and not pad_up and (self.width < size[0] or self.height < size[1]):
+            return self.crop_to_aspect(min(self.width, size[0]), min(self.height, size[1]), align)
+        if not upsize and pad_up and (self.width < size[0] or self.height < size[1]):
             self = Image.new("RGBA", (max(self.width, size[0]), max(self.height, size[1])), pad_bg).place(self, align=pad_align)
         return self.crop_to_aspect(size[0], size[1], align).resize(size, **kwargs)
         

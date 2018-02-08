@@ -1,0 +1,20 @@
+period,start,end,type
+Almohad Caliphate,1160,1231,m
+Murcia,1231,1237,m
+Granada,1237,1274,m
+Morocco,1274,1309,m
+Castile,1309,1333,s
+Morocco,1333,1374,m
+Granada,1374,1410,m
+Fez,1410,1411,m
+Granada,1411,1462,m
+Castile,1462,1467,s
+Medina\nSidonia,1467,1474,s
+conv-\nersos,1474,1476,s
+Medina\nSidonia,1476,1501,s
+Castile,1501,1516,s
+Spain,1516,1704,s
+Grand Alliance,1704,1713,u
+British garrison,1713,1830,u
+British Crown Colony,1830,1981,u
+British\nOverseas\nTerritory,1981,2018,u

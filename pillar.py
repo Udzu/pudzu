@@ -204,6 +204,20 @@ class Set1Class9(metaclass=NamedPaletteMeta):
     PINK = "#f781bf"
     GREY = "#999999"
     
+class PairedClass12(metaclass=NamedPaletteMeta):
+    LIGHTBLUE = "#a6cee3"
+    BLUE = "#1f78b4"
+    LIGHTGREEN = "#b2df8a"
+    GREEN = "#33a02c"
+    PINK = "#fb9a99"
+    RED = "#e31a1c"
+    LIGHTORANGE = "#fdbf6f"
+    ORANGE = "#ff7f00"
+    LIGHTPURPLE = "#cab2d6"
+    PURPLE = "#6a3d9a"
+    YELLOW = "#ffff99"
+    BROWN = "#b15928"
+    
 # ImageDraw
 
 def whitespace_span_tokenize(text):

@@ -564,7 +564,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
     - fg (color): font color [white]
     - bg (color): background color [black]
     - group_colors (group->color): dict or mapping of groups to colors, or sequence of colors [VegaPalette10]
-    - group_alpha (int): grouping alpha value override; None to leave as is [128]
+    - group_alpha (group->int): dict or mapping of grouping alpha value overrides; None to leave as is [128]
     - group_border (int): grouping border [2]
     - xalign (0 to 1, or triple): cell x alignment, or three alignments for left labels, cells and right labels [center]
     - yalign (0 to 1, or triple): cell y alignment, or three alignments for top labels, cells and bottom labels [center]
@@ -613,6 +613,10 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                     (lambda g: group_colors[g]) if isinstance(group_colors, Mapping) else
                     (lambda g: group_colors[groups.index(g)]) if non_string_sequence(group_colors) else
                     (lambda g: group_colors))
+    group_alpha_fn = (group_alpha if callable(group_alpha) else 
+                    (lambda g: group_alpha[g]) if isinstance(group_alpha, Mapping) else
+                    (lambda g: group_alpha[groups.index(g)]) if non_string_sequence(group_alpha) else
+                    (lambda g: group_alpha))
                     
     def group_cmp(group, *same, diff=()):
         return (all(0<=r<len(img_heights) and 0<=c<len(img_widths) and group in group_array[r][c] for r,c in same) and
@@ -640,7 +644,8 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                 venn = Image.new("RGBA", (img_widths[c], img_heights[r]), RGBA(bg)._replace(alpha=0))
                 for g in group_array[r][c]:
                     cfg = col = RGBA(group_col_fn(g))
-                    if group_alpha is not None: col = col._replace(alpha=group_alpha)
+                    alpha = group_alpha_fn(g)
+                    if alpha is not None: col = col._replace(alpha=alpha)
                     
                     # what an unholy mess! :( could use some rewriting
                     mid = Rectangle((base.width-gp.x, base.height-gp.y), col)

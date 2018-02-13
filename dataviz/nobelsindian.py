@@ -27,13 +27,13 @@ def box(g, n):
     return i
 
 legend = generate_legend(
-[box(c, "+"*(c in "bc") + str(len(df.filter_rows("group >> {}".format(c))))) for c in "BbCcor"], 
-["Born in what is now India.",
- "Born in what was //then// British India.",
- "Citizen of India or British India at the time of award.",
+[box(c, "+"*(c in "bc") + str(len(df.filter_rows("group >> {}".format(c))))) for c in "CcBbor"], 
+["Citizen of India or British India at the time of award.",
  "Citizen of India or British India //prior// to the award.",
- "Person of Indian Origin.",
- "Resident of India at the time of award."], fonts=partial(FONT, 14), max_width=250, header="Legend").pad(4, "white")
+ "Born in what is now India.",
+ "Born in what was //then// British India.",
+ "Person of Indian Origin at the time of award.",
+ "Resident of India at the time of award."], fonts=partial(FONT, 14), max_width=250, header="Categories").pad(4, "white")
 
 def process(d):
     if d is None: return legend
@@ -49,7 +49,7 @@ def group(d):
 
 grid = grid_chart(table, process, group, padding=10, yalign=0, group_rounded=True, group_padding=4, group_colors=PALETTE, group_alpha=ALPHA, bg="white")
 
-title = Image.from_text("Indian Nobel Prize Laureates".upper(), FONT(40, bold=True))
+title = Image.from_text("Indian Nobel Prize Laureates".upper(), FONT(48, bold=True))
 img = Image.from_column([title, grid], bg="white", padding=10)
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
-img.convert("RGB").save("output/cereals.jpg")
+img.convert("RGB").save("output/nobelsindian.jpg")

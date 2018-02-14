@@ -11,8 +11,7 @@ df = pd.read_csv("datasets/eujews.csv")
 def entitle(img):
     title = Image.from_text("Famous Europeans of Jewish origin ".upper(), FONT(96, bold=True), fg=fg, bg=bg)
     subtitle = Image.from_text("(roughly ordered by how famous they are)", FONT(72), fg=fg, bg=bg).pad((0,0,0,10), bg)
-    footer = Image.from_text("Missing countries: Montenegro, Andorra, Faroe Islands and Vatican City.", FONT(36), fg=fg, bg=bg)
-    return Image.from_column([title, subtitle, img, footer], bg=bg, padding=5).pad(15,bg=bg)
+    return Image.from_column([title, subtitle, img], bg=bg, padding=5).pad(15,bg=bg)
 
 grids = []
 for row in generate_batches(df.iterrows(), ceil(len(df)/4)):

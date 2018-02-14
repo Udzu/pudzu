@@ -49,7 +49,7 @@ def group(d):
 
 grid = grid_chart(table, process, group, padding=10, yalign=0, group_rounded=True, group_padding=4, group_colors=PALETTE, group_alpha=ALPHA, bg="white")
 
-title = Image.from_text("Indian Nobel Prize Laureates".upper(), FONT(48, bold=True))
+title = Image.from_text("India-linked Nobel Laureates".upper(), FONT(48, bold=True))
 img = Image.from_column([title, grid], bg="white", padding=10)
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.convert("RGB").save("output/nobelsindian.jpg")

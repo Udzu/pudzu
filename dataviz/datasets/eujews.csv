@@ -1,59 +1,53 @@
-country,link,description,image,score
-Albania,Maksim Cikuli
-Andorra,?
-Armenia,Levon Aronian
-Austria,Sigmund Freud
-Azerbaijan,Garry Kasparov
-Belarus,Marc Chagall
-Belgium,Ilya Prigogine
-Bosnia,Sven Alkalaj
-Bulgaria,Elias Canetti
-Croatia,Mira Furlan
-Cyprus,Lila-Irene Clerides
-Czech Republic,Franz Kafka
-Denmark,Niels Bohr
-Estonia,Louis Kahn
-Faroe Islands,?
-Finland,Poju Zabludowicz
-France,Serge Gainsbourg
-Georgia,Badri Patarkatsishvili
-Germany,Albert Einstein
-Gibraltar,Joshua Hassan
-Guernsey,Edward Brampton
-Greenland,Peter Freuchen
-Iceland,Vladimir Ashkenazy
-Ireland,Daniel Day Lewis
-Italy,Amedeo Modigliani
-Jersey,Claude Cahun
-Kazakhstan,Timur Bekmambetov
-Kosovo,David Albahari
-Latvia,Mark Rothko
-Liechtenstein,Elisabeth von Gutmann
-Lithuania,Emma Goldman
-Luxembourg,Hugo Gernsback
-Macedonia,Rafael Kamhi
-Malta,John F. Marks
-Moldova,William Friedman
-Monaco,Alice Heine
-Montenegro,?
-Netherlands,Baruch Spinoza
-Norway,Victor Goldschmidt
-Portugal,Daniela Ruah
-Romania,Elie Wiesel
-San Marino,Angelo Donati
-Serbia,Thomas Nagel
-Slovakia,Ivan Reitman
-Slovenia,Alexander Beliavsky
-Sweden,Joel Kinnaman
-Spain,Nathalia Ramos
-Switzerland,Albert Einstein
-Ukraine,Leon Trotsky
-UK,Benjamin Disraeli
-
-Hungary
-Greece
-Turkey
-Poland
-Russia
-Faroe
-
+country,link,dates,description,image
+Germany,Albert Einstein,1879–1955,physicist
+Switzerland,Albert Einstein,1879–1955,physicist
+Austria,Sigmund Freud,1856–1939,psychoanalyst
+Czech Republic,Franz Kafka,1883–1924,author
+Ukraine,Leon Trotsky,1879–1940,revolutionary
+Netherlands,Baruch Spinoza,1632–1677,philosopher
+Russia,Ayn Rand,1905–1982,writer
+Hungary,Harry Houdini,1874–1926,magician
+Azerbaijan,Garry Kasparov,born 1963,chess champion
+UK,Benjamin Disraeli,1804–1881,prime minister
+Belarus,Marc Chagall,1887–1985,artist
+Latvia,Mark Rothko,1903–1970,painter
+Italy,Amedeo Modigliani,1884–1920,artist
+Poland,Roman Polanski,born 1933,director
+Ireland,Daniel Day Lewis,born 1957,actor
+Denmark,Niels Bohr,1885–1962,physicist
+France,Serge Gainsbourg,1928–1991,singer-songwriter
+Romania,Elie Wiesel,1928–2016,Holocaust survivor
+Lithuania,Emma Goldman,1869–1940,anarchist
+Portugal,Daniela Ruah,born 1983,actor
+Sweden,Joel Kinnaman,born 1979,actor
+Bulgaria,Elias Canetti,1905–1994,author
+Belgium,Ilya Prigogine,1917–2003,physical chemist
+Turkey,Tchéky Karyo,born 1953,actor-musician
+Croatia,Mira Furlan,born 1955,actor
+Spain,Nathalia Ramos,born 1992,actor
+Slovakia,Ivan Reitman,born 1946,director
+Armenia,Levon Aronian,born 1982,chess grandmaster
+Serbia,Thomas Nagel,born 1937,philosopher
+Jersey,Claude Cahun,1894–1954,artist
+Iceland,Vladimir Ashkenazy,born 1937,pianist-conductor
+Luxembourg,Hugo Gernsback,1884–1967,sci-fi publisher
+Kazakhstan,Timur Bekmambetov,born 1961,director
+Greece,Albert Cohen,1895–1981,author
+Estonia,Louis Kahn,1901–1974,architect
+Moldova,William Friedman,1891–1969,cryptographer
+Greenland,Peter Freuchen,1886–1957,arctic explorer
+Slovenia,Alexander Beliavsky,born 1953,chess grandmaster
+Georgia,Badri Patarkatsishvili,1955–2008,billionaire
+Finland,Poju Zabludowicz,born 1953,billionaire
+Bosnia,Sven Alkalaj,born 1948,foreign minister
+Kosovo,David Albahari,born 1948,writer
+Monaco,Alice Heine,1858–1925,princess
+Norway,Victor Goldschmidt,1888–1947,mineralogist
+Liechtenstein,Elisabeth von Gutmann,1875–1947,princess
+Gibraltar,Joshua Hassan,1915–1997,chief minister
+San Marino,Angelo Donati,1885–1960,diplomat
+Macedonia,Rafael Kamhi,1870–1970,revolutionary
+Guernsey,Edward Brampton,1440–1508,knight-governor
+Albania,Maksim Cikuli,born 1952,health minister
+Cyprus,Lila-Irene Clerides,1921–2007,first lady
+Malta,John F. Marks,1894–1954,labour activist

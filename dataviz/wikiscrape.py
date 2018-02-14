@@ -26,7 +26,7 @@ LIMITS = { 'length': 1500000, 'revisions': 25000, 'pageviews': 1000000 }
 
 def score_people(df, lang="en", translate_from=None):
     df = df.assign_rows(progressbar = True,
-                        wp = (lambda d: WikiPage(d['link'], lang=lang)) if translate_from is None else ignoring_exceptions(lambda d: WikiPage(d['link'], lang=translate_from).to_wikidata().to_wikipedia(lang=lang)))
+                        wp = ignoring_exceptions((lambda d: WikiPage(d['link'], lang=lang)) if translate_from is None else (lambda d: WikiPage(d['link'], lang=translate_from).to_wikidata().to_wikipedia(lang=lang))))
     df = df.assign_rows(progressbar = True,
                         title=lambda d: '?' if d['wp'] is None else d['wp'].title,
                         length=lambda d: 1 if d['wp'] is None else len(d['wp'].response.content),

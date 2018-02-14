@@ -1,21 +1,21 @@
-country,link,dates,description,image
-Germany,Albert Einstein,1879–1955,physicist
-Switzerland,Albert Einstein,1879–1955,physicist
-Austria,Sigmund Freud,1856–1939,psychoanalyst
-Czech Republic,Franz Kafka,1883–1924,author
-Ukraine,Leon Trotsky,1879–1940,revolutionary
-Netherlands,Baruch Spinoza,1632–1677,philosopher
-Russia,Ayn Rand,1905–1982,writer
-Hungary,Harry Houdini,1874–1926,magician
-Azerbaijan,Garry Kasparov,born 1963,chess champion
-UK,Benjamin Disraeli,1804–1881,prime minister
-Belarus,Marc Chagall,1887–1985,artist
+country,link,dates,description,image,align
+Germany,Albert Einstein,1879–1955,physicist,https://vignette2.wikia.nocookie.net/epicrapbattlesofhistory/images/4/4d/Albert_Einstein_Based_On.png
+Switzerland,Albert Einstein,1879–1955,physicist,https://orig00.deviantart.net/0e6e/f/2012/361/6/d/albert_einstein__s_tongue_photograph_by_zuzahin-d5pc5py.jpg,0.5
+Austria,Sigmund Freud,1856–1939,psychoanalyst,http://cdn.history.com/sites/2/2015/04/hith-10-things-sigmund-freud-501585595-E.jpeg
+Czech Republic,Franz Kafka,1883–1924,author,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Franz_Kafka_1917.jpg/220px-Franz_Kafka_1917.jpg
+Ukraine,Leon Trotsky,1879–1940,revolutionary,http://2.bp.blogspot.com/-Xs-k68yXkAw/Vor1VheCfZI/AAAAAAAAUA0/HxXAUizxW8Q/s1600/leon_trotsky_by_klimbims-d9jhj04.jpg
+Netherlands,Baruch Spinoza,1632–1677,philosopher,https://i.pinimg.com/originals/6d/8b/53/6d8b53d205b40f78840ce085bb378985.jpg
+Russia,Ayn Rand,1905–1982,writer,http://4.bp.blogspot.com/-_KZTEEye_o8/Td7FFN-PQHI/AAAAAAAAAQk/WAFrZf9WuAM/s320/PAPAL+CRITICS+%2528AYN+RAND%2529.jpg
+Hungary,Harry Houdini,1874–1926,magician,https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/HarryHoudini1899.jpg/220px-HarryHoudini1899.jpg
+Belarus,Marc Chagall,1887–1985,artist,https://lh3.googleusercontent.com/-Dldm-hVvhPI/TpL3_Zn3N8I/AAAAAAAAF3U/54uFu5KUpI8/w1200-h630-p-k-no-nu/chagall_sportrait.jpg
 Latvia,Mark Rothko,1903–1970,painter
 Italy,Amedeo Modigliani,1884–1920,artist
+Azerbaijan,Garry Kasparov,born 1963,chess champion
+UK,Benjamin Disraeli,1804–1881,prime minister
+France,Serge Gainsbourg,1928–1991,singer-songwriter
+Denmark,Niels Bohr,1885–1962,physicist
 Poland,Roman Polanski,born 1933,director
 Ireland,Daniel Day Lewis,born 1957,actor
-Denmark,Niels Bohr,1885–1962,physicist
-France,Serge Gainsbourg,1928–1991,singer-songwriter
 Romania,Elie Wiesel,1928–2016,Holocaust survivor
 Lithuania,Emma Goldman,1869–1940,anarchist
 Portugal,Daniela Ruah,born 1983,actor

@@ -22,7 +22,7 @@ BFA,Africa,Burkina Faso,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3
 BGD,Asia,Bangladesh,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flag_of_Bangladesh.svg/1024px-Flag_of_Bangladesh.svg.png,Bangladeshi,160995642,.bd,un,+880
 BGR,Europe,Bulgaria,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Bulgaria.svg/1024px-Flag_of_Bulgaria.svg.png,Bulgarian,7177991,.bg,eu|un,+359
 BHR,Asia,Bahrain,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Bahrain.svg/1024px-Flag_of_Bahrain.svg.png,Bahraini,1377237,.bh,un,+973
-BHS,North America,The Bahamas|Bahamas,https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Flag_of_the_Bahamas.svg/1024px-Flag_of_the_Bahamas.svg.png,Bahamian,388019,.bs,un,+1242
+BHS,North America,Bahamas|The Bahamas,https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Flag_of_the_Bahamas.svg/1024px-Flag_of_the_Bahamas.svg.png,Bahamian,388019,.bs,un,+1242
 BIH,Europe,Bosnia and Herzegovina|Bosnia,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Flag_of_Bosnia_and_Herzegovina.svg/1024px-Flag_of_Bosnia_and_Herzegovina.svg.png,Bosnian|Herzegovinian,3810416,.ba,un,+387
 BLM,North America,Saint Barthélemy,https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Flag_of_Saint_Barthelemy_%28local%29.svg/1024px-Flag_of_Saint_Barthelemy_%28local%29.svg.png,Barthélemois,9279,.bl,,
 BLR,Europe,Belarus,https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Flag_of_Belarus.svg/1024px-Flag_of_Belarus.svg.png,Belarusian,9513000,.by|.бел,un,+375
@@ -40,14 +40,14 @@ CCK,Asia,Cocos Islands,https://upload.wikimedia.org/wikipedia/commons/thumb/7/74
 CHE,Europe,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Switzerland.svg/1024px-Flag_of_Switzerland.svg.png,Swiss,8286976,.ch,un,+41
 CHL,South America,Chile,https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Flag_of_Chile.svg/1024px-Flag_of_Chile.svg.png,Chilean,17948141,.cl,un,+56
 CHN,Asia,China|People's Republic of China,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1024px-Flag_of_the_People%27s_Republic_of_China.svg.png,Chinese,1371220000,.cn|.中国|.中國,un,+86
-CIV,Africa,Côte d'Ivoire|Ivory Coast,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/1024px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png,Ivorian,22701556,.ci,un,+225
+CIV,Africa,Ivory Coast|Côte d'Ivoire,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/1024px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png,Ivorian,22701556,.ci,un,+225
 CMR,Africa,Cameroon,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Cameroon.svg/1024px-Flag_of_Cameroon.svg.png,Cameroonian,23344179,.cm,un,+237
 COD,Africa,Democratic Republic of the Congo|DR Congo,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg/1024px-Flag_of_the_Democratic_Republic_of_the_Congo.svg.png,Congolese,77266814,.cd,un,+243
 COG,Africa,Republic of the Congo|Congo,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_the_Republic_of_the_Congo.svg/1024px-Flag_of_the_Republic_of_the_Congo.svg.png,Congolese,4620330,.cg,un,+242
 COK,Oceania,Cook Islands,https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Flag_of_the_Cook_Islands.svg/1024px-Flag_of_the_Cook_Islands.svg.png,Cook Island,21000,.ck,,+682
 COL,South America,Colombia,https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Colombia.svg/1024px-Flag_of_Colombia.svg.png,Colombian,48228704,.co,un,+57
 COM,Africa,Comoros,https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Flag_of_the_Comoros.svg/1024px-Flag_of_the_Comoros.svg.png,Comoran|Comorian,788474,.km,un,+269
-CPV,Africa,Cabo Verde|Cape Verde,https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Cape_Verde.svg/1024px-Flag_of_Cape_Verde.svg.png,Cabo Verdean,520502,.cv,un,+238
+CPV,Africa,Cape Verde|Cabo Verde,https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Cape_Verde.svg/1024px-Flag_of_Cape_Verde.svg.png,Cabo Verdean,520502,.cv,un,+238
 CRI,North America,Costa Rica,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Flag_of_Costa_Rica.svg/1024px-Flag_of_Costa_Rica.svg.png,Costa Rican,4807850,.cr,un,+506
 CUB,North America,Cuba,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/1024px-Flag_of_Cuba.svg.png,Cuban,11389562,.cu,un,+53
 CUW,North America,Curaçao,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Flag_of_Cura%C3%A7ao.svg/1024px-Flag_of_Cura%C3%A7ao.svg.png,Curaçaoan,158040,.cw|.an,,+5999
@@ -141,7 +141,7 @@ MDG,Africa,Madagascar,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/
 MDV,Asia,Maldives,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_Maldives.svg/1024px-Flag_of_Maldives.svg.png,Maldivian,409163,.mv,un,+960
 MEX,North America,Mexico,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1024px-Flag_of_Mexico.svg.png,Mexican,127017224,.mx,un,+52
 MHL,Oceania,Marshall Islands,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_the_Marshall_Islands.svg/1024px-Flag_of_the_Marshall_Islands.svg.png,Marshallese,52993,.mh,un,+692
-MKD,Europe,Macedonia|FYROM,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Flag_of_Macedonia.svg/1024px-Flag_of_Macedonia.svg.png,Macedonian,2078453,.mk,un,+389
+MKD,Europe,Macedonia|Republic of Macedonia|FYROM,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Flag_of_Macedonia.svg/1024px-Flag_of_Macedonia.svg.png,Macedonian,2078453,.mk,un,+389
 MLI,Africa,Mali,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_Mali.svg/1024px-Flag_of_Mali.svg.png,Malian|Malinese,17599694,.ml,un,+223
 MLT,Europe,Malta,https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Malta.svg/1024px-Flag_of_Malta.svg.png,Maltese,431333,.mt,eu|un,+356
 MMR,Asia,Myanmar|Burma,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_of_Myanmar.svg/1024px-Flag_of_Myanmar.svg.png,Burmese,53897154,.mm,un,+95
@@ -203,8 +203,8 @@ SOM,Africa,Somalia,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Fla
 SPM,North America,Saint Pierre and Miquelon,https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Flag_of_Saint-Pierre_and_Miquelon.svg/1024px-Flag_of_Saint-Pierre_and_Miquelon.svg.png,Saint-Pierrais|Miquelonnais,6080,.pm,,+508
 SRB,Europe,Serbia,https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Flag_of_Serbia.svg/1024px-Flag_of_Serbia.svg.png,Serbian,7098247,.rs|.срб,un,+381
 SSD,Africa,South Sudan,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flag_of_South_Sudan.svg/1024px-Flag_of_South_Sudan.svg.png,South Sudanese,12339812,.ss,un,+211
-STP,Africa,São Tomé and Príncipe,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Sao_Tome_and_Principe.svg/1024px-Flag_of_Sao_Tome_and_Principe.svg.png,São Toméan,190344,.st,un,+239
-SUR,South America,Surinam|Suriname,https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Flag_of_Suriname.svg/1024px-Flag_of_Suriname.svg.png,Surinamese,542975,.sr,un,+597
+STP,Africa,São Tomé and Príncipe|Sao Tome and Principe,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Sao_Tome_and_Principe.svg/1024px-Flag_of_Sao_Tome_and_Principe.svg.png,São Toméan,190344,.st,un,+239
+SUR,South America,Suriname|Surinam,https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Flag_of_Suriname.svg/1024px-Flag_of_Suriname.svg.png,Surinamese,542975,.sr,un,+597
 SVK,Europe,Slovakia,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Flag_of_Slovakia.svg/1024px-Flag_of_Slovakia.svg.png,Slovak,5424050,.sk,eu|un,+421
 SVN,Europe,Slovenia,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Flag_of_Slovenia.svg/1024px-Flag_of_Slovenia.svg.png,Slovenian|Slovene,2063768,.si,eu|un,+386
 SWE,Europe,Sweden,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Sweden.svg/1024px-Flag_of_Sweden.svg.png,Swedish,9798871,.se,eu|un,+46
@@ -219,7 +219,7 @@ THA,Asia,Thailand,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag
 TJK,Asia,Tajikistan,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_Tajikistan.svg/1024px-Flag_of_Tajikistan.svg.png,Tajikistani,8481855,.tj,un,+992
 TKL,Oceania,Tokelau,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Flag_of_Tokelau.svg/1024px-Flag_of_Tokelau.svg.png,Tokelauan,1499,.tk,,+690
 TKM,Asia,Turkmenistan,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Turkmenistan.svg/1024px-Flag_of_Turkmenistan.svg.png,Turkmen,5373502,.tm,un,+993
-TLS,Asia,Timor-Leste|East Timor,https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flag_of_East_Timor.svg/1024px-Flag_of_East_Timor.svg.png,Timorese,1245015,.tl,un,+670
+TLS,Asia,East Timor|Timor-Leste,https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flag_of_East_Timor.svg/1024px-Flag_of_East_Timor.svg.png,Timorese,1245015,.tl,un,+670
 TON,Oceania,Tonga,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Tonga.svg/1024px-Flag_of_Tonga.svg.png,Tongan,106170,.to,un,+676
 TTO,North America,Trinidad and Tobago,https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Trinidad_and_Tobago.svg/1024px-Flag_of_Trinidad_and_Tobago.svg.png,Trinidadian|Tobagonian,1360088,.tt,un,+1868
 TUN,Africa,Tunisia,https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Tunisia.svg/1024px-Flag_of_Tunisia.svg.png,Tunisian,11107800,.tn,un,+216

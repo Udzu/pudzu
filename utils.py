@@ -408,7 +408,7 @@ def strip_before(str, *seps, last=False, ignore_case=False):
     return re.sub(regex, r"\1", str)
     
 def replace_any(str, substrings, new, count=0, ignore_case=False):
-    """Replace any of substrings by new."""
+    """Replace any of substrings by new. New can be either a string or a function from matching string to string."""
     flags = re.DOTALL | re.IGNORECASE * (ignore_case == True)
     regex = re.compile("|".join(re.escape(old) for old in substrings), flags=flags)
     replacement = (lambda m: new(m.group(0))) if callable(new) else lambda m: new

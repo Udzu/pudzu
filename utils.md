@@ -309,6 +309,35 @@ True
 {'a': 4, 'b': 2, 'c': 9}
 ```
 
+### Strings
+
+**strip_from**/**strip_to**/**strip_after**/**strip_before**: strip everything from/to/etc the first or last occurence of the given separators.
+
+```python
+>> text = "1. The rain in spain stays mainly on the plain"
+>> strip_to(text, ". ")
+'The rain in Spain stays mainly on the plain'
+>> strip_after(text, "Spain", "Germany", ignore_case=True)
+'1. The rain in spain'
+>> strip_from(text, "he", last=True)
+'1. The rain in spain stays mainly on t'
+```
+
+**replace_any**: replace any of a selection of substrings by new value, specified either as a constant string or a function from old string to new string. Similarly, **strip_any** strips any of the substrings, and **replace_map** replaces using a mapping of old to new.
+
+```python
+>> replace_any(text, "aeiou", "_")
+'1. Th_ r__n _n sp__n st_ys m__nly _n th_ pl__n'
+>> replace_any(text, "aeiou", "_", count=3)
+'1. Th_ r__n in spain stays mainly on the plain'
+>> replace_any(text, ["rain", "spain"], str.upper)
+'1. The RAIN in SPAIN stays mainly on the plain'
+>> replace_map(text, {"rain": "Spain", "Spain": "rain"}, ignore_case=True)
+'1. The Spain in rain stays mainly on the plain'
+>> strip_any(text, " .")
+'1Theraininspainstaysmainlyontheplain'
+```
+
 ### Numeric
 
 **sign**: sign indication of a number.

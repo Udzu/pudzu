@@ -7,6 +7,7 @@ import math
 import operator as op
 import os.path
 import random
+import re
 
 from collections import abc, OrderedDict, Iterable, Mapping, Counter
 from collections.abc import Sequence
@@ -379,7 +380,49 @@ def artial(func, *args, **kwargs):
         rargs = args + fargs[1:]
         return func(fargs[0], *rargs, **newkwargs)
     return newfunc
+
+# Strings
+
+def strip_from(str, *seps, last=False, ignore_case=False):
+    """Strip everything from the first/last occurence of one of the seps."""
+    flags = re.DOTALL | re.IGNORECASE * (ignore_case == True)
+    regex = re.compile("(.*{greedy})({seps}).*".format(greedy="?"*(not last), seps="|".join(re.escape(sep) for sep in seps)), flags=flags)
+    return re.sub(regex, r"\1", str)
     
+def strip_after(str, *seps, last=False, ignore_case=False):
+    """Strip everything after the first/last occurence of one of the seps."""
+    flags = re.DOTALL | re.IGNORECASE * (ignore_case == True)
+    regex = re.compile("(.*{greedy}({seps})).*".format(greedy="?"*(not last), seps="|".join(re.escape(sep) for sep in seps)), flags=flags)
+    return re.sub(regex, r"\1", str)
+    
+def strip_to(str, *seps, last=False, ignore_case=False):
+    """Strip everything to the first/last occurence of one of the seps."""
+    flags = re.DOTALL | re.IGNORECASE * (ignore_case == True)
+    regex = re.compile(".*{greedy}({seps})(.*)".format(greedy="?"*(not last), seps="|".join(re.escape(sep) for sep in seps)), flags=flags)
+    return re.sub(regex, r"\2", str)
+    
+def strip_before(str, *seps, last=False, ignore_case=False):
+    """Strip everything before the first/last occurence of one of the seps."""
+    flags = re.DOTALL | re.IGNORECASE * (ignore_case == True)
+    regex = re.compile(".*{greedy}(({seps}).*)".format(greedy="?"*(not last), seps="|".join(re.escape(sep) for sep in seps)), flags=flags)
+    return re.sub(regex, r"\1", str)
+    
+def replace_any(str, substrings, new, count=0, ignore_case=False):
+    """Replace any of substrings by new."""
+    flags = re.DOTALL | re.IGNORECASE * (ignore_case == True)
+    regex = re.compile("|".join(re.escape(old) for old in substrings), flags=flags)
+    replacement = (lambda m: new(m.group(0))) if callable(new) else lambda m: new
+    return re.sub(regex, replacement, str, count=count)
+    
+def strip_any(str, substrings, count=0, ignore_case=False):
+    """Strip any of substrings."""
+    return replace_any(str, substrings, "", count=count, ignore_case=ignore_case)
+
+def replace_map(str, mapping, count=0, ignore_case=False):
+    """Replace substrings using a mapping."""
+    if ignore_case: mapping = CaseInsensitiveDict(mapping)
+    return replace_any(str, mapping.keys(), lambda s: mapping[s], count=count, ignore_case=ignore_case)
+
 # Data structures
 
 class CaseInsensitiveDict(abc.MutableMapping):

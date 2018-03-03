@@ -29,7 +29,7 @@ def labelfn(c, w, h):
     c = {"UK": "United Kingdom", "Bosnia": "Bosnia and Herzegovina"}.get(c, c)
     if c in df.index: label = "**{} McD's**\n(//{}{}–//)".format(df.number[c], df.year[c], "*"*int(c=="Portugal"))
     else: label = {"Macedonia": "(//1997–\n2013//)", "Iceland": "(//1993–\n2009//)", "Montenegro": "(//2004–\n2007//)"}.get(c, " ")
-    return Image.from_text_bounded(label, (w,h), 24, partial(partial, arial), align="center", generator=Image.from_markup)
+    return Image.from_markup_bounded(label, (w,h), 24, partial(partial, arial), align="center")
     
 map = map_chart("maps/Europe.png", colorfn, labelfn)
 legend = generate_legend(REDS + (VegaPalette10.BLUE,"#AAAAAA"), ["{}+ per million".format(i) for i in LIMITS[:-1]] + ["<{} per million".format(LIMITS[-2]), "former McDonald's", "no McDonald's"], header="McDonald's outlets per million population", max_width=200)

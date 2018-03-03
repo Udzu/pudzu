@@ -227,14 +227,6 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/fromtext3.png)
 
-**Image.from_text_bounded**: like from_text but with a maximum image size, maximum font size and a size-to-font function. Successively tries smaller fonts until the result would fit in the bounding box.
-
-```python
->> Image.from_text_bounded("The rain in Spain", 200, 48, arial, fg="white", bg="#1f5774", padding=10).show()
-```
-
-![alt](images/fromtextbounded.png)
-
 **Image.from_multitext**: creates an image from multiple texts, fonts and colors, correctly lining up baselines. Only supports single-line texts; for multline texts, combine images with Image.from_column (with equal_heights set to True). Supports underlining and strikethrough.
 
 ```python
@@ -260,6 +252,14 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 ```
 
 ![alt](images/frommarkup.png)
+
+**Image.from_text_bounded**: like from_text but with a maximum image size, maximum font size and a size-to-font function. Successively tries smaller fonts until the result would fit in the bounding box. Similarly, **Image.from_markup_bounded**. For generic images, there is also **Image.generate_bounded**.
+
+```python
+>> Image.from_text_bounded("The rain in Spain", (200, 200), 48, arial, fg="white", bg="#1f5774", padding=10).show()
+```
+
+![alt](images/fromtextbounded.png)
 
 **Image.from_array**: create an image from an array of images. Similarly, **Image.from_row** and **Image.from_column** create images form a list of images.
 

@@ -222,7 +222,7 @@ class PairedClass12(metaclass=NamedPaletteMeta):
 
 def whitespace_span_tokenize(text):
     """Whitespace span tokenizer."""
-    return ((m.start(), m.end()) for m in re.finditer(r'\S+', text))
+    return ((m.start(), m.end()) for m in re.finditer(r'[^\s-]+[-]*', text))
 
 def language_hyphenator(lang='en_EN'):
     """pyphen-based position hyphenator."""
@@ -498,15 +498,6 @@ class _Image(Image.Image):
         return img
 
     @classmethod
-    def from_text_bounded(cls, text, max_size, max_font_size, font_fn, *args, min_font_size=6, generator=None, **kwargs):
-        """Create image from text, reducing the font size until it fits. Inefficient."""
-        if isinstance(max_size, Integral): max_size = (max_size, max_size)
-        for size in range(max_font_size, min_font_size-1, -1):
-            img = (generator or cls.from_text)(text, font_fn(size), *args, **kwargs)
-            if img.width <= max_size[0] and img.height <= max_size[1]: return img
-        return None
-        
-    @classmethod
     def from_multitext(cls, texts, fonts, fgs="black", bgs=None, underlines=0, strikethroughs=0, img_offset=0, beard_line=False):
         """Create image from multiple texts, lining up the baselines. Only supports single-line texts.
         For multline texts, combine images with Image.from_column (with equal_heights set to True).
@@ -653,6 +644,21 @@ class _Image(Image.Image):
         else:
             img = cls.from_url(url, filepath)
         return img
+        
+    @classmethod
+    def generate_bounded(cls, box_size, parameters, generator):
+        """Return the first parametrised image that fits within the box_size."""
+        return first_or_default(img for p in parameters for img in [generator(p)] if img.width <= box_size[0] and img.height <= box_size[1])
+        
+    @classmethod
+    def from_text_bounded(cls, text, box_size, max_font_size, font_fn, *args, min_font_size=6, **kwargs):
+        """Create image from text, reducing the font size until it fits. Inefficient."""
+        return cls.generate_bounded(box_size, range(max_font_size, min_font_size-1, -1), lambda size: cls.from_text(text, font_fn(size), *args, **kwargs))
+        
+    @classmethod
+    def from_markup_bounded(cls, text, box_size, max_font_size, font_fn, *args, min_font_size=6, **kwargs):
+        """Create image from markup, reducing the font size until it fits. Inefficient."""
+        return cls.generate_bounded(box_size, range(max_font_size, min_font_size-1, -1), lambda size: cls.from_markup(text, font_fn(size), *args, **kwargs))
         
     def to_rgba(self):
         """Return an RGBA copy of the image (or leave unchanged if it already is)."""
@@ -869,7 +875,6 @@ def _nparray_mask_by_color(nparray, color, num_channels=None):
     return mask
 
 Image.from_text = _Image.from_text
-Image.from_text_bounded = _Image.from_text_bounded
 Image.from_multitext = _Image.from_multitext
 Image.from_markup = _Image.from_markup
 Image.from_array = _Image.from_array
@@ -881,6 +886,9 @@ Image.from_vertical_pattern = _Image.from_vertical_pattern
 Image.from_horizontal_pattern = _Image.from_horizontal_pattern
 Image.from_url = _Image.from_url
 Image.from_url_with_cache = _Image.from_url_with_cache
+Image.generate_bounded = _Image.generate_bounded
+Image.from_text_bounded = _Image.from_text_bounded
+Image.from_markup_bounded = _Image.from_markup_bounded
 Image.EMPTY_IMAGE = Image.new("RGBA", (0,0))
 
 Image.Image.to_rgba = _Image.to_rgba
@@ -953,7 +961,8 @@ class ImageShape(object):
         - invert (boolean): whether to invert the shape mask [False]
         """
         if isinstance(size, Integral): size = (size, size)
-        if bg is None: bg = RGBA(fg)._replace(alpha=0)
+        if bg is None and not isinstance(fg, Image.Image):
+            bg = RGBA(fg)._replace(alpha=0)
         if cls.antialiasing:
             orig_size, size = size, [round(s * antialias) for s in size]
             if isinstance(bg, Image.Image): bg = bg.resize([round(s * antialias) for s in bg.size], Image.NEAREST)

@@ -4,7 +4,7 @@
 
 Various Python 3 utility functions, mostly geared towards dataviz and used to create the data visualisations in this [flickr account](https://www.flickr.com/photos/zarfo/albums). Most have been posted to reddit at some point by [/u/Udzu](https://www.reddit.com/user/Udzu/).
 
-The modules aren't properly packaged up or pip-able (yet) but are reasonably simple, generic and docstringed. They are not optimised for speed or tested for resilience. They are targeted at for-fun, interactive work.
+The modules aren't properly tested or packaged up (yet) but are reasonably simple, generic and docstringed. They are not optimised for speed or resilience. They are targeted at for-fun, interactive work.
 
 ## Modules
 

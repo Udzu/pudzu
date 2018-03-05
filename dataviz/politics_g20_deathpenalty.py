@@ -3,29 +3,37 @@ sys.path.append('..')
 from charts import *
 
 FONT = calibri
+BARBG = "#AAAAAA80"
 atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index("country")
-df = pd.read_csv("datasets/g20_deathpenalty.csv").set_index("country")
+df = pd.read_csv("datasets/g20_deathpenalty.csv").assign_rows(parity = lambda d, i: (i+1) % 2).set_index("country")
 df["pm"] = df["executions"] * 100000000 / atlas.loc[df.index].population
+df["bar"] = 500 - df["pm"]
 
 def rlabel(r):
-    return Image.from_row([
+    img = Image.from_row([
         Image.from_text(df.index[r].replace("\\n","\n"), FONT(16), "black", align="center"),
         Image.from_url_with_cache(atlas.flag[df.index[r]]).convert("RGBA").resize((60,40)).trim(1).pad(1, "grey")
     ], padding=(2,0))
+    return img.pad_to_aspect(150,40,bg=None if df.parity[df.index[r]] else BARBG, align=1)
 
-def labeler(c,r,v):
-    if v > 300: return "{}+ ({}+ executions)".format(format_float(v, 2), df.executions[df.index[r]])
-    elif v > 100: return "~{} (1000s of executions*)".format(format_float(v, 2))
-    elif non(df.type[df.index[r]]): return "{} ({} executions)".format(format_float(v, 2), df.executions[df.index[r]])
-    else: return "0 ({})".format({"m": "ongoing moratorium", "o": "abolished for ordinary crimes", "a": "abolished for all crimes" }[df.type[df.index[r]]])
+def labeler(c,r,v,h,w):
+    if v > 300: l = "{}+ ({}+ executions)".format(format_float(v, 2), df.executions[df.index[r]])
+    elif v > 100: l = "~{} (1000s of executions*)".format(format_float(v, 2))
+    elif non(df.type[df.index[r]]): l = "{} ({} executions)".format(format_float(v, 2), df.executions[df.index[r]])
+    else: l = "0 ({})".format({"m": "ongoing moratorium", "o": "abolished for ordinary crimes", "a": "abolished for all crimes" }[df.type[df.index[r]]])
+    return Image.new("RGBA", (w,h), None).place(Image.from_text(l, FONT(16), "black"), align=(0,0.5), padding=2)
     
-def label_if(pred): # TODO: automate this bit
-    return lambda c,r,v: None if not pred(v) else labeler(c,r,v)
+def label_if(pred):
+    return lambda c,r,v,w,h: None if (pred( df.pm[df.index[r]]) != (c == 0)) else labeler(c,r, df.pm[df.index[r]], w, h)
 
-chart = bar_chart(df[["pm"]], 40, 600, bg=None, horizontal=True, spacing=2, label_font=FONT(16), rlabels=rlabel,
-    clabels= { BarChartLabelPosition.INSIDE : label_if(artial(op.ge,100)), BarChartLabelPosition.OUTSIDE: label_if(artial(op.lt,100)) },
+def colorfn(c,r,v):
+    if c == 0: return VegaPalette10.BLUE
+    if not df.parity[df.index[r]]: return BARBG
+    return None
+    
+chart = bar_chart(df[["pm", "bar"]], 40, 600, bg=None, horizontal=True, spacing=2, label_font=FONT(16), rlabels=rlabel,
+    type=BarChartType.STACKED,  colors= colorfn, clabels=label_if(artial(op.ge,100)),
     grid_interval=100, ymax=500, ylabel=Image.from_text("number of executions per 100 million population in 2016", FONT(18), padding=5))
-
 
 title = Image.from_text("Execution rates in G20 members in 2016".upper(), FONT(40, bold=True))
 footer = Image.from_markup(

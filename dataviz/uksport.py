@@ -58,7 +58,7 @@ basketball = grid_chart(data, partial(imagefn, basketballi), partial(groupfn, ba
 olympics = grid_chart(data, partial(imagefn, olympicsi), partial(groupfn, olympicsg), padding=15, group_colors=PALETTE, group_rounded=True, group_padding=5, bg=0)
 
 array = [[countries, football, rugby], [cricket, basketball, olympics]]
-labels = [["UK & Ireland", "Football (Soccer)", "Rugby Union"], ["Cricket", "Basketball", "Olympics"]]
+labels = [["UK & Ireland", "@ Football (Soccer)", "@ Rugby Union"], ["@ Cricket", "@ Basketball", "@ The Olympics"]]
 array = tmap_leafs(lambda l,i: Image.from_column([Image.from_text(l.upper(), FONT(52, bold=True), beard_line=True, padding=(0,15)), i]), labels, array)
 array = tmap_leafs(lambda i: i.pad(10, 0).pad(1, "black"), array, base_factory=list)
 array[0][0] = array[0][0].remove_transparency('#E0E0FF')
@@ -68,4 +68,4 @@ grid = Image.from_array(array)
 title = Image.from_text("The wonderfully inconsistent groupings\nof British and Irish sport associations".upper(), FONT(80, bold=True), align="center")
 img = Image.from_column([title, grid, Rectangle(0, "white")], bg="white", xalign=0.5, padding=20)
 img.place(Image.from_text("/u/Udzu", font("arial", 32), fg="grey", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
-img.convert("RGB").save("output/uksport.png")
+img.convert("RGB").resize_fixed_aspect(scale=0.5).save("output/uksport.png")

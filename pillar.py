@@ -340,6 +340,22 @@ class _ImageColor():
         color = RGBA(color)
         white = RGBA("black")._replace(alpha=color.alpha)
         return cls.blend(color, white, p, linear_conversion=linear_conversion)
+        
+    @classmethod
+    def alpha_composite(cls, bg, fg):
+        """Alpha composite two colors."""
+        return RGBA(Rectangle(1, bg).place(Rectangle(1, fg)).getcolors()[0][-1])
+            
+    @classmethod
+    def alpha_blend(cls, bg, fg, linear_conversion=True):
+        """Alpha blend two colors. Like alpha_composite but sRGB-aware."""
+        fg, bg = RGBA(fg), RGBA(bg)
+        falpha, balpha = fg.alpha / 255, bg.alpha / 255
+        srgb_dims = 3 * int(linear_conversion)
+        alpha = falpha + balpha * (1 - falpha)
+        rgb = [fl((tl(f)*falpha + tl(b)*balpha*(1-falpha))/alpha) if alpha>0 else 0
+               for f,b,fl,tl in zip_longest(fg[:3],bg[:3],[cls.from_linear]*srgb_dims,[cls.to_linear]*srgb_dims,fillvalue=round) ]
+        return RGBA(*(rgb + [round(alpha*255)]))
             
 ImageColor.to_linear = _ImageColor.to_linear
 ImageColor.from_linear = _ImageColor.from_linear
@@ -347,11 +363,14 @@ ImageColor.to_hex = _ImageColor.to_hex
 ImageColor.blend = _ImageColor.blend
 ImageColor.brighten = _ImageColor.brighten
 ImageColor.darken = _ImageColor.darken
+ImageColor.alpha_composite = _ImageColor.alpha_composite
+ImageColor.alpha_blend = _ImageColor.alpha_blend
 
 RGBA.to_hex = papply(ImageColor.to_hex)
 RGBA.blend = papply(ImageColor.blend)
 RGBA.brighten = papply(ImageColor.brighten)
 RGBA.darken = papply(ImageColor.darken)
+RGBA.alpha_blend = papply(ImageColor.alpha_blend)
 
 # Colormaps
 
@@ -777,27 +796,44 @@ class _Image(Image.Image):
             self = self.pad_to_aspect(size[0], size[1], align, bg)
         return self.resize(size, **kwargs)
     
-    def replace_color(self, color1, color2, ignore_alpha=False):
-        """Return an image with color1 replaced by color2. Requires numpy."""
-        if 'RGB' not in self.mode:
-            raise NotImplementedError("replace_color expects RGB/RGBA image")
-        n = 3 if (self.mode == 'RGB' or ignore_alpha) else 4
-        color1 = RGBA(color1)[:n]
-        color2 = RGBA(color2)[:n]
-        data = np.array(self)
-        mask = _nparray_mask_by_color(data, color1, n)
-        data[:,:,:n][mask] = color2
-        return Image.fromarray(data)
-
-    def select_color(self, color):
+    def select_color(self, color, ignore_alpha=False):
         """Return a transparency mask selecting a color in an image. Requires numpy."""
         if 'RGB' not in self.mode:
-            raise NotImplementedError("replace_color expects RGB/RGBA image")
+            raise NotImplementedError("select_color expects RGB/RGBA image")
+        n = 3 if (self.mode == 'RGB' or ignore_alpha) else 4
+        color = RGBA(color)[:n]
         data = np.array(self)
-        color = RGBA(color)[:data.shape[-1]]
-        mask = _nparray_mask_by_color(data, color)
+        mask = _nparray_mask_by_color(data, color, n)
         return Image.fromarray(mask * 255).convert("1")
         
+    def replace_colors(self, mapping, ignore_alpha=False):
+        """Return an image with the colors specified by the mapping keys replaced by the colors
+        or patterns specified by the mapping values. Requires numpy."""
+        if 'RGB' not in self.mode:
+            raise NotImplementedError("replace_colors expects RGB/RGBA image")
+        n = 3 if (self.mode == 'RGB' or ignore_alpha) else 4
+        original = np.array(self)
+        output = self.copy()
+        for c1, c2 in mapping.items():
+            color1 = RGBA(c1)[:n]
+            mask = _nparray_mask_by_color(original, color1, n)
+            if isinstance(c2, Image.Image):
+                mask = Image.fromarray(mask * 255).convert("1")
+                pattern = Image.from_pattern(c2, self.size)
+                if ignore_alpha and "A" in self.mode:
+                    pattern.putalpha(self.getchannel(3))
+                output.paste(pattern, (0, 0), mask)
+            else:
+                color2 = RGBA(c2)[:n]
+                data = np.array(output)
+                data[:,:,:n][mask] = color2
+                output = Image.fromarray(data)
+        return output
+                
+    def replace_color(self, color, to, ignore_alpha=False):
+        """Return an image with a color replace by a color or pattern. Requires numpy."""
+        return self.replace_colors({ color: to }, ignore_alpha=ignore_alpha)
+
     def remove_transparency(self, bg="white"):
         """Return an image with the transparency removed"""
         if not self.mode.endswith('A'): return self
@@ -835,6 +871,18 @@ class _Image(Image.Image):
         if 'A' in self.mode: other.putalpha(self.split()[-1])
         return self.blend(other, p, linear_conversion=linear_conversion)
 
+    def alpha_blend(self, fg, linear_conversion=True):
+        """Alpha blend an image onto this image. Like alpha_composite but sRGB aware (and a fair bit slower)."""
+        if self.size != fg.size or self.mode != fg.mode or self.mode != "RGBA": raise NotImplementedError
+        fg_arrays = [np.array(a) for a in fg.split()]
+        bg_arrays = [np.array(a) for a in self.split()]
+        falpha, balpha = fg_arrays[-1] / 255, bg_arrays[-1] / 255
+        srgb_dims = 3 * int(linear_conversion)
+        alpha = falpha + balpha * (1 - falpha)
+        rgb = [np.where(alpha>0, fl((tl(f)*falpha + tl(b)*balpha*(1-falpha))/alpha), 0)
+               for f,b,fl,tl in zip_longest(fg_arrays[:3],bg_arrays[:3],[ImageColor.from_linear]*srgb_dims,[ImageColor.to_linear]*srgb_dims,fillvalue=lambda a: np.round(a).astype(int))]
+        return Image.fromarray(np.uint8(np.stack(rgb + [alpha], axis=-1)))
+        
     def to_heatmap(self, colormap):
         """Create a heatmap image from a mask using a matplotlib color map. Mask is either a mode L image or the image's alpha channel. Requires numpy."""
         array = np.array(self.as_mask()) / 255
@@ -905,14 +953,16 @@ if not hasattr(Image.Image, 'resize_nonempty'):
     Image.Image.resize_nonempty=Image.Image.resize
 Image.Image.resize = _Image.resize
 Image.Image.resize_fixed_aspect = _Image.resize_fixed_aspect
-Image.Image.replace_color = _Image.replace_color
 Image.Image.select_color = _Image.select_color
+Image.Image.replace_color = _Image.replace_color
+Image.Image.replace_colors = _Image.replace_colors
 Image.Image.remove_transparency = _Image.remove_transparency
 Image.Image.as_mask = _Image.as_mask
 Image.Image.invert_mask = _Image.invert_mask
 Image.Image.blend = _Image.blend
 Image.Image.brighten = _Image.brighten
 Image.Image.darken = _Image.darken
+Image.Image.alpha_blend = _Image.alpha_blend
 Image.Image.to_heatmap = _Image.to_heatmap
 Image.Image.add_grid = _Image.add_grid
 Image.Image.add_shadow = _Image.add_shadow

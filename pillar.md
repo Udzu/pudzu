@@ -181,6 +181,15 @@ RGBA(red=255, green=255, blue=188, alpha=255)
 RGBA(red=188, green=188, blue=0, alpha=255)
 ```
 
+**ImageColor.alpha_composite**: alpha composite on color onto another. Similarly, **ImageColor.alpha_blend**, which does the same thing but supports sRGB gamma correction.
+
+```python
+>> ImageColor.alpha_composite("red", "#00FF0080")
+RGBA(red=127, green=128, blue=0, alpha=255)
+>> ImageColor.alpha_blend("red", "#00FF0080")
+RGBA(red=187, green=188, blue=0, alpha=255)
+```
+
 ### ImageDraw
 
 **ImageDraw.text_size**: same as ImageDraw.Draw.textsize but doesn't require a drawable object, and handles descenders on multiline text and negative horizontal offsets.
@@ -442,22 +451,20 @@ RGBA(red=188, green=188, blue=0, alpha=255)
 
 ![alt](images/blend.png)
 
-**Image.Image.replace_color**: return an image with one color replaced by another. Requires numpy.
+**Image.Image.alpha_blend**: alpha blend two images together. Same as alpha_composite, but supports sRGB gamma correction (and is a fair bit slower).
+
+**Image.Image.replace_color**: return an image with one color replaced by another color or pattern. To replace multiple colors at the same time, use **Image.Image.replace_colors**; to select a color as an image mask, use **Image.Image.select_color**. Requires numpy.
 
 ```python
->> base = Image.new("RGB", (80,40), "blue").pad(5)
+>> base = Image.new("RGB", (80,40), "blue").pad(5, "black")
 >> img = Image.from_text("red", arial(24), "blue")
 >> base.replace_color("blue", "grey").place(img.replace_color("blue", "red", ignore_alpha=True)).show()
 ```
 
 ![alt](images/colorreplace.png)
 
-**Image.Image.select_color**: return an image mask selection of a color. Requires numpy.
-
 ```python
->> pattern = Image.from_pattern(flag.resize_fixed_aspect(width=30), base.size)
->> mask = base.select_color("blue")
->> base.place(pattern, mask=mask).show()
+>> base.replace_color("blue", flag.resize_fixed_aspect(width=30)).show()
 ```
 ![alt](images/colorselect.png)
 

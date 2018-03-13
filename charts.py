@@ -554,7 +554,7 @@ class GridChartLabelPosition(Enum):
 
 def grid_chart(data, cell=lambda v: str(v), group=None,
                fg="white", bg="black", xalign=0.5, yalign=0.5, padding=(0,0,0,0), 
-               group_fg_colors=tuple(VegaPalette10), group_bg_colors=lambda _,c: c._replace(alpha=128),
+               group_fg_colors=tuple(VegaPalette10), group_bg_colors=lambda _,c: c._replace(alpha=128), group_bg_patterns=None,
                group_border=2, group_padding=(0,0,0,0), group_rounded=True,
                row_label=Ellipsis, col_label=Ellipsis, label_font=None, group_label=None, title=None):
     """Plot an image grid chart with optional Venn-like groupings.
@@ -568,6 +568,8 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
     - padding (Padding): cell padding [0]
     - group_fg_colors (group->color): dict or function of groups to fg colors, or sequence of colors [VegaPalette10]
     - group_bg_colors (group,[fg color]->color): dict or function of groups to bg colors, or sequence of colors; None to use fg [fg colors with 128 opacity]
+    - group_bg_patterns (groups,[bg colors]->color/pattern): function of group combinations to bg patterns or colors; None to use bg color combinations from above [None]
+      **IMPLEMENTATION NOTE**: this currently relies on each group combination starting with a unique default bg color based on group_bg_colors
     - group_border (int): grouping border [2]
     - group_padding (Padding): group edge padding [0]
     - group_rounded (Boolean): round group edges [True]
@@ -637,7 +639,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
         border_img = MaskIntersection(size2, bcol, bcol._replace(alpha=0), masks=[Quadrant(size2), Quadrant(size, invert=True).pad((bwidth, bwidth, 0, 0), "white")])
         return bg_img.place(border_img)
     
-    euler_array = tmap_leafs(lambda: None, img_array)
+    euler_array = tmap_leafs(lambda _: None, img_array, base_factory=list)
     for r, row in enumerate(data.values):
         for c, v in enumerate(row):
         
@@ -729,10 +731,13 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                 label = Image.from_text(label, label_font, fg=fg, bg=bg, padding=(10,0)) if label_font else None
             if label is not None:
                 label = label.pad(padding, bg=bg)
+            empty_label = label and Rectangle(label.size, tbg)
             if rlabel_pos == GridChartLabelPosition.LEFT:
-                img_array[r].insert(0, label) # TODO
+                img_array[r].insert(0, label)
+                euler_array[r].insert(0, empty_label)
             else:
                 img_array[r].append(label)
+                euler_array[r].append(empty_label)
             
     for clabel_pos, clabel_fn in clabel_dict.items():
         col_labels = [None] * int(GridChartLabelPosition.LEFT in rlabel_dict)
@@ -743,11 +748,13 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
             if label is not None:
                 label = label.pad(padding, bg=bg)
             col_labels.append(label)
+        empty_labels = [ label and Rectangle(label.size, tbg) for label in col_labels ]
         if clabel_pos == GridChartLabelPosition.TOP:
-            img_array.insert(0, col_labels) # TODO
+            img_array.insert(0, col_labels)
+            euler_array.insert(0, empty_labels)
         else:
             img_array.append(col_labels)
-        col_labels += [None] * int(GridChartLabelPosition.RIGHT in rlabel_dict)
+            euler_array.append(empty_labels)
 
     xaligns = [xalign[1]] * len(img_array[0])
     if GridChartLabelPosition.LEFT in rlabel_dict: xaligns[0] = xalign[0]
@@ -757,6 +764,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
     if GridChartLabelPosition.BOTTOM in clabel_dict: yaligns[-1] = yalign[-1]
     imgs = Image.from_array(img_array, xalign=xaligns, yalign=yaligns, bg=tbg)
     euler = Image.from_array(euler_array, xalign=xaligns, yalign=yaligns, bg=tbg)
+    # TODO: add patterns to euler before merging
     chart = euler.place(imgs)
     
     if title is not None: chart = Image.from_column((title, chart), bg=bg)

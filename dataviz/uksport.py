@@ -2,14 +2,15 @@ import sys
 sys.path.append('..')
 from charts import *
 
-PALETTE = { "s": VegaPalette10.BLUE, "e": VegaPalette10.GREEN, "i": VegaPalette10.ORANGE, "w": VegaPalette10.RED, "n": VegaPalette10.PURPLE }
+PALETTE = { "s": VegaPalette10.BLUE, "i": VegaPalette10.GREEN, "w": VegaPalette10.ORANGE, "e": VegaPalette10.RED, "n": VegaPalette10.PURPLE }
 FONT = calibri
 
 data = pd.DataFrame([[None,"s"],["n","w"],["i","e"]])
 
 labels = { "e": "England", "s": "Scotland", "i": "Republic of Ireland", "n": "Northern Ireland", "w": "Wales" }
 flags = { "e": "https://upload.wikimedia.org/wikipedia/en/thumb/b/be/Flag_of_England.svg/1024px-Flag_of_England.svg.png",
-          "n": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Saint_Patrick%27s_Saltire.svg/1024px-Saint_Patrick%27s_Saltire.svg.png", # "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Northern_Ireland.svg/1024px-Flag_of_Northern_Ireland.svg.png",
+          # "n": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Saint_Patrick%27s_Saltire.svg/1024px-Saint_Patrick%27s_Saltire.svg.png",
+          "n": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Northern_Ireland.svg/1024px-Flag_of_Northern_Ireland.svg.png",
           "s": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Flag_of_Scotland.svg/1024px-Flag_of_Scotland.svg.png",
           "w": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Flag_of_Wales_2.svg/1024px-Flag_of_Wales_2.svg.png",
           "i": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Flag_of_Ireland.svg/1024px-Flag_of_Ireland.svg.png" }
@@ -34,7 +35,7 @@ footballg = "eiswn"
 rugbyg = [ "e", "in", "s", "w" ]
 cricketg = [ "ew", "in", "s" ]
 basketballg = [ "esw", "in" ]
-olympicsg = [ "eswn", "i" ]
+olympicsg = [ "eswn", "in" ]
 
 def imagefn(imgs, c):
     img = Rectangle(300, 0)
@@ -48,7 +49,7 @@ def imagefn(imgs, c):
  
 def groupfn(groups, c):
     if c is None: return None
-    else: return first_or_default((g[0] for g in groups if c in g))
+    else: return [g[0] for g in groups if c in g]
 
 countries = grid_chart(data, partial(imagefn, flags), padding=15, group_colors=PALETTE, group_rounded=True, group_padding=4, bg=0)
 football = grid_chart(data, partial(imagefn, footballi), partial(groupfn, footballg), padding=15, group_colors=PALETTE, group_rounded=True, group_padding=5, bg=0)
@@ -61,11 +62,15 @@ array = [[countries, football, rugby], [cricket, basketball, olympics]]
 labels = [["UK & Ireland", "@ Football (Soccer)", "@ Rugby Union"], ["@ Cricket", "@ Basketball", "@ The Olympics"]]
 array = tmap_leafs(lambda l,i: Image.from_column([Image.from_text(l.upper(), FONT(52, bold=True), beard_line=True, padding=(0,15)), i]), labels, array)
 array = tmap_leafs(lambda i: i.pad(10, 0).pad(1, "black"), array, base_factory=list)
-array[0][0] = array[0][0].remove_transparency('#E0E0FF')
-#array = tmap_leafs(lambda i, c: i.remove_transparency(c), array, [['#E0E0FF','#F0F0F0','#F0F0F0'],['#F0F0F0','#F0F0F0','#F0F0F0']])
+array[0][0] = array[0][0].remove_transparency('#e8e8e8')
 grid = Image.from_array(array)
 
 title = Image.from_text("The wonderfully inconsistent groupings\nof British and Irish sport associations".upper(), FONT(80, bold=True), align="center")
 img = Image.from_column([title, grid, Rectangle(0, "white")], bg="white", xalign=0.5, padding=20)
+
+ni_mask = img.select_color("#8a995f")
+ni_pattern = Image.from_pattern(Stripe(40, ImageColor.brighten(PALETTE["e"], 0.5, False),  ImageColor.brighten(PALETTE["i"], 0.5, False)), img.size)
+img = img.place(ni_pattern, mask=ni_mask)
+
 img.place(Image.from_text("/u/Udzu", font("arial", 32), fg="grey", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.convert("RGB").resize_fixed_aspect(scale=0.5).save("output/uksport.png")

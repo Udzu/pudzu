@@ -47,7 +47,7 @@ def group(d):
     if d is None: return None
     return sorted(set(d['group']) | set(d['group'].lower()))
 
-grid = grid_chart(table, process, group, padding=10, yalign=0, group_rounded=True, group_padding=4, group_colors=PALETTE, group_alpha=ALPHA, bg="white")
+grid = grid_chart(table, process, group, padding=10, yalign=0, group_rounded=True, group_padding=4, group_fg_colors=PALETTE, group_bg_colors=lambda g, c: c._replace(alpha=ALPHA[g]), bg="white")
 
 title = Image.from_text("India-linked Nobel Laureates".upper(), FONT(48, bold=True))
 img = Image.from_column([title, grid], bg="white", padding=10)

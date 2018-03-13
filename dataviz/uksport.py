@@ -51,12 +51,12 @@ def groupfn(groups, c):
     if c is None: return None
     else: return [g[0] for g in groups if c in g]
 
-countries = grid_chart(data, partial(imagefn, flags), padding=15, group_colors=PALETTE, group_rounded=True, group_padding=4, bg=0)
-football = grid_chart(data, partial(imagefn, footballi), partial(groupfn, footballg), padding=15, group_colors=PALETTE, group_rounded=True, group_padding=5, bg=0)
-rugby = grid_chart(data, partial(imagefn, rugbyi), partial(groupfn, rugbyg), padding=15, group_colors=PALETTE, group_rounded=True, group_padding=5, bg=0)
-cricket = grid_chart(data, partial(imagefn, cricketi), partial(groupfn, cricketg), padding=15, group_colors=PALETTE, group_rounded=True, group_padding=5, bg=0)
-basketball = grid_chart(data, partial(imagefn, basketballi), partial(groupfn, basketballg), padding=15, group_colors=PALETTE, group_rounded=True, group_padding=5, bg=0)
-olympics = grid_chart(data, partial(imagefn, olympicsi), partial(groupfn, olympicsg), padding=15, group_colors=PALETTE, group_rounded=True, group_padding=5, bg=0)
+countries = grid_chart(data, partial(imagefn, flags), padding=15, group_fg_colors=PALETTE, group_rounded=True, group_padding=4, bg=0)
+football = grid_chart(data, partial(imagefn, footballi), partial(groupfn, footballg), padding=15, group_fg_colors=PALETTE, group_rounded=True, group_padding=5, bg=0)
+rugby = grid_chart(data, partial(imagefn, rugbyi), partial(groupfn, rugbyg), padding=15, group_fg_colors=PALETTE, group_rounded=True, group_padding=5, bg=0)
+cricket = grid_chart(data, partial(imagefn, cricketi), partial(groupfn, cricketg), padding=15, group_fg_colors=PALETTE, group_rounded=True, group_padding=5, bg=0)
+basketball = grid_chart(data, partial(imagefn, basketballi), partial(groupfn, basketballg), padding=15, group_fg_colors=PALETTE, group_rounded=True, group_padding=5, bg=0)
+olympics = grid_chart(data, partial(imagefn, olympicsi), partial(groupfn, olympicsg), padding=15, group_fg_colors=PALETTE, group_rounded=True, group_padding=5, bg=0)
 
 array = [[countries, football, rugby], [cricket, basketball, olympics]]
 labels = [["UK & Ireland", "@ Football (Soccer)", "@ Rugby Union"], ["@ Cricket", "@ Basketball", "@ The Olympics"]]

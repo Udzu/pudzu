@@ -16,7 +16,7 @@ def process(d):
       Image.from_text(d['mascot'], FONT(16, italics=True), padding=2)
       ])
 
-grid = grid_chart(data, process, lambda d: "F" if d['cereal'] == "Special K" else "M", padding=10, yalign=0, group_rounded=True, group_padding=4, group_colors=PALETTE, bg="white")
+grid = grid_chart(data, process, lambda d: "F" if d['cereal'] == "Special K" else "M", padding=10, yalign=0, group_rounded=True, group_padding=4, group_fg_colors=PALETTE, bg="white")
 
 title = Image.from_text("20 breakfast cereal mascots by gender".upper(), FONT(40, bold=True))
 footer = Image.from_multitext(

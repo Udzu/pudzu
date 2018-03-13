@@ -181,7 +181,7 @@ RGBA(red=255, green=255, blue=188, alpha=255)
 RGBA(red=188, green=188, blue=0, alpha=255)
 ```
 
-**ImageColor.alpha_composite**: alpha composite on color onto another. Similarly, **ImageColor.alpha_blend**, which does the same thing but supports sRGB gamma correction.
+**ImageColor.alpha_composite**: alpha composite two or more colors. Similarly, **ImageColor.alpha_blend**, which does the same thing but supports sRGB gamma correction.
 
 ```python
 >> ImageColor.alpha_composite("red", "#00FF0080")

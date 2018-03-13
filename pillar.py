@@ -342,20 +342,22 @@ class _ImageColor():
         return cls.blend(color, white, p, linear_conversion=linear_conversion)
         
     @classmethod
-    def alpha_composite(cls, bg, fg):
-        """Alpha composite two colors."""
-        return RGBA(Rectangle(1, bg).place(Rectangle(1, fg)).getcolors()[0][-1])
+    def alpha_composite(cls, bg, fg, *fgs):
+        """Alpha composite two or more colors."""
+        c = RGBA(Rectangle(1, bg).place(Rectangle(1, fg)).getcolors()[0][-1])
+        return cls.alpha_composite(c, *fgs) if fgs else c
             
     @classmethod
-    def alpha_blend(cls, bg, fg, linear_conversion=True):
-        """Alpha blend two colors. Like alpha_composite but sRGB-aware."""
+    def alpha_blend(cls, bg, fg, *fgs, linear_conversion=True):
+        """Alpha blend two more more colors. Like alpha_composite but sRGB-aware."""
         fg, bg = RGBA(fg), RGBA(bg)
         falpha, balpha = fg.alpha / 255, bg.alpha / 255
         srgb_dims = 3 * int(linear_conversion)
         alpha = falpha + balpha * (1 - falpha)
         rgb = [fl((tl(f)*falpha + tl(b)*balpha*(1-falpha))/alpha) if alpha>0 else 0
                for f,b,fl,tl in zip_longest(fg[:3],bg[:3],[cls.from_linear]*srgb_dims,[cls.to_linear]*srgb_dims,fillvalue=round) ]
-        return RGBA(*(rgb + [round(alpha*255)]))
+        c = RGBA(*(rgb + [round(alpha*255)]))
+        return cls.alpha_blend(c, *fgs, linear_conversion=linear_conversion) if fgs else c
             
 ImageColor.to_linear = _ImageColor.to_linear
 ImageColor.from_linear = _ImageColor.from_linear
@@ -871,8 +873,8 @@ class _Image(Image.Image):
         if 'A' in self.mode: other.putalpha(self.split()[-1])
         return self.blend(other, p, linear_conversion=linear_conversion)
 
-    def alpha_blend(self, fg, linear_conversion=True):
-        """Alpha blend an image onto this image. Like alpha_composite but sRGB aware (and a fair bit slower)."""
+    def alpha_blend(self, fg, *fgs, linear_conversion=True):
+        """Alpha blend one or more image onto this image. Like alpha_composite but sRGB aware (and a fair bit slower)."""
         if self.size != fg.size or self.mode != fg.mode or self.mode != "RGBA": raise NotImplementedError
         fg_arrays = [np.array(a) for a in fg.split()]
         bg_arrays = [np.array(a) for a in self.split()]
@@ -881,7 +883,8 @@ class _Image(Image.Image):
         alpha = falpha + balpha * (1 - falpha)
         rgb = [np.where(alpha>0, fl((tl(f)*falpha + tl(b)*balpha*(1-falpha))/alpha), 0)
                for f,b,fl,tl in zip_longest(fg_arrays[:3],bg_arrays[:3],[ImageColor.from_linear]*srgb_dims,[ImageColor.to_linear]*srgb_dims,fillvalue=lambda a: np.round(a).astype(int))]
-        return Image.fromarray(np.uint8(np.stack(rgb + [alpha], axis=-1)))
+        img = Image.fromarray(np.uint8(np.stack(rgb + [alpha], axis=-1)))
+        return img.alpha_blend(*fgs, linear_conversion=linear_conversion) if fgs else img
         
     def to_heatmap(self, colormap):
         """Create a heatmap image from a mask using a matplotlib color map. Mask is either a mode L image or the image's alpha channel. Requires numpy."""

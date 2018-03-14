@@ -554,7 +554,7 @@ class GridChartLabelPosition(Enum):
 
 def grid_chart(data, cell=lambda v: str(v), group=None,
                fg="white", bg="black", xalign=0.5, yalign=0.5, padding=(0,0,0,0), 
-               group_fg_colors=tuple(VegaPalette10), group_bg_colors=lambda _,c: c._replace(alpha=128),
+               group_fg_colors=tuple(VegaPalette10), group_bg_colors=lambda _,c: c._replace(alpha=128), group_bg_patterns=None,
                group_border=2, group_padding=(0,0,0,0), group_rounded=True,
                row_label=Ellipsis, col_label=Ellipsis, label_font=None, group_label=None, title=None):
     """Plot an image grid chart with optional Venn-like groupings.
@@ -568,6 +568,8 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
     - padding (Padding): cell padding [0]
     - group_fg_colors (group->color): dict or function of groups to fg colors, or sequence of colors [VegaPalette10]
     - group_bg_colors (group,[fg color]->color): dict or function of groups to bg colors, or sequence of colors; None to use fg [fg colors with 128 opacity]
+    - group_bg_patterns (groups,[bg colors]->color/pattern): function of group combinations to bg patterns or colors; None to use bg color combinations from above [None]
+      **IMPLEMENTATION NOTE**: this currently relies on each group combination starting with a unique default bg color based on group_bg_colors
     - group_border (int): grouping border [2]
     - group_padding (Padding): group edge padding [0]
     - group_rounded (Boolean): round group edges [True]
@@ -613,7 +615,8 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                        (lambda g: group_fg_colors[g]) if isinstance(group_fg_colors, Mapping) else
                        (lambda g: group_fg_colors[groups.index(g)]) if non_string_sequence(group_fg_colors) else
                        (lambda g: group_fg_colors))
-    group_bg_col_fn = (group_bg_colors if callable(group_bg_colors) else 
+    group_bg_col_fn = (group_fg_col_fn if group_bg_colors is None else
+                       (lambda g: ignoring_extra_args(group_bg_colors)(g, RGBA(group_fg_col_fn(g)))) if callable(group_bg_colors) else
                        (lambda g: group_bg_colors[g]) if isinstance(group_bg_colors, Mapping) else
                        (lambda g: group_bg_colors[groups.index(g)]) if non_string_sequence(group_bg_colors) else
                        (lambda g: group_bg_colors))
@@ -637,25 +640,33 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
         border_img = MaskIntersection(size2, bcol, bcol._replace(alpha=0), masks=[Quadrant(size2), Quadrant(size, invert=True).pad((bwidth, bwidth, 0, 0), "white")])
         return bg_img.place(border_img)
     
+    euler_array = tmap_leafs(lambda _: None, img_array, base_factory=list)
+    euler_bgs = {}
     for r, row in enumerate(data.values):
         for c, v in enumerate(row):
-            base = Image.new("RGBA", (img_widths[c], img_heights[r]), bg)
-            if len(group_array[r][c]) > 0:
-                venn = Image.new("RGBA", (img_widths[c], img_heights[r]), RGBA(bg)._replace(alpha=0))
+        
+            # image array
+            base = Image.new("RGBA", (img_widths[c], img_heights[r]), tbg)
+            if img_array[r][c]:
+                base.place(img_array[r][c], align=(xalign[1],yalign[1]), copy=False)
+            img_array[r][c] = base
+        
+            # euler array (what an unholy mess! could use some serious refactoring)
+            if groups:
+                euler = Image.new("RGBA", (img_widths[c], img_heights[r]), tbg)
                 for g in group_array[r][c]:
                     cfg = RGBA(group_fg_col_fn(g))
-                    cbg = cfg if group_bg_colors is None else ignoring_extra_args(group_bg_col_fn)(g, cfg)
+                    cbg = RGBA(group_bg_col_fn(g))
                     
-                    # what an unholy mess! :( could use some rewriting
-                    mid = Rectangle((base.width-gp.x, base.height-gp.y), cbg)
+                    mid = Rectangle((img_widths[c]-gp.x, img_heights[r]-gp.y), cbg)
                     if group_border and group_cmp(g,diff=[(r,c-1)]):
-                        mid.place(Rectangle((group_border, base.height), cfg), align=0, copy=False)
+                        mid.place(Rectangle((group_border, img_heights[r]), cfg), align=0, copy=False)
                     if group_border and group_cmp(g,diff=[(r,c+1)]):
-                        mid.place(Rectangle((group_border, base.height), cfg), align=1, copy=False)
+                        mid.place(Rectangle((group_border, img_heights[r]), cfg), align=1, copy=False)
                     if group_border and group_cmp(g,diff=[(r-1,c)]):
-                        mid.place(Rectangle((base.width, group_border), cfg), align=0, copy=False)
+                        mid.place(Rectangle((img_widths[c], group_border), cfg), align=0, copy=False)
                     if group_border and group_cmp(g,diff=[(r+1,c)]):
-                        mid.place(Rectangle((base.width, group_border), cfg), align=1, copy=False)
+                        mid.place(Rectangle((img_widths[c], group_border), cfg), align=1, copy=False)
                     if not group_rounded and group_cmp(g,(r-1,c),(r,c-1),diff=[(r-1,c-1)]):
                         mid.place(Rectangle((group_border, group_border), cfg), align=(0,0), copy=False)
                     if not group_rounded and group_cmp(g,(r-1,c),(r,c+1),diff=[(r-1,c+1)]):
@@ -673,25 +684,25 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                     if group_rounded and group_cmp(g,diff=[(r+1,c),(r,c+1)]):
                         mid.paste(OuterCorner((gp.l, gp.u), cbg, tbg, cfg).transpose(Image.ROTATE_180), (mid.width-gp.l,mid.height-gp.u))
                     
-                    top = Rectangle((base.width-gp.x, gp.u), cbg if group_cmp(g,(r-1,c)) else tbg)
+                    top = Rectangle((img_widths[c]-gp.x, gp.u), cbg if group_cmp(g,(r-1,c)) else tbg)
                     if group_border and (group_cmp(g, (r-1,c), diff=[(r,c-1)]) or group_cmp(g, (r-1,c), diff=[(r-1,c-1)])):
                         top.place(Rectangle((group_border, gp.u), cfg), align=0, copy=False)
                     if group_border and (group_cmp(g, (r-1,c), diff=[(r,c+1)]) or group_cmp(g, (r-1,c), diff=[(r-1,c+1)])):
                         top.place(Rectangle((group_border, gp.u), cfg), align=1, copy=False)
                     
-                    bottom = Rectangle((base.width-gp.x, gp.d), cbg if group_cmp(g,(r+1,c)) else tbg)
+                    bottom = Rectangle((img_widths[c]-gp.x, gp.d), cbg if group_cmp(g,(r+1,c)) else tbg)
                     if group_border and (group_cmp(g, (r+1,c), diff=[(r,c-1)]) or group_cmp(g, (r+1,c), diff=[(r+1,c-1)])):
                         bottom.place(Rectangle((group_border, gp.d), cfg), align=0, copy=False)
                     if group_border and (group_cmp(g, (r+1,c), diff=[(r,c+1)]) or group_cmp(g, (r+1,c), diff=[(r+1,c+1)])):
                         bottom.place(Rectangle((group_border, gp.d), cfg), align=1, copy=False)
                     
-                    left = Rectangle((gp.l, base.height-gp.y), cbg if group_cmp(g,(r,c-1)) else tbg)
+                    left = Rectangle((gp.l, img_heights[r]-gp.y), cbg if group_cmp(g,(r,c-1)) else tbg)
                     if group_border and (group_cmp(g, (r,c-1), diff=[(r-1,c)]) or group_cmp(g, (r,c-1), diff=[(r-1,c-1)])):
                         left.place(Rectangle((gp.l, group_border), cfg), align=0, copy=False)
                     if group_border and (group_cmp(g, (r,c-1), diff=[(r+1,c)]) or group_cmp(g, (r,c-1), diff=[(r+1,c-1)])):
                         left.place(Rectangle((gp.l, group_border), cfg), align=1, copy=False)
                     
-                    right = Rectangle((gp.r, base.height-gp.y), cbg if group_cmp(g,(r,c+1)) else tbg)
+                    right = Rectangle((gp.r, img_heights[r]-gp.y), cbg if group_cmp(g,(r,c+1)) else tbg)
                     if group_border and (group_cmp(g, (r,c+1), diff=[(r-1,c)]) or group_cmp(g, (r,c+1), diff=[(r-1,c+1)])):
                         right.place(Rectangle((gp.r, group_border), cfg), align=0, copy=False)
                     if group_border and (group_cmp(g, (r,c+1), diff=[(r+1,c)]) or group_cmp(g, (r,c+1), diff=[(r+1,c+1)])):
@@ -713,12 +724,11 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                     if group_rounded and group_cmp(g,(r+1,c),(r,c+1),diff=[(r+1,c+1)]):
                         img.paste(InnerCorner((gp.r, gp.d), cbg, tbg, cfg), (img.width-gp.r-group_border,img.height-gp.d-group_border))
                         
-                    venn.place(img, copy=False)
-                    
-                base.place(venn, copy=False)
-            if img_array[r][c]:
-                base.place(img_array[r][c], align=(xalign[1],yalign[1]), copy=False)
-            img_array[r][c] = base
+                    euler.place(img, copy=False)
+
+                euler_array[r][c] = euler
+                # should be able to recalculate the combined bg color directly but pillow isn't very consistent with alpha compositing
+                euler_bgs[group_array[r][c]] = RGBA(max(euler.getcolors(euler.width * euler.height))[1])
 
     for rlabel_pos, rlabel_fn in rlabel_dict.items():
         for r, row in enumerate(data.values):
@@ -727,10 +737,14 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                 label = Image.from_text(label, label_font, fg=fg, bg=bg, padding=(10,0)) if label_font else None
             if label is not None:
                 label = label.pad(padding, bg=bg)
+            if groups:
+                empty_label = label and Rectangle(label.size, tbg)
             if rlabel_pos == GridChartLabelPosition.LEFT:
                 img_array[r].insert(0, label)
+                if groups: euler_array[r].insert(0, empty_label)
             else:
                 img_array[r].append(label)
+                if groups: euler_array[r].append(empty_label)
             
     for clabel_pos, clabel_fn in clabel_dict.items():
         col_labels = [None] * int(GridChartLabelPosition.LEFT in rlabel_dict)
@@ -741,11 +755,14 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
             if label is not None:
                 label = label.pad(padding, bg=bg)
             col_labels.append(label)
+        if groups: 
+            empty_labels = [ label and Rectangle(label.size, tbg) for label in col_labels ]
         if clabel_pos == GridChartLabelPosition.TOP:
             img_array.insert(0, col_labels)
+            if groups: euler_array.insert(0, empty_labels)
         else:
             img_array.append(col_labels)
-        col_labels += [None] * int(GridChartLabelPosition.RIGHT in rlabel_dict)
+            if groups: euler_array.append(empty_labels)
 
     xaligns = [xalign[1]] * len(img_array[0])
     if GridChartLabelPosition.LEFT in rlabel_dict: xaligns[0] = xalign[0]
@@ -753,11 +770,21 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
     yaligns = [yalign[1]] * len(img_array)
     if GridChartLabelPosition.TOP in clabel_dict: yaligns[0] = yalign[0]
     if GridChartLabelPosition.BOTTOM in clabel_dict: yaligns[-1] = yalign[-1]
-    chart = Image.from_array(img_array, xalign=xaligns, yalign=yaligns, bg=bg)
+    chart = Image.from_array(img_array, xalign=xaligns, yalign=yaligns, bg=tbg)
     
-    if title is not None: chart = Image.from_column((title, chart), bg=bg)
-    return chart
-
+    if groups: 
+        euler = Image.from_array(euler_array, xalign=xaligns, yalign=yaligns, bg=tbg)
+        if group_bg_patterns:
+            group_combos = [combo for row in group_array for combo in row]
+            group_patterns = { euler_bgs[groups]: group_patterns
+                               for groups in group_combos if groups
+                               for group_colors in [[RGBA(group_bg_col_fn(g)) for g in groups]]
+                               for group_patterns in [ignoring_extra_args(group_bg_patterns)(groups, group_colors)] if group_patterns is not None }
+            euler = euler.replace_colors(group_patterns)
+        chart = euler.place(chart)
+        
+    return Image.from_column([img for img in (title, chart) if img], bg=bg)
+        
 # Map charts
 
 def name_csv_path(map): return splitext(map)[0] + ".csv"

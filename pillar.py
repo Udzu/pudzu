@@ -6,7 +6,7 @@ import abc as ABC
 
 from collections import namedtuple
 from enum import Enum
-from functools import partial
+from functools import partial, reduce
 from io import BytesIO
 from itertools import zip_longest, chain
 from numbers import Real, Integral
@@ -342,14 +342,18 @@ class _ImageColor():
         return cls.blend(color, white, p, linear_conversion=linear_conversion)
         
     @classmethod
-    def alpha_composite(cls, bg, fg, *fgs):
-        """Alpha composite two or more colors."""
+    def alpha_composite(cls, bg, *fgs):
+        """Alpha composite multiple colors."""
+        if not fgs: return bg
+        fg, *fgs = fgs
         c = RGBA(Rectangle(1, bg).place(Rectangle(1, fg)).getcolors()[0][-1])
-        return cls.alpha_composite(c, *fgs) if fgs else c
+        return cls.alpha_composite(c, *fgs)
             
     @classmethod
-    def alpha_blend(cls, bg, fg, *fgs, linear_conversion=True):
-        """Alpha blend two more more colors. Like alpha_composite but sRGB-aware."""
+    def alpha_blend(cls, bg, *fgs, linear_conversion=True):
+        """Alpha blend multiple colors. Like alpha_composite but sRGB-aware."""
+        if not fgs: return bg
+        fg, *fgs = fgs
         fg, bg = RGBA(fg), RGBA(bg)
         falpha, balpha = fg.alpha / 255, bg.alpha / 255
         srgb_dims = 3 * int(linear_conversion)
@@ -357,7 +361,7 @@ class _ImageColor():
         rgb = [fl((tl(f)*falpha + tl(b)*balpha*(1-falpha))/alpha) if alpha>0 else 0
                for f,b,fl,tl in zip_longest(fg[:3],bg[:3],[cls.from_linear]*srgb_dims,[cls.to_linear]*srgb_dims,fillvalue=round) ]
         c = RGBA(*(rgb + [round(alpha*255)]))
-        return cls.alpha_blend(c, *fgs, linear_conversion=linear_conversion) if fgs else c
+        return cls.alpha_blend(c, *fgs, linear_conversion=linear_conversion)
             
 ImageColor.to_linear = _ImageColor.to_linear
 ImageColor.from_linear = _ImageColor.from_linear
@@ -461,6 +465,7 @@ class GradientColormap(SequenceColormap):
     """A matplotlib colormap generated from a sequence of colors and optional spacing intervals."""
     
     def __init__(self, *colors, intervals=None, linear_conversion=True):
+        if len(colors) == 1: colors = colors * 2
         self.colors = tmap(RGBA, colors)
         gradients = [BlendColormap(ConstantColormap(c1), ConstantColormap(c2), linear_conversion=linear_conversion) 
                      for c1,c2 in zip(self.colors, self.colors[1:])]
@@ -873,8 +878,10 @@ class _Image(Image.Image):
         if 'A' in self.mode: other.putalpha(self.split()[-1])
         return self.blend(other, p, linear_conversion=linear_conversion)
 
-    def alpha_blend(self, fg, *fgs, linear_conversion=True):
-        """Alpha blend one or more image onto this image. Like alpha_composite but sRGB aware (and a fair bit slower)."""
+    def alpha_blend(self, *fgs, linear_conversion=True):
+        """Alpha blend images onto this image. Like alpha_composite but sRGB aware (and a fair bit slower)."""
+        if not fgs: return self
+        fg, *fgs = fgs
         if self.size != fg.size or self.mode != fg.mode or self.mode != "RGBA": raise NotImplementedError
         fg_arrays = [np.array(a) for a in fg.split()]
         bg_arrays = [np.array(a) for a in self.split()]
@@ -884,7 +891,7 @@ class _Image(Image.Image):
         rgb = [np.where(alpha>0, fl((tl(f)*falpha + tl(b)*balpha*(1-falpha))/alpha), 0)
                for f,b,fl,tl in zip_longest(fg_arrays[:3],bg_arrays[:3],[ImageColor.from_linear]*srgb_dims,[ImageColor.to_linear]*srgb_dims,fillvalue=lambda a: np.round(a).astype(int))]
         img = Image.fromarray(np.uint8(np.stack(rgb + [alpha], axis=-1)))
-        return img.alpha_blend(*fgs, linear_conversion=linear_conversion) if fgs else img
+        return img.alpha_blend(*fgs, linear_conversion=linear_conversion)
         
     def to_heatmap(self, colormap):
         """Create a heatmap image from a mask using a matplotlib color map. Mask is either a mode L image or the image's alpha channel. Requires numpy."""
@@ -1014,7 +1021,7 @@ class ImageShape(object):
         - invert (boolean): whether to invert the shape mask [False]
         """
         if isinstance(size, Integral): size = (size, size)
-        if bg is None and not isinstance(fg, Image.Image):
+        if bg is None and not isinstance(fg, Image.Image) and not callable(fg):
             bg = RGBA(fg)._replace(alpha=0)
         if cls.antialiasing:
             orig_size, size = size, [round(s * antialias) for s in size]
@@ -1023,9 +1030,12 @@ class ImageShape(object):
         if "_scale" in all_keyword_args(cls.mask): kwargs = merge_dicts({"_scale": antialias}, kwargs)
         mask = cls.mask(size, **kwargs)
         if invert: mask = mask.invert_mask()
-        base = Image.from_pattern(bg, mask.size) if isinstance(bg, Image.Image) else Image.new("RGBA", mask.size, bg)
-        fore = Image.from_pattern(fg, mask.size) if isinstance(fg, Image.Image) else  Image.new("RGBA", mask.size, fg)
-        img = base.overlay(fore, mask=mask)
+        if callable(fg):
+            img = mask.to_heatmap(fg)
+        else:
+            base = Image.from_pattern(bg, mask.size) if isinstance(bg, Image.Image) else Image.new("RGBA", mask.size, bg)
+            fore = Image.from_pattern(fg, mask.size) if isinstance(fg, Image.Image) else  Image.new("RGBA", mask.size, fg)
+            img = base.overlay(fore, mask=mask)
         if cls.antialiasing:
             img = img.resize(orig_size, resample=Image.LANCZOS if antialias > 1 else Image.NEAREST)
         return img
@@ -1123,25 +1133,31 @@ class Trapezoid(ImageShape):
 class Stripe(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
-    def mask(cls, size, p=0.5):
+    def mask(cls, size, intervals=2):
         """Tilable diagonal stripe mask occupying p of the tile."""
+        if isinstance(intervals, Integral): intervals = [1] * intervals
+        if len(intervals) == 1: return Rectangle.mask(size)
+        intervals = [x/sum(intervals) for x in intervals]
+        accumulated = list(itertools.accumulate(intervals))
         w, h = size
         x, y = w-1, h-1
-        topleft = np.fromfunction(lambda j,i: i*y + j*x < p*x*y, (h,w))
-        middle = np.fromfunction(lambda j,i: i*y + j*x >= x*y, (h,w))
-        bottomright = np.fromfunction(lambda j,i: i*y + j*x >= (1+p)*x*y, (h,w))
-        return Image.fromarray(255 * (topleft + (middle - bottomright)).view('uint8'))
-
+        horizontal_p = np.fromfunction(lambda j,i: np.mod(i/x + j/y, 1), (h,w))
+        condlist = [ horizontal_p <= p for p in accumulated ]
+        choices = [ np.full_like(horizontal_p, i) for i in range(len(accumulated)) ]
+        pattern = np.select(condlist, choices)
+        return Image.fromarray(np.round(255 * pattern / (len(accumulated)-1)).astype('uint8'))
+        
 class Checkers(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
-    def mask(cls, size, shape=2):
-        """Checker grid pattern."""
+    def mask(cls, size, shape=2, colors=2):
+        """Checker grid pattern. Shape can be an integer or a pair."""
+        if colors == 1: return Rectangle.mask(size)
         if isinstance(shape, Integral): shape=(shape,shape)
         m, n = shape
         w, h = size
-        pattern = np.fromfunction(lambda j,i: (i//(w/m) + j//(h/n)) % 2 == 0, (h,w))
-        return Image.fromarray(255 * (pattern).view('uint8'))
+        pattern = np.fromfunction(lambda j,i: ((i//(w/m) + j//(h/n)) % colors), (h,w))
+        return Image.fromarray(np.round(255 * pattern / (colors-1)).astype('uint8'))
     antialiasing = False
 
 class MaskUnion(ImageShape):

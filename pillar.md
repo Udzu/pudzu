@@ -508,7 +508,7 @@ RGBA(red=187, green=188, blue=0, alpha=255)
 
 An abstract base class for encapsulating simple geometric shape generation (mostly implemented with numpy). Shapes may be generated either as masks, by calling their `mask` method, or as images, by using their constructor. Note that the shape classes act as factories only: masks are returned as mode "L" images, shapes as mode "RGBA" images.
 
-The mask methods accept a size and shape-specific parameters. The constructor methods also accept foreground and background colors or patterns, as well as invert and antialias parameters.
+The mask methods accept a size and shape-specific parameters. The constructor methods also accept foreground and background colors or patterns or a foreground colormap, as well as invert and antialias parameters.
 
 **Rectangle**: generate rectangular shapes or masks.
 
@@ -550,20 +550,31 @@ The mask methods accept a size and shape-specific parameters. The constructor me
 ```
 ![alt](images/shapetrapezoid.png)
 
-**Stripe**: generate tilable diagonal stripes of a given width.
+**Stripe**: generate tilable diagonal stripes of given relative widths or number.
 
 ```python
->> Image.from_pattern(Stripe(10, "black", "grey", p=0.25), (80, 50))
+>> Image.from_pattern(Stripe(10, "black", "grey", intervals=(3,1)), (80, 50)).show()
 ```
 ![alt](images/shapestripe.png)
 
-**Checkers**: generate a checkers grid pattern of a given shape.
+```python
+>> Stripe((80,50), GradientColormap("red", "green", "blue"), intervals=3).show()
+```
+![alt](images/shapestripe2.png)
+
+
+**Checkers**: generate a checkers grid pattern of a given shape and number of colors.
 
 ```python
 >> Checkers((80,50), "black", "grey", shape=(8,5)).show()
 ```
 ![alt](images/shapecheckers.png)
  
+```python
+>> Checkers((80,50), GradientColormap("red", "green", "blue"), shape=(8,5), colors=3).show()
+```
+![alt](images/shapecheckers2.png)
+
 **Ellipse**: generate elliptical (or circular) shapes or masks.
 
 ```python

@@ -29,6 +29,6 @@ footer = Image.from_row([
     Image.from_text("/u/Udzu", font("arial", 14), fg="white", bg="black", padding=5).pad((1,1,0,0), "white")
     ], bg="black")
       
-grid = grid_chart(data, process, padding=5, row_label=arial(20, bold=True), bg="black", title=title).pad((0,0,10,0), "black")
+grid = grid_chart(data, process, padding=5, col_label=None, label_font=arial(20, bold=True), bg="black", title=title).pad((0,0,10,0), "black")
 img = Image.from_column([grid, footer], bg="black", xalign=1, padding=5)
 img.save("output/40under40.png")

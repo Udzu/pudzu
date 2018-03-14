@@ -615,7 +615,8 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                        (lambda g: group_fg_colors[g]) if isinstance(group_fg_colors, Mapping) else
                        (lambda g: group_fg_colors[groups.index(g)]) if non_string_sequence(group_fg_colors) else
                        (lambda g: group_fg_colors))
-    group_bg_col_fn = (group_bg_colors if callable(group_bg_colors) else 
+    group_bg_col_fn = (group_fg_col_fn if group_bg_colors is None else
+                       (lambda g: ignoring_extra_args(group_bg_colors)(g, RGBA(group_fg_col_fn(g)))) if callable(group_bg_colors) else
                        (lambda g: group_bg_colors[g]) if isinstance(group_bg_colors, Mapping) else
                        (lambda g: group_bg_colors[groups.index(g)]) if non_string_sequence(group_bg_colors) else
                        (lambda g: group_bg_colors))
@@ -649,80 +650,81 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                 base.place(img_array[r][c], align=(xalign[1],yalign[1]), copy=False)
             img_array[r][c] = base
         
-            # euler array (what an unholy mess! could use some major refactoring)
-            euler = Image.new("RGBA", (img_widths[c], img_heights[r]), tbg)
-            for g in group_array[r][c]:
-                cfg = RGBA(group_fg_col_fn(g))
-                cbg = cfg if group_bg_colors is None else ignoring_extra_args(group_bg_col_fn)(g, cfg)
-                
-                mid = Rectangle((img_widths[c]-gp.x, img_heights[r]-gp.y), cbg)
-                if group_border and group_cmp(g,diff=[(r,c-1)]):
-                    mid.place(Rectangle((group_border, img_heights[r]), cfg), align=0, copy=False)
-                if group_border and group_cmp(g,diff=[(r,c+1)]):
-                    mid.place(Rectangle((group_border, img_heights[r]), cfg), align=1, copy=False)
-                if group_border and group_cmp(g,diff=[(r-1,c)]):
-                    mid.place(Rectangle((img_widths[c], group_border), cfg), align=0, copy=False)
-                if group_border and group_cmp(g,diff=[(r+1,c)]):
-                    mid.place(Rectangle((img_widths[c], group_border), cfg), align=1, copy=False)
-                if not group_rounded and group_cmp(g,(r-1,c),(r,c-1),diff=[(r-1,c-1)]):
-                    mid.place(Rectangle((group_border, group_border), cfg), align=(0,0), copy=False)
-                if not group_rounded and group_cmp(g,(r-1,c),(r,c+1),diff=[(r-1,c+1)]):
-                    mid.place(Rectangle((group_border, group_border), cfg), align=(1,0), copy=False)
-                if not group_rounded and group_cmp(g,(r+1,c),(r,c-1),diff=[(r+1,c-1)]):
-                    mid.place(Rectangle((group_border, group_border), cfg), align=(0,1), copy=False)
-                if not group_rounded and group_cmp(g,(r+1,c),(r,c+1),diff=[(r+1,c+1)]):
-                    mid.place(Rectangle((group_border, group_border), cfg), align=(1,1), copy=False)
-                if group_rounded and group_cmp(g,diff=[(r-1,c),(r,c-1)]):
-                    mid.paste(OuterCorner((gp.r, gp.d), cbg, tbg, cfg), (0,0))
-                if group_rounded and group_cmp(g,diff=[(r-1,c),(r,c+1)]):
-                    mid.paste(OuterCorner((gp.l, gp.d), cbg, tbg, cfg).transpose(Image.FLIP_LEFT_RIGHT), (mid.width-gp.l,0))
-                if group_rounded and group_cmp(g,diff=[(r+1,c),(r,c-1)]):
-                    mid.paste(OuterCorner((gp.r, gp.u), cbg, tbg, cfg).transpose(Image.FLIP_TOP_BOTTOM), (0,mid.height-gp.u))
-                if group_rounded and group_cmp(g,diff=[(r+1,c),(r,c+1)]):
-                    mid.paste(OuterCorner((gp.l, gp.u), cbg, tbg, cfg).transpose(Image.ROTATE_180), (mid.width-gp.l,mid.height-gp.u))
-                
-                top = Rectangle((img_widths[c]-gp.x, gp.u), cbg if group_cmp(g,(r-1,c)) else tbg)
-                if group_border and (group_cmp(g, (r-1,c), diff=[(r,c-1)]) or group_cmp(g, (r-1,c), diff=[(r-1,c-1)])):
-                    top.place(Rectangle((group_border, gp.u), cfg), align=0, copy=False)
-                if group_border and (group_cmp(g, (r-1,c), diff=[(r,c+1)]) or group_cmp(g, (r-1,c), diff=[(r-1,c+1)])):
-                    top.place(Rectangle((group_border, gp.u), cfg), align=1, copy=False)
-                
-                bottom = Rectangle((img_widths[c]-gp.x, gp.d), cbg if group_cmp(g,(r+1,c)) else tbg)
-                if group_border and (group_cmp(g, (r+1,c), diff=[(r,c-1)]) or group_cmp(g, (r+1,c), diff=[(r+1,c-1)])):
-                    bottom.place(Rectangle((group_border, gp.d), cfg), align=0, copy=False)
-                if group_border and (group_cmp(g, (r+1,c), diff=[(r,c+1)]) or group_cmp(g, (r+1,c), diff=[(r+1,c+1)])):
-                    bottom.place(Rectangle((group_border, gp.d), cfg), align=1, copy=False)
-                
-                left = Rectangle((gp.l, img_heights[r]-gp.y), cbg if group_cmp(g,(r,c-1)) else tbg)
-                if group_border and (group_cmp(g, (r,c-1), diff=[(r-1,c)]) or group_cmp(g, (r,c-1), diff=[(r-1,c-1)])):
-                    left.place(Rectangle((gp.l, group_border), cfg), align=0, copy=False)
-                if group_border and (group_cmp(g, (r,c-1), diff=[(r+1,c)]) or group_cmp(g, (r,c-1), diff=[(r+1,c-1)])):
-                    left.place(Rectangle((gp.l, group_border), cfg), align=1, copy=False)
-                
-                right = Rectangle((gp.r, img_heights[r]-gp.y), cbg if group_cmp(g,(r,c+1)) else tbg)
-                if group_border and (group_cmp(g, (r,c+1), diff=[(r-1,c)]) or group_cmp(g, (r,c+1), diff=[(r-1,c+1)])):
-                    right.place(Rectangle((gp.r, group_border), cfg), align=0, copy=False)
-                if group_border and (group_cmp(g, (r,c+1), diff=[(r+1,c)]) or group_cmp(g, (r,c+1), diff=[(r+1,c+1)])):
-                    right.place(Rectangle((gp.r, group_border), cfg), align=1, copy=False)
-                
-                top_left = Rectangle((gp.l, gp.u), cbg if group_cmp(g,(r-1,c),(r,c-1),(r-1,c-1)) else tbg)
-                top_right = Rectangle((gp.r, gp.u), cbg if group_cmp(g,(r-1,c),(r,c+1),(r-1,c+1)) else tbg)
-                bottom_left = Rectangle((gp.l, gp.d), cbg if group_cmp(g,(r+1,c),(r,c-1),(r+1,c-1)) else tbg)
-                bottom_right = Rectangle((gp.r, gp.d), cbg if group_cmp(g,(r+1,c),(r,c+1),(r+1,c+1)) else tbg)
-                
-                img = Image.from_array([[top_left, top, top_right],[left,mid,right],[bottom_left,bottom,bottom_right]])
-                
-                if group_rounded and group_cmp(g,(r-1,c),(r,c-1),diff=[(r-1,c-1)]):
-                    img.paste(InnerCorner((gp.l, gp.u), cbg, tbg, cfg).transpose(Image.ROTATE_180), (0,0))
-                if group_rounded and group_cmp(g,(r-1,c),(r,c+1),diff=[(r-1,c+1)]):
-                    img.paste(InnerCorner((gp.r, gp.u), cbg, tbg, cfg).transpose(Image.FLIP_TOP_BOTTOM), (img.width-gp.r-group_border,0))
-                if group_rounded and group_cmp(g,(r+1,c),(r,c-1),diff=[(r+1,c-1)]):
-                    img.paste(InnerCorner((gp.l, gp.d), cbg, tbg, cfg).transpose(Image.FLIP_LEFT_RIGHT), (0,img.height-gp.d-group_border))
-                if group_rounded and group_cmp(g,(r+1,c),(r,c+1),diff=[(r+1,c+1)]):
-                    img.paste(InnerCorner((gp.r, gp.d), cbg, tbg, cfg), (img.width-gp.r-group_border,img.height-gp.d-group_border))
+            # euler array (what an unholy mess! could use some serious refactoring)
+            if groups:
+                euler = Image.new("RGBA", (img_widths[c], img_heights[r]), tbg)
+                for g in group_array[r][c]:
+                    cfg = RGBA(group_fg_col_fn(g))
+                    cbg = RGBA(group_bg_col_fn(g))
                     
-                euler.place(img, copy=False)
-            euler_array[r][c] = euler
+                    mid = Rectangle((img_widths[c]-gp.x, img_heights[r]-gp.y), cbg)
+                    if group_border and group_cmp(g,diff=[(r,c-1)]):
+                        mid.place(Rectangle((group_border, img_heights[r]), cfg), align=0, copy=False)
+                    if group_border and group_cmp(g,diff=[(r,c+1)]):
+                        mid.place(Rectangle((group_border, img_heights[r]), cfg), align=1, copy=False)
+                    if group_border and group_cmp(g,diff=[(r-1,c)]):
+                        mid.place(Rectangle((img_widths[c], group_border), cfg), align=0, copy=False)
+                    if group_border and group_cmp(g,diff=[(r+1,c)]):
+                        mid.place(Rectangle((img_widths[c], group_border), cfg), align=1, copy=False)
+                    if not group_rounded and group_cmp(g,(r-1,c),(r,c-1),diff=[(r-1,c-1)]):
+                        mid.place(Rectangle((group_border, group_border), cfg), align=(0,0), copy=False)
+                    if not group_rounded and group_cmp(g,(r-1,c),(r,c+1),diff=[(r-1,c+1)]):
+                        mid.place(Rectangle((group_border, group_border), cfg), align=(1,0), copy=False)
+                    if not group_rounded and group_cmp(g,(r+1,c),(r,c-1),diff=[(r+1,c-1)]):
+                        mid.place(Rectangle((group_border, group_border), cfg), align=(0,1), copy=False)
+                    if not group_rounded and group_cmp(g,(r+1,c),(r,c+1),diff=[(r+1,c+1)]):
+                        mid.place(Rectangle((group_border, group_border), cfg), align=(1,1), copy=False)
+                    if group_rounded and group_cmp(g,diff=[(r-1,c),(r,c-1)]):
+                        mid.paste(OuterCorner((gp.r, gp.d), cbg, tbg, cfg), (0,0))
+                    if group_rounded and group_cmp(g,diff=[(r-1,c),(r,c+1)]):
+                        mid.paste(OuterCorner((gp.l, gp.d), cbg, tbg, cfg).transpose(Image.FLIP_LEFT_RIGHT), (mid.width-gp.l,0))
+                    if group_rounded and group_cmp(g,diff=[(r+1,c),(r,c-1)]):
+                        mid.paste(OuterCorner((gp.r, gp.u), cbg, tbg, cfg).transpose(Image.FLIP_TOP_BOTTOM), (0,mid.height-gp.u))
+                    if group_rounded and group_cmp(g,diff=[(r+1,c),(r,c+1)]):
+                        mid.paste(OuterCorner((gp.l, gp.u), cbg, tbg, cfg).transpose(Image.ROTATE_180), (mid.width-gp.l,mid.height-gp.u))
+                    
+                    top = Rectangle((img_widths[c]-gp.x, gp.u), cbg if group_cmp(g,(r-1,c)) else tbg)
+                    if group_border and (group_cmp(g, (r-1,c), diff=[(r,c-1)]) or group_cmp(g, (r-1,c), diff=[(r-1,c-1)])):
+                        top.place(Rectangle((group_border, gp.u), cfg), align=0, copy=False)
+                    if group_border and (group_cmp(g, (r-1,c), diff=[(r,c+1)]) or group_cmp(g, (r-1,c), diff=[(r-1,c+1)])):
+                        top.place(Rectangle((group_border, gp.u), cfg), align=1, copy=False)
+                    
+                    bottom = Rectangle((img_widths[c]-gp.x, gp.d), cbg if group_cmp(g,(r+1,c)) else tbg)
+                    if group_border and (group_cmp(g, (r+1,c), diff=[(r,c-1)]) or group_cmp(g, (r+1,c), diff=[(r+1,c-1)])):
+                        bottom.place(Rectangle((group_border, gp.d), cfg), align=0, copy=False)
+                    if group_border and (group_cmp(g, (r+1,c), diff=[(r,c+1)]) or group_cmp(g, (r+1,c), diff=[(r+1,c+1)])):
+                        bottom.place(Rectangle((group_border, gp.d), cfg), align=1, copy=False)
+                    
+                    left = Rectangle((gp.l, img_heights[r]-gp.y), cbg if group_cmp(g,(r,c-1)) else tbg)
+                    if group_border and (group_cmp(g, (r,c-1), diff=[(r-1,c)]) or group_cmp(g, (r,c-1), diff=[(r-1,c-1)])):
+                        left.place(Rectangle((gp.l, group_border), cfg), align=0, copy=False)
+                    if group_border and (group_cmp(g, (r,c-1), diff=[(r+1,c)]) or group_cmp(g, (r,c-1), diff=[(r+1,c-1)])):
+                        left.place(Rectangle((gp.l, group_border), cfg), align=1, copy=False)
+                    
+                    right = Rectangle((gp.r, img_heights[r]-gp.y), cbg if group_cmp(g,(r,c+1)) else tbg)
+                    if group_border and (group_cmp(g, (r,c+1), diff=[(r-1,c)]) or group_cmp(g, (r,c+1), diff=[(r-1,c+1)])):
+                        right.place(Rectangle((gp.r, group_border), cfg), align=0, copy=False)
+                    if group_border and (group_cmp(g, (r,c+1), diff=[(r+1,c)]) or group_cmp(g, (r,c+1), diff=[(r+1,c+1)])):
+                        right.place(Rectangle((gp.r, group_border), cfg), align=1, copy=False)
+                    
+                    top_left = Rectangle((gp.l, gp.u), cbg if group_cmp(g,(r-1,c),(r,c-1),(r-1,c-1)) else tbg)
+                    top_right = Rectangle((gp.r, gp.u), cbg if group_cmp(g,(r-1,c),(r,c+1),(r-1,c+1)) else tbg)
+                    bottom_left = Rectangle((gp.l, gp.d), cbg if group_cmp(g,(r+1,c),(r,c-1),(r+1,c-1)) else tbg)
+                    bottom_right = Rectangle((gp.r, gp.d), cbg if group_cmp(g,(r+1,c),(r,c+1),(r+1,c+1)) else tbg)
+                    
+                    img = Image.from_array([[top_left, top, top_right],[left,mid,right],[bottom_left,bottom,bottom_right]])
+                    
+                    if group_rounded and group_cmp(g,(r-1,c),(r,c-1),diff=[(r-1,c-1)]):
+                        img.paste(InnerCorner((gp.l, gp.u), cbg, tbg, cfg).transpose(Image.ROTATE_180), (0,0))
+                    if group_rounded and group_cmp(g,(r-1,c),(r,c+1),diff=[(r-1,c+1)]):
+                        img.paste(InnerCorner((gp.r, gp.u), cbg, tbg, cfg).transpose(Image.FLIP_TOP_BOTTOM), (img.width-gp.r-group_border,0))
+                    if group_rounded and group_cmp(g,(r+1,c),(r,c-1),diff=[(r+1,c-1)]):
+                        img.paste(InnerCorner((gp.l, gp.d), cbg, tbg, cfg).transpose(Image.FLIP_LEFT_RIGHT), (0,img.height-gp.d-group_border))
+                    if group_rounded and group_cmp(g,(r+1,c),(r,c+1),diff=[(r+1,c+1)]):
+                        img.paste(InnerCorner((gp.r, gp.d), cbg, tbg, cfg), (img.width-gp.r-group_border,img.height-gp.d-group_border))
+                        
+                    euler.place(img, copy=False)
+                euler_array[r][c] = euler
 
     for rlabel_pos, rlabel_fn in rlabel_dict.items():
         for r, row in enumerate(data.values):
@@ -731,13 +733,14 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                 label = Image.from_text(label, label_font, fg=fg, bg=bg, padding=(10,0)) if label_font else None
             if label is not None:
                 label = label.pad(padding, bg=bg)
-            empty_label = label and Rectangle(label.size, tbg)
+            if groups:
+                empty_label = label and Rectangle(label.size, tbg)
             if rlabel_pos == GridChartLabelPosition.LEFT:
                 img_array[r].insert(0, label)
-                euler_array[r].insert(0, empty_label)
+                if groups: euler_array[r].insert(0, empty_label)
             else:
                 img_array[r].append(label)
-                euler_array[r].append(empty_label)
+                if groups: euler_array[r].append(empty_label)
             
     for clabel_pos, clabel_fn in clabel_dict.items():
         col_labels = [None] * int(GridChartLabelPosition.LEFT in rlabel_dict)
@@ -748,13 +751,14 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
             if label is not None:
                 label = label.pad(padding, bg=bg)
             col_labels.append(label)
-        empty_labels = [ label and Rectangle(label.size, tbg) for label in col_labels ]
+        if groups: 
+            empty_labels = [ label and Rectangle(label.size, tbg) for label in col_labels ]
         if clabel_pos == GridChartLabelPosition.TOP:
             img_array.insert(0, col_labels)
-            euler_array.insert(0, empty_labels)
+            if groups: euler_array.insert(0, empty_labels)
         else:
             img_array.append(col_labels)
-            euler_array.append(empty_labels)
+            if groups: euler_array.append(empty_labels)
 
     xaligns = [xalign[1]] * len(img_array[0])
     if GridChartLabelPosition.LEFT in rlabel_dict: xaligns[0] = xalign[0]
@@ -762,12 +766,21 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
     yaligns = [yalign[1]] * len(img_array)
     if GridChartLabelPosition.TOP in clabel_dict: yaligns[0] = yalign[0]
     if GridChartLabelPosition.BOTTOM in clabel_dict: yaligns[-1] = yalign[-1]
-    imgs = Image.from_array(img_array, xalign=xaligns, yalign=yaligns, bg=tbg)
-    euler = Image.from_array(euler_array, xalign=xaligns, yalign=yaligns, bg=tbg)
-    # TODO: add patterns to euler before merging
-    chart = euler.place(imgs)
+    chart = Image.from_array(img_array, xalign=xaligns, yalign=yaligns, bg=tbg)
     
-    if title is not None: chart = Image.from_column((title, chart), bg=bg)
+    if groups: 
+        euler = Image.from_array(euler_array, xalign=xaligns, yalign=yaligns, bg=tbg)
+        if group_bg_patterns:
+            group_combos = [combo for row in group_array for combo in row]
+            group_patterns = { ImageColor.alpha_composite(*group_colors): group_patterns
+                               for groups in group_combos if groups
+                               for group_colors in [[RGBA(group_bg_col_fn(g)) for g in groups]]
+                               for group_patterns in [ignoring_extra_args(group_bg_patterns)(groups, group_colors)] if group_patterns is not None }
+            euler = euler.replace_colors(group_patterns)
+        chart = euler.place(chart)
+    if title is not None:
+        chart = Image.from_column((title, chart), bg=bg)
+        
     return chart
 
 # Map charts

@@ -641,6 +641,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
         return bg_img.place(border_img)
     
     euler_array = tmap_leafs(lambda _: None, img_array, base_factory=list)
+    euler_bgs = {}
     for r, row in enumerate(data.values):
         for c, v in enumerate(row):
         
@@ -724,7 +725,10 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                         img.paste(InnerCorner((gp.r, gp.d), cbg, tbg, cfg), (img.width-gp.r-group_border,img.height-gp.d-group_border))
                         
                     euler.place(img, copy=False)
+
                 euler_array[r][c] = euler
+                # should be able to recalculate the combined bg color directly but pillow isn't very consistent with alpha compositing
+                euler_bgs[group_array[r][c]] = RGBA(max(euler.getcolors(euler.width * euler.height))[1])
 
     for rlabel_pos, rlabel_fn in rlabel_dict.items():
         for r, row in enumerate(data.values):
@@ -772,18 +776,15 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
         euler = Image.from_array(euler_array, xalign=xaligns, yalign=yaligns, bg=tbg)
         if group_bg_patterns:
             group_combos = [combo for row in group_array for combo in row]
-            group_patterns = { ImageColor.alpha_composite(*group_colors): group_patterns
+            group_patterns = { euler_bgs[groups]: group_patterns
                                for groups in group_combos if groups
                                for group_colors in [[RGBA(group_bg_col_fn(g)) for g in groups]]
                                for group_patterns in [ignoring_extra_args(group_bg_patterns)(groups, group_colors)] if group_patterns is not None }
-            # TODO: fix colors, which currently don't seem to match!
             euler = euler.replace_colors(group_patterns)
         chart = euler.place(chart)
-    if title is not None:
-        chart = Image.from_column((title, chart), bg=bg)
         
-    return chart
-
+    return Image.from_column([img for img in (title, chart) if img], bg=bg)
+        
 # Map charts
 
 def name_csv_path(map): return splitext(map)[0] + ".csv"

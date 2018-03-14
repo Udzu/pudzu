@@ -6,7 +6,7 @@ import abc as ABC
 
 from collections import namedtuple
 from enum import Enum
-from functools import partial
+from functools import partial, reduce
 from io import BytesIO
 from itertools import zip_longest, chain
 from numbers import Real, Integral
@@ -465,6 +465,7 @@ class GradientColormap(SequenceColormap):
     """A matplotlib colormap generated from a sequence of colors and optional spacing intervals."""
     
     def __init__(self, *colors, intervals=None, linear_conversion=True):
+        if len(colors) == 1: colors = colors * 2
         self.colors = tmap(RGBA, colors)
         gradients = [BlendColormap(ConstantColormap(c1), ConstantColormap(c2), linear_conversion=linear_conversion) 
                      for c1,c2 in zip(self.colors, self.colors[1:])]
@@ -1020,7 +1021,7 @@ class ImageShape(object):
         - invert (boolean): whether to invert the shape mask [False]
         """
         if isinstance(size, Integral): size = (size, size)
-        if bg is None and not isinstance(fg, Image.Image):
+        if bg is None and not isinstance(fg, Image.Image) and not callable(fg):
             bg = RGBA(fg)._replace(alpha=0)
         if cls.antialiasing:
             orig_size, size = size, [round(s * antialias) for s in size]
@@ -1029,9 +1030,12 @@ class ImageShape(object):
         if "_scale" in all_keyword_args(cls.mask): kwargs = merge_dicts({"_scale": antialias}, kwargs)
         mask = cls.mask(size, **kwargs)
         if invert: mask = mask.invert_mask()
-        base = Image.from_pattern(bg, mask.size) if isinstance(bg, Image.Image) else Image.new("RGBA", mask.size, bg)
-        fore = Image.from_pattern(fg, mask.size) if isinstance(fg, Image.Image) else  Image.new("RGBA", mask.size, fg)
-        img = base.overlay(fore, mask=mask)
+        if callable(fg):
+            img = mask.to_heatmap(fg)
+        else:
+            base = Image.from_pattern(bg, mask.size) if isinstance(bg, Image.Image) else Image.new("RGBA", mask.size, bg)
+            fore = Image.from_pattern(fg, mask.size) if isinstance(fg, Image.Image) else  Image.new("RGBA", mask.size, fg)
+            img = base.overlay(fore, mask=mask)
         if cls.antialiasing:
             img = img.resize(orig_size, resample=Image.LANCZOS if antialias > 1 else Image.NEAREST)
         return img
@@ -1129,25 +1133,31 @@ class Trapezoid(ImageShape):
 class Stripe(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
-    def mask(cls, size, p=0.5):
+    def mask(cls, size, intervals=2):
         """Tilable diagonal stripe mask occupying p of the tile."""
+        if isinstance(intervals, Integral): intervals = [1] * intervals
+        if len(intervals) == 1: return Rectangle.mask(size)
+        intervals = [x/sum(intervals) for x in intervals]
+        accumulated = list(itertools.accumulate(intervals))
         w, h = size
         x, y = w-1, h-1
-        topleft = np.fromfunction(lambda j,i: i*y + j*x < p*x*y, (h,w))
-        middle = np.fromfunction(lambda j,i: i*y + j*x >= x*y, (h,w))
-        bottomright = np.fromfunction(lambda j,i: i*y + j*x >= (1+p)*x*y, (h,w))
-        return Image.fromarray(255 * (topleft + (middle - bottomright)).view('uint8'))
-
+        horizontal_p = np.fromfunction(lambda j,i: np.mod(i/x + j/y, 1), (h,w))
+        condlist = [ horizontal_p <= p for p in accumulated ]
+        choices = [ np.full_like(horizontal_p, i) for i in range(len(accumulated)) ]
+        pattern = np.select(condlist, choices)
+        return Image.fromarray(np.round(255 * pattern / (len(accumulated)-1)).astype('uint8'))
+        
 class Checkers(ImageShape):
     __doc__ = ImageShape.__new__.__doc__
     @classmethod
-    def mask(cls, size, shape=2):
-        """Checker grid pattern."""
+    def mask(cls, size, shape=2, colors=2):
+        """Checker grid pattern. Shape can be an integer or a pair."""
+        if colors == 1: return Rectangle.mask(size)
         if isinstance(shape, Integral): shape=(shape,shape)
         m, n = shape
         w, h = size
-        pattern = np.fromfunction(lambda j,i: (i//(w/m) + j//(h/n)) % 2 == 0, (h,w))
-        return Image.fromarray(255 * (pattern).view('uint8'))
+        pattern = np.fromfunction(lambda j,i: ((i//(w/m) + j//(h/n)) % colors), (h,w))
+        return Image.fromarray(np.round(255 * pattern / (colors-1)).astype('uint8'))
     antialiasing = False
 
 class MaskUnion(ImageShape):

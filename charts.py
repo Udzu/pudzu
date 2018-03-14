@@ -776,6 +776,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                                for groups in group_combos if groups
                                for group_colors in [[RGBA(group_bg_col_fn(g)) for g in groups]]
                                for group_patterns in [ignoring_extra_args(group_bg_patterns)(groups, group_colors)] if group_patterns is not None }
+            # TODO: fix colors, which currently don't seem to match!
             euler = euler.replace_colors(group_patterns)
         chart = euler.place(chart)
     if title is not None:

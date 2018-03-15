@@ -21,7 +21,7 @@ requests = optional_import("requests")
 np = optional_import("numpy")
 ndimage = optional_import("scipy.ndimage")
 
-# Various pillow utilities, moslty monkey patched onto the Image, ImageDraw and ImageColor classes
+# Various pillow utilities, mostly monkey patched onto the Image, ImageDraw and ImageColor classes
 
 logger = logging.getLogger('pillar')
 logger.setLevel(logging.DEBUG)
@@ -696,6 +696,14 @@ class _Image(Image.Image):
         """Return an RGBA copy of the image (or leave unchanged if it already is)."""
         return self if self.mode == "RGBA" else self.convert("RGBA")
         
+    def to_palette(self, palette, dither=False):
+        """Return a P-mode copy of the image with a given palette."""
+        rgb_img = self.convert("RGB")
+        pal_img = Image.new("P", self.size, 0)
+        pal = list(generate_leafs(RGBA(col)[:3] for col in list(palette) + [palette[0]]*(256-len(palette))))
+        pal_img.putpalette(pal)
+        return rgb_img._new(rgb_img.im.convert("P", int(dither), pal_img.im))
+        
     def overlay(self, img, box=(0,0), mask=None, copy=False):
         """Paste an image using alpha compositing (unlike Image.paste)."""
         if img.mode.endswith('A'):
@@ -956,6 +964,7 @@ Image.from_markup_bounded = _Image.from_markup_bounded
 Image.EMPTY_IMAGE = Image.new("RGBA", (0,0))
 
 Image.Image.to_rgba = _Image.to_rgba
+Image.Image.to_palette = _Image.to_palette
 Image.Image.overlay = _Image.overlay
 Image.Image.place = _Image.place
 Image.Image.pad = _Image.pad

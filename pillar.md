@@ -34,7 +34,7 @@ Alignment(x=50%, y=50%)
 Alignment(x=0%, y=100%)
 ```
 
-**RGBA**: named tuple representing RGBA colors. Can be initialised by name, integer values, float values or hex strings.
+**RGBA**: named tuple representing RGBA colors. Can be initialised by name, integer values, float values, hex strings or keyword arguments.
 
 ```python
 >> RGBA("yellow")
@@ -53,6 +53,8 @@ RGBA(red=100, green=50, blue=50, alpha=5)
 RGBA(red=100, green=50, blue=50, alpha=255)
 >> RGBA(0.,0.5,0.5)
 RGBA(red=0, green=128, blue=128, alpha=255)
+>> RGBA(red=100, green=50, blue=50)
+RGBA(red=100, green=50, blue=50, alpha=255)
 >> RGBA(None)
 RGBA(red=0, green=0, blue=0, alpha=0)
 ```

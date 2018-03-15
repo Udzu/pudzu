@@ -284,7 +284,13 @@ ImageDraw.word_wrap = _ImageDraw.word_wrap
 
 class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
     """Named tuple representing RGBA colors. Can be initialised by name, integer values, float values or hex strings."""
-    def __new__(cls, *color):
+    def __new__(cls, *color, red=None, green=None, blue=None, alpha=None):
+        if any([red, green, blue, alpha]):
+            if color:
+               raise ValueError("Invalid RGBA parameters: specify either positional or keyword arguments, not both")
+            elif not all([red, green, blue]):
+               raise ValueError("Invalid RGBA parameters: missing R/G/B value")
+            color = [c for c in (red, green, blue, alpha) if c]
         rgba = color
         if len(rgba) == 1:
             if non_string_iterable(rgba[0]): rgba = rgba[0]

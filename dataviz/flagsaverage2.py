@@ -75,4 +75,4 @@ descriptions = [
     Image.from_markup("**Median flags** calculated by first converting to greyscale using BT.601 luma transform.", SUB_FONT)]
 img = Image.from_column([title, Image.from_column(descriptions, equal_heights=True, xalign=0), grid], padding=SIZE//4, bg="white")
 img.place(Image.from_text("/u/Udzu", font("arial", 40), fg="black", bg="white", padding=10).pad((2,2,0,0), "black"), align=1, padding=20, copy=False)
-img.convert("RGB").save("output/flagsaverage2.jpg")
+img.save("output/flagsaverage2.png")

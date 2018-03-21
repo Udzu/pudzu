@@ -23,3 +23,9 @@ def generate_photoset(path, size=(600,200), credit_fonts=partial(verdana, 16), c
             credit_img = Image.from_markup(credit, credit_fonts, credit_fg, credit_bg, padding=(3,1), beard_line=True)
             img = img.place(credit_img, align=(0,1)) if credit_overlay else img.pin(credit_img, (0,img.height), align=0, bg=credit_bg)
         img.convert("RGB").save("{}/{}. {}.jpg".format(dirname, i, d.label))
+
+def generate_temp(label, image, align=None, **kwargs):
+    dirname = "cache/temp/{}.csv".format(label)
+    df = pd.DataFrame([{"label": label, "image": image, "align": align}])
+    df.to_csv(dirname, index=False, encoding="utf-8")
+    generate_photoset(dirname, **kwargs)

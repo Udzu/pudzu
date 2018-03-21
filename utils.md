@@ -186,6 +186,13 @@ True
 (0, "bob", 2, 3)
 ```
 
+**transpose_2d**: returns a transposed list-of-lists copy of an iterable-of-iterables array.
+
+```python
+>> transpose_2d([[1,2],[3,4]])
+[[1, 3], [2, 4]]
+```
+
 **tmap**, **tfilter**, **treversed**: like map, filter, reversed, but return tuples.
 
 ```python
@@ -198,6 +205,8 @@ True
 ```python
 >> tmap_leafs(op.add, [[1,2],3], [[4,5],6])
 ((5, 7), 9)
+>> tmap_leafs(op.abs, [[1,0,-1],-2], base_factory=(list, set))
+[{0, 1}, 2]
 ```
 
 ### Generators

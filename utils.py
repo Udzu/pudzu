@@ -233,6 +233,10 @@ def update_sequence(s, n, x):
         return t[0:n] + (x,) + t[n+1:0 if n ==-1 else None]
     else:
         raise IndexError("sequence index out of range")
+        
+def transpose_2d(array):
+    """Transpose an array represented as an iterable of iterables."""
+    return list(map(list, zip_equal(*array)))
 
 def tmap(*args, **kwargs):
     """Like map, but returns a tuple."""
@@ -247,11 +251,13 @@ def treversed(*args, **kwargs):
     return tuple(reversed(*args, **kwargs))
     
 def tmap_leafs(func, *iterables, base_factory=tuple):
-    """Return a nested tuple (or other container) containing the result of applying a function to the leaves of iterables of the same shape."""
-    if all(non_string_iterable(i) for i in iterables):
-        return base_factory(tmap_leafs(func, *subelts, base_factory=base_factory) for subelts in zip_equal(*iterables))
-    else:
+    """Return a nested tuple (or other containers) containing the result of applying a function to the leaves of iterables of the same shape."""
+    if not all(non_string_iterable(i) for i in iterables):
         return func(*iterables)
+    elif non_string_sequence(base_factory):
+        return base_factory[0](tmap_leafs(func, *subelts, base_factory=base_factory[1:]) for subelts in zip_equal(*iterables))
+    else:
+        return base_factory(tmap_leafs(func, *subelts, base_factory=base_factory) for subelts in zip_equal(*iterables))
 
 # Generators
 

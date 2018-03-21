@@ -16,8 +16,8 @@ SUB_FONT = partial(calibri, SIZE*2//3)
 def flag_image(c):
     return Image.from_url_with_cache(flags['flag'][c]).convert("RGBA").remove_transparency("white").convert("RGB")
     
-def label_image(text):
-    return Image.from_text(text.upper().replace(" ","\n"), LABEL_FONT, "black", "white", align="right")
+def label_image(text, align="center"):
+    return Image.from_text(text.upper().replace(" ","\n"), LABEL_FONT, "black", "white", align=align)
 
 def mean_image(imgs, size):
     average = ImageColor.from_linear(sum(ImageColor.to_linear(np.array(img.resize(size))) for img in imgs) / len(imgs))
@@ -47,6 +47,12 @@ def median_image(imgs, size):
     median = np.median(a, axis=-1)
     return Image.fromarray(np.uint8(median), "L").to_rgba()
     
+def median_image_rgb(imgs, size):
+    imgs = [img.resize(size) for img in imgs]
+    arrays = [np.stack([np.array(img.getchannel(i)) for img in imgs], axis=-1) for i in range(3)]
+    medians = [Image.fromarray(np.uint8(np.median(a, axis=-1)), "L") for a in arrays]
+    return Image.merge("RGB", medians)
+    
 def average_flag(df, size, average):
     flags = [flag_image(i) for i in df.index]
     return average(flags, (size[0]-2,size[1]-2)).pad(1, "black")
@@ -59,7 +65,7 @@ def average_flags(label, average):
 array = [[None, label_image("world")] + [label_image(c) for c in continents],
          average_flags("mean", mean_image),
          average_flags("mode", mode_image),
-         average_flags("median", median_image)]
+         average_flags("median", median_image_rgb)]
 grid = Image.from_array(tmap(list, zip(*array)), bg="white", padding=SIZE // 5, xalign=(1,0.5,0.5,0.5,0.5))
          
 title = Image.from_column([
@@ -72,7 +78,12 @@ descriptions = [
     Image.from_row([
         Image.from_markup("**Modal flags** calculated by first quantizing to heraldic colors: ", SUB_FONT),
         Checkers((BOX_WIDTH*len(HeraldicPalette), BOX_WIDTH), GradientColormap(*HeraldicPalette), shape=(len(HeraldicPalette), 1), colors=len(HeraldicPalette)).add_grid((len(HeraldicPalette), 1))]),
-    Image.from_markup("**Median flags** calculated by first converting to greyscale using BT.601 luma transform.", SUB_FONT)]
+    Image.from_markup("**Median flags** calculated separately for each RGB channel.", SUB_FONT)]
 img = Image.from_column([title, Image.from_column(descriptions, equal_heights=True, xalign=0), grid], padding=SIZE//4, bg="white")
 img.place(Image.from_text("/u/Udzu", font("arial", 40), fg="black", bg="white", padding=10).pad((2,2,0,0), "black"), align=1, padding=20, copy=False)
 img.save("output/flagsaverage2.png")
+
+# Extras
+# array = [[None, label_image("world")] + [label_image(c, "right") for c in continents], average_flags("RGB median", median_image_rgb)]
+# grid = Image.from_array(tmap(list, zip(*array)), bg="white", padding=SIZE // 5, xalign=(1,0.5))
+

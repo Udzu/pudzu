@@ -52,7 +52,6 @@ def mode_weighted(imgs, size, weights):
     
 def average_weighted(df, size, average, weight_fn):
     flags = [flag_image(i) for i in df.index]
-    print(weight_fn)
     weights = [weight_fn(i) for i in df.index]
     return average(flags, (size[0]-2,size[1]-2), weights).pad(1, "black")
 
@@ -87,3 +86,19 @@ descriptions = [
 img = Image.from_column([title, Image.from_column(descriptions, equal_heights=True, xalign=0), grid], padding=SIZE//4, bg="white")
 img.place(Image.from_text("/u/Udzu", font("arial", 40), fg="black", bg="white", padding=10).pad((2,2,0,0), "black"), align=1, padding=20, copy=False)
 img.save("output/flagsaverage3.png")
+
+# Extras
+# countries = ["Mexico", "Germany", "New Zealand"]
+# array = ([[None] + [label_image(c) for c in countries]] +
+         # [[label_image(l)] + [average_weighted(flags.filter_rows(lambda d: d['continent'] == flags.continent[c]), (FLAG_WIDTH, FLAG_WIDTH*2//3), mean_weighted, lambda country: (i if c == country else 1) * by_population(country, flags.continent[c])) for c in countries] for l,i in [("without", 0), ("with", 1), ("boosted×5", 5)]])
+# grid = Image.from_array(tmap(list, zip(*array)), bg="white", padding=SIZE // 5, xalign=(1,0.5,0.5,0.5,0.5,0.5,0.5))
+
+# flags = pd.read_csv("../dataviz/datasets/usstates.csv").set_index('name')
+# df = pd.read_html("https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_area")[0]
+# df = df.rename(columns=df.iloc[1])[2:].fillna("0")
+# df.columns = range(len(df.columns))
+# df = df.set_index(0)
+# flags = flags.assign_rows(area=lambda d,c: df[2][c]).apply(pd.to_numeric, errors='ignore')
+# array = [[label_image(l) for l in ["mean", "(population weighted)", "(area weighted)", "mode", "(population weighted)", "(area weighted)"]],
+         # [average_weighted(flags, (FLAG_WIDTH, FLAG_WIDTH*2//3), average, weighting) for (average, weighting) in zip([mean_weighted]*3+[mode_weighted]*3, [by_country,by_population, by_area]*2)]]
+# grid = Image.from_array(array, bg="white", padding=SIZE // 5, xalign=0.5)

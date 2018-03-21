@@ -506,6 +506,18 @@ RGBA(red=187, green=188, blue=0, alpha=255)
 ```
 ![alt](images/addshadow.png)
 
+**Image.to_palette**: convert an image to "P" (palette) mode, using a given palette and optional dithering.
+
+```python
+>> pal = ["red", "green", "blue", "white", "black"]
+>> grad = Image.from_gradient(cmap2, (100,100))
+>> Image.from_row([grad, grad.to_palette(pal), grad.to_palette(pal, dither=True)]).add_grid((3,1)).show()
+```
+
+![alt](images/topalette.png)
+
+**Image.to_rgba**: convert an image to RGBA, or leave as is if it already is one.
+
 ### ImageShape
 
 An abstract base class for encapsulating simple geometric shape generation (mostly implemented with numpy). Shapes may be generated either as masks, by calling their `mask` method, or as images, by using their constructor. Note that the shape classes act as factories only: masks are returned as mode "L" images, shapes as mode "RGBA" images.

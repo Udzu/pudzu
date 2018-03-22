@@ -1,7 +1,7 @@
 # [markov.py](markov.py)
 
 ## Summary 
-Simple Markov Chain n-gram based generator, supporting arbitrary iterables. 
+Simple Markov Chain n-gram based generator, supporting arbitrary iterables. Slow.
 
 ## Dependencies
 None. 

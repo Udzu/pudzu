@@ -67,7 +67,7 @@ YMD(year=2017, month=2, day=1)
 736361
 ```
     
-Dates support basic day arithmetic:
+Dates support basic day arithmetic (but see DateDeltas for more complex transitions):
 
 ```python
 >> Date((2017,2,1)) + 100

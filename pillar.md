@@ -80,9 +80,22 @@ RGBA(red=0, green=0, blue=0, alpha=0)
 ('RED', 'GREEN', 'BLUE')
 ```
 
-**Colormaps**: various matplotlib-compatible colormap generators, e.g. for use with Image.from_gradient below. Requires numpy. Includes the following:
+**font**: shorthand function for generating a truetype font object defaulting to standard variant naming (e.g. arialbd or calibrib). Also, **arial**, **calibri** and **verdana** are predefined.
 
-*GradientColormap*: generate a colormap from a sequence of colors, and optionally the spacing intervals between them. Can also be used as a discrete cycling colormap.
+```python
+>> font("times", 24, italics=True)
+<PIL.ImageFont.FreeTypeFont at 0x48e9ad0>
+>> [_.font.family, _.font.style, _.size]
+['Times New Roman', 'Italic', 24]
+>> arial(24, bold=True)
+<PIL.ImageFont.FreeTypeFont at 0x4a335f0>
+```
+
+### Colormap generators
+
+These generate matplotlib-compatible colormaps, e.g. for use with Image.from_gradient below. Requires numpy.
+
+**GradientColormap**: generate a colormap from a sequence of colors, and optionally the spacing intervals between them. Can also be used as a discrete cycling colormap.
 
 ```python
 >> cmap1 = GradientColormap("black", (0,128,0,128), "#008000", intervals=(1,2))
@@ -101,7 +114,7 @@ RGBA(red=0, green=128, blue=0, alpha=255)
 
 ![alt](images/colormapgradient.png)
 
-*SequenceColormap*: generate a colormap from a sequence of other colormaps, with optional spacing:
+**SequenceColormap**: generate a colormap from a sequence of other colormaps, with optional spacing:
 
 ```python
 >> import seaborn as sns
@@ -113,7 +126,7 @@ RGBA(red=0, green=128, blue=0, alpha=255)
 
 ![alt](images/colormapcompound.png)
 
-*ConstantColormap*/*PaletteColormap*: generate a colormap from either one or a sequence of constant colors. The latter can also be used as a discrete cycling colormap.
+**ConstantColormap**/**PaletteColormap**: generate a colormap from either one or a sequence of constant colors. The latter can also be used as a discrete cycling colormap.
 
 ```python
 >> cmap3 = PaletteColormap("#008000", cmap2(0., bytes=True), cmap2(1., bytes=True), intervals=(3,1,3))
@@ -124,7 +137,7 @@ PaletteColormap(0%-43%=#008000ff, 43%-57%=#d43c69ff, 57%-100%=#4675caff)
 
 ![alt](images/colormapconstant.png)
 
-*BlendColormap*: generate a colormap blending between two other colormaps, with an optional blend function:
+**BlendColormap**: generate a colormap blending between two other colormaps, with an optional blend function:
 
 ```python
 >> cmapo12 = BlendColormap(ConstantColormap("orange"), cmap12)
@@ -133,7 +146,7 @@ PaletteColormap(0%-43%=#008000ff, 43%-57%=#d43c69ff, 57%-100%=#4675caff)
 
 ![alt](images/colorblend.png)
 
-*FunctionColormap*: generate a colormap from numpy-aware channel functions (or constants) mapping 0-1 to 0-1. Supports either RGBA or HSLA.
+**FunctionColormap**: generate a colormap from numpy-aware channel functions (or constants) mapping 0-1 to 0-1. Supports either RGBA or HSLA.
 
 ```python
 >> Image.from_gradient(FunctionColormap(lambda i:(np.sin(i*8*np.pi)+1)/2, identity, identity), (100,20)).show()
@@ -146,16 +159,6 @@ PaletteColormap(0%-43%=#008000ff, 43%-57%=#d43c69ff, 57%-100%=#4675caff)
 ```
 ![alt](images/colormapfunction2.png)
 
-**font**: shorthand function for generating a truetype font object defaulting to standard variant naming (e.g. arialbd or calibrib). Also, **arial**, **calibri** and **verdana** are predefined.
-
-```python
->> font("times", 24, italics=True)
-<PIL.ImageFont.FreeTypeFont at 0x48e9ad0>
->> [_.font.family, _.font.style, _.size]
-['Times New Roman', 'Italic', 24]
->> arial(24, bold=True)
-<PIL.ImageFont.FreeTypeFont at 0x4a335f0>
-```
 
 ### ImageColor
 

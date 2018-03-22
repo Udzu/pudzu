@@ -468,7 +468,7 @@ class CaseInsensitiveDict(abc.MutableMapping):
         return len(self._d)
         
     def __repr__(self):
-        return "CaseInsensitiveDict({{{}}}, base={})".format(", ".join("{!r}: {!r}".format(self._k[k], v) for (k, v) in self._d.items()), type(self._d).__name__)
+        return "CaseInsensitiveDict({{{}}}, base_type={})".format(", ".join("{!r}: {!r}".format(self._k[k], v) for (k, v) in self._d.items()), type(self._d).__name__)
         
     def copy(self):
         return CaseInsensitiveDict(self)

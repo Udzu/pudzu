@@ -42,19 +42,20 @@ ImportError: Missing module: module
 ```python
 >> d = CaseInsensitiveDict({'Bob': 4098, 'Hope': 4139})
 >> d
-CaseInsensitiveDict({'Hope': 4139, 'Bob': 4098}, base=dict)
+CaseInsensitiveDict({'Hope': 4139, 'Bob': 4098}, base_type=dict)
 >> d['BOB']
 4098
+>> del d['hope']
 >> d['bOb'] = 0
 >> d
-CaseInsensitiveDict({'Hope': 4139, 'bOb': 0}, base=dict)
+CaseInsensitiveDict({'bOb': 0}, base_type=dict)
 
 >> d = CaseInsensitiveDict(base_factory=OrderedDict)
 >> d['Bob'] = 1
 >> d['Hope'] = 2
 >> d['BOB'] = 3
 >> d
-CaseInsensitiveDict({'BOB': 3, 'Hope': 2}, base=OrderedDict)
+CaseInsensitiveDict({'BOB': 3, 'Hope': 2}, base_type=OrderedDict)
 
 >> d = CaseInsensitiveDict(base_factory=partial(defaultdict, lambda: 'Smith'))
 >> d['Bob']
@@ -62,7 +63,7 @@ CaseInsensitiveDict({'BOB': 3, 'Hope': 2}, base=OrderedDict)
 >> d['BOB']
 'Smith'
 >> d
-CaseInsensitiveDict({'Bob': 'Smith'}, base=defaultdict)
+CaseInsensitiveDict({'Bob': 'Smith'}, base_type=defaultdict)
 ```
     
 ### Decorators
@@ -205,6 +206,8 @@ True
 ```python
 >> tmap_leafs(op.add, [[1,2],3], [[4,5],6])
 ((5, 7), 9)
+>> tmap_leafs(op.add, [[1,2],3], [[4,5],6], base_factory=list)
+[[5, 7], 9]
 >> tmap_leafs(op.abs, [[1,0,-1],-2], base_factory=(list, set))
 [{0, 1}, 2]
 ```
@@ -309,7 +312,7 @@ True
 {2: 'on', 3: 'the', 5: 'plain'}
 ```
 
-**merge_dicts**: merge a collection of dicts using the merge function, which is a function on conflicting keys and values.
+**merge_dicts**: merge a collection of dicts. Support a custom merge function, which is a function on conflicting key and values.
 
 ```python
 >> merge_dicts({"a": 1, "b": 2}, {"a": 3, "c": 4}, {"c": 5})

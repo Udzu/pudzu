@@ -78,6 +78,12 @@ pd.DataFrame.groupby_rows = _groupby_rows
 pd.DataFrame.split_rows = _split_rows
 pd.DataFrame.split_columns = _split_columns
 
+def _reduce(groupby, fn):
+    """Reduce a groupby by applying a function to every column."""
+    return groupby.apply(lambda df: df.apply(fn))
+
+pd.core.groupby.DataFrameGroupBy.reduce = _reduce
+ 
 # standalone functions
 
 def prompt_for_value(default=np.nan, prompt=lambda r: r.to_dict()):

@@ -5,7 +5,7 @@ from pillar import *
 from charts import *
 from scipy import signal
 
-# slow gravity calculation that's fast enough because numpy
+# naive gravity calculation that's fast enough because numpy
 
 np.seterr(divide='ignore', invalid='ignore')
 
@@ -54,7 +54,6 @@ def minblend(shape, p=0.25, **kwargs):
         ignoring_extra_args(minmax)(ignoring_extra_args(gravity_magnitude)(shape, **kwargs), **kwargs), p=p)
 
 def linechart(data, width, height, color, cache="cache/gravity_plot.png"):
-    if height is None: height = width
     fig = plt.figure(figsize=(width/100,height/100), dpi=100)
     ax = fig.add_axes((0,0,1,1))
     ax.set_axis_off()
@@ -101,7 +100,7 @@ dot = Ellipse(5)
 
 circle = base.place(Ellipse(pwidth))
 circle_max = MaskIntersection(..., masks=(Ellipse(pwidth+2), Ellipse(pwidth-2, invert=True)), include_missing=True)
-circle_description = "With inverse force, gravity //outside// the circle behaves as if all the circle's mass were concentrated in the centre, while //inside// it decreases linearly (just like constant density spheres in the real world). With inverse-square force, the nearer parts of the shell apply more force than the further parts, resulting in greater attraction towards the surface."
+circle_description = "With inverse force, gravity outside the circle behaves as if all the circle's mass were concentrated in the centre, while inside it decreases linearly (just like constant density spheres in 3D). With inverse-square force, the nearer parts of the shell apply more force than the farther parts, resulting in greater attraction towards the surface."
 SHAPES["circle"] = ShapeOpts("circle", circle, dot, circle_max, description=circle_description)
 
 ellipse = base.place(Ellipse((pwidth, odd(pwidth / 2))))
@@ -110,26 +109,26 @@ SHAPES["ellipse"] = ShapeOpts("ellipse", ellipse, dot, scanlines="vh", descripti
 
 core = base.place(Ellipse(pwidth, (0,0,0,100))).place(Ellipse(ppwdith))
 core_max = MaskIntersection(..., masks=(Ellipse(ppwdith+2), Ellipse(ppwdith-2, invert=True)), include_missing=True)
-core_description = "A dense enough core (like the Earth's) can result in gravity increasing closer to the second. With inverse force this increase is linear."
+core_description = "A dense enough core (like the Earth's) can result in gravity increasing as you approach it. With inverse force this increase is linear."
 SHAPES["core"] = ShapeOpts("dense core", core, dot, core_max, description=core_description)
 
 hollow = base.place(MaskIntersection(..., masks=(Ellipse(pwidth), Ellipse(ppwdith, invert=True)), include_missing=True))
 hollow_min = MaskIntersection(..., masks=(Ellipse(round(pwidth*0.85)+2), Ellipse(round(pwidth*0.85)-2, invert=True)), include_missing=True).place(dot)
 hollow_min_linear = Ellipse(ppwdith)
-hollow_description = "With inverse force, a hollow shell applies //zero// net force to objects inside: an unintuitive result of the Shell Theorem. With inverse-square force the nearer part of the shell do attract more."
+hollow_description = "With inverse force, a hollow shell applies //zero// net force to objects inside: an unintuitive result of the Shell Theorem. With inverse-square force, the nearer parts of the shell do attract more."
 SHAPES["hollow"] = ShapeOpts("hollow shell", hollow, hollow_min, circle_max, hollow_min_linear, description=hollow_description)
 
 mountain = base.place(Ellipse(pwidth).pin(Triangle(odd(pwidth/3)), (pwidth//2+1, pwidth//20), align=(0.5,1)))
 mountain_min = dot.pad((0,odd(pwidth/4),0,0), 0)
 mountain_max = Rectangle((odd(pwidth*0.8),odd(pwidth*0.5)),(0,0,0,0)).pad((0,odd(pwidth/4),0,0), 0).pin(dot,(odd(pwidth*0.8),odd(pwidth/4))).pin(dot,(0,odd(pwidth/4)))
 mountain_max_linear = Rectangle((odd(pwidth*0.55),odd(pwidth*0.95)),(0,0,0,0)).pad((0,odd(pwidth/4),0,0), 0).pin(dot,(odd(pwidth*0.55),odd(pwidth*0.95+pwidth/4))).pin(dot,(0,odd(pwidth*0.95+pwidth/4)))
-mountain_description = "Not enough to offset shell effect."
+mountain_description = "Not enough to offset shell effect." # TODO
 SHAPES["mountain"] = ShapeOpts("mountain", mountain, mountain_min, mountain_max, ..., mountain_max_linear, scanlines="v", description=mountain_description)
 
 square = base.place(Rectangle(pwidth))
 offsets = Padding(0)
 square_max = Rectangle(pwidth,(0,0,0,0)).pin(dot,(pwidth//2+1,0),offsets=offsets).pin(dot,(pwidth//2+1,pwidth),offsets=offsets).pin(dot,(0,pwidth//2+1),offsets=offsets).pin(dot,(pwidth,pwidth//2+1),offsets=offsets)
-square_description = "Like four mountains"
+square_description = "Like four mountains" # TODO
 SHAPES["square"] = ShapeOpts("square", square, dot, square_max, scanlines="dh", description=square_description)
 
 two = Image.from_row([circle, circle])
@@ -146,6 +145,8 @@ SHAPES["reddit"] = ShapeOpts("snoo", reddit, scanlines="hv", description=reddit_
 
 # put it all together
 
+FONT = arial
+
 def plot_shape(shape): 
     mag = gravity_magnitude(shape.shape, linear=False)
     mag_linear = gravity_magnitude(shape.shape, linear=True)
@@ -159,29 +160,29 @@ def plot_shape(shape):
         [scanlines(mag, shape.scanlines).pad((0,PADDING),"white"),
          scanlines(mag_linear, shape.scanlines).pad((0,PADDING),"white")][::-1]
         ], padding=0, bg="white")
-    markup = Image.from_markup(shape.description, partial(arial, TEXT_SIZE), max_width=w*2, hyphenator=language_hyphenator())
+    markup = Image.from_markup(shape.description, partial(FONT, TEXT_SIZE), max_width=w*2, hyphenator=language_hyphenator())
     markup = Rectangle((w*2, markup.height), "white").place(markup, align=0)
     return Image.from_column([
-        Image.from_text(shape.name.upper(), arial(TITLE_SIZE, bold=True)),
+        Image.from_text(shape.name.upper(), FONT(TITLE_SIZE, bold=True)),
         grid,
         markup
         ], padding=0, bg="white")
-
-# rows = tmap_leafs(lambda shape: plot_shape(SHAPES[shape]), generate_batches(SHAPES, 6))
-# padded = tmap_leafs(lambda img: img.pad((5,0), "white") if img.width > base.width * 2 else img, rows)
-# chart = Image.from_column([Image.from_row(row, yalign=0, padding=5, bg="white") for row in padded], bg="white", xalign=0, padding=10)
-
-title = Image.from_text("Visualizing gravity in 2 Dimensions".upper(), arial(48, bold=True))
 
 def shape_box(alpha=0,min=None,max=None):
     return shapeplot(Rectangle(40,(0,0,0,alpha)), min=min and Rectangle(40,0).place(min), max=max and Rectangle(40,0).place(max))
 def line_box(color):return Rectangle(40, 0).place(Rectangle((40,3), color))
     
-introduction = generate_legend([], [], header="Some sort of blurb".upper(), footer="Some sort of explanation", border=False)
-shape_legend = generate_legend([shape_box(255), shape_box(100), shape_box(0), shape_box(min=dot), shape_box(max=dot)],["high density", "low density", "empty space", "minimum gravity", "maximum gravity"], header="SHAPES AND EXTREMA", border=False)
-heatmap_legend = generate_legend([Image.from_gradient(plt.get_cmap("hot"), (40, 180), direction=(0,-1)).add_grid((1,8))], [["max gravity", "50% gravity", "min gravity"]], header="GRAVITY HEATMAPS", border=False)
-graph_legend = generate_legend([line_box("#800000"), line_box("#008000"), line_box("#000080")], ["horizontal intersection", "vertical intersection", "diagonal intersection"], header="INTERSECTION PLOTS", border=False)
+introduction = generate_legend([], [], header="Why is there two of everything?".upper(), footer="There are two possible ways to extend gravity to two dimensions. The first keeps the inverse square law, which emulates a 3D mass squashed into the plane. The second uses instead an linear inverse law, which corresponds to the geometric dilution of point-source radiation in 2D. The first approach behaves more like gravity in 3D but is artificial; the second displays all the expected symmetries but looks different in terms of strength and orbits.", border=False, max_width=350, fonts=partial(FONT, 16))
+shape_legend = generate_legend([shape_box(255), shape_box(100), shape_box(0), shape_box(min=dot), shape_box(max=dot)],["high density solid", "low density solid", "empty space", "minimum gravity", "maximum gravity"], header="SHAPES AND EXTREMA", border=False, fonts=partial(FONT, 16))
+heatmap_legend = generate_legend([Image.from_gradient(plt.get_cmap("hot"), (40, 180), direction=(0,-1)).add_grid((1,8))], [["maximum gravity", "50% gravity", "minimum gravity"]], header="GRAVITY HEATMAPS", border=False, fonts=partial(FONT, 16))
+graph_legend = generate_legend([line_box("#800000"), line_box("#008000"), line_box("#000080")], ["horizontal intersection", "vertical intersection", "diagonal intersection"], header="INTERSECTION PLOTS", border=False, fonts=partial(FONT, 16))
 legend=Image.from_row([introduction, shape_legend, heatmap_legend, graph_legend], bg="white", padding=10, yalign=0).pad(2, "black")
+
+rows = tmap_leafs(lambda shape: plot_shape(SHAPES[shape]), generate_batches(SHAPES, 6))
+padded = tmap_leafs(lambda img: img.pad((5,0), "white") if img.width > base.width * 2 else img, rows)
+chart = Image.from_column([Image.from_row(row, yalign=0, padding=5, bg="white") for row in padded], bg="white", xalign=0, padding=10)
+title = Image.from_text("Visualizing gravity in 2 Dimensions".upper(), FONT(48, bold=True))
+img = Image.from_column([title, legend, chart], bg="white", padding=10)
 
 # https://physics.stackexchange.com/questions/30652/what-is-the-2d-gravity-potential
 

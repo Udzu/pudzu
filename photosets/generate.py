@@ -3,7 +3,9 @@ sys.path.append('..')
 from pillar import *
 from bamboo import *
 
-def generate_photo(filepath, url, align=None, size=(600,200), crop=True, credit_fonts=partial(verdana, 16), credit_bg="black", credit_fg="white", credit_overlay=True):
+CREDIT_FONTS = partial(verdana, 16)
+
+def generate_photo(filepath, url, align=None, size=(600,200), crop=True, credit_fonts=None, credit_bg="black", credit_fg="white", credit_overlay=True):
     urls = url.split('|')
     if align is None: align = '|' * url.count('|')
     aligns = [float(a) if a else (0.5, 0.25) for a in str(align).split('|')]

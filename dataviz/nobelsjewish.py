@@ -38,7 +38,7 @@ def rlabelfn(r, df):
     return img.pad_to_aspect(150,20, bg=[BARBG, None][r % 2 != 0], align=1)
 
 def pclabelfn(r, df):
-    imgs = [Image.from_text("N/A" if "Other" in df.index[r] else format_float(dem[c][df.index[r]], 2)+"%", FONT(16), "black", beard_line=True) for c in ["2016", "1933"]]
+    imgs = [Image.from_text("N/A" if "Other" in df.index[r] else "<0.01%" if dem[c][df.index[r]] == 0 else format_float(dem[c][df.index[r]], 2)+"%", FONT(16), "black", beard_line=True) for c in ["2016", "1933"]]
     imgs = [Rectangle((80,20), [BARBG, None][r % 2 != 0]).place(img) for img in imgs]
     return Image.from_row(imgs)
     
@@ -50,20 +50,20 @@ def pclabelhead():
 chart1 = bar_chart(table, 20, 700, type=BarChartType.STACKED, spacing=2, colors=colorfn,
                   horizontal=True, label_font=FONT(16), clabels=None, rlabels=partial(rlabelfn, df=dj),
                   ymax=400, grid_interval=50,
-                  xlabel=Image.from_markup("country (//*Other includes all countries with fewer than 5 winners//)", partial(FONT, 16), "black", padding=10).transpose(Image.ROTATE_90),
-                  ylabel=Image.from_text("by number of Nobel laureates", FONT(16), "black", padding=10))
+                  xlabel=Image.from_markup("by country (//*Other includes all countries with fewer than 5 winners//)", partial(FONT, 16), "black", padding=10).transpose(Image.ROTATE_90),
+                  ylabel=Image.from_text("by total number of Nobel laureates", FONT(16), "black", padding=10))
 
 legend = generate_legend([colorfn(i,0,0) for i in range(3)], ["Jewish", "Half-Jewish", "Not Jewish"], fonts=partial(FONT, 16), header="Background", box_sizes=30)
 chart1 = chart1.place(legend, align=1, padding=(20,10))
                   
 do = dj.loc["Other*"]
-dp = dj.drop("Other*").sort_values("pc", ascending=False)
+dp = dj.drop("Other*").sort_values(["pc", "total"], ascending=False)
 dp.loc["Other*"] = do
 table = dp[["jewish", "half", "gentile"]]
 chart2 = bar_chart(table, 20, 400, type=BarChartType.STACKED_PERCENTAGE, spacing=2, colors=colorfn,
-                   horizontal=True, label_font=FONT(16), ylabel=Image.from_text("by proportion who are Jewish", FONT(16), "black", padding=10),
+                   horizontal=True, label_font=FONT(16), ylabel=Image.from_text("by proportion of winners who are Jewish", FONT(16), "black", padding=10),
                    rlabels={BarChartLabelPosition.BELOW: partial(rlabelfn, df=dp), BarChartLabelPosition.ABOVE: partial(pclabelfn, df=dp)},
-                   clabels=lambda c,r,v: [None,"{:.0%}".format(v)][c<=1 and v > 0.04], grid_interval=0.25)
+                   clabels=lambda c,r,v: [None,"{:.0%}".format(v)][c<=1 and v >= 0.05], grid_interval=0.25)
 chart2 = chart2.place(pclabelhead(), align=(1,0), padding=(0,30))
 chart2 = chart2.place(Image.from_text("Jewish population", FONT(16, bold=True), "black"), align=(1,0), padding=(20,10))
                    
@@ -71,6 +71,8 @@ combined = Image.from_row([chart1, chart2], bg="white", yalign=1)
 
 title = Image.from_text("Jewish Nobel laureates by country".upper(), FONT(60, bold=True))
 img = Image.from_column([title, combined], padding=5, bg="white")
+img = img.pin(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg=None, padding=5).pad((1,1,0,0), "black"), img.size, align=(1,0), bg="white")
+img.save("output/nobelsjewish.png")
 
 # wikipedia, cleaned up (link)
 # jinfo

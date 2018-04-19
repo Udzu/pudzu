@@ -25,17 +25,17 @@ def counts(a, b):
             len([x for x in df.phonemes if a not in x and b in x]),
             len([x for x in df.phonemes if a in x and b in x])]
             
-def chartfn(pal, descriptions):
-    title = Image.from_text("[{}] and [{}]".format(pal[0][0], pal[1][0]), FONT(60, bold=True), "black", padding=10)
+def chartfn(pal, descriptions, subtitle):
+    title = Image.from_text(subtitle, FONT(60, bold=True), "black", padding=10)
     chart = map_chart("maps/Eurolang.png", partial(colorfn, mapping=dict(pal)))
     legend = generate_legend(tmap(boxfn, ["grey", pal[0][1], pal[1][1], combo(pal[0][1], pal[1][1])],
                                          counts(pal[0][0], pal[1][0])), descriptions, header="Distribution", fonts=partial(FONT, 32))
     chart = chart.place(legend, align=(1,0), padding=10)
     return Image.from_column([chart, title], bg="white")
 
-map1 = chartfn([("h", VegaPalette10.BLUE), ("x", VegaPalette10.RED)], ["Neither!", "[h] or [ɦ] as in //hurrah//!", "[x] as in //och//!", "Both!"])
-map2 = chartfn([("θ", VegaPalette10.LIGHTGREEN), ("ð", VegaPalette10.GREEN)], ["Neiver of 'em", "[θ] as in //think//", "[ð] as in //this//", "Both of them"])
-map3 = chartfn([("ř", VegaPalette10.PINK), ("ɧ", VegaPalette10.ORANGE)], ["No thank you!", "[ř] as in //příklad//", "[ɧ] as in //sju//", "You're kidding, right?"])
+map1 = chartfn([("h", VegaPalette10.BLUE), ("x", VegaPalette10.RED)], ["Neither!", "[h] or [ɦ] as in //hurrah//!", "[x] as in //och//!", "Both!"], "h [h] or ch [x]")
+map2 = chartfn([("θ", VegaPalette10.LIGHTGREEN), ("ð", VegaPalette10.GREEN)], ["Neiver of 'em", "[θ] as in //think//", "[ð] as in //this//", "Both of them"], "th [θ] or th [ð]")
+map3 = chartfn([("ř", VegaPalette10.PINK), ("ɧ", VegaPalette10.ORANGE)], ["No thank you!", "[r̝] as in //příklad//", "[ɧ] as in //sju//", "You're kidding, right?"], "ř [r̝] or sj [ɧ]")
 chart = Image.from_row([map1, map2, map3])
 
 title = Image.from_text("Distribution of selected consonants in European languages".upper(), FONT(96, bold=True))

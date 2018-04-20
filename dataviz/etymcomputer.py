@@ -15,11 +15,12 @@ DESCRIPTIONS = [
    //originally referred to a person who carried out calculations//""",
 """from another word referring to **calculation** or **counting**:
 – Czech/Slovak: from //počítat// (“count”)
-– Icelandic/Faroese: from //tal// (“number”)
 – Serbian/Croatian/Slovene: from //račun// (“calculation“) < Latin //ratiō//
 – Estonian: from //arvutama// (“calculate”)
+– Faroese: from //tal// (“number”)
 – Greek: from //υπολογίζω// (“calculate”)
-– Hungarian: from //számít// (“count”)
+– Hungarian: from //számít// (“calculate”)
+– Icelandic: from //tala// (“number”) + //völva// (“prophetess”)
 – Irish: from //ríomh// (“enumeration”)
 – Romanian: from //calculer// (“calculate”)
 – Welsh: from //cyfrif// (“count”)""",
@@ -49,7 +50,7 @@ def labelfn(c, w, h):
     
 map = map_chart("maps/Eurolang.png", colorfn, labelfn)
 legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, box_sizes=(40,...), header="ETYMOLOGIES", footer=FOOTER, fonts=partial(FONT, 16))
-chart = map.pin(legend, (map.width+2, 0), align=(0,0), bg="white")
+chart = Image.from_row([legend, map], bg="white", yalign=0.1)
 
 title = Image.from_column([
 Image.from_text("COMPUTER IN DIFFERENT LANGUAGES", FONT(48, bold=True)),

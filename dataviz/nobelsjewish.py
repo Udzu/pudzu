@@ -7,7 +7,7 @@ from fractions import Fraction
 
 # data
 df = pd.read_csv("datasets/nobels.csv").split_columns('countries', '|').split_rows('countries').update_columns(jewish=Fraction)
-countries = sorted(c for c in set(df.countries) if len(df[df.countries == c]) >= 4)
+countries = sorted(c for c in set(df.countries) if len(df[df.countries == c]) >= 5)
 dj = pd.DataFrame([{ 'total': len(dc), 'jewish': len(dc[dc.jewish == 1]), 'half': len(dc[(dc.jewish < 1) & (dc.jewish >= 0.5)]) } for c in countries for dc in [df[df.countries == c]]], index=countries)
 do = df.filter_rows(lambda d: d['countries'] not in countries).groupby("name").head()
 dj = dj.sort_values("total", ascending=False)

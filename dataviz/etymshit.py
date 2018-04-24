@@ -3,6 +3,8 @@ sys.path.append('..')
 from charts import *
 from bamboo import *
 import seaborn as sns
+from bidi.algorithm import get_display
+from arabic_reshaper import reshape
 
 # generate map
 df = pd.read_csv("datasets/etymshit.csv").split_columns("group", "|").set_index("language")
@@ -16,9 +18,9 @@ CATEGORIES = [
 ("lajьno", 'from Proto-Slavic *lajьno ("flax?")'),
 ("paska", 'from Proto-Finno-Ugric *pućka ("excrement?")'),
 ("suds", 'from Proto-Baltic ??'),
+("bok", 'from Proto-Turkic *bok ("dirt, dung")'),
+("hara", 'from Arabic ḵarāʾ ("defecate")'),
 ("other", "\n".join([
-'bok: from Proto-Turkic *bok ("dirt, dung")',
-'ħara: from Arabic ḵarāʾ ("defecate")',
 'lort: from Proto-Germanic *lurtaz ("crooked")',
 'mut: from Proto-Indo-European *meu ("moist")',
 'rahat: from Turkish rahat ("comfortable")',
@@ -26,12 +28,14 @@ CATEGORIES = [
 'szar: from Proto-Finno-Urgic *śarɜ ("to dry?")',
 'stront: from Proto-Indo-European *(s)terǵ- ("stiff")',
 'tifa: from Latin pasta ("paste") via pastifarada?'
+# TODO: mʒɣneri, goh
 ]))
 ]
 
 GROUPS = [n for n,_ in CATEGORIES]
-COLORS = tmap(RGBA, sns.color_palette("Set2", len(CATEGORIES)))
+COLORS = list(tmap(RGBA, sns.color_palette("Set2", len(CATEGORIES))))
 COLORS[-1], COLORS[7] = COLORS[7], COLORS[-1] # make grey last
+COLORS[8:-1] = tmap(lambda c: c.darken(0.5), COLORS[8:-1])
 
 def catcol(cat):
     return COLORS[-1] if cat not in GROUPS else COLORS[GROUPS.index(cat)]
@@ -49,10 +53,10 @@ def colorfn(c):
 def labelfn(c, w, h):
     if c not in df.index: return None
     fg = "white" if c in ["Lithuanian", "Latvian"] else "black"
-    label = df.word[c].replace("\\n", "\n")
-    return Image.from_text_bounded(label, (w, h), 24, papply(arial, bold=True), fg=fg, align="center", padding=(0,0,0,3))
+    label = get_display(reshape(df.word[c].replace("\\n", "\n")))
+    return Image.from_text_bounded(label, (w, h), 24, papply(font, "fonts/arialu", bold=True), fg=fg, align="center", padding=(0,0,0,3))
     
-map = map_chart("maps/Eurolang.png", colorfn, labelfn)
+map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
 
 # legend
 

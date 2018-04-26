@@ -203,6 +203,10 @@ def make_sequence(v):
     """Return a sequence from an object, wrapping it in a tuple if needed."""
     return v if non_string_sequence(v) else () if v is None else (v,)
     
+def unmake_sequence(v):
+    """Return the first element of a sequence of length 1, otherwise leave unchanged."""
+    return v[0] if non_string_sequence(v) and len(v) == 1 else v
+        
 def remove_duplicates(seq, key=lambda v:v, keep_last=False):
     """Return an order preserving tuple copy containing items from an iterable, deduplicated
     based on the given key function."""

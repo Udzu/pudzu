@@ -1,4 +1,4 @@
-color,name
+color,name,label_align
 255|255|255|255,Borders
 255|204|204|255,California
 204|153|153|255,Oregon
@@ -41,13 +41,13 @@ color,name
 204|153|0|255,West Virginia
 255|204|0|255,Pennsylvania
 204|204|153|255,New York
-204|255|0|255,Maryland
-153|0|102|255,District of Columbia
-51|153|153|255,Delaware
-153|204|0|255,New Jersey
-153|153|102|255,Vermont
-204|204|102|255,Massachusetts
-153|153|51|255,Connecticut
-255|255|153|255,New Hampshire
+204|255|0|255,Maryland,0
+153|0|102|255,District of Columbia,0
+51|153|153|255,Delaware,0
+153|204|0|255,New Jersey,0
+153|153|102|255,Vermont,1
+204|204|102|255,Massachusetts,1
+153|153|51|255,Connecticut,0
+255|255|153|255,New Hampshire,1
 102|102|51|255,Maine
-102|153|0|255,Rhode Island
+102|153|0|255,Rhode Island,0

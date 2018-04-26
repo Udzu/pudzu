@@ -14,7 +14,7 @@ Macedonian,компјутер,c
 Maltese,kompjuter,c
 Polish,komputer,c
 Portuguese,computador,c
-Russian,компьютер,c
+Russian,компьютер    ,c
 Scottish,coimpiutair,c
 Ukrainian,комп'ютер,c
 
@@ -46,3 +46,10 @@ Swedish,dator,data
 Serbo-Croatian,рачунар\nračunalo,calculate
 Slovene,računalnik,calculate
 
+Arabic,حاسوب\n(ḥāsūb),calculate
+Azeri,kompüter,c
+Armenian,համակարգիչ\n(hamakargičʿ),organise
+Georgian,კომპიუტერი\n(ḳomṗiuṭeri),c
+Hebrew,מחשב\n(makhshev),calculate
+Kazakh,компьютер\n(kompʹywter),c
+Persian,کامپیوتر\n(kâmpyuter),c

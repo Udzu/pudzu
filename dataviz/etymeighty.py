@@ -6,6 +6,8 @@ from PIL import ImageEnhance
 
 df = pd.read_csv("datasets/etymeighty.csv").set_index("language")
 FONT = arial
+UFONT = partial(font, "fonts/arialu")
+LFONT = lambda l: FONT if l not in ["Georgian", "Armenian", "Arabic", "Hebrew", "Persian"] else UFONT
 
 PALETTE = [PairedClass12.RED, PairedClass12.PINK, PairedClass12.BLUE, PairedClass12.LIGHTBLUE, PairedClass12.GREEN ]
 CATEGORIES = ["8", "e", "4"]
@@ -23,9 +25,10 @@ DESCRIPTIONS = [
 – English was previously //hundeahtatig// ("decade-eight-tens")
 – some Swiss French dialects use //huitante//""",
 """from **eight** only:
-– Maltese: plural of //tmienja// < Proto-Semitic //*ṯamāniy// """,
+– from Proto-Semitic //*ṯamāniy//""",
 """a combination of **four** and **twenty**
 – from Proto-Celtic: //*kʷetwares// + //*wikantī//
+– from Proto-Kartvelian: //*otxo// + //*oci//
 – Danish is a clipping of //firsindstyve// ("four-times-twenty")
 – Irish scór is borrowed from English.
 – French use of vigesimal is derived from Gaulish
@@ -45,11 +48,11 @@ def colorfn(c):
 def labelfn(c, w, h):
     if c not in df.index: return None
     label = df.word[c].replace("\\n", "\n")
-    return Image.from_text_bounded(label, (w, h), 24, papply(FONT, bold=True), align="center", padding=(0,0,0,2))
+    return Image.from_text_bounded(label, (w, h), 24, papply(LFONT(c), bold=True), align="center", padding=(0,0,0,2))
     
-map = map_chart("maps/Eurolang.png", colorfn, labelfn)
-legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, box_sizes=(40,...), header="ETYMOLOGIES", footer=FOOTER, fonts=partial(FONT, 16))
-chart = Image.from_row([legend, map], bg="white", yalign=0.1)
+map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
+legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, box_sizes=(40,...), footer=FOOTER, fonts=partial(FONT, 16))
+chart = map.place(legend, align=(1,0))
 
 title = Image.from_column([
 Image.from_text("EIGHTY IN DIFFERENT EUROPEAN LANGUAGES", FONT(48, bold=True)),

@@ -7,9 +7,9 @@ import seaborn as sns
 # generate map
 df = pd.read_csv("datasets/etymeaster.csv").split_columns("group", "|").set_index("language")
 
-CATEGORIES = ["pesach", "great", "easter", "meat", "free", "resurrection"]
+CATEGORIES = ["pesach", "great", "easter", "meat", "free", "resurrection", "sacrifice"]
 PALETTE = tmap(RGBA, sns.color_palette())
-PALETTE = PALETTE[:3] + PALETTE[4:] + PALETTE[3:4]
+PALETTE = PALETTE[:3] + PALETTE[4:7] + PALETTE[9:]
 
 def catcol(cat):
     return PALETTE[CATEGORIES.index(cat)]
@@ -27,9 +27,9 @@ def colorfn(c):
 def labelfn(c, w, h):
     if c not in df.index: return None
     label = df.word[c].replace("\\n", "\n")
-    return Image.from_text_bounded(label, (w, h), 24, papply(arial, bold=True), align="center", padding=(0,0,0,2))
+    return Image.from_text_bounded(label, (w, h), 24, papply(font, "fonts/arialu", bold=True), align="center", padding=(0,0,0,2))
     
-map = map_chart("maps/Eurolang.png", colorfn, labelfn)
+map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
 
 # legend
 
@@ -43,7 +43,8 @@ boxes = Image.from_array([
 [box(PALETTE[2]), boxtext("from the Germanic goddess Ēostre and her pagan festival.")],
 [box(PALETTE[3]), boxtext("from the phrase 'taking meat', referring to the end of Lent.")],
 [box(PALETTE[4]), boxtext("from the word for 'free', referring to the end of Lent.")],
-[box(PALETTE[5]), boxtext("from the word for 'resurrection'.")]
+[box(PALETTE[5]), boxtext("from the word for 'resurrection'.")],
+[box(PALETTE[6]), boxtext("from the word for 'sacrifice'.")]
 ], bg="white", xalign=0)
 
 section = Image.from_column([sectiontext("Name origin"), boxes], bg="white", xalign=0, padding=(0,5))

@@ -3,8 +3,6 @@ sys.path.append('..')
 from charts import *
 from bamboo import *
 import seaborn as sns
-from bidi.algorithm import get_display
-from arabic_reshaper import reshape
 
 # generate map
 df = pd.read_csv("datasets/etymshit.csv").split_columns("group", "|").set_index("language")
@@ -27,8 +25,9 @@ CATEGORIES = [
 'srati: from Proto-Slavic sьrati ("dung")',
 'szar: from Proto-Finno-Urgic *śarɜ ("to dry?")',
 'stront: from Proto-Indo-European *(s)terǵ- ("stiff")',
-'tifa: from Latin pasta ("paste") via pastifarada?'
-# TODO: mʒɣneri, goh
+'tifa: from Latin pasta ("paste") via pastifarada?',
+'მძღნერი: ???',
+'goh: ???'
 ]))
 ]
 
@@ -53,7 +52,7 @@ def colorfn(c):
 def labelfn(c, w, h):
     if c not in df.index: return None
     fg = "white" if c in ["Lithuanian", "Latvian"] else "black"
-    label = get_display(reshape(df.word[c].replace("\\n", "\n")))
+    label = df.word[c].replace("\\n", "\n")
     return Image.from_text_bounded(label, (w, h), 24, papply(font, "fonts/arialu", bold=True), fg=fg, align="center", padding=(0,0,0,3))
     
 map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
@@ -61,10 +60,10 @@ map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
 # legend
 
 def box(c, shape=(25,25)): return Image.new("RGBA", shape, c)
-def boxtext(s): return Image.from_text(s, arial(14), padding=(10,0,0,3), align="left")
+def boxtext(s): return Image.from_text(s, font("fonts/arialu", 14), padding=(10,0,0,3), align="left")
 def sectiontext(s): return Image.from_text(s, arial(16, bold=True))
 
-section = Image.from_array([[box(COLORS[i],(25,25 if i+1<len(CATEGORIES) else 120)), boxtext(s)] for i,(_,s) in enumerate(CATEGORIES)], bg="white", xalign=0)
+section = Image.from_array([[box(COLORS[i],(25,25 if i+1<len(CATEGORIES) else 145)), boxtext(s)] for i,(_,s) in enumerate(CATEGORIES)], bg="white", xalign=0)
 legend = Image.from_column([section], bg="white", xalign=0, padding=10).pad(1, "black")
 chart = map.place(legend, align=(1,0), padding=10)
 

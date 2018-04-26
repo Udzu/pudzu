@@ -2,8 +2,6 @@ import sys
 sys.path.append('..')
 from charts import *
 from bamboo import *
-from bidi.algorithm import get_display
-from arabic_reshaper import reshape
 
 df = pd.read_csv("datasets/etymsunday.csv").set_index("language")
 FONT = calibri
@@ -18,7 +16,7 @@ DESCRIPTIONS = [
 "**no work day**: from Proto-Slavic //*nedělja//, cognate with no+do",
 "**market day**: from Persian //bâzâr// via Turkish",
 "**other religious terms**: holy day (//Estonian, Latvian//), ascension day (//Basque//), resurrection (//Russian//)",
-"**numbered terms**: first day (//Maltese, Arabic, Persian, Kazakh//), seventh day (//Lithuanian//)"
+"**numbered terms**: first day (//Maltese, Arabic//), first-after-Saturday (//Persian, Kazakh//), seventh day (//Lithuanian//)"
 ]
 PALETTE = VegaPalette10
 FOOTER = None
@@ -31,7 +29,7 @@ def colorfn(c):
     
 def labelfn(c, w, h):
     if c not in df.index: return None
-    label = get_display(reshape(df.word[c].replace("\\n", "\n")))
+    label = df.word[c].replace("\\n", "\n")
     return Image.from_text_bounded(label, (w, h), 24, papply(LFONT(c), bold=True), align="center", padding=(0,0,0,2))
     
 map = map_chart("maps/Eurolang2.png", colorfn, labelfn)

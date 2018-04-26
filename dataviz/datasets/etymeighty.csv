@@ -30,7 +30,7 @@ Norwegian,åtti,8
 Polish,osiemdziesiąt,8
 Portuguese,oitenta,8
 Romanian,optzeci,8
-Russian,восемьдесят,8
+Russian,\n\nвосемьдесят,8
 Scottish,ochdad\nceithir fichead,84
 Serbo-Croatian,осамдесет\nosamdeset,8
 Slovak,osemdesiat,8
@@ -40,3 +40,11 @@ Swedish,åttio,8
 Turkish,seksen,8
 Ukrainian,вісімдесят,8
 Welsh,wyth deg/\npedwar ugain,84
+
+Georgian,ოთხმოცი\n(otxmoci),4
+Azeri,səksən,8
+Armenian,ութսուն\n(utʿsun),8
+Arabic,ثمانون\n(ṯamānūna),e
+Hebrew,שמונים\n(shmonim),e
+Persian,هشتاد\n(haštâd),8
+Kazakh,сексен\n(seksen),8

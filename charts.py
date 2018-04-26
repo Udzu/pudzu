@@ -805,7 +805,7 @@ class ImageMapSort(Enum):
 def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite=False):
     """Generate a name csv skeleton, for use in map_chart."""
     if not overwrite and os.path.exists(name_csv_path(map)):
-        raise Exception("Imagemap csv file already exists.")
+        raise Exception("Name csv file already exists.")
     logger.info("Generating name CSV file at {}".format(name_csv_path(map)))
     img = Image.open(map)
     if sort == ImageMapSort.USAGE:
@@ -819,7 +819,7 @@ def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite
                 coldict[tuple(pixel)] = True
         cols = list(coldict)
     cols = list(presorted) + [c for c in cols if c not in presorted]
-    rs = [{ 'color': "|".join(str(x) for x in c), 'name': "color{}".format(i) } for i,c in enumerate(cols)]
+    rs = [{ 'color': "|".join(str(x) for x in c), 'name': "color{}".format(i), 'label_align': "" } for i,c in enumerate(cols)]
     pd.DataFrame(rs).to_csv(name_csv_path(map), index=False, encoding="utf-8")
 
 def generate_bbox_csv(map, labels=True):
@@ -871,6 +871,7 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
         df = load_name_csv(map)
         logger.info("Using color name file {}".format(name_csv_path(map)))
         namemap = { tuple(d['color']) : d['name'] for _,d in df.iterrows() }
+        labelaligns = { tuple(d['color'])[:3] : unmake_sequence(tmap(float, str(get_non(d, 'label_align', "0.5")).split("|"))) for _,d in df.iterrows() }
     except FileNotFoundError:
         logger.warning("No color name file found at {}".format(name_csv_path(map)))
         namemap = {}
@@ -918,6 +919,7 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
                 logger.warning("{}x{} label for {} too small to fit {}x{} bounding box".format(label.width, label.height, name, labelboxes[c].width, labelboxes[c].height))
             else:
                 labelled.add(c)
+                label = Rectangle(labelboxes[c].size, None).place(label, align=labelaligns[c])
                 img = img.pin(label, labelboxes[c].center)
                 
     # add overlay

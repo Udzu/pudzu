@@ -3,6 +3,7 @@ import os
 import os.path
 import logging
 import abc as ABC
+import numpy as np
 
 from collections import namedtuple
 from enum import Enum
@@ -18,8 +19,9 @@ from utils import *
 
 pyphen = optional_import("pyphen")
 requests = optional_import("requests")
-np = optional_import("numpy")
 ndimage = optional_import("scipy.ndimage")
+bidi_layout = optional_import_from("bidi.algorithm", "get_display", identity)
+arabic_reshape = optional_import_from("arabic_reshaper", "reshape", identity)
 
 # Various pillow utilities, mostly monkey patched onto the Image, ImageDraw and ImageColor classes
 
@@ -153,8 +155,15 @@ class BoundingBox():
     @property
     def size(self): return (self.width, self.height)
     @property
-    def center(self): return ((self.l + self.r + 1) // 2, (self.u + self.d + 1) // 2)
+    def center(self): return self.point(0.5)
             
+    def point(self, align):
+        """Return the point at a specific alignment."""
+        align = Alignment(align)
+        x = ceil(self.l + align.x * (self.r - self.l))
+        y = ceil(self.u + align.y * (self.d - self.u))
+        return (x, y)
+
     def pad(self, padding):
         """Return a padded bounding box."""
         padding = Padding(padding)
@@ -512,10 +521,12 @@ class _Image(Image.Image):
 
     @classmethod
     def from_text(cls, text, font, fg="black", bg=None, padding=0, line_spacing=0, beard_line=False, align="left",
-                  max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None):
+                  max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None, bidi_reshape=True):
         """Create image from text. If max_width is set, uses the tokenizer and optional hyphenator
         to split text across multiple lines."""
         padding = Padding(padding)
+        if bidi_reshape:
+            text = bidi_layout(arabic_reshape(text))
         if bg is None:
             bg = RGBA(fg)._replace(alpha=0)
         if max_width is not None:

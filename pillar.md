@@ -4,11 +4,9 @@
 Various Pillow utilities. These are monkey-patched on, allowing continued use of the Image.new factory function. Most have only been tested in RGB/RGBA modes and may not work in other modes. For full features and parameters, see docstrings.
  
 ## Dependencies
-*Required*: [pillow](http://pillow.readthedocs.io/en/4.2.x/index.html), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
+*Required*: [pillow](http://pillow.readthedocs.io/en/4.2.x/index.html), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [numpy](http://www.numpy.org/), [utils](utils.md).
 
-*Recommended*: [numpy](http://www.numpy.org/) (various color and shape features).
-
-*Optional*: [pyphen](http://pyphen.org/) (for text hyphenation), [requests](http://docs.python-requests.org/en/master/) (for HTTP request headers).
+*Optional*: [pyphen](http://pyphen.org/) (for text hyphenation), [requests](http://docs.python-requests.org/en/master/) (for HTTP request headers), [scipy](http://www.scipy.org/) (for Mask borders), [python-bidi](https://pypi.org/project/python-bidi/) (for bidirectional text rendering), [arabic-reshaper](https://github.com/mpcabd/python-arabic-reshaper) (for Arabic text rendering).
 
 ## Documentation
 

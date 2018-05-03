@@ -9,7 +9,7 @@ countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 
 df = pd.read_csv("datasets/euamericans.csv")
 
 def entitle(img):
-    title = Image.from_text("Famous European-Americans ".upper(), FONT(96, bold=True), fg=fg, bg=bg)
+    title = Image.from_text("First generation European-Americans ".upper(), FONT(96, bold=True), fg=fg, bg=bg)
     subtitle = Image.from_text("(migrants and children of migrants, in rough order of fame)", FONT(72), fg=fg, bg=bg).pad((0,0,0,10), bg)
     img = Image.from_column([title, subtitle, img], bg=bg, padding=5).pad(15,bg=bg)
     img = img.place(Image.from_text("/u/Udzu", FONT(16), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=10)

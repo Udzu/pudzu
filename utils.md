@@ -65,7 +65,18 @@ CaseInsensitiveDict({'BOB': 3, 'Hope': 2}, base_type=OrderedDict)
 >> d
 CaseInsensitiveDict({'Bob': 'Smith'}, base_type=defaultdict)
 ```
-    
+
+**NormalizingDict**: normalizing dictionary, using a function to convert or drop key-value pairs during assignment.
+
+```python
+>> d = NormalizingDict(lambda k,v: None if v == 0 else (k.upper(), abs(v)))
+>> d["the"] = -1
+>> d["rain"] = 0
+>> d["spain"] = 2
+>> d
+NormalizingDict({'THE': 1, 'SPAIN': 2}, normalize=<lambda>, base_type=dict)
+```
+
 ### Decorators
 
 **ignoring_extra_args**: wrapper that calls the function with the correct number of positional arguments and supported keyword arguments only. Useful for flexible user input.

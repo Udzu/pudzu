@@ -64,18 +64,20 @@ RGBA(red=0, green=0, blue=0, alpha=0)
        RED = "#e41a1c"
        GREEN = "#4daf4a"
        BLUE = "#377eb8"
+>> RGBPalette
+NamedPalette[RED, GREEN, BLUE]
 >> RGBPalette.RED
-'#e41a1c'
+RGBA(red=228, green=26, blue=28, alpha=255)
 >> RGBPalette("green")
-'#4daf4a'
+RGBA(red=77, green=175, blue=74, alpha=255)
 >> RGBPalette["Blue"]
-'#377eb8'
+RGBA(red=55, green=126, blue=184, alpha=255)
 >> RGBPalette[2]
-'#377eb8'
+RGBPalette[2]
 >> list(RGBPalette)
-['#e41a1c', '#4daf4a', '#377eb8']
->> RGBPalette.names
-('RED', 'GREEN', 'BLUE')
+[RGBA(red=228, green=26, blue=28, alpha=255),
+ RGBA(red=77, green=175, blue=74, alpha=255),
+ RGBA(red=55, green=126, blue=184, alpha=255)]
 ```
 
 **font**: shorthand function for generating a truetype font object defaulting to standard variant naming (e.g. arialbd or calibrib). Also, **arial**, **calibri** and **verdana** are predefined.

@@ -474,8 +474,37 @@ class CaseInsensitiveDict(abc.MutableMapping):
     def __repr__(self):
         return "CaseInsensitiveDict({{{}}}, base_type={})".format(", ".join("{!r}: {!r}".format(self._k[k], v) for (k, v) in self._d.items()), type(self._d).__name__)
         
-    def copy(self):
-        return CaseInsensitiveDict(self)
+class NormalizingDict(abc.MutableMapping):
+    """Normalizing dict, mapping key-value pairs to key-value pairs on assignment (or None to drop)."""
+    
+    def __init__(self, normalize, d={}, base_factory=dict):
+        self.normalize = normalize
+        self._d = base_factory()
+        if isinstance(d, abc.Mapping):
+            for k, v in d.items():
+                self.__setitem__(k, v)
+        elif isinstance(d, abc.Iterable):
+            for (k, v) in d:
+                self.__setitem__(k, v)
+    
+    def __getitem__(self, k):
+        return self._d[k]
+    
+    def __setitem__(self, k, v):
+        kv = self.normalize(k, v)
+        if kv: self._d[kv[0]] = kv[1]
+        
+    def __delitem__(self, k):
+        del self._d[k]
+
+    def __iter__(self):
+        return (k for k in self._d)
+        
+    def __len__(self):
+        return len(self._d)
+        
+    def __repr__(self):
+        return "NormalizingDict({{{}}}, normalize={}, base_type={})".format(", ".join("{!r}: {!r}".format(k, v) for (k, v) in self._d.items()), self.normalize.__name__, type(self._d).__name__)
         
 # Numeric
 

@@ -169,14 +169,39 @@ class BoundingBox():
         padding = Padding(padding)
         return BoundingBox((self.l - padding.l, self.u - padding.u, self.r + padding.r, self.d + padding.d))
         
-# Palettes
+# RGBA and palettes
  
+class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
+    """Named tuple representing RGBA colors. Can be initialised by name, integer values, float values or hex strings."""
+    def __new__(cls, *color, red=None, green=None, blue=None, alpha=None):
+        if any([red, green, blue, alpha]):
+            if color:
+               raise ValueError("Invalid RGBA parameters: specify either positional or keyword arguments, not both")
+            elif not all([red, green, blue]):
+               raise ValueError("Invalid RGBA parameters: missing R/G/B value")
+            color = [c for c in (red, green, blue, alpha) if c]
+        rgba = color
+        if len(rgba) == 1:
+            if non_string_iterable(rgba[0]): rgba = rgba[0]
+            elif not rgba[0]: rgba = (0,0,0,0)
+            elif isinstance(rgba[0], str) and rgba[0].startswith("#"):
+                rgba = [int("".join(v), 16) for v in generate_batches(rgba[0][1:], 2)]
+            elif isinstance(rgba[0], str): rgba = ImageColor.getrgb(rgba[0])
+        if non_string_sequence(rgba, float):
+            rgba = [int(round(x*255)) for x in rgba]
+        if len(rgba) == 3 and all(0 <= x <= 255 for x in rgba):
+            return super().__new__(cls, *chain(rgba, [255]))
+        elif len(rgba) == 4 and all(0 <= x <= 255 for x in rgba):
+            return super().__new__(cls, *rgba)
+        else:
+            raise ValueError("Invalid RGBA parameters: {}".format(", ".join(map(str, color))))
+
 class NamedPaletteMeta(type):
     """Metaclass for named color palettes. Allows palette lookup by (case-insensitive) name or index."""
 
     @classmethod
     def __prepare__(metacls, name, bases, **kwds):
-        return OrderedDict()
+        return NormalizingDict(lambda k,v: (k,v if k.startswith("_") else RGBA(v)), base_factory=OrderedDict)
         
     def __new__(metacls, cls, bases, classdict):
         simple_enum_cls = type.__new__(metacls, cls, bases, dict(classdict))
@@ -187,8 +212,7 @@ class NamedPaletteMeta(type):
     def __len__(cls): return len(cls._colors_)
     def __call__(cls, name): return cls._colors_[name]
     def __getitem__(cls, key): return cls._colors_[key] if isinstance(key, str) else list(cls._colors_.values())[key]
-    @property
-    def names(cls): return tuple(cls._colors_.keys())
+    def __repr__(cls): return "NamedPalette[{}]".format(", ".join(cls._colors_.keys()))
         
 class VegaPalette10(metaclass=NamedPaletteMeta):
     BLUE = "#1f77b4"
@@ -289,33 +313,8 @@ class _ImageDraw():
 ImageDraw.text_size = _ImageDraw.text_size
 ImageDraw.word_wrap = _ImageDraw.word_wrap
 
-# ImageColor and RGBA
+# ImageColor
 
-class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
-    """Named tuple representing RGBA colors. Can be initialised by name, integer values, float values or hex strings."""
-    def __new__(cls, *color, red=None, green=None, blue=None, alpha=None):
-        if any([red, green, blue, alpha]):
-            if color:
-               raise ValueError("Invalid RGBA parameters: specify either positional or keyword arguments, not both")
-            elif not all([red, green, blue]):
-               raise ValueError("Invalid RGBA parameters: missing R/G/B value")
-            color = [c for c in (red, green, blue, alpha) if c]
-        rgba = color
-        if len(rgba) == 1:
-            if non_string_iterable(rgba[0]): rgba = rgba[0]
-            elif not rgba[0]: rgba = (0,0,0,0)
-            elif isinstance(rgba[0], str) and rgba[0].startswith("#"):
-                rgba = [int("".join(v), 16) for v in generate_batches(rgba[0][1:], 2)]
-            elif isinstance(rgba[0], str): rgba = ImageColor.getrgb(rgba[0])
-        if non_string_sequence(rgba, float):
-            rgba = [int(round(x*255)) for x in rgba]
-        if len(rgba) == 3 and all(0 <= x <= 255 for x in rgba):
-            return super().__new__(cls, *chain(rgba, [255]))
-        elif len(rgba) == 4 and all(0 <= x <= 255 for x in rgba):
-            return super().__new__(cls, *rgba)
-        else:
-            raise ValueError("Invalid RGBA parameters: {}".format(", ".join(map(str, color))))
-        
 class _ImageColor():
 
     @classmethod

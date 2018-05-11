@@ -37,7 +37,7 @@ class Nouncer(abc.MutableMapping):
         'v': 'v', 'w': 'w', 'y': 'j', 'z': 'z', 'zh': 'ʒ' } }
     
     def __init__(self, filename=None, normalize=str.lower):
-        self.pdict = CaseInsensitiveDict(normalize=normalize)
+        self.pdict = EquivalenceDict(normalize)
         if filename is not None:
             with open(filename, "r", encoding="utf-8") as f:
                 for entry in f:

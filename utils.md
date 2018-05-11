@@ -14,8 +14,8 @@ Various utility functions and data structures.
 
 ```python
 >> md = optional_import("module")
->> type(md)
-utils.MissingModule
+>> md
+<MissingModule: module>
 >> md.fn(1)
 ImportError: Missing module: module
 >> if md: md.fn(1)
@@ -37,7 +37,7 @@ ImportError: Missing module: module
        bar(match().group(1)
 ```
 
-**CaseInsensitiveDict**: case-insensitive dictionary. Remembers the original case, and supports custom base dictionary containers such as OrderedDict and defaultdict. Accepts a custom normalizer, so can be used for other key equivalences too (such as Unicode equivalence).
+**CaseInsensitiveDict**: case-insensitive dictionary. Remembers the original case, and supports custom base dictionary containers such as OrderedDict and defaultdict.
 
 ```python
 >> d = CaseInsensitiveDict({'Bob': 4098, 'Hope': 4139})
@@ -65,6 +65,8 @@ CaseInsensitiveDict({'BOB': 3, 'Hope': 2}, base_type=OrderedDict)
 >> d
 CaseInsensitiveDict({'Bob': 'Smith'}, base_type=defaultdict)
 ```
+
+**EquivalenceDict**: like CaseInsensitiveDict, but with a custom key normalizer (e.g. Unicode equivalence).
 
 **NormalizingDict**: normalizing dictionary, using a function to convert or drop key-value pairs during assignment.
 

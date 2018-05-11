@@ -435,10 +435,10 @@ def replace_map(str, mapping, count=0, ignore_case=False):
 
 # Data structures
 
-class CaseInsensitiveDict(abc.MutableMapping):
-    """Case-insensitive dict."""
+class EquivalenceDict(abc.MutableMapping):
+    """Mapping structure that views keys that normalize to the same thing as equivalent."""
     
-    def __init__(self, d={}, normalize=str.lower, base_factory=dict):
+    def __init__(self, normalize, d={}, base_factory=dict):
         self.normalize = normalize
         self._d = base_factory()
         self._k = {}
@@ -470,6 +470,15 @@ class CaseInsensitiveDict(abc.MutableMapping):
         
     def __len__(self):
         return len(self._d)
+        
+    def __repr__(self):
+        return "EquivalenceDict({{{}}}, normalize={}, base_type={})".format(", ".join("{!r}: {!r}".format(self._k[k], v) for (k, v) in self._d.items()), self.normalize.__name__, type(self._d).__name__)
+        
+class CaseInsensitiveDict(EquivalenceDict):
+    """Case-insensitive mapping."""
+    
+    def __init__(self, d={}, base_factory=dict):
+        super().__init__(str.lower, d, base_factory=base_factory)
         
     def __repr__(self):
         return "CaseInsensitiveDict({{{}}}, base_type={})".format(", ".join("{!r}: {!r}".format(self._k[k], v) for (k, v) in self._d.items()), type(self._d).__name__)

@@ -540,7 +540,7 @@ class _Image(Image.Image):
         return img
 
     @classmethod
-    def from_multitext(cls, texts, fonts, fgs="black", bgs=None, underlines=0, strikethroughs=0, img_offset=0, beard_line=False):
+    def from_multitext(cls, texts, fonts, fgs="black", bgs=None, underlines=0, strikethroughs=0, img_offset=0, beard_line=False, bidi_reshape=True):
         """Create image from multiple texts, lining up the baselines. Only supports single-line texts.
         For multline texts, combine images with Image.from_column (with equal_heights set to True).
         The texts parameter can also include images, which are lined up to sit on the baseline+img_offset."""
@@ -554,7 +554,7 @@ class _Image(Image.Image):
         if not all(l == len(texts) for l in lengths):
             raise ValueError("Number of fonts, fgs, bgs, underlines or strikethroughs is inconsistent with number of texts: got {}, expected {}".format(lengths, len(texts)))
         bgs = [bg if bg is not None else RGBA(fg)._replace(alpha=0) for fg, bg in zip(fgs, bgs)]
-        imgs = [cls.from_text(text, font, fg, bg, beard_line=beard_line) if isinstance(text, str) else text.remove_transparency(bg) for text, font, fg, bg in zip(texts, fonts, fgs, bgs)]
+        imgs = [cls.from_text(text, font, fg, bg, beard_line=beard_line, bidi_reshape=bidi_reshape) if isinstance(text, str) else text.remove_transparency(bg) for text, font, fg, bg in zip(texts, fonts, fgs, bgs)]
         ascents = [font.getmetrics()[0] if isinstance(text, str) else text.height+img_offset for text, font in zip(texts, fonts)]
         max_ascent = max(ascents)
         imgs = [img.pad((0,max_ascent-ascent,0,0), bg) for img, ascent, bg in zip(imgs, ascents, bgs)]
@@ -566,10 +566,12 @@ class _Image(Image.Image):
         
     @classmethod
     def from_markup(cls, markup, font_family, fg="black", bg=None, highlight="#0645AD", overline_widths=(2,1), line_spacing=0, align="left",
-                    max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None, padding=0, beard_line=False):
+                    max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None, padding=0, beard_line=False, bidi_reshape=True):
         """Create image from simle markup. See MarkupExpression for details. Max width uses normal font to split text so is not precise."""
         if isinstance(overline_widths, Integral):
             overline_widths = (overline_widths, overline_widths)
+        if bidi_reshape:
+            markup = bidi_layout(arabic_reshape(markup))
         mexpr = MarkupExpression(markup)
         if max_width is not None:
             text = ImageDraw.word_wrap(mexpr.get_text(), font_family(), max_width, tokenizer, hyphenator)
@@ -581,7 +583,7 @@ class _Image(Image.Image):
             fgs = [highlight if "c" in m else fg for s,m in line]
             underlines = [overline_widths[0] if "u" in m else 0 for s,m in line]
             strikethroughs = [overline_widths[1] if "s" in m else 0 for s,m in line]
-            rows.append(cls.from_multitext(texts, fonts, fgs, bg, underlines=underlines, strikethroughs=strikethroughs, beard_line=beard_line))
+            rows.append(cls.from_multitext(texts, fonts, fgs, bg, underlines=underlines, strikethroughs=strikethroughs, beard_line=beard_line, bidi_reshape=False))
         return Image.from_column(rows, yalign=0, equal_heights=True, bg=bg, xalign=["left","center","right"].index(align)/2).pad(padding, bg)
         
     @classmethod

@@ -233,7 +233,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
                 if BarChartLabelPosition.INSIDE in clabel_dict:
                     label = clabel_dict[BarChartLabelPosition.INSIDE](c,r,v,bar.width,bar.height)
                     if isinstance(label, str):
-                        label = Image.from_text(label, label_font, fg=fg) if label_font else None
+                        label = Image.from_text(label, label_font, fg=fg, align='center') if label_font else None
                     if label is not None:
                         return bar.place(hzimg(label))
                 return bar
@@ -308,7 +308,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
             for c, v in enumerate(row):
                 label = clabel_fn(c,r,v)
                 if isinstance(label, str):
-                    label = Image.from_text(label, label_font, fg=fg, padding=hzsize((0,2)))  if label_font else None
+                    label = Image.from_text(label, label_font, fg=fg, align='center', padding=hzsize((0,2)))  if label_font else None
                 if label is None:
                     continue
                 if type == BarChartType.SIMPLE:
@@ -333,7 +333,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
         for r, row in enumerate(data.values):
             label = rlabel_fn(r)
             if isinstance(label, str):
-                label = Image.from_text(label, label_font, fg=fg, padding=hzsize((0,2))) if label_font else None
+                label = Image.from_text(label, label_font, fg=fg, align='center', padding=hzsize((0,2))) if label_font else None
             if label is None:
                 continue
             if type in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE, BarChartType.OVERLAYED]:

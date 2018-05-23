@@ -11,6 +11,7 @@ from tureen import *
 from dates import *
 
 requests_cache = optional_import("requests_cache")
+pd = optional_import("pandas")
 
 # Utilities for scraping with Wikipedia and WikiData.
 
@@ -165,7 +166,7 @@ class WDPage(CachedPage):
     @classmethod
     def get_entity(cls, id):
         """Return claims and labels for a given entity"""
-        parameters = { 'action' : 'wbgetentities', 'ids': id, 'props': 'claims|labels|sitelinks', 'format': 'json' }
+        parameters = { 'action' : 'wbgetentities', 'ids': id, 'props': 'claims|labels|sitelinks|aliases', 'format': 'json' }
         return cls.api_call(parameters)
         
     @classmethod
@@ -193,11 +194,30 @@ class WDPage(CachedPage):
         """Wikidata entity name"""
         return self.json['entities'][self.id]['labels'].get(lang or self.lang, {'value': '(unknown)'})['value']
         
+    def names(self, lang=None, aliases=True):
+        """Wikidata entity names, including aliases"""
+        name = self.json['entities'][self.id]['labels'].get(lang or self.lang)
+        names = [] if name is None else [name['value']]
+        aliases = [alias['value'] for alias in self.json['entities'][self.id]['aliases'].get(lang or self.lang, [])] * aliases
+        return names + aliases
+        
     @ignoring_exceptions
     def to_wikipedia(self, lang=None):
         """Wikipedia page for the given Wikidata entry, if there is one."""
         lang = lang or self.lang
         return WikiPage(self.json['entities'][self.id]['sitelinks'][lang+'wiki']['title'], lang=lang)
+        
+    def to_labels(self, langs=None, aliases=True, id=False):
+        """Dataframe containing per-language labels."""
+        columns = ["language", "id", "label"] if id else ["language", "label"]
+        labels = [ (lang, self.id, label) if id else (lang, label)
+                   for lang in langs or self.json['entities'][self.id]['labels']
+                   for label in self.names(lang, aliases=aliases) ]
+        if langs:
+            missing_langs = [ l for l in langs if not any( lang == l for lang, _, _ in labels ) ]
+            if missing_langs:
+                logger.log(logging.WARNING, "Missing {} labels for {}".format(self.name(), ", ".join(missing_langs)))
+        return pd.DataFrame(labels, columns=columns)
         
     @staticmethod
     def convert_value(value):

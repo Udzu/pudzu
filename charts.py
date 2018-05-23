@@ -888,6 +888,7 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
     for c,name in colors:
         bbox = bboxes.get(c[:3], BoundingBox(img))
         color = ignoring_extra_args(color_fn)(name, bbox.width, bbox.height) if callable(color_fn) else color_fn.get(name)
+        logger.debug("Filling {} with {}".format(name, color))
         if color is None: continue
         mask = original.select_color(c)
         if not isinstance(color, Image.Image):

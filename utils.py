@@ -193,12 +193,13 @@ def non_string_iterable(v):
 def make_iterable(v):
     """Return an iterable from an object, wrapping it in a tuple if needed."""
     return v if non_string_iterable(v) else () if v is None else (v,)
-    
+
+np = optional_import("numpy", ndarray=list)
 def non_string_sequence(v, types=None):
     """Return whether the object is a Sequence other than str, optionally 
     with the given element types."""
-    return isinstance(v, Sequence) and not isinstance(v, str) and (types is None or all(any(isinstance(x, t) for t in make_iterable(types)) for x in v))
-    
+    return (isinstance(v, Sequence) and not isinstance(v, str) or isinstance(v, np.ndarray)) and (types is None or all(any(isinstance(x, t) for t in make_iterable(types)) for x in v))
+
 def make_sequence(v):
     """Return a sequence from an object, wrapping it in a tuple if needed."""
     return v if non_string_sequence(v) else () if v is None else (v,)

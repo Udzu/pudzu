@@ -582,5 +582,5 @@ def url_to_filepath(url):
     uparse = urlparse(url)
     upath, uext = os.path.splitext(uparse.path)
     uname = hashlib.sha1(upath.encode('utf-8')).hexdigest()
-    return os.path.join(uparse.netloc, uname + uext)
+    return os.path.join(uparse.netloc or "_local_", uname + uext)
    

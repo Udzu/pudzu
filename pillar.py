@@ -662,10 +662,12 @@ class _Image(Image.Image):
         """Create an image from a url, optionally saving it to a filepath."""
         HEADERS = {'User-Agent': 'Mozilla/5.0'}
         uparse = urlparse(url)
-        if uparse.scheme == '':
-            raise TypeError("from_url expects url, got {}".format(url))
         logger.debug("Reading image from {}".format(url))
-        content = requests.get(url, headers=HEADERS).content if requests else urlopen(url).read()
+        if uparse.scheme == '':
+            with open(url, 'rb') as f:
+                content = f.read()
+        else:
+            content = requests.get(url, headers=HEADERS).content if requests else urlopen(url).read()
         if filepath is None:
             fh = BytesIO(content)
             return Image.open(fh)

@@ -8,6 +8,7 @@ import operator as op
 import os.path
 import random
 import re
+import unicodedata
 
 from collections import abc, OrderedDict, Iterable, Mapping, Counter
 from collections.abc import Sequence
@@ -220,7 +221,7 @@ def remove_duplicates(seq, key=lambda v:v, keep_last=False):
             d[k] = x
     return tuple(d.values())
 
-def first_or_default(iterable, default=None):
+def first(iterable, default=None):
     """Return the first element of an iterable, or a default if there aren't any."""
     try:
         return next(x for x in iter(iterable))
@@ -434,6 +435,24 @@ def replace_map(str, mapping, count=0, ignore_case=False):
     if ignore_case: mapping = CaseInsensitiveDict(mapping)
     return replace_any(str, mapping.keys(), lambda s: mapping[s], count=count, ignore_case=ignore_case)
 
+def strip_accents(str, aggressive=False):
+    """Strip accents from a string. Default behaviour is to use NFD normalization
+    (canonical decomposition) and strip combining characters. Aggressive mode also
+    replaces ß with ss, l with l, ø with o and so on."""
+    stripped = "".join(c for c in unicodedata.normalize('NFD', str) if not unicodedata.combining(c))
+    if aggressive:
+        @partial(ignoring_exceptions, handler=identity, exceptions=KeyError)
+        def strip_chr(c, extra_conversions={'ß': 'ss', '?': 'SS'}):
+            if c in extra_conversions:
+                return extra_conversions[c]
+            name = unicodedata.name(c)
+            variant = name.find(' WITH ')
+            if variant: 
+                return unicodedata.lookup(name[:variant])
+            return c
+        stripped = "".join(strip_chr(c) for c in stripped)
+    return stripped
+    
 # Data structures
 
 class EquivalenceDict(abc.MutableMapping):

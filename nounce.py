@@ -208,14 +208,14 @@ class Nouncer(abc.MutableMapping):
        
     @classmethod
     def _rhymeswith(self, phonemes1, phonemes2, identirhyme=False, cutrhyme=False, multirhyme=False):
-        stress1 = first_or_default((i for i in range(len(phonemes1)) if self._is_stressed(phonemes1[i])), 0)
-        stress2 = first_or_default((i for i in range(len(phonemes2)) if self._is_stressed(phonemes2[i])), 0)
+        stress1 = first((i for i in range(len(phonemes1)) if self._is_stressed(phonemes1[i])), 0)
+        stress2 = first((i for i in range(len(phonemes2)) if self._is_stressed(phonemes2[i])), 0)
         same_consonant = stress1==stress2==0 or stress1>0 and stress2>0 and phonemes1[stress1-1]==phonemes2[stress2-1]
         pattern1 = phonemes1[stress1:len(phonemes2)-stress2+stress1 if cutrhyme else None]
         pattern2 = phonemes2[stress2:]
         if multirhyme:
             def strip_consonants(p):
-                lv = first_or_default((i for i in reversed(range(len(p))) if self._is_vowel(p[i])), 0)
+                lv = first((i for i in reversed(range(len(p))) if self._is_vowel(p[i])), 0)
                 return [x for i,x in enumerate(p) if self._is_vowel(x) or i >= lv]
             pattern1 = strip_consonants(pattern1)
             pattern2 = strip_consonants(pattern2)

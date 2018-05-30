@@ -15,14 +15,14 @@ FONT = calibri
 def colorfn(c, to=True):
     if c in ['Sea', 'Borders']: return 'white'
     elif c not in df.index: return "grey"
-    return first_or_default(PALETTE_TO[i] if to else PALETTE_FROM[i] for i in range(len(RANGES)) if (df.to_score[c] if to else df.from_score[c]) >= RANGES[i])
+    return first(PALETTE_TO[i] if to else PALETTE_FROM[i] for i in range(len(RANGES)) if (df.to_score[c] if to else df.from_score[c]) >= RANGES[i])
     
 def labelfn(c, w, h, *args, to=True):
    if c not in df.index: return None
    flag = Image.from_url_with_cache(countries.flag[df.to[c] if to else df['from'][c]]).to_rgba().resize((24,18))
    country = Image.from_text(df.to[c] if to else df['from'][c], FONT(16), "black")
    score = Image.from_text("{0:.1f}".format(df.to_score[c] if to else df.from_score[c]), FONT(16), "black")
-   return first_or_default(i for i in [Image.from_row([flag, Rectangle(5,0), score]), flag] if i.width <= w)
+   return first(i for i in [Image.from_row([flag, Rectangle(5,0), score]), flag] if i.width <= w)
 
 map_from = map_chart("maps/Europe2.png", partial(colorfn, to=False), partial(labelfn, to=False))
 legend_from = generate_legend(PALETTE_FROM[:len(RANGES)], LABELS, header="HIGHEST AVERAGE POINTS RECEIVED", box_sizes=40, fonts=partial(FONT, 16))

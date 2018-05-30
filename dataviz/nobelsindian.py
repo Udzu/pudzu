@@ -12,7 +12,7 @@ from bamboo import *
 
 FONT = calibri
 df = pd.read_csv("datasets/nobelsindian.csv")
-table = pd.DataFrame([[first_or_default([dict(d) for _,d in df[(df.grid_x == x) & (df.grid_y == y)].iterrows()]) for x in range(df.grid_x.max()+1)] for y in range(df.grid_y.max()+1)])
+table = pd.DataFrame([[first([dict(d) for _,d in df[(df.grid_x == x) & (df.grid_y == y)].iterrows()]) for x in range(df.grid_x.max()+1)] for y in range(df.grid_y.max()+1)])
 
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 FONT = verdana

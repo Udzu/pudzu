@@ -174,13 +174,15 @@ False
 ('on', 'the', 'shore')
 ```
 
-**first_or_default**: return the first element of an iterable, or a default if there aren't any.
+**first**: return the first element of an iterable, or a default if there aren't any.
 
 ```python
->> first_or_default(count())
+>> first(count())
 0
->> first_or_default([])
+>> first([])
 None
+>> first([], default=0)
+0
 ```
 
 **is_in**: whether an object is object-identical to any member of an iterable
@@ -361,6 +363,15 @@ True
 '1. The Spain in rain stays mainly on the plain'
 >> strip_any(text, " .")
 '1Theraininspainstaysmainlyontheplain'
+```
+
+**strip_accents**: strip accents from a string. The default is to decompose and remove combining characters; however, there is also an aggressive mode that replaces ß with ss, l with l, ø with o and so on.
+
+```python
+>> strip_accents("Łódź, Friedrichstraße, Αθήνα")
+'Łodz, Friedrichstraße, Αθηνα'
+>> strip_accents("Łódź, Friedrichstraße, Αθήνα", aggressive=True)
+'Lodz, Friedrichstrasse, Αθηνα'
 ```
 
 ### Numeric

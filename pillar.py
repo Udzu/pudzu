@@ -694,7 +694,7 @@ class _Image(Image.Image):
     @classmethod
     def generate_bounded(cls, box_size, parameters, generator):
         """Return the first parametrised image that fits within the box_size."""
-        return first_or_default(img for p in parameters for img in [generator(p)] if img.width <= box_size[0] and img.height <= box_size[1])
+        return first(img for p in parameters for img in [generator(p)] if img.width <= box_size[0] and img.height <= box_size[1])
         
     @classmethod
     def from_text_bounded(cls, text, box_size, max_font_size, font_fn, *args, min_font_size=6, **kwargs):
@@ -1296,7 +1296,7 @@ class MarkupExpression:
         while old or new:
             if old and new and old[0] == new[0]:
                 merged, old, new = merged + old[0], old[1:], new[1:]
-            elif x << first_or_default(m for m in itertools.chain(self.START_END.keys(), self.START_END.values()) if old.startswith(m)):
+            elif x << first(m for m in itertools.chain(self.START_END.keys(), self.START_END.values()) if old.startswith(m)):
                 merged, old = merged + x(), old[len(x()):]
             elif new and new[0] in "\n-":
                 merged, new = merged + new[0], new[1:]

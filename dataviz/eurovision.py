@@ -20,7 +20,7 @@ def colorfn(c):
 def labelfn(c, w,h):
    if c not in df.index: return None
    pos = ignoring_exceptions(int, 30)(df.position[c])
-   return first_or_default((img for sz in range(20,6,-1) for img in [Image.from_column([
+   return first((img for sz in range(20,6,-1) for img in [Image.from_column([
         Image.from_text(str(df.year[c]), FONT(sz, bold=True), max_width=w, align="center"),
         Image.EMPTY_IMAGE if pos <= 3 else Image.from_text("(#{})".format(pos), FONT(sz-2), max_width=w, align="center")
     ])] if img.width <= w and img.height <= h), None)

@@ -21,7 +21,7 @@ uswinners = nobels.filter_boolean(lambda df: df.countries.map(lambda cs: 'US' in
 # US-born winners
 
 states = pd.read_csv("datasets/usstates.csv").filter_boolean(lambda df: df.code != 'PR')
-statetable = pd.DataFrame([[first_or_default([dict(d) for _,d in states[(states.grid_x == x) & (states.grid_y == y)].iterrows()]) for x in range(states.grid_x.max()+1)] for y in range(states.grid_y.max()+1)])
+statetable = pd.DataFrame([[first([dict(d) for _,d in states[(states.grid_x == x) & (states.grid_y == y)].iterrows()]) for x in range(states.grid_x.max()+1)] for y in range(states.grid_y.max()+1)])
 
 def statecell(d):
     W, H = SIZE+4, SIZE+4

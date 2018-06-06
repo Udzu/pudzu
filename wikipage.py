@@ -214,7 +214,7 @@ class WDPage(CachedPage):
                    for lang in langs or self.json['entities'][self.id]['labels']
                    for label in self.names(lang, aliases=aliases) ]
         if langs:
-            missing_langs = [ l for l in langs if not any( lang == l for lang, _, _ in labels ) ]
+            missing_langs = [ l for l in langs if not any( lang == l for lang, *_ in labels ) ]
             if missing_langs:
                 logger.log(logging.WARNING, "Missing {} labels for {}".format(self.name(), ", ".join(missing_langs)))
         return pd.DataFrame(labels, columns=columns)

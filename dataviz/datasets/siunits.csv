@@ -1,0 +1,37 @@
+country,symbol,description,type
+de,Ω,Georg Ohm
+de,Hz,Heinrich Hertz
+de,S,Werner von Siemens
+de,Wb,Wilhelm Weber
+fr,A,André-Marie Ampère,b
+fr,Bq,Henri Becquerel
+fr,C,Charles-Augustin de Coulomb
+fr,Pa,Blaise Pascal
+gb,B/dB,Alexander Graham Bell,n
+gb,F,Michael Faraday
+gb,Gy,Louis Gray
+gb,J,James Prescott Joule
+gb,K,Lord Kelvin,b
+gb,N,Isaac Newton
+gb,Np,John Napier,n
+gb,W,James Watt
+greek,kat,κατάλυσις
+greek,kg,γράμμα,b
+greek,m,μέτρον,b
+greek,sr,στερεός radius
+hrsb,T,Nikola Tesla
+it,V,Alessandro Volta
+latin,cd,candēla,b
+latin,lm,lumen
+latin,lx,lūx
+latin,mol,molecula,b
+latin,rad,radius
+latin,s,secundus,b
+latin,sr,στερεός radius
+se,°C,Anders Celsius
+se,Sv,Rolf Sievert
+us,H,Joseph Henry
+us,T,Nikola Tesla
+us,B/dB,Alexander Graham Bell,n
+greek,L,λίτρα,n
+latin,ha,area,n

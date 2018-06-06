@@ -365,13 +365,15 @@ True
 '1Theraininspainstaysmainlyontheplain'
 ```
 
-**strip_accents**: strip accents from a string. The default is to decompose and remove combining characters; however, there is also an aggressive mode that replaces ß with ss, l with l, ø with o and so on.
+**strip_accents**: strip accents from a string. The default is to decompose and remove combining characters; however, there is also an aggressive mode that also replaces æ with ae, ł with l, ø with o, etc, and a German mode that replaces ö with oe, etc.
 
 ```python
 >> strip_accents("Łódź, Friedrichstraße, Αθήνα")
 'Łodz, Friedrichstraße, Αθηνα'
 >> strip_accents("Łódź, Friedrichstraße, Αθήνα", aggressive=True)
 'Lodz, Friedrichstrasse, Αθηνα'
+>> strip_accents("über, ÜBER, Über", german=True)
+'ueber, UEBER, Ueber'
 ```
 
 ### Numeric

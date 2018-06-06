@@ -185,6 +185,14 @@ class cached_property(object):
 def cached_property_expires_after(expires_after):
     return partial(cached_property, expires_after=expires_after)
 
+def static_vars(**kwargs):
+    """Static variable decorator."""
+    def decorate(fn):
+        for k, v in kwargs.items():
+            setattr(fn, k, v)
+        return fn
+    return decorate
+
 # Iterables
         
 def non_string_iterable(v):
@@ -435,23 +443,32 @@ def replace_map(str, mapping, count=0, ignore_case=False):
     if ignore_case: mapping = CaseInsensitiveDict(mapping)
     return replace_any(str, mapping.keys(), lambda s: mapping[s], count=count, ignore_case=ignore_case)
 
-def strip_accents(str, aggressive=False):
+@static_vars(GERMAN_CONVERSIONS = { 'ß': 'ss', 'ẞ': 'SS', 'Ä': 'AE', 'ä': 'ae', 'Ö': 'OE', 'ö': 'oe', 'Ü': 'UE', 'ü': 'ue' },
+             EXTRA_CONVERSIONS =  { 'ß': 'ss', 'ẞ': 'SS', 'Æ': 'AE', 'æ': 'ae', 'Œ': 'OE', 'œ': 'oe', 'Ĳ': 'IJ', 'ĳ': 'ij',
+                                    'ﬀ': 'ff', 'ﬃ': 'ffi', 'ﬄ': 'ffl', 'ﬁ': 'fi', 'ﬂ': 'fl' })
+def strip_accents(str, aggressive=False, german=False):
     """Strip accents from a string. Default behaviour is to use NFD normalization
     (canonical decomposition) and strip combining characters. Aggressive mode also
-    replaces ß with ss, l with l, ø with o and so on."""
-    stripped = "".join(c for c in unicodedata.normalize('NFD', str) if not unicodedata.combining(c))
+    replaces ß with ss, l with l, ø with o and so on. German mode replaces ö with oe, etc."""
+    if german:
+        def german_strip(c,d):
+            c = strip_accents.GERMAN_CONVERSIONS.get(c, c)
+            if len(c) > 1 and c[0].isupper() and d.islower(): c = c.title()
+            return c
+        str = "".join(german_strip(c,d) for c,d in generate_ngrams(str+" ", 2))
+    str = "".join(c for c in unicodedata.normalize('NFD', str) if not unicodedata.combining(c))
     if aggressive:
         @partial(ignoring_exceptions, handler=identity, exceptions=KeyError)
-        def strip_chr(c, extra_conversions={'ß': 'ss', '?': 'SS'}):
-            if c in extra_conversions:
-                return extra_conversions[c]
+        def aggressive_strip(c):
+            if c in strip_accents.EXTRA_CONVERSIONS:
+                return strip_accents.EXTRA_CONVERSIONS[c]
             name = unicodedata.name(c)
             variant = name.find(' WITH ')
             if variant: 
                 return unicodedata.lookup(name[:variant])
             return c
-        stripped = "".join(strip_chr(c) for c in stripped)
-    return stripped
+        str = "".join(aggressive_strip(c) for c in str)
+    return str
     
 # Data structures
 

@@ -27,7 +27,7 @@ def gravity_magnitude(arr, normalised=True, linear=False):
     mag = (components[0] ** 2 + components[1] ** 2) ** 0.5
     return mag / mag.max() if normalised else mag
 
-# some visualisation helpers
+# some adhoc visualisation helpers
 
 def mask_to_array(img):
     return np.array(img.as_mask()) / 255
@@ -81,10 +81,16 @@ def odd(n): return round(n) + (round(n)-1)%2
 
 # shape config (max and min shapes are approximations based on minmax above but should be good enough for illustrative purposes)
 
-WIDTH = 60 # TODO
+WIDTH = 60
 TITLE_SIZE = 16
 TEXT_SIZE = 12
 PADDING = 20
+
+# WIDTH = 120
+# TITLE_SIZE = 24
+# TEXT_SIZE = 16
+# PADDING = 20
+
 SHAPES = CaseInsensitiveDict(base_factory=OrderedDict)
 
 class ShapeOpts(namedtuple('ShapeOpts', 'name,shape,min,max,min_linear,max_linear,scanlines,description')):
@@ -100,12 +106,14 @@ dot = Ellipse(5)
 
 circle = base.place(Ellipse(pwidth))
 circle_max = MaskIntersection(..., masks=(Ellipse(pwidth+2), Ellipse(pwidth-2, invert=True)), include_missing=True)
-circle_description = "With inverse force, gravity outside the circle behaves as if all the circle's mass were concentrated in the centre, while inside it decreases linearly (just like constant density spheres in 3D). With inverse-square force, the nearer parts of the shell apply more force than the farther parts, resulting in greater attraction towards the surface."
+circle_description = "With inverse force, gravity outside the circle behaves as if all the circle's mass were concentrated in the centre, while inside it decreases linearly: i.e. just like constant density spheres in 3D. With inverse-square force, the nearer parts of the shell apply more force than the farther parts, resulting in greater attraction towards the surface."
 SHAPES["circle"] = ShapeOpts("circle", circle, dot, circle_max, description=circle_description)
 
-ellipse = base.place(Ellipse((pwidth, odd(pwidth / 2))))
-ellipse_description = "?" # TODO
-SHAPES["ellipse"] = ShapeOpts("ellipse", ellipse, dot, scanlines="vh", description=ellipse_description)
+ellipse_height = odd(pwidth / 2)
+ellipse = base.place(Ellipse((pwidth, ellipse_height)))
+ellipse_max = Rectangle(pwidth,(0,0,0,0)).pin(dot,(pwidth//2+1,pwidth//2+ellipse_height//2+1)).pin(dot,(pwidth//2+1,pwidth//2-ellipse_height//2+1))
+ellipse_description = "Standing on the pole places you closer to the centre of mass (the monopole contribution), while standing on the equator directs more force downwards (the quadrupole contribution). The former wins out, though the latter cancels out most of the difference."
+SHAPES["ellipse"] = ShapeOpts("ellipse", ellipse, dot, ellipse_max, scanlines="vh", description=ellipse_description)
 
 core = base.place(Ellipse(pwidth, (0,0,0,100))).place(Ellipse(ppwdith))
 core_max = MaskIntersection(..., masks=(Ellipse(ppwdith+2), Ellipse(ppwdith-2, invert=True)), include_missing=True)
@@ -122,13 +130,13 @@ mountain = base.place(Ellipse(pwidth).pin(Triangle(odd(pwidth/3)), (pwidth//2+1,
 mountain_min = dot.pad((0,odd(pwidth/4),0,0), 0)
 mountain_max = Rectangle((odd(pwidth*0.8),odd(pwidth*0.5)),(0,0,0,0)).pad((0,odd(pwidth/4),0,0), 0).pin(dot,(odd(pwidth*0.8),odd(pwidth/4))).pin(dot,(0,odd(pwidth/4)))
 mountain_max_linear = Rectangle((odd(pwidth*0.55),odd(pwidth*0.95)),(0,0,0,0)).pad((0,odd(pwidth/4),0,0), 0).pin(dot,(odd(pwidth*0.55),odd(pwidth*0.95+pwidth/4))).pin(dot,(0,odd(pwidth*0.95+pwidth/4)))
-mountain_description = "Not enough to offset shell effect." # TODO
+mountain_description = "Similar to the ellipse scenario, the gravitational pull at the base of the mountain is greater than at its peak. The point of maximum attraction depends on the level of force decay."
 SHAPES["mountain"] = ShapeOpts("mountain", mountain, mountain_min, mountain_max, ..., mountain_max_linear, scanlines="v", description=mountain_description)
 
 square = base.place(Rectangle(pwidth))
 offsets = Padding(0)
 square_max = Rectangle(pwidth,(0,0,0,0)).pin(dot,(pwidth//2+1,0),offsets=offsets).pin(dot,(pwidth//2+1,pwidth),offsets=offsets).pin(dot,(0,pwidth//2+1),offsets=offsets).pin(dot,(pwidth,pwidth//2+1),offsets=offsets)
-square_description = "Like four mountains" # TODO
+square_description = "A square is like four mountains at right angles to each other."
 SHAPES["square"] = ShapeOpts("square", square, dot, square_max, scanlines="dh", description=square_description)
 
 two = Image.from_row([circle, circle])
@@ -148,7 +156,9 @@ SHAPES["reddit"] = ShapeOpts("snoo", reddit, scanlines="hv", description=reddit_
 FONT = arial
 
 def plot_shape(shape): 
+    logger.log(logging.INFO, "Generating {} [inverse square]".format(shape.name))
     mag = gravity_magnitude(shape.shape, linear=False)
+    logger.log(logging.INFO, "Generating {} [linear]".format(shape.name))
     mag_linear = gravity_magnitude(shape.shape, linear=True)
     w, h = mag.shape
     y = round(h / 2)
@@ -172,23 +182,20 @@ def shape_box(alpha=0,min=None,max=None):
     return shapeplot(Rectangle(40,(0,0,0,alpha)), min=min and Rectangle(40,0).place(min), max=max and Rectangle(40,0).place(max))
 def line_box(color):return Rectangle(40, 0).place(Rectangle((40,3), color))
     
-introduction = generate_legend([], [], header="Why is there two of everything?".upper(), footer="There are two possible ways to extend gravity to two dimensions. The first keeps the inverse square law, which emulates a 3D mass squashed into the plane. The second uses instead an linear inverse law, which corresponds to the geometric dilution of point-source radiation in 2D. The first approach behaves more like gravity in 3D but is artificial; the second displays all the expected symmetries but looks different in terms of strength and orbits.", border=False, max_width=350, fonts=partial(FONT, 16))
+rows = tmap_leafs(lambda shape: plot_shape(SHAPES[shape]), generate_batches(SHAPES, 6))
+    
+# legend, title, etc
+
+introduction = generate_legend([], [], header="Why are there two of everything?".upper(), footer="There are two possible ways to extend gravity to two dimensions. The first is to keep the inverse square law, which emulates a 3D mass squashed into the plane. The second is to instead use an linear inverse law, which corresponds to the geometric dilution of point-source radiation in 2D. The first approach behaves more like gravity in 3D but is artificial; the second displays all the expected symmetries but looks different in terms of strength and orbits.", border=False, max_width=350, fonts=partial(FONT, 16))
 shape_legend = generate_legend([shape_box(255), shape_box(100), shape_box(0), shape_box(min=dot), shape_box(max=dot)],["high density solid", "low density solid", "empty space", "minimum gravity", "maximum gravity"], header="SHAPES AND EXTREMA", border=False, fonts=partial(FONT, 16))
 heatmap_legend = generate_legend([Image.from_gradient(plt.get_cmap("hot"), (40, 180), direction=(0,-1)).add_grid((1,8))], [["maximum gravity", "50% gravity", "minimum gravity"]], header="GRAVITY HEATMAPS", border=False, fonts=partial(FONT, 16))
 graph_legend = generate_legend([line_box("#800000"), line_box("#008000"), line_box("#000080")], ["horizontal intersection", "vertical intersection", "diagonal intersection"], header="INTERSECTION PLOTS", border=False, fonts=partial(FONT, 16))
 legend=Image.from_row([introduction, shape_legend, heatmap_legend, graph_legend], bg="white", padding=10, yalign=0).pad(2, "black")
 
-rows = tmap_leafs(lambda shape: plot_shape(SHAPES[shape]), generate_batches(SHAPES, 6))
 padded = tmap_leafs(lambda img: img.pad((5,0), "white") if img.width > base.width * 2 else img, rows)
 chart = Image.from_column([Image.from_row(row, yalign=0, padding=5, bg="white") for row in padded], bg="white", xalign=0, padding=10)
 title = Image.from_text("Visualizing gravity in 2 Dimensions".upper(), FONT(48, bold=True))
 img = Image.from_column([title, legend, chart], bg="white", padding=10)
-
-# https://physics.stackexchange.com/questions/30652/what-is-the-2d-gravity-potential
-
-# gravity in 2d
-# inverse square, squashed into plane
-# inverse, 2d version, orbits are oscillations
 
 # unused quadtree implementation from before I figured out how to use numpy properly
 

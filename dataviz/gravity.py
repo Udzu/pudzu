@@ -7,6 +7,8 @@ from scipy import signal
 
 # naive gravity calculation that's fast enough because numpy
 
+logger.setLevel(logging.INFO)
+
 np.seterr(divide='ignore', invalid='ignore')
 
 def force_components(rows, cols, linear=False):
@@ -82,14 +84,20 @@ def odd(n): return round(n) + (round(n)-1)%2
 # shape config (max and min shapes are approximations based on minmax above but should be good enough for illustrative purposes)
 
 WIDTH = 60
-TITLE_SIZE = 16
+BIGTEXT_SIZE = 16
 TEXT_SIZE = 12
 PADDING = 20
+FONT = arial
+LEGEND_WIDTH = 350
+TITLE_SIZE = 48
 
-# WIDTH = 120
-# TITLE_SIZE = 24
-# TEXT_SIZE = 16
-# PADDING = 20
+WIDTH = 120
+BIGTEXT_SIZE = 24
+TEXT_SIZE = 16
+PADDING = 20
+FONT = arial
+LEGEND_WIDTH = 600
+TITLE_SIZE = 92
 
 SHAPES = CaseInsensitiveDict(base_factory=OrderedDict)
 
@@ -140,27 +148,25 @@ square_description = "A square is like four mountains at right angles to each ot
 SHAPES["square"] = ShapeOpts("square", square, dot, square_max, scanlines="dh", description=square_description)
 
 two = Image.from_row([circle, circle])
-two_description = "?" #TODO
-SHAPES["two"] = ShapeOpts("two circles", two, description=two_description)
+two_description = "Two circles a fixed distance apart apply zero net force at three points: two inside the circles, and one at the midpoint. In 3D the Lagrange points are typically more relevant as they take centrifugal force into account; however, stable orbits are not possible with inverse force, a consequence of Bertrand's Theorem."
+SHAPES["two"] = ShapeOpts("two circles", two, description=two_description)  # TODO
 
 moon = Image.from_row([circle, base.place(Ellipse(odd(pwidth/2)))])
-moon_description = "?" #TODO
-SHAPES["moon"] = ShapeOpts("moon", moon, description=moon_description)
+moon_description = "If one circle is significantly larger than the other, the point of zero net force moves closer to the smaller one. This is a plot point in Jules Verne's (scientifically inaccurate) novel From the Earth to the Moon."
+SHAPES["moon"] = ShapeOpts("moon", moon, description=moon_description) #TODO
 
 reddit = base.convert("L").place(Image.open("icons/reddit.png").convert("L").resize_fixed_aspect(width=odd(WIDTH)))
-reddit_description = "?" #TODO
-SHAPES["reddit"] = ShapeOpts("snoo", reddit, scanlines="hv", description=reddit_description)
+reddit_description = "In case you ever find yourself stranded on a 2D Snoo-shaped asteroid and are worried about floating into space."
+SHAPES["reddit"] = ShapeOpts("snoo", reddit, scanlines="hv", description=reddit_description)  #TODO : (1) nose + head (2) nose, cheeks, breat + head
 
 # put it all together
-
-FONT = arial
 
 def plot_shape(shape): 
     logger.log(logging.INFO, "Generating {} [inverse square]".format(shape.name))
     mag = gravity_magnitude(shape.shape, linear=False)
     logger.log(logging.INFO, "Generating {} [linear]".format(shape.name))
     mag_linear = gravity_magnitude(shape.shape, linear=True)
-    w, h = mag.shape
+    h, w = mag.shape
     y = round(h / 2)
     grid = Image.from_array([
         [shapeplot(shape.shape, shape.min, shape.max),
@@ -173,7 +179,7 @@ def plot_shape(shape):
     markup = Image.from_markup(shape.description, partial(FONT, TEXT_SIZE), max_width=w*2, hyphenator=language_hyphenator())
     markup = Rectangle((w*2, markup.height), "white").place(markup, align=0)
     return Image.from_column([
-        Image.from_text(shape.name.upper(), FONT(TITLE_SIZE, bold=True)),
+        Image.from_text(shape.name.upper(), FONT(BIGTEXT_SIZE, bold=True)),
         grid,
         markup
         ], padding=0, bg="white")
@@ -186,16 +192,18 @@ rows = tmap_leafs(lambda shape: plot_shape(SHAPES[shape]), generate_batches(SHAP
     
 # legend, title, etc
 
-introduction = generate_legend([], [], header="Why are there two of everything?".upper(), footer="There are two possible ways to extend gravity to two dimensions. The first is to keep the inverse square law, which emulates a 3D mass squashed into the plane. The second is to instead use an linear inverse law, which corresponds to the geometric dilution of point-source radiation in 2D. The first approach behaves more like gravity in 3D but is artificial; the second displays all the expected symmetries but looks different in terms of strength and orbits.", border=False, max_width=350, fonts=partial(FONT, 16))
-shape_legend = generate_legend([shape_box(255), shape_box(100), shape_box(0), shape_box(min=dot), shape_box(max=dot)],["high density solid", "low density solid", "empty space", "minimum gravity", "maximum gravity"], header="SHAPES AND EXTREMA", border=False, fonts=partial(FONT, 16))
-heatmap_legend = generate_legend([Image.from_gradient(plt.get_cmap("hot"), (40, 180), direction=(0,-1)).add_grid((1,8))], [["maximum gravity", "50% gravity", "minimum gravity"]], header="GRAVITY HEATMAPS", border=False, fonts=partial(FONT, 16))
-graph_legend = generate_legend([line_box("#800000"), line_box("#008000"), line_box("#000080")], ["horizontal intersection", "vertical intersection", "diagonal intersection"], header="INTERSECTION PLOTS", border=False, fonts=partial(FONT, 16))
+introduction = generate_legend([], [], header="Why are there two of everything?".upper(), footer="There are two possible ways to extend gravity to two dimensions. The first is to keep the inverse square law, which emulates a 3D mass squashed into the plane. The second is to instead use an linear inverse law, which corresponds to the geometric dilution of point-source radiation in 2D. The first approach behaves more like gravity in 3D but is artificial; the second displays all the expected symmetries but looks different in terms of strength and orbits.", border=False, max_width=LEGEND_WIDTH, fonts=partial(FONT, BIGTEXT_SIZE))
+shape_legend = generate_legend([shape_box(255), shape_box(100), shape_box(0), shape_box(min=dot), shape_box(max=dot)],["high density solid", "low density solid", "empty space", "minimum gravity", "maximum gravity"], header="SHAPES AND EXTREMA", border=False, fonts=partial(FONT, BIGTEXT_SIZE))
+heatmap_legend = generate_legend([Image.from_gradient(plt.get_cmap("hot"), (40, 180), direction=(0,-1)).add_grid((1,8))], [["maximum gravity", "50% gravity", "minimum gravity"]], header="GRAVITY HEATMAPS", border=False, fonts=partial(FONT, BIGTEXT_SIZE))
+graph_legend = generate_legend([line_box("#800000"), line_box("#008000"), line_box("#000080")], ["horizontal intersection", "vertical intersection", "diagonal intersection"], header="INTERSECTION PLOTS", border=False, fonts=partial(FONT, BIGTEXT_SIZE))
 legend=Image.from_row([introduction, shape_legend, heatmap_legend, graph_legend], bg="white", padding=10, yalign=0).pad(2, "black")
 
 padded = tmap_leafs(lambda img: img.pad((5,0), "white") if img.width > base.width * 2 else img, rows)
 chart = Image.from_column([Image.from_row(row, yalign=0, padding=5, bg="white") for row in padded], bg="white", xalign=0, padding=10)
-title = Image.from_text("Visualizing gravity in 2 Dimensions".upper(), FONT(48, bold=True))
+title = Image.from_text("Visualizing gravity in 2 Dimensions".upper(), FONT(TITLE_SIZE, bold=True))
 img = Image.from_column([title, legend, chart], bg="white", padding=10)
+img = img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10)
+img.convert("RGB").save("output/gravity.jpg")
 
 # unused quadtree implementation from before I figured out how to use numpy properly
 

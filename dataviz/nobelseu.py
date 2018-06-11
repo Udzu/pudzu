@@ -29,20 +29,20 @@ bycountry = nobels.groupby(('countries', 'category')).count()['name']
 
 def colorfn(c):
     if not isinstance(c, str): return None
-    cname = first_or_default(cname for cname in countries['country'][c] if cname in bycountry)
+    cname = first(cname for cname in countries['country'][c] if cname in bycountry)
     if cname:
         n = bycountry[cname].sum()
         nobelspermil = n * 1000000 / countries['population'][c]
         color = tmap(RGBA, CMAP(nobelspermil / 5))
     else:
-        cname = first_or_default(cname for cname in countries['country'][c] if cname in nobels.groupby('birthplace').count()['name'])
+        cname = first(cname for cname in countries['country'][c] if cname in nobels.groupby('birthplace').count()['name'])
         color = NONNATIVE if cname else NOPRIZE
     return color
     
 def labelfn(c):
     if not isinstance(c, str): return None
     color = colorfn(c)
-    cname = first_or_default(cname for cname in countries['country'][c] if cname in bycountry)
+    cname = first(cname for cname in countries['country'][c] if cname in bycountry)
     n = 0 if cname not in bycountry else bycountry[cname].sum()
     name = Image.from_text(c, arial(16,bold=True), fg="black", bg=color, padding=1)
     winners = sorted(Counter(bycountry[cname].to_dict()).elements(), key=lambda v: CATS.index(v)) if n > 0 else []

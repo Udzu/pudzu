@@ -8,7 +8,7 @@ TOP_BAR_BG = RGBA(230, 230, 240, 255)
 BOT_BAR_BG = RGBA(230, 230, 240, 255)
 
 states = pd.read_csv("datasets/usstates.csv")
-statetable = pd.DataFrame([[first_or_default([dict(d) for _,d in states[(states.grid_x == x) & (states.grid_y == y)].iterrows()]) for x in range(states.grid_x.max()+1)] for y in range(states.grid_y.max()+1)])
+statetable = pd.DataFrame([[first([dict(d) for _,d in states[(states.grid_x == x) & (states.grid_y == y)].iterrows()]) for x in range(states.grid_x.max()+1)] for y in range(states.grid_y.max()+1)])
 
 for births in [True, False]:
 

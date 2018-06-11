@@ -2,13 +2,11 @@ import sys
 sys.path.append('..')
 from charts import *
 from bamboo import *
-from bidi.algorithm import get_display
-from arabic_reshaper import reshape
 
 df = pd.read_csv("datasets/etymalcohol.csv").set_index("language")
 
 CATEGORIES = ["a", "iconcrete", "formigon", "calcestruzzo", "skyrodema", "cruadhtan", "steypa"]
-DESCRIPTIONS = [get_display(reshape("from European alchemical jargon, ultimately from Arabic اَلْكُحُول //al-kuḥūl// (the kohl, a powder used as eye cosmetic).")),
+DESCRIPTIONS = ["from European alchemical jargon, ultimately from Arabic اَلْكُحُول //al-kuḥūl// (the kohl, a powder used as eye cosmetic).",
 "from Icelandic //áfengur// (intoxicating), somehow connected to the preposition //á// (on) and verb //fá// (receive)."]
 
 PALETTE = VegaPalette10
@@ -26,7 +24,7 @@ def labelfn(c, w, h):
     return Image.from_text_bounded(label, (w, h), 24, papply(arial, bold=True), align="center", padding=(0,0,0,2))
     
 map = map_chart("maps/Eurolang.png", colorfn, labelfn)
-legend = generate_legend(PALETTE[:len(DESCRIPTIONS)], DESCRIPTIONS, header="Etymologies", footer=FOOTER, box_sizes=[(120,...) for d in DESCRIPTIONS], max_width=400, box_mask=Image.open("icons/alcohol.png"))
+legend = generate_legend(PALETTE[:len(DESCRIPTIONS)], DESCRIPTIONS, header="Etymologies", footer=FOOTER, box_sizes=[(120,...) for d in DESCRIPTIONS], max_width=400, fonts=partial(arial, 16))
 chart = map.place(legend, align=(1,0), padding=10)
 
 title = Image.from_column([

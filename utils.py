@@ -8,6 +8,7 @@ import operator as op
 import os.path
 import random
 import re
+import unicodedata
 
 from collections import abc, OrderedDict, Iterable, Mapping, Counter
 from collections.abc import Sequence
@@ -184,6 +185,14 @@ class cached_property(object):
 def cached_property_expires_after(expires_after):
     return partial(cached_property, expires_after=expires_after)
 
+def static_vars(**kwargs):
+    """Static variable decorator."""
+    def decorate(fn):
+        for k, v in kwargs.items():
+            setattr(fn, k, v)
+        return fn
+    return decorate
+
 # Iterables
         
 def non_string_iterable(v):
@@ -193,16 +202,21 @@ def non_string_iterable(v):
 def make_iterable(v):
     """Return an iterable from an object, wrapping it in a tuple if needed."""
     return v if non_string_iterable(v) else () if v is None else (v,)
-    
+
+np = optional_import("numpy", ndarray=list)
 def non_string_sequence(v, types=None):
     """Return whether the object is a Sequence other than str, optionally 
     with the given element types."""
-    return isinstance(v, Sequence) and not isinstance(v, str) and (types is None or all(any(isinstance(x, t) for t in make_iterable(types)) for x in v))
-    
+    return (isinstance(v, Sequence) and not isinstance(v, str) or isinstance(v, np.ndarray)) and (types is None or all(any(isinstance(x, t) for t in make_iterable(types)) for x in v))
+
 def make_sequence(v):
     """Return a sequence from an object, wrapping it in a tuple if needed."""
     return v if non_string_sequence(v) else () if v is None else (v,)
     
+def unmake_sequence(v):
+    """Return the first element of a sequence of length 1, otherwise leave unchanged."""
+    return v[0] if non_string_sequence(v) and len(v) == 1 else v
+        
 def remove_duplicates(seq, key=lambda v:v, keep_last=False):
     """Return an order preserving tuple copy containing items from an iterable, deduplicated
     based on the given key function."""
@@ -215,7 +229,7 @@ def remove_duplicates(seq, key=lambda v:v, keep_last=False):
             d[k] = x
     return tuple(d.values())
 
-def first_or_default(iterable, default=None):
+def first(iterable, default=None):
     """Return the first element of an iterable, or a default if there aren't any."""
     try:
         return next(x for x in iter(iterable))
@@ -429,12 +443,39 @@ def replace_map(str, mapping, count=0, ignore_case=False):
     if ignore_case: mapping = CaseInsensitiveDict(mapping)
     return replace_any(str, mapping.keys(), lambda s: mapping[s], count=count, ignore_case=ignore_case)
 
+@static_vars(GERMAN_CONVERSIONS = { 'ß': 'ss', 'ẞ': 'SS', 'Ä': 'AE', 'ä': 'ae', 'Ö': 'OE', 'ö': 'oe', 'Ü': 'UE', 'ü': 'ue' },
+             EXTRA_CONVERSIONS =  { 'ß': 'ss', 'ẞ': 'SS', 'Æ': 'AE', 'æ': 'ae', 'Œ': 'OE', 'œ': 'oe', 'Ĳ': 'IJ', 'ĳ': 'ij',
+                                    'ﬀ': 'ff', 'ﬃ': 'ffi', 'ﬄ': 'ffl', 'ﬁ': 'fi', 'ﬂ': 'fl' })
+def strip_accents(str, aggressive=False, german=False):
+    """Strip accents from a string. Default behaviour is to use NFD normalization
+    (canonical decomposition) and strip combining characters. Aggressive mode also
+    replaces ß with ss, l with l, ø with o and so on. German mode replaces ö with oe, etc."""
+    if german:
+        def german_strip(c,d):
+            c = strip_accents.GERMAN_CONVERSIONS.get(c, c)
+            if len(c) > 1 and c[0].isupper() and d.islower(): c = c.title()
+            return c
+        str = "".join(german_strip(c,d) for c,d in generate_ngrams(str+" ", 2))
+    str = "".join(c for c in unicodedata.normalize('NFD', str) if not unicodedata.combining(c))
+    if aggressive:
+        @partial(ignoring_exceptions, handler=identity, exceptions=KeyError)
+        def aggressive_strip(c):
+            if c in strip_accents.EXTRA_CONVERSIONS:
+                return strip_accents.EXTRA_CONVERSIONS[c]
+            name = unicodedata.name(c)
+            variant = name.find(' WITH ')
+            if variant: 
+                return unicodedata.lookup(name[:variant])
+            return c
+        str = "".join(aggressive_strip(c) for c in str)
+    return str
+    
 # Data structures
 
-class CaseInsensitiveDict(abc.MutableMapping):
-    """Case-insensitive dict."""
+class EquivalenceDict(abc.MutableMapping):
+    """Mapping structure that views keys that normalize to the same thing as equivalent."""
     
-    def __init__(self, d={}, normalize=str.lower, base_factory=dict):
+    def __init__(self, normalize, d={}, base_factory=dict):
         self.normalize = normalize
         self._d = base_factory()
         self._k = {}
@@ -468,10 +509,48 @@ class CaseInsensitiveDict(abc.MutableMapping):
         return len(self._d)
         
     def __repr__(self):
+        return "EquivalenceDict({{{}}}, normalize={}, base_type={})".format(", ".join("{!r}: {!r}".format(self._k[k], v) for (k, v) in self._d.items()), self.normalize.__name__, type(self._d).__name__)
+        
+class CaseInsensitiveDict(EquivalenceDict):
+    """Case-insensitive mapping."""
+    
+    def __init__(self, d={}, base_factory=dict):
+        super().__init__(str.lower, d, base_factory=base_factory)
+        
+    def __repr__(self):
         return "CaseInsensitiveDict({{{}}}, base_type={})".format(", ".join("{!r}: {!r}".format(self._k[k], v) for (k, v) in self._d.items()), type(self._d).__name__)
         
-    def copy(self):
-        return CaseInsensitiveDict(self)
+class NormalizingDict(abc.MutableMapping):
+    """Normalizing dict, mapping key-value pairs to key-value pairs on assignment (or None to drop)."""
+    
+    def __init__(self, normalize, d={}, base_factory=dict):
+        self.normalize = normalize
+        self._d = base_factory()
+        if isinstance(d, abc.Mapping):
+            for k, v in d.items():
+                self.__setitem__(k, v)
+        elif isinstance(d, abc.Iterable):
+            for (k, v) in d:
+                self.__setitem__(k, v)
+    
+    def __getitem__(self, k):
+        return self._d[k]
+    
+    def __setitem__(self, k, v):
+        kv = self.normalize(k, v)
+        if kv: self._d[kv[0]] = kv[1]
+        
+    def __delitem__(self, k):
+        del self._d[k]
+
+    def __iter__(self):
+        return (k for k in self._d)
+        
+    def __len__(self):
+        return len(self._d)
+        
+    def __repr__(self):
+        return "NormalizingDict({{{}}}, normalize={}, base_type={})".format(", ".join("{!r}: {!r}".format(k, v) for (k, v) in self._d.items()), self.normalize.__name__, type(self._d).__name__)
         
 # Numeric
 
@@ -539,5 +618,5 @@ def url_to_filepath(url):
     uparse = urlparse(url)
     upath, uext = os.path.splitext(uparse.path)
     uname = hashlib.sha1(upath.encode('utf-8')).hexdigest()
-    return os.path.join(uparse.netloc, uname + uext)
+    return os.path.join(uparse.netloc or "_local_", uname + uext)
    

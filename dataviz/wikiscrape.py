@@ -21,8 +21,23 @@ def extract_births(year):
     links = remove_duplicate_tags(links)
     return pd.DataFrame([{ "year": year, "link": WikiPage.title_from_url(a['href'])} for a in links])
     
+def extract_people(title, section=None):
+    wp = WikiPage(title)
+    if section:
+        h2_start = find_tags(wp.bs4, all_(string=section), parents_("h2"))
+        h2_end = find_tags(h2_start, next_siblings_('h2', limit=1))
+        links = find_tags(wp.bs4, select_("#mw-content-text ul li"),
+                                  all_("a", href=re.compile(r"^/wiki"), title=re_exclude("(List|American)"), limit=1),
+                                  exclude_(h2_end, is_after),
+                                  exclude_(h2_start, is_before))
+    else:
+        links = find_tags(wp.bs4, select_("#mw-content-text ul li"),
+                                  all_("a", href=re.compile(r"^/wiki"), title=re_exclude("(List|American)"), limit=1))
+    links = remove_duplicate_tags(links)
+    return pd.DataFrame([{ "title": title, "link": WikiPage.title_from_url(a['href'])} for a in links])
+    
 harmonic_mean = optional_import_from('statistics', 'harmonic_mean', lambda data: len(data) / sum(1/x for x in data))
-LIMITS = { 'length': 1500000, 'revisions': 25000, 'pageviews': 1000000 }
+LIMITS = { 'length': 1500000, 'pageviews': 1000000 } # 'revisions': 25000, 
 
 def score_people(df, lang="en", translate_from=None):
     df = df.assign_rows(progressbar = True,
@@ -31,10 +46,10 @@ def score_people(df, lang="en", translate_from=None):
                         title=lambda d: '?' if d['wp'] is None else d['wp'].title,
                         length=lambda d: 1 if d['wp'] is None else len(d['wp'].response.content),
                         pageviews=lambda d: 1 if d['wp'] is None else int(median(([pv['views'] for pv in d['wp'].pageviews("20160101", "20170101")]+[0]*12)[:12])),
-                        revisions=lambda d: 1 if d['wp'] is None else d['wp'].revision_count(),
+                        # revisions=lambda d: 1 if d['wp'] is None else d['wp'].revision_count(),
                         disambiguation=lambda d: d['wp'] and bool(d['wp'].bs4.find(alt="Disambiguation icon")))
     df = df.assign_rows(score=lambda d: harmonic_mean([log(max(d[k], 2)) / log(max_value) for k,max_value in LIMITS.items()]))
-    return df.filter_columns(lambda k: k != 'wp')
+    return df.filter_columns(lambda k: k != 'wp').sort_values("score", ascending=False)
 
 def score_by_name(names, *args, **kwargs):
     df = pd.DataFrame([{'link': name} for name in make_iterable(names)])
@@ -70,7 +85,7 @@ def normalise_scores(df, using=None):
 def combine_scores(decades=range(100,190), langs=["en", "de", "es", "fr", "ja", "ru", "zh"]):
     dfs = [load_decades(decades, lang) for lang in tqdm.tqdm(langs)]
     dfs = [df.groupby('link').first() for df in dfs]
-    df = normalise_scores(sum(df.filter_columns(['length', 'pageviews', 'revisions']) for df in dfs))
+    df = normalise_scores(sum(df.filter_columns(['length', 'pageviews']) for df in dfs)) # , 'revisions'
     return pd.concat([df, dfs[0].filter_columns(['year', 'title'])], axis=1).sort_values("score", ascending=False)
 
 def normalise_and_combine_scores(decades=range(100,190), langs=["en", "de", "es", "fr", "ja", "ru", "zh"]):

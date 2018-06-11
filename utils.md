@@ -14,8 +14,8 @@ Various utility functions and data structures.
 
 ```python
 >> md = optional_import("module")
->> type(md)
-utils.MissingModule
+>> md
+<MissingModule: module>
 >> md.fn(1)
 ImportError: Missing module: module
 >> if md: md.fn(1)
@@ -37,7 +37,7 @@ ImportError: Missing module: module
        bar(match().group(1)
 ```
 
-**CaseInsensitiveDict**: case-insensitive dictionary. Remembers the original case, and supports custom base dictionary containers such as OrderedDict and defaultdict. Accepts a custom normalizer, so can be used for other key equivalences too (such as Unicode equivalence).
+**CaseInsensitiveDict**: case-insensitive dictionary. Remembers the original case, and supports custom base dictionary containers such as OrderedDict and defaultdict.
 
 ```python
 >> d = CaseInsensitiveDict({'Bob': 4098, 'Hope': 4139})
@@ -65,7 +65,20 @@ CaseInsensitiveDict({'BOB': 3, 'Hope': 2}, base_type=OrderedDict)
 >> d
 CaseInsensitiveDict({'Bob': 'Smith'}, base_type=defaultdict)
 ```
-    
+
+**EquivalenceDict**: like CaseInsensitiveDict, but with a custom key normalizer (e.g. Unicode equivalence).
+
+**NormalizingDict**: normalizing dictionary, using a function to convert or drop key-value pairs during assignment.
+
+```python
+>> d = NormalizingDict(lambda k,v: None if v == 0 else (k.upper(), abs(v)))
+>> d["the"] = -1
+>> d["rain"] = 0
+>> d["spain"] = 2
+>> d
+NormalizingDict({'THE': 1, 'SPAIN': 2}, normalize=<lambda>, base_type=dict)
+```
+
 ### Decorators
 
 **ignoring_extra_args**: wrapper that calls the function with the correct number of positional arguments and supported keyword arguments only. Useful for flexible user input.
@@ -161,13 +174,15 @@ False
 ('on', 'the', 'shore')
 ```
 
-**first_or_default**: return the first element of an iterable, or a default if there aren't any.
+**first**: return the first element of an iterable, or a default if there aren't any.
 
 ```python
->> first_or_default(count())
+>> first(count())
 0
->> first_or_default([])
+>> first([])
 None
+>> first([], default=0)
+0
 ```
 
 **is_in**: whether an object is object-identical to any member of an iterable
@@ -348,6 +363,17 @@ True
 '1. The Spain in rain stays mainly on the plain'
 >> strip_any(text, " .")
 '1Theraininspainstaysmainlyontheplain'
+```
+
+**strip_accents**: strip accents from a string. The default is to decompose and remove combining characters; however, there is also an aggressive mode that also replaces æ with ae, ł with l, ø with o, etc, and a German mode that replaces ö with oe, etc.
+
+```python
+>> strip_accents("Łódź, Friedrichstraße, Αθήνα")
+'Łodz, Friedrichstraße, Αθηνα'
+>> strip_accents("Łódź, Friedrichstraße, Αθήνα", aggressive=True)
+'Lodz, Friedrichstrasse, Αθηνα'
+>> strip_accents("über, ÜBER, Über", german=True)
+'ueber, UEBER, Ueber'
 ```
 
 ### Numeric

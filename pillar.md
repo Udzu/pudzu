@@ -4,11 +4,9 @@
 Various Pillow utilities. These are monkey-patched on, allowing continued use of the Image.new factory function. Most have only been tested in RGB/RGBA modes and may not work in other modes. For full features and parameters, see docstrings.
  
 ## Dependencies
-*Required*: [pillow](http://pillow.readthedocs.io/en/4.2.x/index.html), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
+*Required*: [pillow](http://pillow.readthedocs.io/en/4.2.x/index.html), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [numpy](http://www.numpy.org/), [utils](utils.md).
 
-*Recommended*: [numpy](http://www.numpy.org/) (various color and shape features).
-
-*Optional*: [pyphen](http://pyphen.org/) (for text hyphenation), [requests](http://docs.python-requests.org/en/master/) (for HTTP request headers).
+*Optional*: [pyphen](http://pyphen.org/) (for text hyphenation), [requests](http://docs.python-requests.org/en/master/) (for HTTP request headers), [scipy](http://www.scipy.org/) (for Mask borders), [python-bidi](https://pypi.org/project/python-bidi/) (for bidirectional text rendering), [arabic-reshaper](https://github.com/mpcabd/python-arabic-reshaper) (for Arabic text rendering).
 
 ## Documentation
 
@@ -66,18 +64,20 @@ RGBA(red=0, green=0, blue=0, alpha=0)
        RED = "#e41a1c"
        GREEN = "#4daf4a"
        BLUE = "#377eb8"
+>> RGBPalette
+NamedPalette[RED, GREEN, BLUE]
 >> RGBPalette.RED
-'#e41a1c'
+RGBA(red=228, green=26, blue=28, alpha=255)
 >> RGBPalette("green")
-'#4daf4a'
+RGBA(red=77, green=175, blue=74, alpha=255)
 >> RGBPalette["Blue"]
-'#377eb8'
+RGBA(red=55, green=126, blue=184, alpha=255)
 >> RGBPalette[2]
-'#377eb8'
+RGBPalette[2]
 >> list(RGBPalette)
-['#e41a1c', '#4daf4a', '#377eb8']
->> RGBPalette.names
-('RED', 'GREEN', 'BLUE')
+[RGBA(red=228, green=26, blue=28, alpha=255),
+ RGBA(red=77, green=175, blue=74, alpha=255),
+ RGBA(red=55, green=126, blue=184, alpha=255)]
 ```
 
 **font**: shorthand function for generating a truetype font object defaulting to standard variant naming (e.g. arialbd or calibrib). Also, **arial**, **calibri** and **verdana** are predefined.

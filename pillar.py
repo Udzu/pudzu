@@ -3,6 +3,7 @@ import os
 import os.path
 import logging
 import abc as ABC
+import numpy as np
 
 from collections import namedtuple
 from enum import Enum
@@ -18,8 +19,9 @@ from utils import *
 
 pyphen = optional_import("pyphen")
 requests = optional_import("requests")
-np = optional_import("numpy")
 ndimage = optional_import("scipy.ndimage")
+bidi_layout = optional_import_from("bidi.algorithm", "get_display", identity)
+arabic_reshape = optional_import_from("arabic_reshaper", "reshape", identity)
 
 # Various pillow utilities, mostly monkey patched onto the Image, ImageDraw and ImageColor classes
 
@@ -153,21 +155,53 @@ class BoundingBox():
     @property
     def size(self): return (self.width, self.height)
     @property
-    def center(self): return ((self.l + self.r + 1) // 2, (self.u + self.d + 1) // 2)
+    def center(self): return self.point(0.5)
             
+    def point(self, align):
+        """Return the point at a specific alignment."""
+        align = Alignment(align)
+        x = ceil(self.l + align.x * (self.r - self.l))
+        y = ceil(self.u + align.y * (self.d - self.u))
+        return (x, y)
+
     def pad(self, padding):
         """Return a padded bounding box."""
         padding = Padding(padding)
         return BoundingBox((self.l - padding.l, self.u - padding.u, self.r + padding.r, self.d + padding.d))
         
-# Palettes
+# RGBA and palettes
  
+class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
+    """Named tuple representing RGBA colors. Can be initialised by name, integer values, float values or hex strings."""
+    def __new__(cls, *color, red=None, green=None, blue=None, alpha=None):
+        if any([red, green, blue, alpha]):
+            if color:
+               raise ValueError("Invalid RGBA parameters: specify either positional or keyword arguments, not both")
+            elif not all([red, green, blue]):
+               raise ValueError("Invalid RGBA parameters: missing R/G/B value")
+            color = [c for c in (red, green, blue, alpha) if c]
+        rgba = color
+        if len(rgba) == 1:
+            if non_string_iterable(rgba[0]): rgba = rgba[0]
+            elif not rgba[0]: rgba = (0,0,0,0)
+            elif isinstance(rgba[0], str) and rgba[0].startswith("#"):
+                rgba = [int("".join(v), 16) for v in generate_batches(rgba[0][1:], 2)]
+            elif isinstance(rgba[0], str): rgba = ImageColor.getrgb(rgba[0])
+        if non_string_sequence(rgba, float):
+            rgba = [int(round(x*255)) for x in rgba]
+        if len(rgba) == 3 and all(0 <= x <= 255 for x in rgba):
+            return super().__new__(cls, *chain(rgba, [255]))
+        elif len(rgba) == 4 and all(0 <= x <= 255 for x in rgba):
+            return super().__new__(cls, *rgba)
+        else:
+            raise ValueError("Invalid RGBA parameters: {}".format(", ".join(map(str, color))))
+
 class NamedPaletteMeta(type):
     """Metaclass for named color palettes. Allows palette lookup by (case-insensitive) name or index."""
 
     @classmethod
     def __prepare__(metacls, name, bases, **kwds):
-        return OrderedDict()
+        return NormalizingDict(lambda k,v: (k,v if k.startswith("_") else RGBA(v)), base_factory=OrderedDict)
         
     def __new__(metacls, cls, bases, classdict):
         simple_enum_cls = type.__new__(metacls, cls, bases, dict(classdict))
@@ -178,8 +212,7 @@ class NamedPaletteMeta(type):
     def __len__(cls): return len(cls._colors_)
     def __call__(cls, name): return cls._colors_[name]
     def __getitem__(cls, key): return cls._colors_[key] if isinstance(key, str) else list(cls._colors_.values())[key]
-    @property
-    def names(cls): return tuple(cls._colors_.keys())
+    def __repr__(cls): return "NamedPalette[{}]".format(", ".join(cls._colors_.keys()))
         
 class VegaPalette10(metaclass=NamedPaletteMeta):
     BLUE = "#1f77b4"
@@ -280,33 +313,8 @@ class _ImageDraw():
 ImageDraw.text_size = _ImageDraw.text_size
 ImageDraw.word_wrap = _ImageDraw.word_wrap
 
-# ImageColor and RGBA
+# ImageColor
 
-class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
-    """Named tuple representing RGBA colors. Can be initialised by name, integer values, float values or hex strings."""
-    def __new__(cls, *color, red=None, green=None, blue=None, alpha=None):
-        if any([red, green, blue, alpha]):
-            if color:
-               raise ValueError("Invalid RGBA parameters: specify either positional or keyword arguments, not both")
-            elif not all([red, green, blue]):
-               raise ValueError("Invalid RGBA parameters: missing R/G/B value")
-            color = [c for c in (red, green, blue, alpha) if c]
-        rgba = color
-        if len(rgba) == 1:
-            if non_string_iterable(rgba[0]): rgba = rgba[0]
-            elif not rgba[0]: rgba = (0,0,0,0)
-            elif isinstance(rgba[0], str) and rgba[0].startswith("#"):
-                rgba = [int("".join(v), 16) for v in generate_batches(rgba[0][1:], 2)]
-            elif isinstance(rgba[0], str): rgba = ImageColor.getrgb(rgba[0])
-        if non_string_sequence(rgba, float):
-            rgba = [int(round(x*255)) for x in rgba]
-        if len(rgba) == 3 and all(0 <= x <= 255 for x in rgba):
-            return super().__new__(cls, *chain(rgba, [255]))
-        elif len(rgba) == 4 and all(0 <= x <= 255 for x in rgba):
-            return super().__new__(cls, *rgba)
-        else:
-            raise ValueError("Invalid RGBA parameters: {}".format(", ".join(map(str, color))))
-        
 class _ImageColor():
 
     @classmethod
@@ -512,10 +520,12 @@ class _Image(Image.Image):
 
     @classmethod
     def from_text(cls, text, font, fg="black", bg=None, padding=0, line_spacing=0, beard_line=False, align="left",
-                  max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None):
+                  max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None, bidi_reshape=True):
         """Create image from text. If max_width is set, uses the tokenizer and optional hyphenator
         to split text across multiple lines."""
         padding = Padding(padding)
+        if bidi_reshape:
+            text = bidi_layout(arabic_reshape(text))
         if bg is None:
             bg = RGBA(fg)._replace(alpha=0)
         if max_width is not None:
@@ -530,7 +540,7 @@ class _Image(Image.Image):
         return img
 
     @classmethod
-    def from_multitext(cls, texts, fonts, fgs="black", bgs=None, underlines=0, strikethroughs=0, img_offset=0, beard_line=False):
+    def from_multitext(cls, texts, fonts, fgs="black", bgs=None, underlines=0, strikethroughs=0, img_offset=0, beard_line=False, bidi_reshape=True):
         """Create image from multiple texts, lining up the baselines. Only supports single-line texts.
         For multline texts, combine images with Image.from_column (with equal_heights set to True).
         The texts parameter can also include images, which are lined up to sit on the baseline+img_offset."""
@@ -544,7 +554,7 @@ class _Image(Image.Image):
         if not all(l == len(texts) for l in lengths):
             raise ValueError("Number of fonts, fgs, bgs, underlines or strikethroughs is inconsistent with number of texts: got {}, expected {}".format(lengths, len(texts)))
         bgs = [bg if bg is not None else RGBA(fg)._replace(alpha=0) for fg, bg in zip(fgs, bgs)]
-        imgs = [cls.from_text(text, font, fg, bg, beard_line=beard_line) if isinstance(text, str) else text.remove_transparency(bg) for text, font, fg, bg in zip(texts, fonts, fgs, bgs)]
+        imgs = [cls.from_text(text, font, fg, bg, beard_line=beard_line, bidi_reshape=bidi_reshape) if isinstance(text, str) else text.remove_transparency(bg) for text, font, fg, bg in zip(texts, fonts, fgs, bgs)]
         ascents = [font.getmetrics()[0] if isinstance(text, str) else text.height+img_offset for text, font in zip(texts, fonts)]
         max_ascent = max(ascents)
         imgs = [img.pad((0,max_ascent-ascent,0,0), bg) for img, ascent, bg in zip(imgs, ascents, bgs)]
@@ -556,10 +566,12 @@ class _Image(Image.Image):
         
     @classmethod
     def from_markup(cls, markup, font_family, fg="black", bg=None, highlight="#0645AD", overline_widths=(2,1), line_spacing=0, align="left",
-                    max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None, padding=0, beard_line=False):
+                    max_width=None, tokenizer=whitespace_span_tokenize, hyphenator=None, padding=0, beard_line=False, bidi_reshape=True):
         """Create image from simle markup. See MarkupExpression for details. Max width uses normal font to split text so is not precise."""
         if isinstance(overline_widths, Integral):
             overline_widths = (overline_widths, overline_widths)
+        if bidi_reshape:
+            markup = bidi_layout(arabic_reshape(markup))
         mexpr = MarkupExpression(markup)
         if max_width is not None:
             text = ImageDraw.word_wrap(mexpr.get_text(), font_family(), max_width, tokenizer, hyphenator)
@@ -571,7 +583,7 @@ class _Image(Image.Image):
             fgs = [highlight if "c" in m else fg for s,m in line]
             underlines = [overline_widths[0] if "u" in m else 0 for s,m in line]
             strikethroughs = [overline_widths[1] if "s" in m else 0 for s,m in line]
-            rows.append(cls.from_multitext(texts, fonts, fgs, bg, underlines=underlines, strikethroughs=strikethroughs, beard_line=beard_line))
+            rows.append(cls.from_multitext(texts, fonts, fgs, bg, underlines=underlines, strikethroughs=strikethroughs, beard_line=beard_line, bidi_reshape=False))
         return Image.from_column(rows, yalign=0, equal_heights=True, bg=bg, xalign=["left","center","right"].index(align)/2).pad(padding, bg)
         
     @classmethod
@@ -650,10 +662,12 @@ class _Image(Image.Image):
         """Create an image from a url, optionally saving it to a filepath."""
         HEADERS = {'User-Agent': 'Mozilla/5.0'}
         uparse = urlparse(url)
-        if uparse.scheme == '':
-            raise TypeError("from_url expects url, got {}".format(url))
         logger.debug("Reading image from {}".format(url))
-        content = requests.get(url, headers=HEADERS).content if requests else urlopen(url).read()
+        if uparse.scheme == '':
+            with open(url, 'rb') as f:
+                content = f.read()
+        else:
+            content = requests.get(url, headers=HEADERS).content if requests else urlopen(url).read()
         if filepath is None:
             fh = BytesIO(content)
             return Image.open(fh)
@@ -680,7 +694,7 @@ class _Image(Image.Image):
     @classmethod
     def generate_bounded(cls, box_size, parameters, generator):
         """Return the first parametrised image that fits within the box_size."""
-        return first_or_default(img for p in parameters for img in [generator(p)] if img.width <= box_size[0] and img.height <= box_size[1])
+        return first(img for p in parameters for img in [generator(p)] if img.width <= box_size[0] and img.height <= box_size[1])
         
     @classmethod
     def from_text_bounded(cls, text, box_size, max_font_size, font_fn, *args, min_font_size=6, **kwargs):
@@ -1282,7 +1296,7 @@ class MarkupExpression:
         while old or new:
             if old and new and old[0] == new[0]:
                 merged, old, new = merged + old[0], old[1:], new[1:]
-            elif x << first_or_default(m for m in itertools.chain(self.START_END.keys(), self.START_END.values()) if old.startswith(m)):
+            elif x << first(m for m in itertools.chain(self.START_END.keys(), self.START_END.values()) if old.startswith(m)):
                 merged, old = merged + x(), old[len(x()):]
             elif new and new[0] in "\n-":
                 merged, new = merged + new[0], new[1:]

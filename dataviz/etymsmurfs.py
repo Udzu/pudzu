@@ -17,7 +17,8 @@ FOOTER = "\n".join([
 "• Pitufos comes from Patufet, a Catalan folktale character.",
 "• Pottokiak comes from Pottoka, the Basque pony breed.",
 "• Puffi comes from buffi (funny/strange).",
-"• Törpök means dwarves."
+"• Törpök means dwarves.",
+"• Dardasim is a portmanteau of dardakim (young children) and nanasim (dwarfs)"
 ])
  
 def colorfn(c):
@@ -28,10 +29,10 @@ def colorfn(c):
 def labelfn(c, w, h):
     if c not in df.index: return None
     label = df.word[c].replace("\\n", "\n")
-    return Image.from_text_bounded(label, (w, h), 24, papply(arial, bold=True), align="center", padding=(0,0,0,2))
+    return Image.from_text_bounded(label, (w, h), 24, papply(font, "fonts/arialu", bold=True), align="center", padding=(0,0,0,2))
     
-map = map_chart("maps/Eurolang.png", colorfn, labelfn)
-legend = generate_legend(PALETTE, DESCRIPTIONS, header="Etymologies", footer=FOOTER, box_sizes=(80,40), max_width=300, box_mask=Image.open("icons/smurf.jpg").invert_mask())
+map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
+legend = generate_legend(PALETTE, DESCRIPTIONS, header="Etymologies", footer=FOOTER, box_sizes=(80,40), max_width=300, box_mask=Image.open("icons/smurf.jpg").convert("L").invert_mask(), fonts=partial(arial, 16))
 chart = map.place(legend, align=(1,0), padding=10)
 
 title = Image.from_column([

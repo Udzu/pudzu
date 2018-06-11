@@ -19,7 +19,7 @@ def colorfn(c):
 def labelfn(c, w,h):
    if c in ["Moldova", "Belarus", "Kosovo"]: return Image.from_text("?", FONT(16, bold=True))
    if c not in df.index: return None
-   return first_or_default((img for sz in range(16,6,-1) for img in [Image.from_column([
+   return first((img for sz in range(16,6,-1) for img in [Image.from_column([
         Image.from_text(df.name[c], FONT(sz, bold=True), max_width=w, align="center"),
         Image.EMPTY_IMAGE if non(df.meaning[c]) else Image.from_text("({})".format(df.meaning[c]), FONT(sz-2), max_width=w, align="center")
     ])] if img.width <= w and img.height <= h), None)

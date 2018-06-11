@@ -12,13 +12,13 @@ logger = logging.getLogger('charts')
 
 # Legends
 
-def generate_legend(boxes, labels, box_sizes=40, fonts=papply(arial, 16), fg="black", bg="white",
+def generate_legend(boxes, labels, box_sizes=40, fonts=None, fg="black", bg="white",
                     header=None, footer=None, max_width=None, spacing=0, box_mask=None, border=True):
     """Generate a chart category legend.
     - boxes (list of colors/images): colors or images to use as boxes
     - labels (list of markups/images/lists): labels to use beside the boxes
     - box_sizes (int/(int,int)/list of (int,int)): size(s) of boxes to use for colors; height can be set to ... [40x40]
-    - fonts (font/three fonts/font function): normal, bold and italics fonts [16-point arial]
+    - fonts (font/three fonts/font function): normal, bold and italics fonts [None]
     - fg (color): text and border color [black]
     - bg (color): background color [white]
     - header (markup/image/None): header at top of legend, automatically bolded if markup [None]
@@ -93,7 +93,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
               label_interval=Ellipsis, label_font=None, colors=VegaPalette10, 
               ylabels=Ellipsis, clabels=Ellipsis, rlabels=Ellipsis,
               xlabel=None, ylabel=None, title=None,
-              legend_position=None, legend_fonts=papply(arial, 16),legend_box_sizes=(40,40), legend_args={}):
+              legend_position=None, legend_fonts=None, legend_box_sizes=(40,40), legend_args={}):
     """Plot a bar chart.
     - data (pandas dataframe): table to plot
     - bar_width (int): bar width (or height, if horizontal)
@@ -118,7 +118,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
     - ylabel (image): image to use for y axis label [none]
     - title (image): image to use for title [none]
     - legend_position (alignment): legend alignment [None]
-    - legend_fonts (font family): font family [16-point arial]
+    - legend_fonts (font family): font family [None]
     - legend_box_sizes (col->int/(int,int)): sizes to use for legend boxes [40x40]
     - legend_args (dict): additional arguments to generate legends [none]
     Functional arguments don't need to accept all the arguments and can also be passed in as
@@ -233,7 +233,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
                 if BarChartLabelPosition.INSIDE in clabel_dict:
                     label = clabel_dict[BarChartLabelPosition.INSIDE](c,r,v,bar.width,bar.height)
                     if isinstance(label, str):
-                        label = Image.from_text(label, label_font, fg=fg) if label_font else None
+                        label = Image.from_text(label, label_font, fg=fg, align='center') if label_font else None
                     if label is not None:
                         return bar.place(hzimg(label))
                 return bar
@@ -308,7 +308,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
             for c, v in enumerate(row):
                 label = clabel_fn(c,r,v)
                 if isinstance(label, str):
-                    label = Image.from_text(label, label_font, fg=fg, padding=hzsize((0,2)))  if label_font else None
+                    label = Image.from_text(label, label_font, fg=fg, align='center', padding=hzsize((0,2)))  if label_font else None
                 if label is None:
                     continue
                 if type == BarChartType.SIMPLE:
@@ -333,7 +333,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
         for r, row in enumerate(data.values):
             label = rlabel_fn(r)
             if isinstance(label, str):
-                label = Image.from_text(label, label_font, fg=fg, padding=hzsize((0,2))) if label_font else None
+                label = Image.from_text(label, label_font, fg=fg, align='center', padding=hzsize((0,2))) if label_font else None
             if label is None:
                 continue
             if type in [BarChartType.STACKED, BarChartType.STACKED_PERCENTAGE, BarChartType.OVERLAYED]:
@@ -805,7 +805,7 @@ class ImageMapSort(Enum):
 def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite=False):
     """Generate a name csv skeleton, for use in map_chart."""
     if not overwrite and os.path.exists(name_csv_path(map)):
-        raise Exception("Imagemap csv file already exists.")
+        raise Exception("Name csv file already exists.")
     logger.info("Generating name CSV file at {}".format(name_csv_path(map)))
     img = Image.open(map)
     if sort == ImageMapSort.USAGE:
@@ -819,7 +819,7 @@ def generate_name_csv(map, presorted=(), sort=ImageMapSort.HORIZONTAL, overwrite
                 coldict[tuple(pixel)] = True
         cols = list(coldict)
     cols = list(presorted) + [c for c in cols if c not in presorted]
-    rs = [{ 'color': "|".join(str(x) for x in c), 'name': "color{}".format(i) } for i,c in enumerate(cols)]
+    rs = [{ 'color': "|".join(str(x) for x in c), 'name': "color{}".format(i), 'label_align': "" } for i,c in enumerate(cols)]
     pd.DataFrame(rs).to_csv(name_csv_path(map), index=False, encoding="utf-8")
 
 def generate_bbox_csv(map, labels=True):
@@ -871,6 +871,7 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
         df = load_name_csv(map)
         logger.info("Using color name file {}".format(name_csv_path(map)))
         namemap = { tuple(d['color']) : d['name'] for _,d in df.iterrows() }
+        labelaligns = { tuple(d['color'])[:3] : unmake_sequence(tmap(float, str(get_non(d, 'label_align', "0.5")).split("|"))) for _,d in df.iterrows() }
     except FileNotFoundError:
         logger.warning("No color name file found at {}".format(name_csv_path(map)))
         namemap = {}
@@ -887,6 +888,7 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
     for c,name in colors:
         bbox = bboxes.get(c[:3], BoundingBox(img))
         color = ignoring_extra_args(color_fn)(name, bbox.width, bbox.height) if callable(color_fn) else color_fn.get(name)
+        logger.debug("Filling {} with {}".format(name, color))
         if color is None: continue
         mask = original.select_color(c)
         if not isinstance(color, Image.Image):
@@ -918,6 +920,7 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
                 logger.warning("{}x{} label for {} too small to fit {}x{} bounding box".format(label.width, label.height, name, labelboxes[c].width, labelboxes[c].height))
             else:
                 labelled.add(c)
+                label = Rectangle(labelboxes[c].size, None).place(label, align=labelaligns[c])
                 img = img.pin(label, labelboxes[c].center)
                 
     # add overlay
@@ -938,18 +941,18 @@ def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black"
             
 # Calendar charts
 
-def month_chart(month, cell_width=60, cell_height=40, cell_padding=1, fg="black", fonts=papply(arial, 16),
+def month_chart(month, fonts, cell_width=60, cell_height=40, cell_padding=1, fg="black",
                 day_bg="white", day_label="{D}", day_overlay=None, day_start=0,
                 out_of_month_bg="white", out_of_month_label=None, out_of_month_overlay=None,
                 weekday_height=20, weekday_bg="#A0A0A0", weekday_label=lambda d: d.date_format("{W}")[:3].upper(), weekday_overlay=None,
                 month_height=30, month_bg="#606060", month_label="{M} {Y}", month_overlay=None, month_image=None):
     """Generate a calendar chart for a single month.
     - month (Date/DateRange): date and calendar of the month to chart
+    - fonts (font/three fonts/font function): month, weekday and daily label fonts
     - cell_width (int): width of each day cell [60]
     - cell_height (int): height of each day cell [40]
     - cell_padding (int): padding between cells [1]
     - fg (color): color for labels and padding [black]
-    - fonts (font/three fonts/font function): month, weekday and daily label fonts [16-point arial]
     - day_bg (date,width,height->color/pattern): day cell background [white]
     - day_label (format / date,width,height->string/img): day label ["1", "2", etc]
     - day_overlay (date,width,height->img): day overlay [None]

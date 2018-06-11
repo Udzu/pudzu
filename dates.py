@@ -194,7 +194,7 @@ class WesternCalendar(Calendar):
         
     def days_in_month(self, year, month): 
         if month == 2: return 28 + int(year % 4 == 0) - int(self.gregorian and year % 100 == 0 and year % 400 != 0)
-        elif month in [4,7,9,11]: return 30
+        elif month in [4,6,9,11]: return 30
         else: return 31
         
     def months_in_year(self, year):

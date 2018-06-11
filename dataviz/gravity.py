@@ -1,14 +1,16 @@
 import sys
 sys.path.append('..')
 
-from scipy import signal
+import hashlib
 import matplotlib.pyplot as plt
+from scipy import signal
+from functools import wraps
 from pillar import *
 from charts import *
 
-# naive gravity calculation that's fast enough because numpy
-
 logger.setLevel(logging.INFO)
+
+# naive gravity calculation that's fast enough because numpy
 
 np.seterr(divide='ignore', invalid='ignore')
 
@@ -29,10 +31,11 @@ def gravity_magnitude(arr, normalised=True, linear=False, cached=True):
     mag = (components[0] ** 2 + components[1] ** 2) ** 0.5
     return mag / mag.max() if normalised else mag
     
+@wraps(gravity_magnitude)
 def gravity_cached(arr, **kwargs):
     if isinstance(arr, Image.Image):
         arr = mask_to_array(arr)
-    h = hash(arr.data.tobytes())
+    h = hashlib.sha1(arr.data.tobytes()).hexdigest()
     p = "cache/gravity_{}{}.npy".format(h, "".join("_{}_{}".format(k,v) for k,v in kwargs.items()))
     if os.path.exists(p):
         logger.log(logging.INFO, "Loading cached gravity array")
@@ -97,22 +100,14 @@ def odd(n): return round(n) + (round(n)-1)%2
 
 # sizes
 
-# WIDTH = 60
-# BIGTEXT_SIZE = 16
-# TEXT_SIZE = 12
-# PADDING = 20
-# FONT = arial
-# LEGEND_WIDTH = 350
-# TITLE_SIZE = 48
-
-FONT = calibri
+FONT = arial
 WIDTH = 120
 PADDING = 20
 BIGTEXT_SIZE = 28
 TEXT_SIZE = 18
 DOT_SIZE = 8
 LINE_SIZE = 3
-LEGEND_WIDTH = 700
+LEGEND_WIDTH = 900
 TITLE_SIZE = 92
 
 # shape config (max and min shapes are approximations based on minmax above but should be good enough for illustrative purposes)
@@ -138,7 +133,7 @@ SHAPES["circle"] = ShapeOpts("circle", circle, dot, circle_max, description=circ
 ellipse_height = odd(pwidth / 2)
 ellipse = base.place(Ellipse((pwidth, ellipse_height)))
 ellipse_max = Rectangle(pwidth,(0,0,0,0)).pin(dot,(pwidth//2+1,pwidth//2+ellipse_height//2+1)).pin(dot,(pwidth//2+1,pwidth//2-ellipse_height//2+1))
-ellipse_description = "Standing on the pole places you closer to the centre of mass (the monopole contribution), while standing on the equator directs more force downwards (the quadrupole contribution). The former wins out, though the latter cancels out most of the difference."
+ellipse_description = "Standing on the pole places you closer to the centre of mass (the //monopole// contribution), while standing on the equator directs more force downwards (the //quadrupole// contribution). The former wins out, though the latter cancels out most of the difference."
 SHAPES["ellipse"] = ShapeOpts("ellipse", ellipse, dot, ellipse_max, scanlines="vh", description=ellipse_description)
 
 core = base.place(Ellipse(pwidth, (0,0,0,100))).place(Ellipse(ppwdith))
@@ -213,11 +208,11 @@ def shape_box(alpha=0,min=None,max=None):
 def line_box(color):
     return Rectangle(40, 0).place(Rectangle((40,3), color))
 
-introduction = generate_legend([], [], header="Why is there two of everything?".upper(), footer="There are two possible ways to extend gravity to two dimensions. The first is to keep the inverse square law, which emulates a 3D mass squashed into the plane. The second is to instead use an linear inverse law, which corresponds to the geometric dilution of point-source radiation in 2D. The first approach behaves more like gravity in 3D but is artificial; the second displays all the expected symmetries but looks different in terms of strength and orbits.", border=False, max_width=LEGEND_WIDTH, fonts=partial(FONT, BIGTEXT_SIZE))
-shape_legend = generate_legend([shape_box(255), shape_box(100), shape_box(0), shape_box(min=dot), shape_box(max=dot)],["high density solid", "low density solid", "empty space", "minimum gravity", "maximum gravity"], header="SHAPES AND EXTREMA", border=False, fonts=partial(FONT, BIGTEXT_SIZE))
-heatmap_legend = generate_legend([Image.from_gradient(plt.get_cmap("hot"), (40, 180), direction=(0,-1)).add_grid((1,8))], [["maximum gravity", "50% gravity", "minimum gravity"]], header="GRAVITY HEATMAPS", border=False, fonts=partial(FONT, BIGTEXT_SIZE))
-graph_legend = generate_legend([line_box("#800000"), line_box("#008000"), line_box("#000080")], ["horizontal intersection", "vertical intersection", "diagonal intersection"], header="INTERSECTION PLOTS", border=False, fonts=partial(FONT, BIGTEXT_SIZE))
-legend=Image.from_row([introduction, shape_legend, heatmap_legend, graph_legend], bg="white", padding=10, yalign=0).pad(2, "black")
+introduction = generate_legend([], [], header="Why is there two of everything?".upper(), padding=5, footer="There are two possible ways to extend gravity to two dimensions. The first is to keep the inverse square law, which emulates a 3D mass squashed into the plane. The second is to instead use an linear inverse law, which corresponds to the geometric dilution of point-source radiation in 2D. The first approach behaves more like gravity in 3D but is artificial; the second displays all the expected symmetries but looks different in terms of strength and orbits.", border=False, max_width=LEGEND_WIDTH, fonts=partial(FONT, BIGTEXT_SIZE))
+shape_legend = generate_legend([shape_box(255), shape_box(100), shape_box(0), shape_box(min=dot), shape_box(max=dot)],["high density solid", "low density solid", "empty space", "minimum gravity", "maximum gravity"], padding=5, header="SHAPES AND EXTREMA", border=False, fonts=partial(FONT, BIGTEXT_SIZE))
+heatmap_legend = generate_legend([Image.from_gradient(plt.get_cmap("hot"), (40, 180), direction=(0,-1)).add_grid((1,8))], [["maximum gravity", "50% gravity", "minimum gravity"]], header="GRAVITY HEATMAPS", padding=5, border=False, fonts=partial(FONT, BIGTEXT_SIZE))
+graph_legend = generate_legend([line_box("#800000"), line_box("#008000"), line_box("#000080")], ["horizontal intersection", "vertical intersection", "diagonal intersection"], header="INTERSECTION PLOTS", padding=5, border=False, fonts=partial(FONT, BIGTEXT_SIZE))
+legend=Image.from_row([introduction, shape_legend, heatmap_legend, graph_legend], bg="white", padding=(10,0), yalign=0).pad(2, "black")
 
 # title
 

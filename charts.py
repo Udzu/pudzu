@@ -13,7 +13,7 @@ logger = logging.getLogger('charts')
 # Legends
 
 def generate_legend(boxes, labels, box_sizes=40, fonts=None, fg="black", bg="white",
-                    header=None, footer=None, max_width=None, spacing=0, box_mask=None, border=True):
+                    header=None, footer=None, padding=(2,3), max_width=None, spacing=0, box_mask=None, border=True):
     """Generate a chart category legend.
     - boxes (list of colors/images): colors or images to use as boxes
     - labels (list of markups/images/lists): labels to use beside the boxes
@@ -23,6 +23,7 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=None, fg="black", bg="whi
     - bg (color): background color [white]
     - header (markup/image/None): header at top of legend, automatically bolded if markup [None]
     - footer (markup/image/None): footer at bottom of legend, automatically italicised if markup [None]
+    - padding (int/(int,int)): padding around header, legend and footer
     - max_width (int/None): legend width limit, excluding border and padding [None]
     - spacing (int): vertical spacing between categories [0]
     - box_mask(image): optional mask to apply over the boxes [None]
@@ -72,7 +73,7 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=None, fg="black", bg="whi
     else:
         label_img = None
     
-    legend = Image.from_column([i for i in [header, label_img, footer] if i is not None], padding=(2,3), xalign=0, bg=bg)
+    legend = Image.from_column([i for i in [header, label_img, footer] if i is not None], padding=padding, xalign=0, bg=bg)
     
     if border: legend = legend.pad(2,bg).pad(1, fg)
     return legend

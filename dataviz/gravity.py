@@ -73,12 +73,14 @@ def minblend(shape, p=0.25, **kwargs):
         ignoring_extra_args(minmax)(ignoring_extra_args(gravity_cached)(shape, **kwargs), **kwargs), p=p)
 
 def linechart(data, width, height, color, cache="cache/gravity_plot.png"):
+    # i hate matplotlib
     fig = plt.figure(figsize=(width/100,height/100), dpi=100)
     ax = fig.add_axes((0,0,1,1))
     ax.set_axis_off()
     ax.plot(data, color)
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
+    ax.margins(0)
     plt.ylim(0,1)
     plt.savefig(cache, dpi='figure', transparent=True)
     plt.close()
@@ -214,9 +216,9 @@ chart = Image.from_column([Image.from_row(row, yalign=0, padding=5, bg="white") 
 # legend
 
 def shape_box(alpha=0,min=None,max=None):
-    return shapeplot(Rectangle(40,(0,0,0,alpha)), min=min and Rectangle(40,0).place(min), max=max and Rectangle(40,0).place(max))
+    return shapeplot(Rectangle(36,(0,0,0,alpha)).pad(2,0), min=min and Rectangle(40,0).place(min), max=max and Rectangle(40,0).place(max))
 def line_box(color):
-    return Rectangle(40, 0).place(Rectangle((40,3), color))
+    return Rectangle(40, 0).place(Rectangle((40,3), color), align=0.6)
 
 introduction = generate_legend([], [], header="Why is there two of everything?".upper(), padding=5, footer="There are two possible ways to extend gravity to two dimensions. The first is to keep the inverse square law, which emulates a 3D mass squashed into the plane. The second is to instead use a linear inverse law, which corresponds to the geometric dilution of point-source radiation in 2D. The first approach (right) behaves more like gravity in 3D but is artificial; the second (left) displays all the expected symmetries but looks different in terms of strength and orbits.", border=False, max_width=LEGEND_WIDTH, fonts=partial(FONT, BIGTEXT_SIZE))
 shape_legend = generate_legend([shape_box(255), shape_box(100), shape_box(0), shape_box(min=dot), shape_box(max=dot)],["high density solid", "low density solid", "empty space", "minimum gravity", "maximum gravity"], padding=5, header="SHAPES AND EXTREMA", border=False, fonts=partial(FONT, BIGTEXT_SIZE))
@@ -229,7 +231,7 @@ legend=Image.from_row([introduction, shape_legend, heatmap_legend, graph_legend]
 title = Image.from_text("Visualizing gravity in 2 Dimensions".upper(), FONT(TITLE_SIZE, bold=True))
 img = Image.from_column([title, legend, chart], bg="white", padding=BIGTEXT_SIZE)
 img = img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10)
-img.convert("RGB").save("output/gravity.jpg")
+img.save("output/gravity.png")
 
 # unused quadtree implementation from before I figured out how to use numpy properly
 

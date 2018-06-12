@@ -118,59 +118,69 @@ class ShapeOpts(namedtuple('ShapeOpts', 'name,shape,min,max,min_linear,max_linea
     def __new__(cls, name, shape, min=None, max=None, min_linear=..., max_linear=..., scanlines="h", description="Some **interesting** point?"):
         return super().__new__(cls, name, shape, min, max, min if min_linear == ... else min_linear, max if max_linear == ... else max_linear, scanlines, description)
         
-# actual shapes (the way I've ended up doing max and min shapes is really stupid, sorry)
+# actual shapes (the way I've ended up doing max and min shapes is really stupid for some reason, sorry)
 
 base = Image.new("RGBA", (round(WIDTH*1.5), round(WIDTH*1.5)))
-pwidth = odd(WIDTH*2/3)
-ppwdith = odd(pwidth*3/4)
+pw = odd(WIDTH*2/3)
+ppw = odd(pw*3/4)
 dot = Ellipse(DOT_SIZE)
 
-circle = base.place(Ellipse(pwidth))
-circle_max = MaskIntersection(..., masks=(Ellipse(pwidth+LINE_SIZE), Ellipse(pwidth-LINE_SIZE, invert=True)), include_missing=True)
-circle_description = "With inverse force, gravity outside the circle behaves as if all the circle's mass were concentrated in the centre, while inside it decreases linearly: i.e. just like constant density spheres in 3D. With inverse-square force, the nearer parts of the shell apply more force than the farther parts, resulting in greater attraction towards the surface."
+circle = base.place(Ellipse(pw))
+circle_max = MaskIntersection(..., masks=(Ellipse(pw+LINE_SIZE), Ellipse(pw-LINE_SIZE, invert=True)), include_missing=True)
+circle_description = "With inverse force, gravity outside the circle behaves as if all the circle's mass were concentrated at the center, while inside it decreases linearly: just like constant density spheres in 3D. With inverse-square force, the nearer parts of the shell apply more force than the farther parts, resulting in greater attraction towards the surface."
 SHAPES["circle"] = ShapeOpts("circle", circle, dot, circle_max, description=circle_description)
 
-ellipse_height = odd(pwidth / 2)
-ellipse = base.place(Ellipse((pwidth, ellipse_height)))
-ellipse_max = Rectangle(pwidth,(0,0,0,0)).pin(dot,(pwidth//2+1,pwidth//2+ellipse_height//2+1)).pin(dot,(pwidth//2+1,pwidth//2-ellipse_height//2+1))
-ellipse_description = "Standing on the pole places you closer to the centre of mass (the //monopole// contribution), while standing on the equator directs more force downwards (the //quadrupole// contribution). The former wins out, though the latter cancels out most of the difference."
+ellipse_height = odd(pw / 2)
+ellipse = base.place(Ellipse((pw, ellipse_height)))
+ellipse_max = Rectangle(pw,0).pin(dot,(pw//2+1,pw//2+ellipse_height//2+1)).pin(dot,(pw//2+1,pw//2-ellipse_height//2+1))
+ellipse_description = "Standing on the pole of the ellipse places you closer to the center of mass (the //monopole// contribution), while standing on the equator directs more of the force downwards (the //quadrupole// contribution). The former wins out, though the latter cancels out most of the difference."
 SHAPES["ellipse"] = ShapeOpts("ellipse", ellipse, dot, ellipse_max, scanlines="vh", description=ellipse_description)
 
-core = base.place(Ellipse(pwidth, (0,0,0,100))).place(Ellipse(ppwdith))
-core_max = MaskIntersection(..., masks=(Ellipse(ppwdith+LINE_SIZE), Ellipse(ppwdith-LINE_SIZE, invert=True)), include_missing=True)
+core = base.place(Ellipse(pw, (0,0,0,100))).place(Ellipse(ppw))
+core_max = MaskIntersection(..., masks=(Ellipse(ppw+LINE_SIZE), Ellipse(ppw-LINE_SIZE, invert=True)), include_missing=True)
 core_description = "A dense enough core (like the Earth's) can result in gravity increasing as you approach it. With inverse force this increase is linear."
 SHAPES["core"] = ShapeOpts("dense core", core, dot, core_max, description=core_description)
 
-hollow = base.place(MaskIntersection(..., masks=(Ellipse(pwidth), Ellipse(ppwdith, invert=True)), include_missing=True))
-hollow_min = MaskIntersection(..., masks=(Ellipse(round(pwidth*0.85)+LINE_SIZE), Ellipse(round(pwidth*0.85)-LINE_SIZE, invert=True)), include_missing=True).place(dot)
-hollow_min_linear = Ellipse(ppwdith)
-hollow_description = "With inverse force, a hollow shell applies //zero// net force to objects inside: an unintuitive result of the Shell Theorem. With inverse-square force, the nearer parts of the shell do attract more."
+hollow = base.place(MaskIntersection(..., masks=(Ellipse(pw), Ellipse(ppw, invert=True)), include_missing=True))
+hollow_min = MaskIntersection(..., masks=(Ellipse(round(pw*0.85)+LINE_SIZE), Ellipse(round(pw*0.85)-LINE_SIZE, invert=True)), include_missing=True).place(dot)
+hollow_min_linear = Ellipse(ppw)
+hollow_description = "With inverse force, a hollow shell applies //zero// net force to objects inside: an unintuitive result of the Shell Theorem. With inverse-square force, the nearer parts of the shell attract more."
 SHAPES["hollow"] = ShapeOpts("hollow shell", hollow, hollow_min, circle_max, hollow_min_linear, description=hollow_description)
 
-mountain = base.place(Ellipse(pwidth).pin(Triangle(odd(pwidth/3)), (pwidth//2+1, pwidth//20), align=(0.5,1)))
-mountain_min = dot.pad((0,odd(pwidth/4),0,0), 0)
-mountain_max = Rectangle((odd(pwidth*0.8),odd(pwidth*0.5)),(0,0,0,0)).pad((0,odd(pwidth/4),0,0), 0).pin(dot,(odd(pwidth*0.8),odd(pwidth/4))).pin(dot,(0,odd(pwidth/4)))
-mountain_max_linear = Rectangle((odd(pwidth*0.55),odd(pwidth*0.95)),(0,0,0,0)).pad((0,odd(pwidth/4),0,0), 0).pin(dot,(odd(pwidth*0.55),odd(pwidth*0.95+pwidth/4))).pin(dot,(0,odd(pwidth*0.95+pwidth/4)))
-mountain_description = "Similar to the ellipse scenario, the gravitational pull at the base of the mountain is greater than at its peak. The point of maximum attraction depends on the level of force decay."
+mountain = base.place(Ellipse(pw).pin(Triangle(odd(pw/3)), (pw//2+1, pw//20), align=(0.5,1)))
+mountain_min = dot.pad((0,odd(pw/4),0,0), 0)
+mountain_max = Rectangle((odd(pw*0.8),odd(pw*0.5)),0).pad((0,odd(pw/4),0,0), 0).pin(dot,(odd(pw*0.8),odd(pw/4))).pin(dot,(0,odd(pw/4)))
+mountain_max_linear = Rectangle((odd(pw*0.55),odd(pw*0.95)),0).pad((0,odd(pw/4),0,0), 0).pin(dot,(odd(pw*0.55),odd(pw*0.95+pw/4))).pin(dot,(0,odd(pw*0.95+pw/4)))
+mountain_description = "Similar to the ellipse scenario, the gravitational pull at the base of a mountain is greater than at its peak. The point of maximum attraction depends on the level of force decay."
 SHAPES["mountain"] = ShapeOpts("mountain", mountain, mountain_min, mountain_max, ..., mountain_max_linear, scanlines="v", description=mountain_description)
 
-square = base.place(Rectangle(pwidth))
+square = base.place(Rectangle(pw))
 offsets = Padding(0)
-square_max = Rectangle(pwidth,(0,0,0,0)).pin(dot,(pwidth//2+1,0),offsets=offsets).pin(dot,(pwidth//2+1,pwidth),offsets=offsets).pin(dot,(0,pwidth//2+1),offsets=offsets).pin(dot,(pwidth,pwidth//2+1),offsets=offsets)
+square_max = Rectangle(pw,0).pin(dot,(pw//2+1,0),offsets=offsets).pin(dot,(pw//2+1,pw),offsets=offsets).pin(dot,(0,pw//2+1),offsets=offsets).pin(dot,(pw,pw//2+1),offsets=offsets)
 square_description = "A square is like four mountains at right angles to each other."
 SHAPES["square"] = ShapeOpts("square", square, dot, square_max, scanlines="dh", description=square_description)
 
 two = Image.from_row([circle, circle])
-two_description = "Two circles a fixed distance apart apply zero net force at three points: two inside the circles, and one at the midpoint. In 3D the Lagrange points are typically more relevant as they take centrifugal force into account; however, stable orbits are not possible with inverse force, a consequence of Bertrand's Theorem."
-SHAPES["two"] = ShapeOpts("two circles", two, description=two_description)  # TODO
+two_max = Rectangle((two.width,pw),0).pin(dot,((base.width-pw)//2+1,pw//2+1)).pin(dot,(two.width-((base.width-pw)//2+1),pw//2+1))
+two_min = Rectangle((two.width,pw),0).pin(dot,(base.width,pw//2+1)).pin(dot,(base.width//2+1+pw//40,pw//2+1)).pin(dot,(two.width-(base.width//2+1+pw//40),pw//2+1))
+two_min_linear = Rectangle((two.width,pw),0).pin(dot,(base.width,pw//2+1)).pin(dot,(base.width//2+1+pw//20,pw//2+1)).pin(dot,(two.width-(base.width//2+1+pw//20),pw//2+1))
+two_description = "Two circles a fixed distance apart apply zero net force at three points: two points inside the circles, and one at the midpoint. In 3D the Lagrange points are typically more relevant as they take centrifugal force into account; however, stable orbits are not possible with inverse force, a consequence of Bertrand's Theorem."
+SHAPES["two"] = ShapeOpts("two circles", two, two_min, two_max, two_min_linear, description=two_description)
 
-moon = Image.from_row([circle, base.place(Ellipse(odd(pwidth/2)))])
-moon_description = "If one circle is significantly larger than the other, the point of zero net force moves closer to the smaller one. This is a plot point in Jules Verne's (scientifically inaccurate) novel From the Earth to the Moon."
-SHAPES["moon"] = ShapeOpts("earth and moon", moon, description=moon_description) #TODO
+moon = Image.from_row([circle, base.place(Ellipse(odd(pw/2)))])
+moon_max = Rectangle((two.width,pw),0).pin(dot,((base.width-pw)//2+1,pw//2+1))
+moon_min = Rectangle((two.width,pw),0).pin(dot,(base.width+int(pw*0.4),pw//2+1)).pin(dot,(base.width//2+1+pw//160,pw//2+1)).pin(dot,(two.width-(base.width//2+1+pw//80),pw//2+1))
+moon_min_linear = Rectangle((two.width,pw),0).pin(dot,(base.width+int(pw*0.6),pw//2+1)).pin(dot,(base.width//2+1+pw//40,pw//2+1)).pin(dot,(two.width-(base.width//2+1+pw//20),pw//2+1))
+moon_description = "If one circle is significantly larger than the other, the point of zero net force moves closer to the smaller one. This serves as a plot point in Jules Verne's (scientifically inaccurate) novel //From the Earth to the Moon//."
+SHAPES["moon"] = ShapeOpts("earth and moon", moon, moon_min, moon_max, moon_min_linear, description=moon_description)
 
 reddit = base.convert("L").place(Image.open("icons/reddit.png").convert("L").resize_fixed_aspect(width=odd(WIDTH)))
-reddit_description = "In case you ever find yourself stranded on a 2D Snoo-shaped asteroid and are worried about floating into space."
-SHAPES["reddit"] = ShapeOpts("snoo", reddit, scanlines="hv", description=reddit_description)  #TODO
+reddit_min = Rectangle(WIDTH,0).pin(dot,(WIDTH//2+1,int(WIDTH*0.65)))
+reddit_min_linear = Rectangle(WIDTH,0).pin(dot,(WIDTH//2+1,int(WIDTH*0.45)))
+reddit_max = Rectangle(WIDTH,0).pin(dot,(int(WIDTH*0.26),int(WIDTH*0.49)))
+reddit_max_linear =  Rectangle(WIDTH,0).pin(dot,(int(WIDTH*0.38),int(WIDTH*0.25)))
+reddit_description = "In case you ever find yourself stranded on a 2D Snoo-shaped asteroid and are worried about floating into space..."
+SHAPES["reddit"] = ShapeOpts("snoo", reddit, reddit_min, reddit_max, reddit_min_linear, reddit_max_linear, scanlines="hv", description=reddit_description)  #TODO
 
 # put it all together
 
@@ -208,7 +218,7 @@ def shape_box(alpha=0,min=None,max=None):
 def line_box(color):
     return Rectangle(40, 0).place(Rectangle((40,3), color))
 
-introduction = generate_legend([], [], header="Why is there two of everything?".upper(), padding=5, footer="There are two possible ways to extend gravity to two dimensions. The first is to keep the inverse square law, which emulates a 3D mass squashed into the plane. The second is to instead use an linear inverse law, which corresponds to the geometric dilution of point-source radiation in 2D. The first approach behaves more like gravity in 3D but is artificial; the second displays all the expected symmetries but looks different in terms of strength and orbits.", border=False, max_width=LEGEND_WIDTH, fonts=partial(FONT, BIGTEXT_SIZE))
+introduction = generate_legend([], [], header="Why is there two of everything?".upper(), padding=5, footer="There are two possible ways to extend gravity to two dimensions. The first is to keep the inverse square law, which emulates a 3D mass squashed into the plane. The second is to instead use a linear inverse law, which corresponds to the geometric dilution of point-source radiation in 2D. The first approach (right) behaves more like gravity in 3D but is artificial; the second (left) displays all the expected symmetries but looks different in terms of strength and orbits.", border=False, max_width=LEGEND_WIDTH, fonts=partial(FONT, BIGTEXT_SIZE))
 shape_legend = generate_legend([shape_box(255), shape_box(100), shape_box(0), shape_box(min=dot), shape_box(max=dot)],["high density solid", "low density solid", "empty space", "minimum gravity", "maximum gravity"], padding=5, header="SHAPES AND EXTREMA", border=False, fonts=partial(FONT, BIGTEXT_SIZE))
 heatmap_legend = generate_legend([Image.from_gradient(plt.get_cmap("hot"), (40, 180), direction=(0,-1)).add_grid((1,8))], [["maximum gravity", "50% gravity", "minimum gravity"]], header="GRAVITY HEATMAPS", padding=5, border=False, fonts=partial(FONT, BIGTEXT_SIZE))
 graph_legend = generate_legend([line_box("#800000"), line_box("#008000"), line_box("#000080")], ["horizontal intersection", "vertical intersection", "diagonal intersection"], header="INTERSECTION PLOTS", padding=5, border=False, fonts=partial(FONT, BIGTEXT_SIZE))

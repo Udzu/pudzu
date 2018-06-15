@@ -462,7 +462,7 @@ def strip_accents(str, aggressive=False, german=False):
         def aggressive_strip(c):
             if c in strip_accents.EXTRA_CONVERSIONS:
                 return strip_accents.EXTRA_CONVERSIONS[c]
-            name = unicodedata.name(c)
+            name = unicodedata.name(c, '')
             variant = name.find(' WITH ')
             if variant: 
                 return unicodedata.lookup(name[:variant])

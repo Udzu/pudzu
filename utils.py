@@ -185,12 +185,21 @@ class cached_property(object):
 def cached_property_expires_after(expires_after):
     return partial(cached_property, expires_after=expires_after)
 
-def static_vars(**kwargs):
-    """Static variable decorator."""
+this = None
+def with_vars(**kwargs):
+    """Static variable decorator. Also binds (utils.)this to the function during execution."""
     def decorate(fn):
         for k, v in kwargs.items():
             setattr(fn, k, v)
-        return fn
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            global this
+            oldthis, this = this, fn
+            try:
+                return fn(*args, **kwargs)
+            finally:
+                this = oldthis
+        return wrapper
     return decorate
 
 # Iterables
@@ -443,7 +452,7 @@ def replace_map(str, mapping, count=0, ignore_case=False):
     if ignore_case: mapping = CaseInsensitiveDict(mapping)
     return replace_any(str, mapping.keys(), lambda s: mapping[s], count=count, ignore_case=ignore_case)
 
-@static_vars(GERMAN_CONVERSIONS = { 'ß': 'ss', 'ẞ': 'SS', 'Ä': 'AE', 'ä': 'ae', 'Ö': 'OE', 'ö': 'oe', 'Ü': 'UE', 'ü': 'ue' },
+@with_vars(GERMAN_CONVERSIONS = { 'ß': 'ss', 'ẞ': 'SS', 'Ä': 'AE', 'ä': 'ae', 'Ö': 'OE', 'ö': 'oe', 'Ü': 'UE', 'ü': 'ue' },
              EXTRA_CONVERSIONS =  { 'ß': 'ss', 'ẞ': 'SS', 'Æ': 'AE', 'æ': 'ae', 'Œ': 'OE', 'œ': 'oe', 'Ĳ': 'IJ', 'ĳ': 'ij',
                                     'ﬀ': 'ff', 'ﬃ': 'ffi', 'ﬄ': 'ffl', 'ﬁ': 'fi', 'ﬂ': 'fl' })
 def strip_accents(str, aggressive=False, german=False):
@@ -452,7 +461,7 @@ def strip_accents(str, aggressive=False, german=False):
     replaces ß with ss, l with l, ø with o and so on. German mode replaces ö with oe, etc."""
     if german:
         def german_strip(c,d):
-            c = strip_accents.GERMAN_CONVERSIONS.get(c, c)
+            c = this.GERMAN_CONVERSIONS.get(c, c)
             if len(c) > 1 and c[0].isupper() and d.islower(): c = c.title()
             return c
         str = "".join(german_strip(c,d) for c,d in generate_ngrams(str+" ", 2))
@@ -460,8 +469,8 @@ def strip_accents(str, aggressive=False, german=False):
     if aggressive:
         @partial(ignoring_exceptions, handler=identity, exceptions=KeyError)
         def aggressive_strip(c):
-            if c in strip_accents.EXTRA_CONVERSIONS:
-                return strip_accents.EXTRA_CONVERSIONS[c]
+            if c in this.EXTRA_CONVERSIONS:
+                return this.EXTRA_CONVERSIONS[c]
             name = unicodedata.name(c, '')
             variant = name.find(' WITH ')
             if variant: 

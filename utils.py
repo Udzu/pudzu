@@ -451,6 +451,17 @@ def replace_map(str, mapping, count=0, ignore_case=False):
     """Replace substrings using a mapping."""
     if ignore_case: mapping = CaseInsensitiveDict(mapping)
     return replace_any(str, mapping.keys(), lambda s: mapping[s], count=count, ignore_case=ignore_case)
+    
+def shortify(s, width, tail=5, placeholder='[...]', collapse_whitespace=True):
+    """ Truncate a string to fit within a given width. A bit like textwrap.shorten."""
+    if collapse_whitespace:
+        s = re.sub("\s+", " ", s)
+    if width < 2 * tail + len(placeholder):
+        raise ValueError("Width parameter {} too short for tail={} and placeholder='{}'".format(width, tail, placeholder))
+    elif len(s) <= width:
+        return s
+    else:
+        return s[:width-tail-len(placeholder)] + placeholder + s[-tail:]
 
 @with_vars(GERMAN_CONVERSIONS = { 'ß': 'ss', 'ẞ': 'SS', 'Ä': 'AE', 'ä': 'ae', 'Ö': 'OE', 'ö': 'oe', 'Ü': 'UE', 'ü': 'ue' },
              EXTRA_CONVERSIONS =  { 'ß': 'ss', 'ẞ': 'SS', 'Æ': 'AE', 'æ': 'ae', 'Œ': 'OE', 'œ': 'oe', 'Ĳ': 'IJ', 'ĳ': 'ij',
@@ -486,6 +497,7 @@ class EquivalenceDict(abc.MutableMapping):
     
     def __init__(self, normalize, d={}, base_factory=dict):
         self.normalize = normalize
+        self.base_factory = base_factory
         self._d = base_factory()
         self._k = {}
         if isinstance(d, abc.Mapping):
@@ -519,6 +531,13 @@ class EquivalenceDict(abc.MutableMapping):
         
     def __repr__(self):
         return "EquivalenceDict({{{}}}, normalize={}, base_type={})".format(", ".join("{!r}: {!r}".format(self._k[k], v) for (k, v) in self._d.items()), self.normalize.__name__, type(self._d).__name__)
+        
+    def copy(self):
+        # make copy work with specialized subclasses (as long as they don't add anything)
+        cls = self.__class__
+        copy = cls.__new__(cls)
+        EquivalenceDict.__init__(copy, self.normalize, self, base_factory=self.base_factory)
+        return result
         
 class CaseInsensitiveDict(EquivalenceDict):
     """Case-insensitive mapping."""

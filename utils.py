@@ -12,6 +12,7 @@ import unicodedata
 
 from collections import abc, OrderedDict, Iterable, Mapping, Counter
 from collections.abc import Sequence
+from enum import Enum
 from functools import wraps, partial
 from importlib import import_module
 from inspect import signature
@@ -464,8 +465,8 @@ def shortify(s, width, tail=5, placeholder='[...]', collapse_whitespace=True):
         return s[:width-tail-len(placeholder)] + placeholder + s[-tail:]
 
 @with_vars(GERMAN_CONVERSIONS = { 'ß': 'ss', 'ẞ': 'SS', 'Ä': 'AE', 'ä': 'ae', 'Ö': 'OE', 'ö': 'oe', 'Ü': 'UE', 'ü': 'ue' },
-             EXTRA_CONVERSIONS =  { 'ß': 'ss', 'ẞ': 'SS', 'Æ': 'AE', 'æ': 'ae', 'Œ': 'OE', 'œ': 'oe', 'Ĳ': 'IJ', 'ĳ': 'ij',
-                                    'ﬀ': 'ff', 'ﬃ': 'ffi', 'ﬄ': 'ffl', 'ﬁ': 'fi', 'ﬂ': 'fl' })
+           EXTRA_CONVERSIONS =  { 'ß': 'ss', 'ẞ': 'SS', 'Æ': 'AE', 'æ': 'ae', 'Œ': 'OE', 'œ': 'oe', 'Ĳ': 'IJ', 'ĳ': 'ij',
+                                  'ﬀ': 'ff', 'ﬃ': 'ffi', 'ﬄ': 'ffl', 'ﬁ': 'fi', 'ﬂ': 'fl' })
 def strip_accents(str, aggressive=False, german=False):
     """Strip accents from a string. Default behaviour is to use NFD normalization
     (canonical decomposition) and strip combining characters. Aggressive mode also
@@ -492,14 +493,17 @@ def strip_accents(str, aggressive=False, german=False):
     
 # Data structures
 
-class EquivalenceDict(abc.MutableMapping):
+class KeyEquivalenceDict(abc.MutableMapping):
     """Mapping structure that views keys that normalize to the same thing as equivalent."""
     
-    def __init__(self, normalize, d={}, base_factory=dict):
-        self.normalize = normalize
+    locals().update(Enum('KeyEquivalenceDict', 'USE_FIRST_KEY USE_LAST_KEY USE_NORMALIZED_KEY').__members__)
+    
+    def __init__(self, normalizer, d={}, base_factory=dict, key_choice=USE_LAST_KEY):
+        self.normalizer = normalizer
         self.base_factory = base_factory
-        self._d = base_factory()
-        self._k = {}
+        self.key_choice = key_choice
+        self._data = base_factory()
+        self._keys = {}
         if isinstance(d, abc.Mapping):
             for k, v in d.items():
                 self.__setitem__(k, v)
@@ -508,52 +512,62 @@ class EquivalenceDict(abc.MutableMapping):
                 self.__setitem__(k, v)
     
     def __getitem__(self, k):
-        was_missing = self.normalize(k) not in self._d
-        v = self._d[self.normalize(k)]
-        if was_missing and k.lower() in self._d:
+        was_missing = self.normalizer(k) not in self._data
+        v = self._data[self.normalizer(k)]
+        if was_missing and self.normalizer(k) in self._data:
             # must be using a defaultdict of some kind
-            self._k[self.normalize(k)] = k
+            self._keys[self.normalizer(k)] = k
         return v
     
     def __setitem__(self, k, v):
-        self._d[self.normalize(k)] = v
-        self._k[self.normalize(k)] = k
+        self._data[self.normalizer(k)] = v
+        if self.key_choice == KeyEquivalenceDict.USE_NORMALIZED_KEY:
+            self._keys[self.normalizer(k)] = self.normalizer(k)
+        elif self.key_choice == KeyEquivalenceDict.USE_LAST_KEY or self.normalizer(k) not in self._keys:
+            self._keys[self.normalizer(k)] = k
         
     def __delitem__(self, k):
-        del self._d[self.normalize(k)]
-        del self._k[self.normalize(k)]
+        del self._data[self.normalizer(k)]
+        del self._keys[self.normalizer(k)]
 
     def __iter__(self):
-        return (self._k[k] for k in self._d)
+        return (self._keys[k] for k in self._data)
         
     def __len__(self):
-        return len(self._d)
+        return len(self._data)
         
-    def __repr__(self):
-        return "EquivalenceDict({{{}}}, normalize={}, base_type={})".format(", ".join("{!r}: {!r}".format(self._k[k], v) for (k, v) in self._d.items()), self.normalize.__name__, type(self._d).__name__)
+    def __contains__(self, k):
+        return self.normalizer(k) in self._data
+        
+    # repr and copy written to work with simple specialized subclasses
+    def __repr__(self, normalizer=True, base_type=True, key_choice=True):
+        return "{class_name}({{{elements}}}{normalizer}{base_type}{key_choice})".format(
+            class_name = self.__class__.__name__, 
+            elements = ", ".join("{!r}: {!r}".format(self._keys[k], v) for (k, v) in self._data.items()),
+            normalizer = ", normalizer={}".format(self.normalizer.__name__) * bool(normalizer),
+            base_type = ", base_type={}".format(type(self._data).__name__) * bool(base_type),
+            key_choice = ", key_choice={}".format(self.key_choice) * bool(key_choice))
         
     def copy(self):
-        # make copy work with specialized subclasses (as long as they don't add anything)
-        cls = self.__class__
-        copy = cls.__new__(cls)
-        EquivalenceDict.__init__(copy, self.normalize, self, base_factory=self.base_factory)
-        return result
+        copy = self.__class__.__new__(self.__class__)
+        KeyEquivalenceDict.__init__(copy, self.normalizer, self, base_factory=self.base_factory, key_choice=self.key_choice)
+        return copy
         
-class CaseInsensitiveDict(EquivalenceDict):
+class CaseInsensitiveDict(KeyEquivalenceDict):
     """Case-insensitive mapping."""
     
-    def __init__(self, d={}, base_factory=dict):
-        super().__init__(str.lower, d, base_factory=base_factory)
+    def __init__(self, d={}, base_factory=dict, key_choice=KeyEquivalenceDict.USE_LAST_KEY):
+        super().__init__(str.lower, d, base_factory=base_factory, key_choice=key_choice)
         
     def __repr__(self):
-        return "CaseInsensitiveDict({{{}}}, base_type={})".format(", ".join("{!r}: {!r}".format(self._k[k], v) for (k, v) in self._d.items()), type(self._d).__name__)
+        return super().__repr__(normalizer=False)
         
-class NormalizingDict(abc.MutableMapping):
-    """Normalizing dict, mapping key-value pairs to key-value pairs on assignment (or None to drop)."""
+class ValueMappingDict(abc.MutableMapping):
+    """Mapping structure that normalizes values before insertion using a function that gets passed the base dictionary, key and value. The function can either return the value to insert or throw a KeyError to skip insertion altogether."""
     
-    def __init__(self, normalize, d={}, base_factory=dict):
-        self.normalize = normalize
-        self._d = base_factory()
+    def __init__(self, value_mapping, d={}, base_factory=dict):
+        self.value_mapping = value_mapping
+        self._data = base_factory()
         if isinstance(d, abc.Mapping):
             for k, v in d.items():
                 self.__setitem__(k, v)
@@ -562,23 +576,31 @@ class NormalizingDict(abc.MutableMapping):
                 self.__setitem__(k, v)
     
     def __getitem__(self, k):
-        return self._d[k]
+        return self._data[k]
     
     def __setitem__(self, k, v):
-        kv = self.normalize(k, v)
-        if kv: self._d[kv[0]] = kv[1]
+        insert = True
+        try:
+            new_value = self.value_mapping(self._data, k, v)
+        except KeyError:
+            insert = False
+        if insert:
+            self._data[k] = new_value
         
     def __delitem__(self, k):
-        del self._d[k]
+        del self._data[k]
 
     def __iter__(self):
-        return (k for k in self._d)
+        return (k for k in self._data)
         
     def __len__(self):
-        return len(self._d)
+        return len(self._data)
+        
+    def __contains__(self, k):
+        return k in self._data
         
     def __repr__(self):
-        return "NormalizingDict({{{}}}, normalize={}, base_type={})".format(", ".join("{!r}: {!r}".format(k, v) for (k, v) in self._d.items()), self.normalize.__name__, type(self._d).__name__)
+        return "ValueMappingDict({{{}}}, value_mapping={}, base_type={})".format(", ".join("{!r}: {!r}".format(k, v) for (k, v) in self._data.items()), self.value_mapping.__name__, type(self._data).__name__)
         
 # Numeric
 

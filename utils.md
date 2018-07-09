@@ -48,14 +48,14 @@ CaseInsensitiveDict({'Hope': 4139, 'Bob': 4098}, base_type=dict)
 >> del d['hope']
 >> d['bOb'] = 0
 >> d
-CaseInsensitiveDict({'bOb': 0}, base_type=dict)
+CaseInsensitiveDict({'bOb': 0}, base_type=dict, key_choice=KeyEquivalenceDict.USE_LAST_KEY)
 
->> d = CaseInsensitiveDict(base_factory=OrderedDict)
+>> d = CaseInsensitiveDict(base_factory=OrderedDict, key_choice=CaseInsensitiveDict.USE_FIRST_KEY)
 >> d['Bob'] = 1
 >> d['Hope'] = 2
 >> d['BOB'] = 3
 >> d
-CaseInsensitiveDict({'BOB': 3, 'Hope': 2}, base_type=OrderedDict)
+CaseInsensitiveDict({'Bob': 3, 'Hope': 2}, base_type=OrderedDict, key_choice=KeyEquivalenceDict.USE_FIRST_KEY)
 
 >> d = CaseInsensitiveDict(base_factory=partial(defaultdict, lambda: 'Smith'))
 >> d['Bob']
@@ -63,20 +63,20 @@ CaseInsensitiveDict({'BOB': 3, 'Hope': 2}, base_type=OrderedDict)
 >> d['BOB']
 'Smith'
 >> d
-CaseInsensitiveDict({'Bob': 'Smith'}, base_type=defaultdict)
+CaseInsensitiveDict({'Bob': 'Smith'}, base_type=defaultdict, key_choice=KeyEquivalenceDict.USE_LAST_KEY)
 ```
 
-**EquivalenceDict**: like CaseInsensitiveDict, but with a custom key normalizer (e.g. Unicode equivalence).
+**KeyEquivalenceDict**: like CaseInsensitiveDict, but with a custom key normalizer (e.g. Unicode equivalence).
 
-**NormalizingDict**: normalizing dictionary, using a function to convert or drop key-value pairs during assignment.
+**ValueMappingDict**: mapping structure that normalizes values before insertion. The normalizing function gets passed the base dictionary, key and value, and can either return the value to insert or throw a KeyError exception to skip insertion altogether.
 
 ```python
->> d = NormalizingDict(lambda k,v: None if v == 0 else (k.upper(), abs(v)))
->> d["the"] = -1
->> d["rain"] = 0
->> d["spain"] = 2
+>> d = ValueMappingDict(lambda d,k,v: v.upper())
+>> d["the"] = "rain"
+>> d["in"] = "Spain"
+>> d["stays"] = "mainly"
 >> d
-NormalizingDict({'THE': 1, 'SPAIN': 2}, normalize=<lambda>, base_type=dict)
+ValueMappingDict({'the': 'RAIN', 'in': 'SPAIN', 'stays': 'MAINLY'}, value_mapping=<lambda>, base_type=dict)
 ```
 
 ### Decorators

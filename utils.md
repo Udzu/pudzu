@@ -68,7 +68,7 @@ CaseInsensitiveDict({'Bob': 'Smith'}, base_type=defaultdict, key_choice=KeyEquiv
 
 **KeyEquivalenceDict**: like CaseInsensitiveDict, but with a custom key normalizer (e.g. Unicode equivalence).
 
-**ValueMappingDict**: mapping structure that normalizes values before insertion. The normalizing function gets passed the base dictionary, key and value, and can either return the value to insert or throw a KeyError exception to skip insertion altogether.
+**ValueMappingDict**: mapping structure that normalizes values before insertion. The normalizing function gets passed the base dictionary, key and value, and can either return the value to insert or throw a ValueMappingDict.SkipInsertion exception to skip insertion altogether.
 
 ```python
 >> d = ValueMappingDict(lambda d,k,v: v.upper())

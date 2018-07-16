@@ -498,26 +498,18 @@ class KeyEquivalenceDict(abc.MutableMapping):
     
     locals().update(Enum('KeyEquivalenceDict', 'USE_FIRST_KEY USE_LAST_KEY USE_NORMALIZED_KEY').__members__)
     
-    def __init__(self, normalizer, d={}, base_factory=dict, key_choice=USE_LAST_KEY):
+    def __init__(self, normalizer, data={}, base_factory=dict, key_choice=USE_LAST_KEY):
         self.normalizer = normalizer
         self.base_factory = base_factory
         self.key_choice = key_choice
         self._data = base_factory()
         self._keys = {}
-        if isinstance(d, abc.Mapping):
-            for k, v in d.items():
+        if isinstance(data, abc.Mapping):
+            for k, v in data.items():
                 self.__setitem__(k, v)
-        elif isinstance(d, abc.Iterable):
-            for (k, v) in d:
+        elif isinstance(data, abc.Iterable):
+            for (k, v) in data:
                 self.__setitem__(k, v)
-    
-    def __getitem__(self, k):
-        was_missing = self.normalizer(k) not in self._data
-        v = self._data[self.normalizer(k)]
-        if was_missing and self.normalizer(k) in self._data:
-            # must be using a defaultdict of some kind
-            self._keys[self.normalizer(k)] = k
-        return v
     
     def __setitem__(self, k, v):
         self._data[self.normalizer(k)] = v
@@ -526,6 +518,14 @@ class KeyEquivalenceDict(abc.MutableMapping):
         elif self.key_choice == KeyEquivalenceDict.USE_LAST_KEY or self.normalizer(k) not in self._keys:
             self._keys[self.normalizer(k)] = k
         
+    def __getitem__(self, k):
+        was_missing = self.normalizer(k) not in self._data
+        v = self._data[self.normalizer(k)]
+        if was_missing and self.normalizer(k) in self._data:
+            # must be using a defaultdict of some kind
+            self._keys[self.normalizer(k)] = k
+        return v
+    
     def __delitem__(self, k):
         del self._data[self.normalizer(k)]
         del self._keys[self.normalizer(k)]
@@ -536,9 +536,20 @@ class KeyEquivalenceDict(abc.MutableMapping):
     def __len__(self):
         return len(self._data)
         
+    # mixins
     def __contains__(self, k):
         return self.normalizer(k) in self._data
         
+    def __eq__(self, other):
+        if not isinstance(other, abc.Mapping):
+            return NotImplemented
+        if len(self) != len(other):
+            return False
+        for k,v in other.items():
+            if k not in self or self[k] != v:
+                return False
+        return True
+    
     # repr and copy written to work with simple specialized subclasses
     def __repr__(self, normalizer=True, base_type=True, key_choice=True):
         return "{class_name}({{{elements}}}{normalizer}{base_type}{key_choice})".format(
@@ -548,45 +559,52 @@ class KeyEquivalenceDict(abc.MutableMapping):
             base_type = ", base_type={}".format(type(self._data).__name__) * bool(base_type),
             key_choice = ", key_choice={}".format(self.key_choice) * bool(key_choice))
         
-    def copy(self):
+    def __copy__(self):
         copy = self.__class__.__new__(self.__class__)
         KeyEquivalenceDict.__init__(copy, self.normalizer, self, base_factory=self.base_factory, key_choice=self.key_choice)
         return copy
         
+    def copy(self):
+        return self.copy()
+        
 class CaseInsensitiveDict(KeyEquivalenceDict):
     """Case-insensitive mapping."""
     
-    def __init__(self, d={}, base_factory=dict, key_choice=KeyEquivalenceDict.USE_LAST_KEY):
-        super().__init__(str.lower, d, base_factory=base_factory, key_choice=key_choice)
+    def __init__(self, data={}, base_factory=dict, key_choice=KeyEquivalenceDict.USE_LAST_KEY):
+        super().__init__(str.lower, data, base_factory=base_factory, key_choice=key_choice)
         
     def __repr__(self):
         return super().__repr__(normalizer=False)
         
 class ValueMappingDict(abc.MutableMapping):
-    """Mapping structure that normalizes values before insertion using a function that gets passed the base dictionary, key and value. The function can either return the value to insert or throw a KeyError to skip insertion altogether."""
+    """Mapping structure that normalizes values before insertion using a function that gets passed the base dictionary, key and value. The function can either return the value to insert or throw a SkipInsertion to skip insertion altogether."""
     
-    def __init__(self, value_mapping, d={}, base_factory=dict):
+    class SkipInsertion(Exception):
+        pass
+    
+    def __init__(self, value_mapping, data={}, base_factory=dict):
         self.value_mapping = value_mapping
+        self.base_factory = base_factory
         self._data = base_factory()
-        if isinstance(d, abc.Mapping):
-            for k, v in d.items():
+        if isinstance(data, abc.Mapping):
+            for k, v in data.items():
                 self.__setitem__(k, v)
-        elif isinstance(d, abc.Iterable):
-            for (k, v) in d:
+        elif isinstance(data, abc.Iterable):
+            for (k, v) in data:
                 self.__setitem__(k, v)
-    
-    def __getitem__(self, k):
-        return self._data[k]
     
     def __setitem__(self, k, v):
         insert = True
         try:
             new_value = self.value_mapping(self._data, k, v)
-        except KeyError:
+        except self.SkipInsertion:
             insert = False
         if insert:
             self._data[k] = new_value
         
+    def __getitem__(self, k):
+        return self._data[k]
+    
     def __delitem__(self, k):
         del self._data[k]
 
@@ -599,9 +617,22 @@ class ValueMappingDict(abc.MutableMapping):
     def __contains__(self, k):
         return k in self._data
         
-    def __repr__(self):
-        return "ValueMappingDict({{{}}}, value_mapping={}, base_type={})".format(", ".join("{!r}: {!r}".format(k, v) for (k, v) in self._data.items()), self.value_mapping.__name__, type(self._data).__name__)
+    # repr and copy written to work with simple specialized subclasses
+    def __repr__(self, value_mapping=True, base_type=True):
+        return "{class_name}({{{elements}}}{value_mapping}{base_type})".format(
+            class_name = self.__class__.__name__, 
+            elements = ", ".join("{!r}: {!r}".format(self._keys[k], v) for (k, v) in self._data.items()),
+            value_mapping = ", value_mapping={}".format(self.value_mapping.__name__) * bool(value_mapping),
+            base_type = ", base_type={}".format(type(self._data).__name__) * bool(base_type))
         
+    def __copy__(self):
+        copy = self.__class__.__new__(self.__class__)
+        ValueMappingDict.__init__(copy, self.value_mapping, self, base_factory=self.base_factory)
+        return copy
+        
+    def copy(self):
+        return self.copy()
+
 # Numeric
 
 def sign(x):
@@ -670,3 +701,164 @@ def url_to_filepath(url):
     uname = hashlib.sha1(upath.encode('utf-8')).hexdigest()
     return os.path.join(uparse.netloc or "_local_", uname + uext)
    
+# Parameterization
+
+def parameterized_class(globals, class_suffixes=None, **kwargs):
+    """Decorator for generating parameterized classes. To use, pass in the calling
+    module's globals(), parallel lists of named parameterized values, and optional class
+    name suffixes. This will generate appropriately named classes for each value
+    combination, with the parameters available in the base class as class attributes."""
+    def decorator(cls):
+        keys = sorted(kwargs.keys())
+        suffixes = class_suffixes or itertools.repeat(None)
+        for psuffix, pvalues in zip(suffixes, zip(*[kwargs[k] for k in keys])):
+            params = { k : v for k,v in zip(keys, pvalues) }
+            suffix = psuffix or ''.join(str(p).title() for p in pvalues)
+            globals[cls.__name__+suffix] = type(cls.__name__+suffix, (cls,), params)
+            if cls.__doc__:
+                globals[cls.__name__+suffix].__doc__ = cls.__doc__ + \
+                    " [{suffix}{values}]".format(
+                       suffix = "{}: ".format(psuffix) if psuffix else "",
+                       values = ", ".join("{}={}".format(k, shortify(str(p), 40)) for k,p in params.items()))
+        return None
+    return decorator
+    
+def parameterized_method(method_suffixes=None, **kwargs):
+    """Decorator for generating parameterized class methods. To use, use the
+    MetaParameterized metclass, and decorate the methods, passing in parallel lists
+    of named parameterized vaues, and optional method name suffixes. This will generate
+    appropraitely named methods for each value combination, with the parameters
+    passed into the base method as named arguments."""
+    def decorator(func):
+        func._parameterized_kwargs = kwargs
+        func._parameterized_suffixes = method_suffixes
+        return func
+    return decorator
+    
+class MetaParameterized(type):
+    """Metaclass to support parameterized class methods, decorated with @parameterized_method."""
+    def __new__(metacls, name, bases, attrs):
+        for (n,fn) in [(n,fn) for (n,fn) in attrs.items() if hasattr(fn, '_parameterized_kwargs')]:
+            kwargs = fn._parameterized_kwargs
+            keys = sorted(kwargs.keys())
+            suffixes = fn._parameterized_suffixes or itertools.repeat(None)
+            for psuffix, pvalues in zip(suffixes, zip(*[kwargs[k] for k in keys])):
+                params = { k : v for k,v in zip(keys, pvalues) }
+                suffix = psuffix or ''.join('_{}'.format(p) for p in pvalues)
+                def make_parameterized_fn(fn, params):
+                    def parameterized_fn(self, *args, **kwargs):
+                        kwargs.update(params)
+                        return fn(self, *args, **kwargs)
+                    return parameterized_fn
+                attrs[n+suffix] = make_parameterized_fn(fn, params)
+                if fn.__doc__:
+                    attrs[n+suffix].__doc__ = fn.__doc__ + \
+                        " [{suffix}{values}]".format(
+                           suffix = "{}: ".format(psuffix) if psuffix else "",
+                           values = ", ".join("{}={}".format(k, shortify(str(p), 40)) for k,p in params.items()))
+            del attrs[n] 
+        return type.__new__(metacls, name, bases, attrs)
+
+# Switch statements
+
+class switch():
+
+    def __init__(self, obj, predicates=False, police_enums=True):
+        self.obj = obj
+        self.predicates = predicates 
+        self.police_enums = police_enums
+        self.case = None
+        self.default = None
+        
+    class Case():
+
+        @staticmethod
+        def assert_if_key_present(d, k, v):
+            if k in d:
+                assert KeyError("Key {} already present in switch statement")
+            return v
+    
+        def __init__(self, obj, predicates):
+            self.obj = obj
+            self.predicates = predicates
+            self.seen = set()
+            self.dispatch = ValueMappingDict(self.assert_if_key_present, base_factory=OrderedDict)
+            self.fallthrough = ValueCache(False)
+            
+        class BREAK(Exception):
+            pass
+            
+        class CaseVal():
+            def __init__(self, obj, predicates, seen, dispatch, fallthrough, *args):
+                self.obj = obj
+                self.predicates = predicates
+                self.seen = seen
+                self.seen.update(args)
+                self.dispatch = dispatch
+                self.fallthrough = fallthrough
+                self.args = args
+                
+            def __bool__(self):
+                if not self.fallthrough():
+                    self.fallthrough << any(a(self.obj) if self.predicates else self.obj == a for a in self.args)
+                return self.fallthrough()
+                
+            def __lshift__(self, val):
+                self.dispatch.update((a, (lambda: val)) for a in self.args )
+                
+            def __call__(self, fn):
+                self.dispatch.update((a, fn) for a in self.args )
+                
+        def __call__(self, *args):
+            return self.CaseVal(self.obj, self.predicates, self.seen, self.dispatch, self.fallthrough, *args)
+
+    class Default():
+    
+        def __init__(self, fallthrough):
+            self.fallthrough = fallthrough
+            
+        def __lshift__(self, val):
+            self.default = (lambda: val)
+        
+        def __call__(self, fn=None):
+            if fn:
+                self.default = fn
+            else:
+                self.fallthrough << True
+                return True
+            
+    def __enter__(self):
+        self.case = self.Case(self.obj, self.predicates)
+        self.default = self.Default(self.case.fallthrough)
+        return self.case, self.default
+        
+    def __exit__(self, exc_type, exc_value, traceback):
+        if exc_type not in [self.Case.BREAK, None]:
+            return False
+        elif self.case.dispatch:
+            if self.predicates:
+                try:
+                    self.case.return_value = next(v() for p,v in self.case.dispatch.items() if p(self.obj))
+                except StopIteration:
+                    if hasattr(self.default, 'default'):
+                        self.case.return_value = self.default.default()
+                    else:
+                        raise KeyError("No switch handling for {}".format(self.obj))
+            else:
+                if not hasattr(self.default, 'default') and self.obj not in self.case.dispatch:
+                    raise KeyError("No switch handling for {}".format(self.obj)) 
+                elif not hasattr(self.default, 'default') and self.police_enums:
+                    enum_types = set(type(x) for x in self.case.seen if isinstance(x, Enum))
+                    for enum_type in enum_types:
+                        if (set(enum_type) - self.case.seen):
+                            raise KeyError("Incomplete switch handling for {}: missing {} (set police_enums=False to ignore)".format(enum_type, set(enum_type) - self.case.seen))
+                self.case.return_value = self.case.dispatch.get(self.obj, getattr(self.default, 'default', None))()
+        elif not self.case.fallthrough():
+            raise KeyError("No fallthrough handling for {}".format(self.obj)) 
+        return exc_type == self.Case.BREAK
+        
+class switch_predicates(switch):
+
+    def __init__(self, obj):
+        super().__init__(obj, predicates=True, police_enums=False)
+

@@ -204,7 +204,7 @@ class NamedPaletteMeta(type):
 
     @classmethod
     def __prepare__(metacls, name, bases, **kwds):
-        return ValueMappingDict(lambda d,k,v: (k,v if k.startswith("_") else RGBA(v)), base_factory=OrderedDict)
+        return ValueMappingDict(lambda d,k,v: (v if k.startswith("_") else RGBA(v)), base_factory=OrderedDict)
         
     def __new__(metacls, cls, bases, classdict):
         simple_enum_cls = type.__new__(metacls, cls, bases, dict(classdict))

@@ -1,0 +1,26 @@
+stage,country,year,population
+winner,Uruguay,1930,1.875
+winner,Uruguay,1950,2.239
+winner,Argentina,1978,27.303
+winner,Argentina,1986,30.811
+winner,Italy,1934,42.277
+finalist,Uruguay,1930,1.875
+finalist,Uruguay,1950,2.239
+finalist,Croatia,2018,4.164
+finalist,Sweden,1958,7.409
+finalist,Hungary,1938,9.159
+semifinalist,Uruguay,1930,1.875
+semifinalist,Uruguay,1950,2.239
+semifinalist,Uruguay,1954,2.342
+semifinalist,Uruguay,1970,2.810
+semifinalist,Uruguay,2010,3.372
+quarterfinalist,Northern Ireland,1958,1.402
+quarterfinalist,Uruguay,1930,1.875
+quarterfinalist,Uruguay,1954,2.342
+quarterfinalist,Wales,1958,2.620
+quarterfinalist,Uruguay,1970,2.810
+competitor,Iceland,2018,0.348
+competitor,Paraguay,1930,0.900
+competitor,Trinidad and Tobago,2006,1.297
+competitor,Paraguay,1950,1.473
+competitor,Kuwait,1982,1.514

@@ -494,7 +494,10 @@ def strip_accents(str, aggressive=False, german=False):
 # Data structures
 
 class KeyEquivalenceDict(abc.MutableMapping):
-    """Mapping structure that views keys that normalize to the same thing as equivalent."""
+    """A dict-like object that views keys that normalize to the same thing
+    as equivalent. Can be initialized from a mapping or iterable, like dict.
+    Stores the underlying data in a base_factory(), and keeps track of
+    the key specified by key_choice."""
     
     locals().update(Enum('KeyEquivalenceDict', 'USE_FIRST_KEY USE_LAST_KEY USE_NORMALIZED_KEY').__members__)
     
@@ -510,25 +513,31 @@ class KeyEquivalenceDict(abc.MutableMapping):
         elif isinstance(data, abc.Iterable):
             for (k, v) in data:
                 self.__setitem__(k, v)
+        else:
+            raise TypeError("'{}' object is not iterable".format(type(data).__name__))
+    
+    # abc methods
+    def _update_keymap(self, nk, k, update_if_present):
+        if nk in self._data and (nk not in self._keys or update_if_present):
+            self._keys[nk] = nk if self.key_choice == KeyEquivalenceDict.USE_NORMALIZED_KEY else k
+        elif nk not in self._data and nk in self._keys:
+            del self._keys[nk]
     
     def __setitem__(self, k, v):
-        self._data[self.normalizer(k)] = v
-        if self.key_choice == KeyEquivalenceDict.USE_NORMALIZED_KEY:
-            self._keys[self.normalizer(k)] = self.normalizer(k)
-        elif self.key_choice == KeyEquivalenceDict.USE_LAST_KEY or self.normalizer(k) not in self._keys:
-            self._keys[self.normalizer(k)] = k
+        nk = self.normalizer(k)
+        self._data[nk] = v
+        self._update_keymap(nk, k, self.key_choice != KeyEquivalenceDict.USE_FIRST_KEY)
         
     def __getitem__(self, k):
-        was_missing = self.normalizer(k) not in self._data
-        v = self._data[self.normalizer(k)]
-        if was_missing and self.normalizer(k) in self._data:
-            # must be using a defaultdict of some kind
-            self._keys[self.normalizer(k)] = k
+        nk = self.normalizer(k)
+        v = self._data[nk]
+        self._update_keymap(nk, k, False)
         return v
     
     def __delitem__(self, k):
-        del self._data[self.normalizer(k)]
-        del self._keys[self.normalizer(k)]
+        nk = self.normalizer(k)
+        del self._data[nk]
+        self._update_keymap(nk, k, False)
 
     def __iter__(self):
         return (self._keys[k] for k in self._data)
@@ -536,7 +545,7 @@ class KeyEquivalenceDict(abc.MutableMapping):
     def __len__(self):
         return len(self._data)
         
-    # mixins
+    # mixin overrides
     def __contains__(self, k):
         return self.normalizer(k) in self._data
         
@@ -565,10 +574,12 @@ class KeyEquivalenceDict(abc.MutableMapping):
         return copy
         
     def copy(self):
-        return self.copy()
+        return self.__copy__()
         
 class CaseInsensitiveDict(KeyEquivalenceDict):
-    """Case-insensitive mapping."""
+    """A case-insensitive dict-like object. Can be initialized from a mapping or iterable,
+    like dict. Stores the underlying data in a base_factory(), and keeps track of
+    the key specified by key_choice."""
     
     def __init__(self, data={}, base_factory=dict, key_choice=KeyEquivalenceDict.USE_LAST_KEY):
         super().__init__(str.lower, data, base_factory=base_factory, key_choice=key_choice)
@@ -577,7 +588,9 @@ class CaseInsensitiveDict(KeyEquivalenceDict):
         return super().__repr__(normalizer=False)
         
 class ValueMappingDict(abc.MutableMapping):
-    """Mapping structure that normalizes values before insertion using a function that gets passed the base dictionary, key and value. The function can either return the value to insert or throw a SkipInsertion to skip insertion altogether."""
+    """Mapping structure that normalizes values before insertion using a function that gets
+    passed the base dictionary, key and value. The function can either return the value to
+    insert or throw a SkipInsertion to skip insertion altogether."""
     
     class SkipInsertion(Exception):
         pass
@@ -592,6 +605,8 @@ class ValueMappingDict(abc.MutableMapping):
         elif isinstance(data, abc.Iterable):
             for (k, v) in data:
                 self.__setitem__(k, v)
+        else:
+            raise TypeError("'{}' object is not iterable".format(type(data).__name__))
     
     def __setitem__(self, k, v):
         insert = True
@@ -621,7 +636,7 @@ class ValueMappingDict(abc.MutableMapping):
     def __repr__(self, value_mapping=True, base_type=True):
         return "{class_name}({{{elements}}}{value_mapping}{base_type})".format(
             class_name = self.__class__.__name__, 
-            elements = ", ".join("{!r}: {!r}".format(self._keys[k], v) for (k, v) in self._data.items()),
+            elements = ", ".join("{!r}: {!r}".format(k, v) for (k, v) in self._data.items()),
             value_mapping = ", value_mapping={}".format(self.value_mapping.__name__) * bool(value_mapping),
             base_type = ", base_type={}".format(type(self._data).__name__) * bool(base_type))
         
@@ -631,7 +646,7 @@ class ValueMappingDict(abc.MutableMapping):
         return copy
         
     def copy(self):
-        return self.copy()
+        return self.__copy__()
 
 # Numeric
 
@@ -709,10 +724,9 @@ def parameterized_class(globals, class_suffixes=None, **kwargs):
     name suffixes. This will generate appropriately named classes for each value
     combination, with the parameters available in the base class as class attributes."""
     def decorator(cls):
-        keys = sorted(kwargs.keys())
         suffixes = class_suffixes or itertools.repeat(None)
-        for psuffix, pvalues in zip(suffixes, zip(*[kwargs[k] for k in keys])):
-            params = { k : v for k,v in zip(keys, pvalues) }
+        for psuffix, pvalues in zip(suffixes, zip(*list(kwargs.values()))):
+            params = { k : v for k,v in zip(kwargs.keys(), pvalues) }
             suffix = psuffix or ''.join(str(p).title() for p in pvalues)
             globals[cls.__name__+suffix] = type(cls.__name__+suffix, (cls,), params)
             if cls.__doc__:
@@ -740,10 +754,9 @@ class MetaParameterized(type):
     def __new__(metacls, name, bases, attrs):
         for (n,fn) in [(n,fn) for (n,fn) in attrs.items() if hasattr(fn, '_parameterized_kwargs')]:
             kwargs = fn._parameterized_kwargs
-            keys = sorted(kwargs.keys())
             suffixes = fn._parameterized_suffixes or itertools.repeat(None)
-            for psuffix, pvalues in zip(suffixes, zip(*[kwargs[k] for k in keys])):
-                params = { k : v for k,v in zip(keys, pvalues) }
+            for psuffix, pvalues in zip(suffixes, zip(*list(kwargs.values()))):
+                params = { k : v for k,v in zip(kwargs.keys(), pvalues) }
                 suffix = psuffix or ''.join('_{}'.format(p) for p in pvalues)
                 def make_parameterized_fn(fn, params):
                     def parameterized_fn(self, *args, **kwargs):
@@ -759,7 +772,7 @@ class MetaParameterized(type):
             del attrs[n] 
         return type.__new__(metacls, name, bases, attrs)
 
-# Switch statements
+# Switch statements (because why not)
 
 class switch():
 
@@ -770,24 +783,29 @@ class switch():
         self.case = None
         self.default = None
         
+    def __enter__(self):
+        self.case = self.Case(self.obj, self.predicates)
+        self.default = self.Default(self.case.fallthrough)
+        return self
+
     class Case():
 
-        @staticmethod
-        def assert_if_key_present(d, k, v):
-            if k in d:
-                assert KeyError("Key {} already present in switch statement")
-            return v
-    
         def __init__(self, obj, predicates):
             self.obj = obj
             self.predicates = predicates
             self.seen = set()
-            self.dispatch = ValueMappingDict(self.assert_if_key_present, base_factory=OrderedDict)
+            self.dispatch = ValueMappingDict(self._assert_if_key_present, base_factory=OrderedDict)
             self.fallthrough = ValueCache(False)
             
-        class BREAK(Exception):
-            pass
-            
+        @staticmethod
+        def _assert_if_key_present(d, k, v):
+            if k in d:
+                assert KeyError("Key {} already present in switch statement")
+            return v
+    
+        def __call__(self, *args):
+            return self.CaseVal(self.obj, self.predicates, self.seen, self.dispatch, self.fallthrough, *args)
+
         class CaseVal():
             def __init__(self, obj, predicates, seen, dispatch, fallthrough, *args):
                 self.obj = obj
@@ -809,9 +827,6 @@ class switch():
             def __call__(self, fn):
                 self.dispatch.update((a, fn) for a in self.args )
                 
-        def __call__(self, *args):
-            return self.CaseVal(self.obj, self.predicates, self.seen, self.dispatch, self.fallthrough, *args)
-
     class Default():
     
         def __init__(self, fallthrough):
@@ -819,46 +834,48 @@ class switch():
             
         def __lshift__(self, val):
             self.default = (lambda: val)
-        
+            
         def __call__(self, fn=None):
             if fn:
                 self.default = fn
             else:
                 self.fallthrough << True
-                return True
+                return self
             
-    def __enter__(self):
-        self.case = self.Case(self.obj, self.predicates)
-        self.default = self.Default(self.case.fallthrough)
-        return self.case, self.default
+    class BREAK(Exception):
+        pass
         
     def __exit__(self, exc_type, exc_value, traceback):
-        if exc_type not in [self.Case.BREAK, None]:
+        if exc_type not in [self.BREAK, None]:
             return False
         elif self.case.dispatch:
             if self.predicates:
                 try:
-                    self.case.return_value = next(v() for p,v in self.case.dispatch.items() if p(self.obj))
+                    self.return_value = next(v() for p,v in self.case.dispatch.items() if p(self.obj))
                 except StopIteration:
                     if hasattr(self.default, 'default'):
-                        self.case.return_value = self.default.default()
+                        self.return_value = self.default.default()
                     else:
                         raise KeyError("No switch handling for {}".format(self.obj))
+                if not hasattr(self.default, 'default') and self.police_enums and isinstance(self.obj, Enum):
+                    missing = { e for e in type(self.obj) if not any(p(e) for p in self.case.dispatch) }
+                    if missing:
+                        raise KeyError("Incomplete switch handling for {}: missing {} (set police_enums=False to ignore)".format(type(self.obj), missing))
             else:
                 if not hasattr(self.default, 'default') and self.obj not in self.case.dispatch:
                     raise KeyError("No switch handling for {}".format(self.obj)) 
-                elif not hasattr(self.default, 'default') and self.police_enums:
+                self.return_value = self.case.dispatch.get(self.obj, getattr(self.default, 'default', None))()
+                if not hasattr(self.default, 'default') and self.police_enums:
                     enum_types = set(type(x) for x in self.case.seen if isinstance(x, Enum))
                     for enum_type in enum_types:
-                        if (set(enum_type) - self.case.seen):
-                            raise KeyError("Incomplete switch handling for {}: missing {} (set police_enums=False to ignore)".format(enum_type, set(enum_type) - self.case.seen))
-                self.case.return_value = self.case.dispatch.get(self.obj, getattr(self.default, 'default', None))()
+                        missing = set(enum_type) - self.case.seen
+                        if missing:
+                            raise KeyError("Incomplete switch handling for {}: missing {} (set police_enums=False to ignore)".format(enum_type, missing))
         elif not self.case.fallthrough():
             raise KeyError("No fallthrough handling for {}".format(self.obj)) 
-        return exc_type == self.Case.BREAK
+        return exc_type == self.BREAK
         
 class switch_predicates(switch):
 
-    def __init__(self, obj):
-        super().__init__(obj, predicates=True, police_enums=False)
-
+    def __init__(self, obj, police_enums=True):
+        super().__init__(obj, predicates=True, police_enums=police_enums)

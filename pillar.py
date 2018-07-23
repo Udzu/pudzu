@@ -5,11 +5,11 @@ import logging
 import abc as ABC
 import numpy as np
 
-from collections import namedtuple
+from collections import namedtuple, Iterable
 from enum import Enum
 from functools import partial, reduce
 from io import BytesIO
-from itertools import zip_longest, chain
+from itertools import zip_longest
 from numbers import Real, Integral
 from urllib.parse import urlparse
 from urllib.request import urlopen
@@ -182,24 +182,24 @@ class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
             color = [c for c in (red, green, blue, alpha) if c]
         rgba = color
         if len(rgba) == 1:
-            if non_string_iterable(rgba[0]):
-                rgba = rgba[0]
-            elif not rgba[0]:
+            if not rgba[0]:
                 rgba = (0,0,0,0)
-            elif isinstance(rgba[0], str) and rgba[0].startswith("#"):
-                rgba = [int("".join(v), 16) for v in generate_batches(rgba[0][1:], 2)]
+            elif isinstance(rgba[0], str) and rgba[0].startswith("#") and len(rgba[0]) in {7, 9}:
+                rgba = [int("".join(rgba[0][i:i+2]), 16) for i in range(1, len(rgba[0]), 2)]
             elif isinstance(rgba[0], str):
                 rgba = ImageColor.getrgb(rgba[0])
-        if non_string_sequence(rgba, float):
+            elif isinstance(rgba[0], Iterable):
+                rgba = rgba[0]
+        if all(isinstance(x, float) for x in rgba):
             rgba = [int(round(x*255)) for x in rgba]
-        if len(rgba) == 3 and all(0 <= x <= 255 for x in rgba):
-            return super().__new__(cls, *chain(rgba, [255]))
-        elif len(rgba) == 4 and all(0 <= x <= 255 for x in rgba):
+        if len(rgba) == 3 and all(isinstance(x, Integral) and 0 <= x <= 255 for x in rgba):
+            return super().__new__(cls, *rgba, 255)
+        elif len(rgba) == 4 and all(isinstance(x, Integral) and 0 <= x <= 255 for x in rgba):
             return super().__new__(cls, *rgba)
         else:
-            raise ValueError("Invalid RGBA parameters: {}".format(", ".join(map(str, color))))
+            raise ValueError("Invalid RGBA parameters: {}".format(", ".join(map(repr, color))))
 
-class NamedPaletteMeta(type):
+class NamedPaletteMeta(type, abc.Sequence):
     """Metaclass for named color palettes. Allows palette lookup by (case-insensitive) name or index."""
 
     @classmethod

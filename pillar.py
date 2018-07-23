@@ -1264,7 +1264,7 @@ class MarkupExpression:
     @classmethod
     def parse_markup(cls, text, mode=""):
         parsed = []
-        match = ValueCache()
+        match = ValueBox()
         while match << re.match(cls.first_unescaped_match_regex(cls.START_MODE.keys()), text):
             pre, start, post = match().groups()
             if pre: parsed.append((re.sub(r"\\(.)", r"\1", pre), mode))
@@ -1294,7 +1294,7 @@ class MarkupExpression:
     
     def reparse_wrapped_text(self, wrapped_text):
         # text wrapping uses raw text so need to merge the result back in
-        x = ValueCache()
+        x = ValueBox()
         old, new, merged = self.text, wrapped_text, ""
         while old or new:
             if old and new and old[0] == new[0]:

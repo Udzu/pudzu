@@ -38,7 +38,7 @@ FOOTER = """Irish, Welsh, Scottish Gaelic have two counting systems: a tradition
 vigesimal one and a new decimal one."""
  
 def colorfn(c):
-    cols = ValueCache()
+    cols = ValueBox()
     if c in ['Sea', 'Language Borders']: return "white"
     elif c in ['Country Borders']: return "#AAAAAA"
     elif c not in df.index: return "grey"

@@ -11,7 +11,7 @@ PALETTE = [VegaPalette10.BLUE, VegaPalette10.ORANGE, VegaPalette10.PINK]
 CATEGORIES = ["l", "m", "b"]
 
 def colorfn(c, group):
-    cols = ValueCache()
+    cols = ValueBox()
     if c in ['Sea', 'Borders']: return "white"
     elif c not in df.index: return "grey"
     elif len(cols << [PALETTE[CATEGORIES.index(x)] for x in df[group].get(c)]) == 1: return cols()[0]

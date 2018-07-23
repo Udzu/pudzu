@@ -15,7 +15,7 @@ def stripe(c1, c2):
     return Image.from_column([Image.new("RGBA", (100,3), c1), Image.new("RGBA", (100,2), c2)])
 
 def colorfn(c):
-    abolished = ValueCache()
+    abolished = ValueBox()
     if c not in df.index:
         return "white" if c in ['Sea', 'Borders'] else "grey"
     elif df['monarchy'][c]:

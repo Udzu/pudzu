@@ -57,21 +57,28 @@ def optional_import_from(module, identifier, default=None):
     default value on failure."""
     return optional_import(module).__dict__.get(identifier, default)
     
-class ValueCache():
-    """A simple container with a returning assignment operator."""
+class ValueBox(abc.Collection):
+    """A simple mutable container with a returning assignment operator."""
     def __init__(self, value=None):
         self.value = value
+    def __contains__(self, value):
+        return value == self.value
+    def __iter__(self):
+        yield self.value
+    def __len__(self):
+        return 1
     def __repr__(self):
-        return "ValueCache({})".format(self.value)
+        return "ValueBox({})".format(self.value)
     def set(self, value):
         self.value = value
-        return value
     def __call__(self):
         return self.value
     def __lshift__(self, value):
-        return self.set(value)
+        self.set(value)
+        return value
     def __rrshift__(self, value):
-        return self.set(value)
+        self.set(value)
+        return value
 
 # Decorators
 
@@ -775,6 +782,30 @@ class MetaParameterized(type):
 # Switch statements (because why not)
 
 class switch():
+    """A context manager for emulating C-type switch statements. Supports two modes.
+    
+    C-type mode, with fallthrough:
+    
+    with switch(x) as s:
+        if s.case(1, 2):
+            print("one or two")
+        if s.case(3):
+            print("one, two or three")
+            raise s.BREAK
+        if s.default():
+            print("something else")
+      
+    Dispatch mode, with a return value:
+    
+    with switch(x) as s:
+        s.case(1,2) << "one or two"
+        @s.case(3)
+        def do():
+            print("side effect")
+            return "three"
+        s.default << "something else"
+    print(s.return_value)
+    """
 
     def __init__(self, obj, predicates=False, police_enums=True):
         self.obj = obj
@@ -795,7 +826,7 @@ class switch():
             self.predicates = predicates
             self.seen = set()
             self.dispatch = ValueMappingDict(self._assert_if_key_present, base_factory=OrderedDict)
-            self.fallthrough = ValueCache(False)
+            self.fallthrough = ValueBox(False)
             
         @staticmethod
         def _assert_if_key_present(d, k, v):
@@ -876,6 +907,8 @@ class switch():
         return exc_type == self.BREAK
         
 class switch_predicates(switch):
-
+    """Like switch, but uses predicates rather than values in case statements.
+    Dispatch statements are evaluated in definition order."""
+    
     def __init__(self, obj, police_enums=True):
         super().__init__(obj, predicates=True, police_enums=police_enums)

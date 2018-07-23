@@ -251,7 +251,7 @@ def extract_from_wiktionary(input, output, language="en", accents=("US", "USA", 
     enpr_regex = re.compile("{{enPR[|]([^}]+)}}")
     accent_regex = re.compile("{{{{a(ccent)?[|]([^}}]+[|])?({accents})[|}}]".format(accents="|".join(a for a in make_iterable(accents) if a)))
     any_accent_regex = re.compile("{{a(ccent)?[|]")
-    match = ValueCache()
+    match = ValueBox()
     with open(input, "r", encoding="utf-8") as i:
         with open(output, "w", encoding="utf-8") as o:
             for line in i:

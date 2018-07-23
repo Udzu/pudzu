@@ -27,10 +27,10 @@ ImportError: Missing module: module
 '1'
 ```
   
-**ValueCache**: a simple data container, allowing assignment in expressions. Values can be assigned with <<, >> or .set, and extracted with () or .value.
+**ValueBox**: a simple data container, allowing assignment in expressions. Values can be assigned with << or >> (or .set), and extracted with () (or .value).
 
 ```python
->> match = ValueCache()
+>> match = ValueBox()
 >> if match << re.match(regex1, string):
        foo(match().group(0))
    elif match << re.match(regex2, string):

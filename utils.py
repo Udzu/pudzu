@@ -10,8 +10,8 @@ import random
 import re
 import unicodedata
 
-from collections import abc, OrderedDict, Iterable, Mapping, Counter
-from collections.abc import Sequence
+from collections import abc, OrderedDict, Counter
+from collections.abc import Sequence, Iterable, Mapping
 from enum import Enum
 from functools import wraps, partial
 from importlib import import_module
@@ -82,54 +82,55 @@ class ValueBox(abc.Collection):
 
 # Decorators
 
-def number_of_args(fn):
+def number_of_positional_args(fn):
     """Return the number of positional arguments for a function, or None if the number is variable.
     Looks inside any decorated functions."""
     try:
         if hasattr(fn, '__wrapped__'):
-            return number_of_args(fn.__wrapped__)
+            return number_of_positional_args(fn.__wrapped__)
         if any(p.kind == p.VAR_POSITIONAL for p in signature(fn).parameters.values()):
             return None
         else:
             return sum(p.kind in (p.POSITIONAL_ONLY, p.POSITIONAL_OR_KEYWORD) for p in signature(fn).parameters.values())
     except ValueError:
-        # signatures don't work for built-in operators, so check for a few explicitly
-        UNARY_OPS = [len, op.not_, op.truth, op.abs, op.index, op.inv, op.invert, op.neg, op.pos]
-        BINARY_OPS = [op.lt, op.le, op.gt, op.ge, op.eq, op.ne, op.is_, op.is_not, op.add, op.and_, op.floordiv, op.lshift, op.mod, op.mul, op.or_, op.pow, op.rshift, op.sub, op.truediv, op.xor, op.concat, op.contains, op.countOf, op.delitem, op.getitem, op.indexOf]
-        TERNARY_OPS = [op.setitem]
-        if fn in UNARY_OPS:
-            return 1
-        elif fn in BINARY_OPS:
-            return 2
-        elif fn in TERNARY_OPS:
-            return 3
-        else:
-            raise NotImplementedError("Bult-in operator {} not supported".format(fn))
+        # signatures don't work for built-in operators, so try to extract from the docstring(!)
+        if hasattr(fn, '__doc__') and hasattr(fn, '__name__') and fn.__doc__ is not None:
+            specs = re.findall(r"{}\(.*?\)".format(re.escape(fn.__name__)), fn.__doc__)
+            specs = [re.sub(r", \*, .*\)", ")", re.sub(r"[[\]]", "", spec)) for spec in specs]
+            if any("*" in spec for spec in specs):
+                return None
+            elif specs:
+                return max(0 if spec.endswith("()") else spec.count(",")+1 for spec in specs)
+        raise NotImplementedError("Bult-in operator {} not supported".format(fn))
       
-def all_keyword_args(fn):
+def names_of_keyword_args(fn):
     """Return the names of all the keyword arguments for a function, or None if the number is variable.
     Looks inside any decorated functions."""
     try:
         if hasattr(fn, '__wrapped__'):
-            return all_keyword_args(fn.__wrapped__)
+            return names_of_keyword_args(fn.__wrapped__)
         elif any(p.kind == p.VAR_KEYWORD for  p in signature(fn).parameters.values()):
             return None
         else:
-            return [p.name for p in signature(fn).parameters.values() if p.kind in (p.KEYWORD_ONLY, p.POSITIONAL_OR_KEYWORD)]
+            return {p.name for p in signature(fn).parameters.values() if p.kind in (p.KEYWORD_ONLY, p.POSITIONAL_OR_KEYWORD)}
     except ValueError:
-        # signatures don't work for built-in operators, so check for a few explicitly, otherwise assume none
-        BUILTINS = { }
-        return BUILTINS.get(fn, [])
+        # signatures don't work for built-in operators, so try to extract from the docstring(!)
+        # only include optional arguments, since positional arguments are typically positional-only in built-ins
+        if fn.__doc__ is not None:
+            specs = re.findall(r"{}\(.*?\)".format(re.escape(fn.__name__)), fn.__doc__)
+            if specs:
+                return { arg for spec in specs for arg in re.findall(r"([^ ([]+)=", spec) }
+        raise NotImplementedError("Bult-in operator {} not supported".format(fn))
         
 def ignoring_extra_args(fn):
     """Function decorator that calls the wrapped function with
     correct number of positional arguments, discarding any
     additional arguments."""
-    n = number_of_args(fn)
-    kwa = all_keyword_args(fn)
+    npa = number_of_positional_args(fn)
+    kwa = names_of_keyword_args(fn)
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        return fn(*args[0:n], **keyfilter(lambda k: kwa is None or k in kwa, kwargs))
+        return fn(*args[0:npa], **keyfilter(lambda k: kwa is None or k in kwa, kwargs))
     return wrapper
 
 def ignoring_exceptions(fn, handler=None, exceptions=Exception):
@@ -533,7 +534,7 @@ class KeyEquivalenceDict(abc.MutableMapping):
     def __setitem__(self, k, v):
         nk = self.normalizer(k)
         self._data[nk] = v
-        self._update_keymap(nk, k, self.key_choice != KeyEquivalenceDict.USE_FIRST_KEY)
+        self._update_keymap(nk, k, self.key_choice == KeyEquivalenceDict.USE_LAST_KEY)
         
     def __getitem__(self, k):
         nk = self.normalizer(k)
@@ -800,7 +801,7 @@ class switch():
     with switch(x) as s:
         s.case(1,2) << "one or two"
         @s.case(3)
-        def do():
+        def _():
             print("side effect")
             return "three"
         s.default << "something else"

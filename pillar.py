@@ -5,7 +5,7 @@ import logging
 import abc as ABC
 import numpy as np
 
-from collections import namedtuple, Iterable
+from collections import namedtuple
 from enum import Enum
 from functools import partial, reduce
 from io import BytesIO
@@ -188,7 +188,7 @@ class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
                 rgba = [int("".join(rgba[0][i:i+2]), 16) for i in range(1, len(rgba[0]), 2)]
             elif isinstance(rgba[0], str):
                 rgba = ImageColor.getrgb(rgba[0])
-            elif isinstance(rgba[0], Iterable):
+            elif isinstance(rgba[0], abc.Iterable):
                 rgba = rgba[0]
         if all(isinstance(x, float) for x in rgba):
             rgba = [int(round(x*255)) for x in rgba]
@@ -199,24 +199,43 @@ class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
         else:
             raise ValueError("Invalid RGBA parameters: {}".format(", ".join(map(repr, color))))
 
-class NamedPaletteMeta(type, abc.Sequence):
-    """Metaclass for named color palettes. Allows palette lookup by (case-insensitive) name or index."""
+class NamedPalette(abc.Sequence):
+    """Named color palettes. Behaves like a sequence, but also allows palette lookup by (case-insensitive) name."""
+    
+    def __init__(self, colors):
+        self._colors_ = ValueMappingDict(lambda d,k,v: RGBA(v), colors, base_factory=partial(CaseInsensitiveDict, base_factory=OrderedDict))
+        
+    def __iter__(self): return iter(self._colors_.values())
+    def __len__(self): return len(self._colors_)
+    def __call__(self, name): return self._colors_[name]
+    def __getitem__(self, key): return self._colors_[key] if isinstance(key, str) else list(self._colors_.values())[key]
+    
+    def __getattr__(self, name):
+        if name in self._colors_:
+            return self._colors_[name]
+        else:
+            raise AttributeError(name)
+            
+    @property
+    def names(self):
+        return list(self._colors_)
+    
+    def __repr__(self): return "NamedPalette[{}]".format(", ".join(self.names))
+
+class NamedPaletteMeta(type):
+    """Metaclass for defining named color palettes."""
 
     @classmethod
     def __prepare__(metacls, name, bases, **kwds):
-        return ValueMappingDict(lambda d,k,v: (v if k.startswith("_") else RGBA(v)), base_factory=OrderedDict)
+        return OrderedDict()
         
-    def __new__(metacls, cls, bases, classdict):
-        simple_enum_cls = type.__new__(metacls, cls, bases, dict(classdict))
-        simple_enum_cls._colors_ = CaseInsensitiveDict([(c, v) for c, v in classdict.items() if c not in dir(type(cls, (object,), {})) and not c.startswith("_")], base_factory=OrderedDict)
-        return simple_enum_cls
-        
-    def __iter__(cls): return iter(cls._colors_.values())
-    def __len__(cls): return len(cls._colors_)
-    def __call__(cls, name): return cls._colors_[name]
-    def __getitem__(cls, key): return cls._colors_[key] if isinstance(key, str) else list(cls._colors_.values())[key]
-    def __repr__(cls): return "NamedPalette[{}]".format(", ".join(cls._colors_.keys()))
-        
+    def __new__(metacls, name, bases, classdict):
+        colors = [(c, v) for c, v in classdict.items() if c not in dir(type(name, (object,), {})) and not c.startswith("_")]
+        obj = NamedPalette(colors)
+        for c, v in zip(obj.names, obj):
+            setattr(obj, c, v)
+        return obj
+
 class VegaPalette10(metaclass=NamedPaletteMeta):
     BLUE = "#1f77b4"
     ORANGE = "#ff7f0e"
@@ -1059,7 +1078,7 @@ class ImageShape(object):
             orig_size, size = size, [round(s * antialias) for s in size]
             if isinstance(bg, Image.Image): bg = bg.resize([round(s * antialias) for s in bg.size], Image.NEAREST)
             if isinstance(fg, Image.Image): fg = fg.resize([round(s * antialias) for s in fg.size], Image.NEAREST)
-        if "_scale" in all_keyword_args(cls.mask): kwargs = merge_dicts({"_scale": antialias}, kwargs)
+        if "_scale" in names_of_keyword_args(cls.mask): kwargs = merge_dicts({"_scale": antialias}, kwargs)
         mask = cls.mask(size, **kwargs)
         if invert: mask = mask.invert_mask()
         if callable(fg):

@@ -203,13 +203,16 @@ class NamedPalette(abc.Sequence):
     """Named color palettes. Behaves like a sequence, but also allows palette lookup by (case-insensitive) name."""
     
     def __init__(self, colors):
-        self._colors_ = ValueMappingDict(lambda d,k,v: RGBA(v), colors, base_factory=partial(CaseInsensitiveDict, base_factory=OrderedDict))
+        self._colors_ = ValueMappingDict(lambda d,k,v: raise_exception(KeyError("{} already present in named palette".format(k))) if k in d else RGBA(v), colors, base_factory=partial(CaseInsensitiveDict, base_factory=OrderedDict))
+        for c, v in self._colors_.items():
+             setattr(self, c, v)
         
-    def __iter__(self): return iter(self._colors_.values())
-    def __len__(self): return len(self._colors_)
-    def __call__(self, name): return self._colors_[name]
-    def __getitem__(self, key): return self._colors_[key] if isinstance(key, str) else list(self._colors_.values())[key]
-    
+    def __iter__(self):
+        return iter(self._colors_.values())
+    def __len__(self):
+        return len(self._colors_)
+    def __getitem__(self, key):
+        return self._colors_[key] if isinstance(key, str) else list(self._colors_.values())[key]
     def __getattr__(self, name):
         if name in self._colors_:
             return self._colors_[name]
@@ -219,8 +222,8 @@ class NamedPalette(abc.Sequence):
     @property
     def names(self):
         return list(self._colors_)
-    
-    def __repr__(self): return "NamedPalette[{}]".format(", ".join(self.names))
+    def __repr__(self):
+        return "NamedPalette[{}]".format(", ".join(self.names))
 
 class NamedPaletteMeta(type):
     """Metaclass for defining named color palettes."""
@@ -231,10 +234,7 @@ class NamedPaletteMeta(type):
         
     def __new__(metacls, name, bases, classdict):
         colors = [(c, v) for c, v in classdict.items() if c not in dir(type(name, (object,), {})) and not c.startswith("_")]
-        obj = NamedPalette(colors)
-        for c, v in zip(obj.names, obj):
-            setattr(obj, c, v)
-        return obj
+        return NamedPalette(colors)
 
 class VegaPalette10(metaclass=NamedPaletteMeta):
     BLUE = "#1f77b4"

@@ -212,7 +212,6 @@ def with_vars(**kwargs):
             setattr(fn, k, v)
         @wraps(fn)
         def wrapper(*args, **kwargs):
-            global this
             oldthis = this()
             this << fn
             try:

@@ -7,6 +7,7 @@ import math
 import operator as op
 import os.path
 import random
+import threading
 import re
 import unicodedata
 
@@ -80,6 +81,11 @@ class ValueBox(abc.Collection):
         self.set(value)
         return value
 
+class ThreadLocalBox(threading.local, ValueBox):
+    """A value box with thread-local storage."""
+    def __repr__(self):
+        return "ThreadLocalBox({})".format(self.value)
+    
 # Decorators
 
 def number_of_positional_args(fn):
@@ -143,6 +149,10 @@ def ignoring_exceptions(fn, handler=None, exceptions=Exception):
             return handler(*args, **kwargs) if callable(handler) else handler
     return wrapper
 
+def raise_exception(exception):
+    """Raises an exception. For use in expressions."""
+    raise exception
+    
 def with_retries(fn, max_retries=None, max_duration=None, interval=0.5, exceptions=Exception):
     """Function decorator that retries the function when exceptions are raised."""
     @wraps(fn)
@@ -194,20 +204,21 @@ class cached_property(object):
 def cached_property_expires_after(expires_after):
     return partial(cached_property, expires_after=expires_after)
 
-this = None
+this = ThreadLocalBox()
 def with_vars(**kwargs):
-    """Static variable decorator. Also binds (utils.)this to the function during execution."""
+    """Static variable decorator. Also binds utils.this() to the function during execution."""
     def decorate(fn):
         for k, v in kwargs.items():
             setattr(fn, k, v)
         @wraps(fn)
         def wrapper(*args, **kwargs):
             global this
-            oldthis, this = this, fn
+            oldthis = this()
+            this << fn
             try:
                 return fn(*args, **kwargs)
             finally:
-                this = oldthis
+                this << oldthis
         return wrapper
     return decorate
 
@@ -481,7 +492,7 @@ def strip_accents(str, aggressive=False, german=False):
     replaces ß with ss, l with l, ø with o and so on. German mode replaces ö with oe, etc."""
     if german:
         def german_strip(c,d):
-            c = this.GERMAN_CONVERSIONS.get(c, c)
+            c = this().GERMAN_CONVERSIONS.get(c, c)
             if len(c) > 1 and c[0].isupper() and d.islower(): c = c.title()
             return c
         str = "".join(german_strip(c,d) for c,d in generate_ngrams(str+" ", 2))
@@ -489,8 +500,8 @@ def strip_accents(str, aggressive=False, german=False):
     if aggressive:
         @partial(ignoring_exceptions, handler=identity, exceptions=KeyError)
         def aggressive_strip(c):
-            if c in this.EXTRA_CONVERSIONS:
-                return this.EXTRA_CONVERSIONS[c]
+            if c in this().EXTRA_CONVERSIONS:
+                return this().EXTRA_CONVERSIONS[c]
             name = unicodedata.name(c, '')
             variant = name.find(' WITH ')
             if variant: 
@@ -783,26 +794,14 @@ class MetaParameterized(type):
 # Switch statements (because why not)
 
 class switch():
-    """A context manager for emulating C-type switch statements. Supports two modes.
-    
-    C-type mode, with fallthrough:
+    """A context manager for emulating switch statements.
     
     with switch(x) as s:
-        if s.case(1, 2):
-            print("one or two")
-        if s.case(3):
-            print("one, two or three")
-            raise s.BREAK
-        if s.default():
-            print("something else")
-      
-    Dispatch mode, with a return value:
-    
-    with switch(x) as s:
-        s.case(1,2) << "one or two"
+        s.case(0) << "zero"
+        s.case(1, 2) << "one or two"
         @s.case(3)
         def _():
-            print("side effect")
+            print("print something")
             return "three"
         s.default << "something else"
     print(s.return_value)
@@ -812,104 +811,62 @@ class switch():
         self.obj = obj
         self.predicates = predicates 
         self.police_enums = police_enums
-        self.case = None
-        self.default = None
         
     def __enter__(self):
-        self.case = self.Case(self.obj, self.predicates)
-        self.default = self.Default(self.case.fallthrough)
+        self.case = self.Case()
+        self.default = self.Default()
         return self
 
     class Case():
 
-        def __init__(self, obj, predicates):
-            self.obj = obj
-            self.predicates = predicates
-            self.seen = set()
-            self.dispatch = ValueMappingDict(self._assert_if_key_present, base_factory=OrderedDict)
-            self.fallthrough = ValueBox(False)
+        def __init__(self):
+            self.dispatch = ValueMappingDict(lambda d,k,v: raise_exception(KeyError("Key {} already present in switch statement".format(k))) if k in d else v, base_factory=OrderedDict)
             
-        @staticmethod
-        def _assert_if_key_present(d, k, v):
-            if k in d:
-                assert KeyError("Key {} already present in switch statement")
-            return v
-    
         def __call__(self, *args):
-            return self.CaseVal(self.obj, self.predicates, self.seen, self.dispatch, self.fallthrough, *args)
+            return self.CaseVal(self.dispatch, *args)
 
         class CaseVal():
-            def __init__(self, obj, predicates, seen, dispatch, fallthrough, *args):
-                self.obj = obj
-                self.predicates = predicates
-                self.seen = seen
-                self.seen.update(args)
+            def __init__(self, dispatch, *args):
                 self.dispatch = dispatch
-                self.fallthrough = fallthrough
                 self.args = args
                 
-            def __bool__(self):
-                if not self.fallthrough():
-                    self.fallthrough << any(a(self.obj) if self.predicates else self.obj == a for a in self.args)
-                return self.fallthrough()
-                
             def __lshift__(self, val):
-                self.dispatch.update((a, (lambda: val)) for a in self.args )
+                self.dispatch.update((a, (lambda: val)) for a in self.args)
                 
             def __call__(self, fn):
-                self.dispatch.update((a, fn) for a in self.args )
+                self.dispatch.update((a, fn) for a in self.args)
                 
     class Default():
     
-        def __init__(self, fallthrough):
-            self.fallthrough = fallthrough
-            
+        def _set_default(self, val):
+            if hasattr(self, 'default'):
+                assert KeyError("Default case already present in switch statement")
+            self.default = val
+        
         def __lshift__(self, val):
-            self.default = (lambda: val)
+            self._set_default(lambda: val)
             
-        def __call__(self, fn=None):
-            if fn:
-                self.default = fn
-            else:
-                self.fallthrough << True
-                return self
+        def __call__(self, fn):
+            self._set_default(fn)
             
-    class BREAK(Exception):
-        pass
-        
     def __exit__(self, exc_type, exc_value, traceback):
-        if exc_type not in [self.BREAK, None]:
-            return False
-        elif self.case.dispatch:
-            if self.predicates:
-                try:
-                    self.return_value = next(v() for p,v in self.case.dispatch.items() if p(self.obj))
-                except StopIteration:
-                    if hasattr(self.default, 'default'):
-                        self.return_value = self.default.default()
-                    else:
-                        raise KeyError("No switch handling for {}".format(self.obj))
-                if not hasattr(self.default, 'default') and self.police_enums and isinstance(self.obj, Enum):
-                    missing = { e for e in type(self.obj) if not any(p(e) for p in self.case.dispatch) }
-                    if missing:
-                        raise KeyError("Incomplete switch handling for {}: missing {} (set police_enums=False to ignore)".format(type(self.obj), missing))
-            else:
-                if not hasattr(self.default, 'default') and self.obj not in self.case.dispatch:
-                    raise KeyError("No switch handling for {}".format(self.obj)) 
-                self.return_value = self.case.dispatch.get(self.obj, getattr(self.default, 'default', None))()
-                if not hasattr(self.default, 'default') and self.police_enums:
-                    enum_types = set(type(x) for x in self.case.seen if isinstance(x, Enum))
-                    for enum_type in enum_types:
-                        missing = set(enum_type) - self.case.seen
-                        if missing:
-                            raise KeyError("Incomplete switch handling for {}: missing {} (set police_enums=False to ignore)".format(enum_type, missing))
-        elif not self.case.fallthrough():
-            raise KeyError("No fallthrough handling for {}".format(self.obj)) 
-        return exc_type == self.BREAK
-        
-class switch_predicates(switch):
-    """Like switch, but uses predicates rather than values in case statements.
-    Dispatch statements are evaluated in definition order."""
     
-    def __init__(self, obj, police_enums=True):
-        super().__init__(obj, predicates=True, police_enums=police_enums)
+        if exc_type is not None:
+            return
+            
+        if self.police_enums and not hasattr(self.default, 'default'):
+            enum_types = { type(x) for x in ({ self.obj } if self.predicates else self.case.dispatch) if isinstance(x, Enum) }
+            for enum_type in enum_types:
+                missing = [ e for e in enum_type if not (any(p(e) for p in self.case.dispatch) if self.predicates else e in self.case.dispatch) ]
+                if missing:
+                    raise KeyError("Incomplete switch handling for {}: missing {} (set police_enums=False to ignore)".format(enum_type, ", ".join(map(str, missing))))
+                    
+        try:
+            self.return_value = next(v() for p,v in self.case.dispatch.items() if p(self.obj)) \
+                                if self.predicates else self.case.dispatch[self.obj]()
+        except (KeyError, StopIteration):
+            if not hasattr(self.default, 'default'):
+                raise KeyError("No switch handling for {}".format(self.obj))
+            self.return_value = self.default.default()
+            
+switch_predicates = partial(switch, predicates=True)

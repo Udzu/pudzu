@@ -15,15 +15,12 @@ Various utility functions and data structures.
 ```python
 >> md = optional_import("module")
 >> md
-<MissingModule: module>
+<missing module 'module'>
 >> md.fn(1)
-ImportError: Missing module: module
+AttributeError: Missing module 'module' has no attribute 'fn'
 >> if md: md.fn(1)
 >> md = optional_import("module", fn=str)
 >> md.fn(1)
-'1'
->> fn = optional_import_from("module", "fn", str)
->> fn(1)
 '1'
 ```
   

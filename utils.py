@@ -1,6 +1,9 @@
 import bisect
 import datetime
 import hashlib
+import importlib
+import importlib.abc 
+import importlib.util
 import itertools
 import logging
 import math
@@ -9,13 +12,14 @@ import os.path
 import random
 import threading
 import re
+import sys
+import types
 import unicodedata
 
 from collections import abc, OrderedDict, Counter
 from collections.abc import Sequence, Iterable, Mapping
 from enum import Enum
 from functools import wraps, partial
-from importlib import import_module
 from inspect import signature
 from math import log10, floor, ceil
 from time import sleep
@@ -30,33 +34,95 @@ logging.basicConfig(format='[%(asctime)s] %(name)s:%(levelname)s - %(message)s',
 logging.getLogger("requests").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
-# Classes
+# Imports
 
-class MissingModule(object):
-    """A class representing a missing module import: see optional_import."""
-    def __init__(self, module, bindings):
-        self._module = module
-        for k,v in bindings.items():
-            setattr(self, k, v)
+class MissingModule(types.ModuleType):
     def __getattr__(self, k):
-        raise ImportError("Missing module: {}".format(self._module))
+        raise AttributeError("Missing module '{}' has no attribute '{}'".format(self.__name__, k))
     def __bool__(self):
         return False
     def __repr__(self):
-        return "<MissingModule: {}>".format(self._module)
-        
-def optional_import(module, **bindings):
-    """Optionally load the named module, returning a MissingModule
-    object on failure, optionally with the given bindings."""
+        return "<missing module '{}'>".format(self.__name__)
+
+def optional_import(name, **bindings):
+    """Optionally import a module, returning a MissingModule with the given bindings on failure."""
     try:
-        return import_module(module)
+        return importlib.import_module(name)
     except ImportError:
-        return MissingModule(module, bindings)
+        m = MissingModule(name)
+        for k,v in bindings.items():
+            setattr(m, k, v)
+        return m
    
 def optional_import_from(module, identifier, default=None):
     """Optionally import an identifier from the named module, returning the
     default value on failure."""
     return optional_import(module).__dict__.get(identifier, default)
+
+class OptionalModuleImporter(importlib.abc.PathEntryFinder, importlib.abc.Loader):
+
+    SUFFIX = "_OPTIONAL"
+    PATH_TRIGGER = "OptionalModuleImporterPathTrigger"
+    
+    def __init__(self, path):
+        if path != self.PATH_TRIGGER:
+            raise ImportError
+    def find_spec(self, name, path, target=None):
+        if name.endswith(self.SUFFIX):
+            base = name[:-len(self.SUFFIX)]
+            return importlib.util.find_spec(base) or importlib.util.spec_from_loader(base, self)
+        return None
+    def create_module(self, spec):
+        return MissingModule(spec.name)
+    def exec_module(self, module):
+        pass
+
+if OptionalModuleImporter not in sys.path_hooks:
+    sys.path_hooks.append(OptionalModuleImporter)
+    sys.path.append(OptionalModuleImporter.PATH_TRIGGER)
+
+class AlternativeModuleImporter(importlib.abc.PathEntryFinder):
+
+    INFIX = "_OR_"
+    PATH_TRIGGER = "AlternativeModuleImporterPathTrigger"
+    
+    def __init__(self, path):
+        if path != self.PATH_TRIGGER:
+            raise ImportError
+    def find_spec(self, name, path, target=None):
+        if self.INFIX in name:
+            first, second = name.split(self.INFIX, 1)
+            return importlib.util.find_spec(first) or importlib.util.find_spec(second)
+        return None
+    
+if AlternativeModuleImporter not in sys.path_hooks:
+    sys.path_hooks.append(AlternativeModuleImporter)
+    sys.path.append(AlternativeModuleImporter.PATH_TRIGGER)
+
+class VersionModuleImporter(importlib.abc.PathEntryFinder):
+
+    REGEX = r"^(?P<base>.+)_V(?P<version>[0-9]+(?:_[0-9]+)*)$"
+    PATH_TRIGGER = "VersionModuleImporterPathTrigger"
+
+    def __init__(self, path):
+        if path != self.PATH_TRIGGER:
+            raise ImportError
+    def find_spec(self, name, path, target=None):
+        match = re.match(self.REGEX, name)
+        if match:
+            m = importlib.import_module(match["base"])
+            if hasattr(m, '__version__'):
+                expected_version = tuple(map(int, match["version"].split("_")))
+                found_version = tuple(map(int, m.__version__.split(".")))
+                if found_version[:len(expected_version)] >= expected_version:
+                    return importlib.util.find_spec(match["base"])
+        return None
+            
+if VersionModuleImporter not in sys.path_hooks:
+    sys.path_hooks.append(VersionModuleImporter)
+    sys.path.append(VersionModuleImporter.PATH_TRIGGER)
+
+# Classes
     
 class ValueBox(abc.Collection):
     """A simple mutable container with a returning assignment operator."""
@@ -176,9 +242,11 @@ class cached_property(object):
     def __init__(self, fn, expires_after=None):
         self.__doc__ = fn.__doc__
         self.fn = fn
-        self.name = fn.__name__
         self.expires_after = expires_after
 
+    def __set_name__(self, owner, name):
+        self.name = name
+            
     def __get__(self, obj, owner=None):
         if obj is None:
             return self
@@ -535,7 +603,7 @@ class KeyEquivalenceDict(abc.MutableMapping):
             raise TypeError("'{}' object is not iterable".format(type(data).__name__))
     
     # abc methods
-    def _update_keymap(self, nk, k, update_if_present):
+    def _update_keymap(self, nk, k, update_if_present=False):
         if nk in self._data and (nk not in self._keys or update_if_present):
             self._keys[nk] = nk if self.key_choice == KeyEquivalenceDict.USE_NORMALIZED_KEY else k
         elif nk not in self._data and nk in self._keys:
@@ -549,13 +617,13 @@ class KeyEquivalenceDict(abc.MutableMapping):
     def __getitem__(self, k):
         nk = self.normalizer(k)
         v = self._data[nk]
-        self._update_keymap(nk, k, False)
+        self._update_keymap(nk, k)
         return v
     
     def __delitem__(self, k):
         nk = self.normalizer(k)
         del self._data[nk]
-        self._update_keymap(nk, k, False)
+        self._update_keymap(nk, k)
 
     def __iter__(self):
         return (self._keys[k] for k in self._data)
@@ -608,7 +676,7 @@ class CaseInsensitiveDict(KeyEquivalenceDict):
 class ValueMappingDict(abc.MutableMapping):
     """Mapping structure that normalizes values before insertion using a function that gets
     passed the base dictionary, key and value. The function can either return the value to
-    insert or throw a SkipInsertion to skip insertion altogether."""
+    insert or throw a ValueMappingDict.SkipInsertion to skip insertion altogether."""
     
     class SkipInsertion(Exception):
         pass

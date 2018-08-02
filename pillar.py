@@ -188,7 +188,7 @@ class RGBA(namedtuple('RGBA', ['red', 'green', 'blue', 'alpha'])):
                 rgba = [int("".join(rgba[0][i:i+2]), 16) for i in range(1, len(rgba[0]), 2)]
             elif isinstance(rgba[0], str):
                 rgba = ImageColor.getrgb(rgba[0])
-            elif isinstance(rgba[0], abc.Iterable):
+            elif isinstance(rgba[0], abc.Sequence) and 3 <= len(rgba[0]) <= 4:
                 rgba = rgba[0]
         if all(isinstance(x, float) for x in rgba):
             rgba = [int(round(x*255)) for x in rgba]
@@ -203,7 +203,7 @@ class NamedPalette(abc.Sequence):
     """Named color palettes. Behaves like a sequence, but also allows palette lookup by (case-insensitive) name."""
     
     def __init__(self, colors):
-        self._colors_ = ValueMappingDict(lambda d,k,v: raise_exception(KeyError("{} already present in named palette".format(k))) if k in d else RGBA(v), colors, base_factory=partial(CaseInsensitiveDict, base_factory=OrderedDict))
+        self._colors_ = ValueMappingDict(colors, value_mapping=lambda d,k,v: raise_exception(KeyError("{} already present in named palette".format(k))) if k in d else RGBA(v), base_factory=partial(CaseInsensitiveDict, base_factory=OrderedDict))
         for c, v in self._colors_.items():
              setattr(self, c, v)
         
@@ -214,11 +214,7 @@ class NamedPalette(abc.Sequence):
     def __getitem__(self, key):
         return self._colors_[key] if isinstance(key, str) else list(self._colors_.values())[key]
     def __getattr__(self, name):
-        if name in self._colors_:
-            return self._colors_[name]
-        else:
-            raise AttributeError(name)
-            
+        return self._colors_[name] if name in self._colors_ else raise_exception(AttributeError(name))
     @property
     def names(self):
         return list(self._colors_)

@@ -247,27 +247,27 @@ class cached_property(object):
     def __set_name__(self, owner, name):
         self.name = name
             
-    def __get__(self, obj, owner=None):
-        if obj is None:
+    def __get__(self, instance, owner):
+        if instance is None:
             return self
-        if not hasattr(obj, '_property_cache_expiry_times'):
-            obj._property_cache_expiry_times = {}
-        if not hasattr(obj, '_property_cache_values'):
-            obj._property_cache_values = {}
-        if (obj._property_cache_expiry_times.get(self.name) is None or
-            datetime.datetime.now() > obj._property_cache_expiry_times[self.name]):
-            obj._property_cache_values[self.name] = self.fn(obj)
+        if not hasattr(instance, '_property_cache_expiration_times'):
+            instance._property_cache_expiration_times = {}
+        if not hasattr(instance, '_property_cache_values'):
+            instance._property_cache_values = {}
+        if (self.name not in instance._property_cache_expiration_times or
+            datetime.datetime.now() > instance._property_cache_expiration_times[self.name]):
+            instance._property_cache_values[self.name] = self.fn(instance)
             if self.expires_after is None:
-                obj._property_cache_expiry_times[self.name] = datetime.datetime.max
+                instance._property_cache_expiration_times[self.name] = datetime.datetime.max
             else:
-                obj._property_cache_expiry_times[self.name] = datetime.datetime.now() + datetime.timedelta(seconds=self.expires_after)
-        return obj._property_cache_values[self.name]
+                instance._property_cache_expiration_times[self.name] = datetime.datetime.now() + datetime.timedelta(seconds=self.expires_after)
+        return instance._property_cache_values[self.name]
             
-    def __delete__(self, obj):
-        if self.name in getattr(obj, '_property_cache_expiry_times', {}):
-            del obj._property_cache_expiry_times[self.name]
-        if self.name in getattr(obj, '_property_cache_values', {}):
-            del obj._property_cache_values[self.name]
+    def __delete__(self, instance):
+        if self.name in getattr(instance, '_property_cache_expiration_times', {}):
+            del instance._property_cache_expiration_times[self.name]
+        if self.name in getattr(instance, '_property_cache_values', {}):
+            del instance._property_cache_values[self.name]
             
 def cached_property_expires_after(expires_after):
     return partial(cached_property, expires_after=expires_after)
@@ -587,10 +587,10 @@ class KeyEquivalenceDict(abc.MutableMapping):
     
     locals().update(Enum('KeyEquivalenceDict', 'USE_FIRST_KEY USE_LAST_KEY USE_NORMALIZED_KEY').__members__)
     
-    def __init__(self, normalizer, data={}, base_factory=dict, key_choice=USE_LAST_KEY):
-        self.normalizer = normalizer
-        self.base_factory = base_factory
-        self.key_choice = key_choice
+    def __init__(self, data={}, normalizer=identity, base_factory=dict, key_choice=USE_LAST_KEY):
+        self.normalizer = getattr(self, "default_normalizer", normalizer)
+        self.base_factory = getattr(self, "default_base_factory", base_factory) 
+        self.key_choice = getattr(self, "default_key_choice", key_choice) 
         self._data = base_factory()
         self._keys = {}
         if isinstance(data, abc.Mapping):
@@ -645,33 +645,36 @@ class KeyEquivalenceDict(abc.MutableMapping):
                 return False
         return True
     
-    # repr and copy written to work with simple specialized subclasses
-    def __repr__(self, normalizer=True, base_type=True, key_choice=True):
+    # handle specialized subclasses
+    def __init_subclass__(cls, normalizer=None, base_factory=None, key_choice=None, **kwargs):
+        if normalizer: cls.default_normalizer = staticmethod(normalizer)
+        if base_factory: cls.default_base_factory = staticmethod(base_factory)
+        if key_choice: cls.default_key_choice = key_choice
+        super().__init_subclass__(**kwargs)
+        
+    def __repr__(self):
         return "{class_name}({{{elements}}}{normalizer}{base_type}{key_choice})".format(
             class_name = self.__class__.__name__, 
             elements = ", ".join("{!r}: {!r}".format(self._keys[k], v) for (k, v) in self._data.items()),
-            normalizer = ", normalizer={}".format(self.normalizer.__name__) * bool(normalizer),
-            base_type = ", base_type={}".format(type(self._data).__name__) * bool(base_type),
-            key_choice = ", key_choice={}".format(self.key_choice) * bool(key_choice))
+            normalizer = ", normalizer={}".format(self.normalizer.__name__) * (not hasattr(self, "default_normalizer")),
+            base_type = ", base_type={}".format(type(self._data).__name__) * (not hasattr(self, "default_base_factory")),
+            key_choice = ", key_choice={}".format(self.key_choice) * (not hasattr(self, "default_key_choice")))
         
     def __copy__(self):
         copy = self.__class__.__new__(self.__class__)
-        KeyEquivalenceDict.__init__(copy, self.normalizer, self, base_factory=self.base_factory, key_choice=self.key_choice)
+        KeyEquivalenceDict.__init__(copy, self, normalizer=self.normalizer, base_factory=self.base_factory, key_choice=self.key_choice)
         return copy
         
     def copy(self):
         return self.__copy__()
         
-class CaseInsensitiveDict(KeyEquivalenceDict):
+class CaseInsensitiveDict(KeyEquivalenceDict, normalizer=str.lower):
     """A case-insensitive dict-like object. Can be initialized from a mapping or iterable,
     like dict. Stores the underlying data in a base_factory(), and keeps track of
     the key specified by key_choice."""
     
     def __init__(self, data={}, base_factory=dict, key_choice=KeyEquivalenceDict.USE_LAST_KEY):
-        super().__init__(str.lower, data, base_factory=base_factory, key_choice=key_choice)
-        
-    def __repr__(self):
-        return super().__repr__(normalizer=False)
+        super().__init__(data, base_factory=base_factory, key_choice=key_choice)
         
 class ValueMappingDict(abc.MutableMapping):
     """Mapping structure that normalizes values before insertion using a function that gets
@@ -681,9 +684,9 @@ class ValueMappingDict(abc.MutableMapping):
     class SkipInsertion(Exception):
         pass
     
-    def __init__(self, value_mapping, data={}, base_factory=dict):
-        self.value_mapping = value_mapping
-        self.base_factory = base_factory
+    def __init__(self, data={}, value_mapping=identity, base_factory=dict):
+        self.value_mapping = getattr(self, "default_value_mapping", value_mapping)
+        self.base_factory = getattr(self, "default_base_factory", base_factory)
         self._data = base_factory()
         if isinstance(data, abc.Mapping):
             for k, v in data.items():
@@ -695,40 +698,33 @@ class ValueMappingDict(abc.MutableMapping):
             raise TypeError("'{}' object is not iterable".format(type(data).__name__))
     
     def __setitem__(self, k, v):
-        insert = True
         try:
-            new_value = self.value_mapping(self._data, k, v)
+            self._data[k] = self.value_mapping(self._data, k, v)
         except self.SkipInsertion:
-            insert = False
-        if insert:
-            self._data[k] = new_value
+            pass
         
-    def __getitem__(self, k):
-        return self._data[k]
-    
-    def __delitem__(self, k):
-        del self._data[k]
-
-    def __iter__(self):
-        return (k for k in self._data)
+    def __getitem__(self, k): return self._data[k]
+    def __delitem__(self, k): del self._data[k]
+    def __iter__(self): return (k for k in self._data)
+    def __len__(self): return len(self._data)
+    def __contains__(self, k): return k in self._data
         
-    def __len__(self):
-        return len(self._data)
+    # handle specialized subclasses
+    def __init_subclass__(cls, value_mapping=None, base_factory=None, **kwargs):
+        if value_mapping: cls.default_value_mapping = staticmethod(value_mapping)
+        if base_type: cls.default_base_factory = staticmethod(base_factory)
+        super().__init_subclass__(**kwargs)
         
-    def __contains__(self, k):
-        return k in self._data
-        
-    # repr and copy written to work with simple specialized subclasses
-    def __repr__(self, value_mapping=True, base_type=True):
+    def __repr__(self):
         return "{class_name}({{{elements}}}{value_mapping}{base_type})".format(
             class_name = self.__class__.__name__, 
             elements = ", ".join("{!r}: {!r}".format(k, v) for (k, v) in self._data.items()),
-            value_mapping = ", value_mapping={}".format(self.value_mapping.__name__) * bool(value_mapping),
-            base_type = ", base_type={}".format(type(self._data).__name__) * bool(base_type))
+            value_mapping = ", value_mapping={}".format(self.value_mapping.__name__) * (not hasattr(self, "default_value_mapping")),
+            base_type = ", base_type={}".format(type(self._data).__name__) * (not hasattr(self, "default_base_factory")))
         
     def __copy__(self):
         copy = self.__class__.__new__(self.__class__)
-        ValueMappingDict.__init__(copy, self.value_mapping, self, base_factory=self.base_factory)
+        ValueMappingDict.__init__(copy, self, value_mapping=self.value_mapping, base_factory=self.base_factory)
         return copy
         
     def copy(self):
@@ -827,7 +823,7 @@ def parameterized_method(method_suffixes=None, **kwargs):
     """Decorator for generating parameterized class methods. To use, use the
     MetaParameterized metclass, and decorate the methods, passing in parallel lists
     of named parameterized vaues, and optional method name suffixes. This will generate
-    appropraitely named methods for each value combination, with the parameters
+    appropriately named methods for each value combination, with the parameters
     passed into the base method as named arguments."""
     def decorator(func):
         func._parameterized_kwargs = kwargs
@@ -929,11 +925,12 @@ class switch():
                     raise KeyError("Incomplete switch handling for {}: missing {} (set police_enums=False to ignore)".format(enum_type, ", ".join(map(str, missing))))
                     
         try:
-            self.return_value = next(v() for p,v in self.case.dispatch.items() if p(self.obj)) \
-                                if self.predicates else self.case.dispatch[self.obj]()
+            return_proc = next(v for p,v in self.case.dispatch.items() if p(self.obj)) \
+                          if self.predicates else self.case.dispatch[self.obj]
         except (KeyError, StopIteration):
             if not hasattr(self.default, 'default'):
                 raise KeyError("No switch handling for {}".format(self.obj))
-            self.return_value = self.default.default()
+            return_proc = self.default.default
+        self.return_value = return_proc()
             
 switch_predicates = partial(switch, predicates=True)

@@ -12,13 +12,13 @@ logger = logging.getLogger('charts')
 
 # Legends
 
-def generate_legend(boxes, labels, box_sizes=40, fonts=None, fg="black", bg="white",
+def generate_legend(boxes, labels, box_sizes=40, font_family=None, fg="black", bg="white",
                     header=None, footer=None, padding=(2,3), max_width=None, spacing=0, box_mask=None, border=True):
     """Generate a chart category legend.
     - boxes (list of colors/images): colors or images to use as boxes
     - labels (list of markups/images/lists): labels to use beside the boxes
     - box_sizes (int/(int,int)/list of (int,int)): size(s) of boxes to use for colors; height can be set to ... [40x40]
-    - fonts (font/three fonts/font function): normal, bold and italics fonts [None]
+    - font_family (font family): font function supporting optional bold and italics parameters [None]
     - fg (color): text and border color [black]
     - bg (color): background color [white]
     - header (markup/image/None): header at top of legend, automatically bolded if markup [None]
@@ -41,10 +41,10 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=None, fg="black", bg="whi
         raise ValueError("Cannot specify both list of labels and ... height for the same box")
     if isinstance(header, str):
         if "**" not in header: header = "**{}**".format(header)
-        header = Image.from_markup(header, fonts, fg=fg, bg=bg, max_width=max_width).pad(2, bg)
+        header = Image.from_markup(header, font_family, fg=fg, bg=bg, max_width=max_width).pad(2, bg)
     if isinstance(footer, str):
         if "//" not in footer: footer = "//{}//".format(footer)
-        footer = Image.from_markup(footer, fonts, fg=fg, bg=bg, max_width=max_width).pad(2, bg)
+        footer = Image.from_markup(footer, font_family, fg=fg, bg=bg, max_width=max_width).pad(2, bg)
         
     if len(boxes) > 0:
         max_box_width = max(box.width if isinstance(box, Image.Image) else size[0] for box, size in zip(boxes, box_sizes))
@@ -53,7 +53,7 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=None, fg="black", bg="whi
         box_label_array = []
         for box, label, size in zip(boxes, labels, box_sizes):
             if isinstance(label, str):
-                label = Image.from_markup(label, fonts, fg=fg, bg=bg, max_width=max_label_width).pad(2, bg)
+                label = Image.from_markup(label, font_family, fg=fg, bg=bg, max_width=max_label_width).pad(2, bg)
             if not isinstance(box, Image.Image):
                 box = Image.new("RGBA", (size[0], size[1] if size[1] != ... else label.height + 6), box)
             if non_string_sequence(label):
@@ -62,7 +62,7 @@ def generate_legend(boxes, labels, box_sizes=40, fonts=None, fg="black", bg="whi
                 offsets = Padding(0)
                 for i, l in enumerate(labels):
                     if isinstance(l, str):
-                        l = Image.from_markup(l, fonts, fg=fg, bg=bg, max_width=max_label_width).pad(2, bg)
+                        l = Image.from_markup(l, font_family, fg=fg, bg=bg, max_width=max_label_width).pad(2, bg)
                     label = label.pin(l, (0, (box.height * i) // (len(labels) - 1)), align=(0, 0.5), bg=bg, offsets=offsets)
             box_label_array.append([box, label])
         label_img = Image.from_array(box_label_array, padding=(1,spacing), xalign=[0.5, 0], bg=bg)

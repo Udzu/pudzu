@@ -591,6 +591,9 @@ class KeyEquivalenceDict(abc.MutableMapping):
         self.normalizer = getattr(self, "default_normalizer", normalizer)
         self.base_factory = getattr(self, "default_base_factory", base_factory) 
         self.key_choice = getattr(self, "default_key_choice", key_choice) 
+        if not isinstance(key_choice, type(self.USE_LAST_KEY)):
+            raise TypeError(f"Invalid key_choice parameter {key_choice!r}")
+            
         self._data = base_factory()
         self._keys = {}
         if isinstance(data, abc.Mapping):
@@ -600,7 +603,7 @@ class KeyEquivalenceDict(abc.MutableMapping):
             for (k, v) in data:
                 self.__setitem__(k, v)
         else:
-            raise TypeError("'{}' object is not iterable".format(type(data).__name__))
+            raise TypeError(f"'{type(data).__name__}' object is not iterable")
     
     # abc methods
     def _update_keymap(self, nk, k, update_if_present=False):

@@ -7,7 +7,7 @@ from PIL import ImageEnhance
 df = pd.read_csv("datasets/euendian.csv").set_index("country")
 
 FONT = arial
-PALETTE = [VegaPalette10.BLUE, VegaPalette10.ORANGE, VegaPalette10.PINK]
+PALETTE = [VegaPalette10.BLUE, VegaPalette10.ORANGE, VegaPalette10.BROWN]
 CATEGORIES = ["l", "m", "b"]
 
 def colorfn(c, group):
@@ -47,6 +47,6 @@ Image.from_text("(preferred format according to the Universal Postal Union)", FO
 
 img = Image.from_column([date_title, date_map, address_title, address_map], bg="white", padding=5)
 img = ImageEnhance.Color(img).enhance(0.7)
-img.place(Image.from_text("/u/Udzu", font("arial", 24), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
+#img.place(Image.from_text("/u/Udzu", font("arial", 24), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("output/euendian.png")
 

@@ -2,7 +2,6 @@ import sys
 sys.path.append('..')
 from charts import *
 
-
 # legend
 HEADER = "Types of military action".upper()
 COLORS = '#cb181d', '#fb6a4a', '#fcae91', '#238b45', '#BBBBBB'

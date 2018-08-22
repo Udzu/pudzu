@@ -577,6 +577,14 @@ def strip_accents(str, aggressive=False, german=False):
         str = "".join(aggressive_strip(c) for c in str)
     return str
     
+def substitute(text, _pattern=r"\{\{(.*?)\}\}", **kwargs):
+    """Format-style substitution but with arbitrary (but unescapable) patterns."""
+    return re.sub(_pattern, lambda m: "{{{}}}".format(m.group(1)).format(**kwargs), text)
+
+def indent_all_but_first(string, indent):
+    """Indent all but the first line of a string."""
+    return "\n".join(" "*indent*(i>0)+l for i,l in enumerate(string.split("\n")))
+
 # Data structures
 
 class KeyEquivalenceDict(abc.MutableMapping):

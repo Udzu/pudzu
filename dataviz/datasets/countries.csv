@@ -31,7 +31,7 @@ BMU,North America,Bermuda,https://upload.wikimedia.org/wikipedia/commons/thumb/b
 BOL,South America,Bolivia,https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Bolivia.svg/1024px-Flag_of_Bolivia.svg.png,Bolivian,10724705,.bo,un,+591
 BRA,South America,Brazil,https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Brazil.svg/1024px-Flag_of_Brazil.svg.png,Brazilian,207847528,.br,un,+55
 BRB,North America,Barbados,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Flag_of_Barbados.svg/1024px-Flag_of_Barbados.svg.png,Barbadian,284215,.bb,un,+1246
-BRN,Asia,Brunei,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Flag_of_Brunei.svg/1024px-Flag_of_Brunei.svg.png,Bruneian,423188,.bn,un,+673
+BRN,Asia,Brunei|Brunei Darussalam,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Flag_of_Brunei.svg/1024px-Flag_of_Brunei.svg.png,Bruneian,423188,.bn,un,+673
 BTN,Asia,Bhutan,https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Flag_of_Bhutan.svg/1024px-Flag_of_Bhutan.svg.png,Bhutanese,774830,.bt,un,+975
 BWA,Africa,Botswana,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_Botswana.svg/1024px-Flag_of_Botswana.svg.png,Motswana|Botswanan,2262485,.bw,un,+267
 CAF,Africa,Central African Republic,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Central_African_Republic.svg/1024px-Flag_of_the_Central_African_Republic.svg.png,Central African,4900274,.cf,un,+236
@@ -132,7 +132,7 @@ LSO,Africa,Lesotho,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Fla
 LTU,Europe,Lithuania,https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Flag_of_Lithuania.svg/1024px-Flag_of_Lithuania.svg.png,Lithuanian,2910199,.lt,eu|un,+370
 LUX,Europe,Luxembourg,https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Luxembourg.svg/1024px-Flag_of_Luxembourg.svg.png,Luxembourg|Luxembourgish,569676,.lu,eu|un,+352
 LVA,Europe,Latvia,https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Latvia.svg/1024px-Flag_of_Latvia.svg.png,Latvian,1978440,.lv,eu|un,+371
-MAC,Asia,Macau,https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Flag_of_Macau.svg/1024px-Flag_of_Macau.svg.png,Macanese|Chinese,587606,.mo,,+853
+MAC,Asia,Macau|Macao,https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Flag_of_Macau.svg/1024px-Flag_of_Macau.svg.png,Macanese|Chinese,587606,.mo,,+853
 MAF,North America,Collectivity of Saint Martin,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/1024px-Flag_of_France.svg.png,Saint-Martinoise,31754,.mf,,+590
 MAR,Africa,Morocco,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Morocco.svg/1024px-Flag_of_Morocco.svg.png,Moroccan,34377511,.ma,un,+212
 MCO,Europe,Monaco,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Flag_of_Monaco.svg/1280px-Flag_of_Monaco.svg.png,Monégasque|Monacan,37731,.mc,un,+377
@@ -193,7 +193,7 @@ SDN,Africa,Sudan,https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_
 SEN,Africa,Senegal,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Flag_of_Senegal.svg/1024px-Flag_of_Senegal.svg.png,Senegalese,15129273,.sn,un,+221
 SGP,Asia,Singapore,https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Singapore.svg/1024px-Flag_of_Singapore.svg.png,Singapore|Singaporean,5535002,.sg,un,+65
 SGS,South America,South Georgia and the South Sandwich Islands,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Flag_of_South_Georgia_and_the_South_Sandwich_Islands.svg/1024px-Flag_of_South_Georgia_and_the_South_Sandwich_Islands.svg.png,South Georgia|South Sandwich Island,30,.gs,,+500
-SHN,Africa,"Saint Helena, Ascension and Tristan da Cunha",https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Saint_Helena.svg/1024px-Flag_of_Saint_Helena.svg.png,Saint Helenian,5633,.ac|.sh,,+247|+290
+SHN,Africa,"Saint Helena, Ascension and Tristan da Cunha|Saint Helena",https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Saint_Helena.svg/1024px-Flag_of_Saint_Helena.svg.png,Saint Helenian,5633,.ac|.sh,,+247|+290
 SJM,Europe,Svalbard and Jan Mayen|Svalbard|Jan Mayen,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Norway.svg/1024px-Flag_of_Norway.svg.png,Svalbard|Jan Mayen,2667,.sj,,+4779
 SLB,Oceania,Solomon Islands,https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Flag_of_the_Solomon_Islands.svg/1024px-Flag_of_the_Solomon_Islands.svg.png,Solomon Island,583591,.sb,un,+677
 SLE,Africa,Sierra Leone,https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Flag_of_Sierra_Leone.svg/1024px-Flag_of_Sierra_Leone.svg.png,Sierra Leonean,6453184,.sl,un,+232
@@ -232,12 +232,12 @@ UKR,Europe,Ukraine,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Fla
 URY,South America,Uruguay,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Uruguay.svg/1024px-Flag_of_Uruguay.svg.png,Uruguayan,3431555,.uy,un,+598
 USA,North America,United States|United States of America|US|USA,https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/1024px-Flag_of_the_United_States.svg.png,United States|US|American,321418820,.us|.gov|.mil|.edu,un,+1
 UZB,Asia,Uzbekistan,https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Uzbekistan.svg/1024px-Flag_of_Uzbekistan.svg.png,Uzbekistani|Uzbek,31299500,.uz,un,+998
-VAT,Europe,Vatican City|The Vatican,https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_the_Vatican_City.svg/1024px-Flag_of_the_Vatican_City.svg.png,Vatican,1000,.va,un,+379
+VAT,Europe,Vatican City|The Vatican|Holy See,https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_the_Vatican_City.svg/1024px-Flag_of_the_Vatican_City.svg.png,Vatican,1000,.va,un,+379
 VCT,North America,Saint Vincent and the Grenadines,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Flag_of_Saint_Vincent_and_the_Grenadines.svg/1024px-Flag_of_Saint_Vincent_and_the_Grenadines.svg.png,Saint Vincentian|Vincentian,109462,.vc,un,+1784
 VEN,South America,Venezuela,https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Venezuela.svg/1024px-Flag_of_Venezuela.svg.png,Venezuelan,31108083,.ve,un,+58
 VGB,North America,British Virgin Islands,https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Flag_of_the_British_Virgin_Islands.svg/1024px-Flag_of_the_British_Virgin_Islands.svg.png,British Virgin Island,30117,.vg,,+1284
 VIR,North America,United States Virgin Islands|Virgin Islands,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Flag_of_the_United_States_Virgin_Islands.svg/1024px-Flag_of_the_United_States_Virgin_Islands.svg.png,U.S. Virgin Island,103574,.vi,,+1340
-VNM,Asia,Vietnam,https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/1024px-Flag_of_Vietnam.svg.png,Vietnamese,91703800,.vn,un,+84
+VNM,Asia,Vietnam|Viet Nam,https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/1024px-Flag_of_Vietnam.svg.png,Vietnamese,91703800,.vn,un,+84
 VUT,Oceania,Vanuatu,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Vanuatu.svg/1024px-Flag_of_Vanuatu.svg.png,Ni-Vanuatu|Vanuatuan,264652,.vu,un,+678
 WLF,Oceania,Wallis and Futuna,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Flag_of_Wallis_and_Futuna.svg/1024px-Flag_of_Wallis_and_Futuna.svg.png,Wallis and Futuna|Wallisian|Futunan,15500,.wf,,+681
 WSM,Oceania,Samoa,https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Samoa.svg/1024px-Flag_of_Samoa.svg.png,Samoan,193228,.ws,un,+685

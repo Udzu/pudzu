@@ -29,7 +29,7 @@ df = df.sort_values("guns_ph", ascending=False)
 guns = bar_chart(df[["guns_ph"]], SIZE, SIZE*10, bg=None, horizontal=True, spacing=2*SCALE, label_font=FONT(FONTSIZE), rlabels=rlabel,
     clabels= { BarChartLabelPosition.INSIDE : label_if(artial(op.ge,15)),
                BarChartLabelPosition.OUTSIDE : label_if(artial(op.lt,15))},
-    grid_interval=10, ymax=90, ylabel=Image.from_text("privately owned guns per 100 population (2007)", FONT(BIGFONT), padding=5*SCALE))
+    grid_interval=10, ymax=120, ylabel=Image.from_text("privately owned guns per 100 population (2017)", FONT(BIGFONT), padding=5*SCALE))
     
 df = df.sort_values("homicide_pm", ascending=False)
 homicides = bar_chart(df[["homicide_pm"]], SIZE, SIZE*10, bg=None, horizontal=True, spacing=2*SCALE, label_font=FONT(FONTSIZE), rlabels=rlabel,

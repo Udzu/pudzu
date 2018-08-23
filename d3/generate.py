@@ -7,15 +7,16 @@ import json
 
 def generate_datamap(name, data, palette,
                      width=2500, height=1000, border=0.8, defaultFill="#BBBBBB",
-                     map="libraries/datamaps.world.hires.min.js"):
+                     map="libraries/datamaps.world.hires.js"):
     """Generate a D3 datamap html file."""
     TEMPLATE = r"""<!DOCTYPE html>
 <html>
 <body>
-<script src="libraries/d3.min.js"></script>
-<script src="libraries/saveSvgAsPng.js"></script>
-<script src="libraries/topojson.min.js"></script>
-<script src="{{map}}"></script>
+<script src="../libraries/d3.min.js"></script>
+<script src="../libraries/saveSvgAsPng.js"></script>
+<script src="../libraries/topojson.min.js"></script>
+<script src="../{{map}}"></script>
+<button onclick='saveSvgAsPng(document.getElementsByTagName("svg")[0], "uspolice_pc.png")'>Save image...</button>
 <div id="container"/>
 <script>
     var map = new Datamap({
@@ -26,7 +27,6 @@ def generate_datamap(name, data, palette,
       fills: {{fills}},
       data: {{datamap}}
     });
-    saveSvgAsPng(document.getElementsByTagName("svg")[0], "{{name}}.png");
 </script>
 </body>"""
     if "defaultFill" not in palette: palette["defaultFill"] = defaultFill

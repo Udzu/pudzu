@@ -67,7 +67,7 @@ class OptionalModuleImporter(importlib.abc.PathEntryFinder, importlib.abc.Loader
     def __init__(self, path):
         if path != self.PATH_TRIGGER:
             raise ImportError
-    def find_spec(self, name, path, target=None):
+    def find_spec(self, name, path=None, target=None):
         if name.endswith(self.SUFFIX):
             base = name[:-len(self.SUFFIX)]
             return importlib.util.find_spec(base) or importlib.util.spec_from_loader(base, self)
@@ -89,7 +89,7 @@ class AlternativeModuleImporter(importlib.abc.PathEntryFinder):
     def __init__(self, path):
         if path != self.PATH_TRIGGER:
             raise ImportError
-    def find_spec(self, name, path, target=None):
+    def find_spec(self, name, path=None, target=None):
         if self.INFIX in name:
             first, second = name.split(self.INFIX, 1)
             return importlib.util.find_spec(first) or importlib.util.find_spec(second)
@@ -107,7 +107,7 @@ class VersionModuleImporter(importlib.abc.PathEntryFinder):
     def __init__(self, path):
         if path != self.PATH_TRIGGER:
             raise ImportError
-    def find_spec(self, name, path, target=None):
+    def find_spec(self, name, path=None, target=None):
         match = re.match(self.REGEX, name)
         if match:
             m = importlib.import_module(match["base"])

@@ -854,6 +854,7 @@ def generate_tile_map(array, filename, size, border=0, bg="white"):
     img.save(labelbox_img_path(filename))
     generate_bbox_csv(filename)
     
+# TODO: speed up color replacements
 def map_chart(map, color_fn, label_fn=None, label_font=None, label_color="black", overlay_fn=None, resize_patterns=False):
     """Generate a map chart from a map image and color mapping. If present, this will use a name csv file with image names
     and a label csv file with label bounding boxes.

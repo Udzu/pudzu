@@ -1,0 +1,250 @@
+color,label_align,name
+255|255|255,,Sea
+187|187|187,,Unknown
+238|238|238,,Borders
+255|0|0,,Afghanistan
+255|1|0,,Albania
+255|2|0,,Algeria
+255|3|0,,American Samoa
+255|4|0,,Andorra
+255|5|0,,Angola
+255|6|0,,Anguilla
+255|7|0,,Antigua and Barbuda
+255|8|0,,Argentina
+255|9|0,,Armenia
+255|10|0,,Aruba
+255|11|0,,Australia
+255|12|0,,Austria
+255|13|0,,Azerbaijan
+255|14|0,,Bahamas
+255|15|0,,Bahrain
+255|16|0,,Bangladesh
+255|17|0,,Barbados
+255|18|0,,Belarus
+255|19|0,,Belgium
+255|20|0,,Belize
+255|21|0,,Benin
+255|22|0,,Bermuda
+255|23|0,,Bhutan
+255|24|0,,Bolivia
+255|25|0,,Bosnia and Herzegovina
+255|26|0,,Botswana
+255|27|0,,Brazil
+255|28|0,,British Indian Ocean Territory
+255|29|0,,British Virgin Islands
+255|30|0,,Brunei
+255|31|0,,Bulgaria
+255|32|0,,Burkina Faso
+255|33|0,,Burundi
+255|34|0,,Cambodia
+255|35|0,,Cameroon
+255|36|0,,Canada
+255|37|0,,Cape Verde
+255|38|0,,Cayman Islands
+255|39|0,,Central African Republic
+255|40|0,,Chad
+255|41|0,,Chile
+255|42|0,,China
+255|43|0,,Christmas Island
+255|44|0,,Cocos Islands
+255|45|0,,Collectivity of Saint Martin
+255|46|0,,Colombia
+255|47|0,,Comoros
+255|48|0,,Cook Islands
+255|49|0,,Costa Rica
+255|50|0,,Croatia
+255|51|0,,Cuba
+255|52|0,,Curaçao
+255|53|0,,Cyprus
+255|54|0,,Czech Republic
+255|55|0,,Democratic Republic of the Congo
+255|56|0,,Denmark
+255|57|0,,Djibouti
+255|58|0,,Dominica
+255|59|0,,Dominican Republic
+255|60|0,,East Timor
+255|61|0,,Ecuador
+255|62|0,,Egypt
+255|63|0,,El Salvador
+255|64|0,,Equatorial Guinea
+255|65|0,,Eritrea
+255|66|0,,Estonia
+255|67|0,,Ethiopia
+255|68|0,,European Union
+255|69|0,,Falkland Islands
+255|70|0,,Faroe Islands
+255|71|0,,Federated States of Micronesia
+255|72|0,,Fiji
+255|73|0,,Finland
+255|74|0,,France
+255|75|0,,French Guiana
+255|76|0,,French Polynesia
+255|77|0,,French Southern Territories
+255|78|0,,Gabon
+255|79|0,,Georgia
+255|80|0,,Germany
+255|81|0,,Ghana
+255|82|0,,Gibraltar
+255|83|0,,Greece
+255|84|0,,Greenland
+255|85|0,,Grenada
+255|86|0,,Guadeloupe
+255|87|0,,Guam
+255|88|0,,Guatemala
+255|89|0,,Guernsey
+255|90|0,,Guinea
+255|91|0,,Guinea-Bissau
+255|92|0,,Guyana
+255|93|0,,Haiti
+255|94|0,,Honduras
+255|95|0,,Hong Kong
+255|96|0,,Hungary
+255|97|0,,Iceland
+255|98|0,,India
+255|99|0,,Indonesia
+255|100|0,,Iran
+255|101|0,,Iraq
+255|102|0,,Ireland
+255|103|0,,Isle of Man
+255|104|0,,Israel
+255|105|0,,Italy
+255|106|0,,Ivory Coast
+255|107|0,,Jamaica
+255|108|0,,Japan
+255|109|0,,Jersey
+255|110|0,,Jordan
+255|111|0,,Kazakhstan
+255|112|0,,Kenya
+255|113|0,,Kiribati
+255|114|0,,Kosovo
+255|115|0,,Kuwait
+255|116|0,,Kyrgyzstan
+255|117|0,,Laos
+255|118|0,,Latvia
+255|119|0,,Lebanon
+255|120|0,,Lesotho
+255|121|0,,Liberia
+255|122|0,,Libya
+255|123|0,,Liechtenstein
+255|124|0,,Lithuania
+255|125|0,,Luxembourg
+255|126|0,,Macau
+255|127|0,,Macedonia
+255|128|0,,Madagascar
+255|129|0,,Malawi
+255|130|0,,Malaysia
+255|131|0,,Maldives
+255|132|0,,Mali
+255|133|0,,Malta
+255|134|0,,Marshall Islands
+255|135|0,,Martinique
+255|136|0,,Mauritania
+255|137|0,,Mauritius
+255|138|0,,Mayotte
+255|139|0,,Mexico
+255|140|0,,Moldova
+255|141|0,,Monaco
+255|142|0,,Mongolia
+255|143|0,,Montenegro
+255|144|0,,Montserrat
+255|145|0,,Morocco
+255|146|0,,Mozambique
+255|147|0,,Myanmar
+255|148|0,,Namibia
+255|149|0,,Nauru
+255|150|0,,Nepal
+255|151|0,,Netherlands
+255|152|0,,New Caledonia
+255|153|0,,New Zealand
+255|154|0,,Nicaragua
+255|155|0,,Niger
+255|156|0,,Nigeria
+255|157|0,,Niue
+255|158|0,,Norfolk Island
+255|159|0,,North Korea
+255|160|0,,Northern Mariana Islands
+255|161|0,,Norway
+255|162|0,,Oman
+255|163|0,,Pakistan
+255|164|0,,Palau
+255|165|0,,Palestine
+255|166|0,,Panama
+255|167|0,,Papua New Guinea
+255|168|0,,Paraguay
+255|169|0,,Peru
+255|170|0,,Philippines
+255|171|0,,Pitcairn Islands
+255|172|0,,Poland
+255|173|0,,Portugal
+255|174|0,,Puerto Rico
+255|175|0,,Qatar
+255|176|0,,Republic of the Congo
+255|177|0,,Romania
+255|178|0,,Russia
+255|179|0,,Rwanda
+255|180|0,,Réunion
+255|181|0,,Saint Barthélemy
+255|182|0,,Saint Helena
+255|183|0,,Saint Kitts and Nevis
+255|184|0,,Saint Lucia
+255|185|0,,Saint Pierre and Miquelon
+255|186|0,,Saint Vincent and the Grenadines
+255|187|0,,Samoa
+255|188|0,,San Marino
+255|189|0,,Saudi Arabia
+255|190|0,,Senegal
+255|191|0,,Serbia
+255|192|0,,Seychelles
+255|193|0,,Sierra Leone
+255|194|0,,Singapore
+255|195|0,,Sint Maarten
+255|196|0,,Slovakia
+255|197|0,,Slovenia
+255|198|0,,Solomon Islands
+255|199|0,,Somalia
+255|0|1,,South Africa
+255|1|1,,South Georgia and the South Sandwich Islands
+255|2|1,,South Korea
+255|3|1,,South Sudan
+255|4|1,,Spain
+255|5|1,,Sri Lanka
+255|6|1,,Sudan
+255|7|1,,Suriname
+255|8|1,,Svalbard and Jan Mayen
+255|9|1,,Swaziland
+255|10|1,,Sweden
+255|11|1,,Switzerland
+255|12|1,,Syria
+255|13|1,,São Tomé and Príncipe
+255|14|1,,Taiwan
+255|15|1,,Tajikistan
+255|16|1,,Tanzania
+255|17|1,,Thailand
+255|18|1,,The Gambia
+255|19|1,,Togo
+255|20|1,,Tokelau
+255|21|1,,Tonga
+255|22|1,,Trinidad and Tobago
+255|23|1,,Tunisia
+255|24|1,,Turkey
+255|25|1,,Turkmenistan
+255|26|1,,Turks and Caicos Islands
+255|27|1,,Tuvalu
+255|28|1,,Uganda
+255|29|1,,Ukraine
+255|30|1,,United Arab Emirates
+255|31|1,,United Kingdom
+255|32|1,,United States
+255|33|1,,United States Virgin Islands
+255|34|1,,Uruguay
+255|35|1,,Uzbekistan
+255|36|1,,Vanuatu
+255|37|1,,Vatican City
+255|38|1,,Venezuela
+255|39|1,,Vietnam
+255|40|1,,Wallis and Futuna
+255|41|1,,Western Sahara
+255|42|1,,Yemen
+255|43|1,,Zambia
+255|44|1,,Zimbabwe
+255|45|1,,Åland Islands

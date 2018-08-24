@@ -5,14 +5,13 @@ from charts import *
 
 # generate d3 html
 
-
 total_greater = ["Brazil", "India", "Mexico", "South Africa", "Nigeria", "Venezuela", "USA", "Russia", "Colombia", "Philippines", "DR Congo", "China", "Pakistan", "Ethiopia", "El Salvador", "Honduras", "Guatemala", "Uganda", "Bangladesh", "Tanzania", "Iraq", "Turkey", "Ukraine", "Ivory Coast", "Argentina", "Peru", "Kenya", "Thailand", "Egypt", "Afghanistan", "Iran", "Mali", "Madagascar", "Yemen", "Sudan", "Dominican Republic", "South Sudan", "Vietnam", "Jamaica", "Indonesia", "Chad", "Angola", "Myanmar", "North Korea", "Senegal"]
-generate_datamap("uspolice_total", codify_countries(greater=total_greater),  { "greater": '#BBBBBB' }, defaultFill= VegaPalette10.RED)
+generate_datamap("uspolice_total", dict_from_vals(greater=total_greater),  { "greater": '#BBBBBB' }, default_fill= VegaPalette10.RED)
 
 pc_greater = ["Singapore", "Iceland", "Japan", "Macau", "Saint Helena", "Guernsey", "Jersey", "Isle of Man", "Andorra", "Holy See", "San Marino", "Liechtenstein", "Monaco", "Nauru", "Niue"]
 pc_half = ["Italy", "Poland", "Oman", "Austria", "Portugal", "Spain", "China", "Czechia", "Netherlands", "Switzerland", "Bahrain", "Norway", "Indonesia", "Brunei", "Slovenia", "Hong Kong", "Qatar", "French Polynesia", "Burkina Faso"]
 pc_fifth = ["Canada", "Ghana", "Tajikistan", "Kosovo", "Macedonia", "Jordan", "Vietnam", "Saudi Arabia", "Finland", "Serbia", "Israel", "Algeria", "France", "Bosnia and Herzegovina", "Romania", "Morocco", "UK", "Germany", "Bulgaria", "Bhutan", "Cyprus", "Sweden", "Slovakia", "Croatia", "Georgia", "New Zealand", "Denmark", "Tonga", "Australia", "Malta", "United Arab Emirates", "Taiwan", "Ireland", "Maldives", "Greece", "Luxembourg", "South Korea", "Palestine"]
-generate_datamap("uspolice_pc", codify_countries(greater=pc_greater, half=pc_half, fifth=pc_fifth),  { "greater": VegaPalette10.PURPLE, "half": VegaPalette10.RED, "fifth": VegaPalette10.ORANGE })
+generate_datamap("uspolice_pc", dict_from_vals(greater=pc_greater, half=pc_half, fifth=pc_fifth),  { "greater": VegaPalette10.PURPLE, "half": VegaPalette10.RED, "fifth": VegaPalette10.ORANGE })
 
 # generate maps (currently done manually)
 

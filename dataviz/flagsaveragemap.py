@@ -18,7 +18,7 @@ def colorfn(c, flags, *args):
     if c not in flags.index: return "white" if c in ['Sea', 'Borders'] else "grey"
     flag_array = np.array(Image.from_url_with_cache(flags['flag'][c]).convert("RGB"))
     float_average = [ from_linear(to_linear(flag_array[:,:,i]).mean()) for i in range(flag_array.shape[-1])]
-    return RGBA(int(f) for f in float_average)
+    return RGBA([int(f) for f in float_average])
 
 map1 = map_chart("maps/Europe.png", artial(colorfn, countries))
 map2 = map_chart("maps/USA.png", artial(colorfn, states))
@@ -28,5 +28,3 @@ subtitle = Image.from_text("calculated from flag images on Wikipedia, averaged u
 img = Image.from_column([title, subtitle, Image.from_row([map2, map1])], padding=8, bg="white")
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("output/flagsaveragemap.png")
-
-

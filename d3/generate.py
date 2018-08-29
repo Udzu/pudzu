@@ -64,7 +64,7 @@ def generate_map_chart(name, regions, width=2500, height=1000,
     sea, background, border = RGBA("#FFFFFF"), RGBA("#BBBBBB"), RGBA("#EEEEEE")
     data = { k : colfn(i) for i, k in enumerate(regions) }
     generate_datamap(name, data, width=width, height=height, map_path=map_path, codifier=codifier,
-                     geography={"borderWidth": 1, "borderColor": border}, crisp_edges=True)
+                     geography={"borderWidth": 1, "borderColor": border.to_hex()}, crisp_edges=True)
     data = merge( { "Sea": sea, "Unknown": background, "Borders": border }, data )
     labels = [{ 'color': "|".join(map(str,c[:3])), 'name': k, 'label_align': "" } for k,c in data.items()]
     pd.DataFrame(labels).to_csv("temp/"+name_csv_path(name), index=False, encoding="utf-8")

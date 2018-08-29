@@ -5,13 +5,15 @@
 <script src="libraries/saveSvgAsPng.js"></script>
 <script src="libraries/topojson.min.js"></script>
 <script src="libraries/datamaps.world.hires.js"></script>
+<button onclick='saveSvgAsPng(document.getElementsByTagName("svg")[0], "uspolice_pc.png")'>Save image...</button>
 <div id="container"/>
 <script>
     var map = new Datamap({
       element: document.getElementById('container'),
-      width: 2500,
-      height: 1000,
-      geographyConfig: { borderWidth: 0.8, },
+      width: 2600,
+      height: 1500,
+      projection: 'mercator',
+      geographyConfig: { borderWidth: 0.8, hideAntarctica: false },
       fills: {
         'invaded state': '#cb181d',
         'invaded substate(s)': '#fb6a4a',
@@ -221,6 +223,5 @@
 'VUT': {fillKey: 'invaded substate(s)'},
         }
       });
-      saveSvgAsPng(document.getElementsByTagName("svg")[0], "invasions.png");
 </script>
 </body>

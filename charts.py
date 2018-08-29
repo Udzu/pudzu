@@ -90,7 +90,7 @@ class BarChartLabelPosition(Enum):
 
 def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizontal=False, 
               fg="black", bg="white", spacing=1, group_spacing=0,
-              ymin=None, ymax=None, grid_interval=None, tick_interval=Ellipsis, 
+              ymin=None, ymax=None, grid_interval=None, grid_width=0, tick_interval=Ellipsis, 
               label_interval=Ellipsis, label_font=None, colors=VegaPalette10, 
               ylabels=Ellipsis, clabels=Ellipsis, rlabels=Ellipsis,
               xlabel=None, ylabel=None, title=None,
@@ -108,6 +108,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
     - ymin (float): minimum y value [auto]
     - ymax (float): maximum y value [auto]
     - grid_interval (float): grid line interval [zero line only]
+    - grid_width (int): grid width in pixels [0 = default?]
     - tick_interval (float): tick line interval [grid_interval]
     - label_interval (float): y label interval [grid_interval]
     - label_font (font): font to use for text labels [none]
@@ -268,7 +269,7 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
             boxes.append(make_box(fill, lsize_fn(c), False) if callable(fill) or isinstance(fill, Image.Image) else fill)
             box_sizes.append(lsize_fn(c))
             labels.append(str(data.columns[c]))
-        base_args = dict(boxes=boxes, labels=labels, box_sizes=box_sizes, fonts=legend_fonts, fg=fg, bg=bg)
+        base_args = dict(boxes=boxes, labels=labels, box_sizes=box_sizes, font_family=legend_fonts, fg=fg, bg=bg)
         legend = generate_legend(**merge_dicts(base_args, legend_args))
         chart = chart.place(hzimg(legend.pad(10,0)), hzalign(lalign))
 
@@ -280,15 +281,15 @@ def bar_chart(data, bar_width, chart_height, type=BarChartType.SIMPLE, horizonta
     grid = Image.new("RGBA", (chart.width, chart.height), (255,255,255,0))
     gridcolor = RGBA(fg)._replace(alpha=80)
     griddraw = ImageDraw.Draw(grid)
-    griddraw.line([(tick_size, y_coordinate_fn(ymin)), (tick_size, y_coordinate_fn(ymax))], fill=fg)
+    griddraw.line([(tick_size, y_coordinate_fn(ymin)), (tick_size, y_coordinate_fn(ymax))], fill=fg, width=grid_width)
     if grid_interval is not None:
         for i in range(ceil(ymin / grid_interval), floor(ymax / grid_interval) + 1):
             y = y_coordinate_fn(i * grid_interval)
-            griddraw.line([(tick_size, y), (chart.width, y)], fill=fg if i == 0 else gridcolor)
+            griddraw.line([(tick_size, y), (chart.width, y)], fill=fg if i == 0 else gridcolor, width=grid_width)
     if tick_interval is not None:
         for i in range(ceil(ymin / tick_interval), floor(ymax / tick_interval) + 1):
             y = y_coordinate_fn(i * tick_interval)
-            griddraw.line([(0, y), (tick_size, y)], fill=fg)
+            griddraw.line([(0, y), (tick_size, y)], fill=fg, width=grid_width)
     del griddraw
     chart = Image.alpha_composite(grid, chart)
     

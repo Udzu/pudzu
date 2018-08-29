@@ -4,7 +4,7 @@ from charts import *
 
 FONT = calibri
 BARBG = "#AAAAAA80"
-SCALE = 2
+SCALE = 2.65
 s = lambda i: round(i * SCALE)
 atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index("country")
 df = pd.read_csv("datasets/g20_deathpenalty.csv").assign_rows(parity = lambda d, i: (i+1) % 2).set_index("country")
@@ -33,9 +33,9 @@ def colorfn(c,r,v):
     if not df.parity[df.index[r]]: return BARBG
     return None
     
-chart = bar_chart(df[["pm", "bar"]], s(40), s(600), bg=None, horizontal=True, spacing=s(2), label_font=FONT(s(16)), rlabels=rlabel,
+chart = bar_chart(df[["pm", "bar"]], s(40), s(800), bg=None, horizontal=True, spacing=s(2), label_font=FONT(s(16)), rlabels=rlabel,
     type=BarChartType.STACKED,  colors= colorfn, clabels=label_if(artial(op.ge,100)),
-    grid_interval=100, ymax=500, ylabel=Image.from_text("number of executions per 100 million population in 2016", FONT(s(18)), padding=s(5)))
+    grid_interval=100, grid_width=s(1), ymax=500, ylabel=Image.from_text("number of executions per 100 million population in 2016", FONT(s(18)), padding=s(5)))
 
 title = Image.from_text("Execution rates in G20 members in 2016".upper(), FONT(s(40), bold=True))
 footer = Image.from_markup(

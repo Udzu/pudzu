@@ -33,7 +33,7 @@ US_NY,Chemistry,US,1932,http://en.wikipedia.org/wiki/Irving_Langmuir,Irving Lang
 US_IN,Chemistry,US,1934,http://en.wikipedia.org/wiki/Harold_Urey,Harold Urey,1,0
 France,Chemistry,France,1935,http://en.wikipedia.org/wiki/Fr%C3%A9d%C3%A9ric_Joliot-Curie,Frédéric Joliot-Curie,1/2,0
 France,Chemistry,France,1935,http://en.wikipedia.org/wiki/Ir%C3%A8ne_Joliot-Curie,Irène Joliot-Curie,1/2,0
-Netherlands,Chemistry,Netherlands|US,1936,http://en.wikipedia.org/wiki/Peter_Debye,Peter Debye,1,0
+Netherlands,Chemistry,Netherlands,1936,http://en.wikipedia.org/wiki/Peter_Debye,Peter Debye,1,0
 UK_ENG,Chemistry,UK,1937,http://en.wikipedia.org/wiki/Norman_Haworth,Norman Haworth,1/2,0
 Russia,Chemistry,Switzerland,1937,http://en.wikipedia.org/wiki/Paul_Karrer,Paul Karrer,1/2,0
 Austria,Chemistry,Germany|Austria,1938,http://en.wikipedia.org/wiki/Richard_Kuhn,Richard Kuhn,1,0
@@ -108,7 +108,7 @@ Germany,Chemistry,Hungary|Canada,1986,http://en.wikipedia.org/wiki/John_Polanyi,
 US_VT,Chemistry,US,1987,http://en.wikipedia.org/wiki/Donald_J._Cram,Donald J. Cram,1/3,0
 France,Chemistry,France,1987,http://en.wikipedia.org/wiki/Jean-Marie_Lehn,Jean-Marie Lehn,1/3,0
 South Korea,Chemistry,Norway|US,1987,http://en.wikipedia.org/wiki/Charles_J._Pedersen,Charles J. Pedersen,1/3,0
-Germany,Chemistry,Germany|US,1988,http://en.wikipedia.org/wiki/Johann_Deisenhofer,Johann Deisenhofer,1/3,0
+Germany,Chemistry,Germany,1988,http://en.wikipedia.org/wiki/Johann_Deisenhofer,Johann Deisenhofer,1/3,0
 Germany,Chemistry,Germany,1988,http://en.wikipedia.org/wiki/Robert_Huber,Robert Huber,1/3,0
 Germany,Chemistry,Germany,1988,http://en.wikipedia.org/wiki/Hartmut_Michel,Hartmut Michel,1/3,0
 Canada,Chemistry,Canada|US,1989,http://en.wikipedia.org/wiki/Sidney_Altman,Sidney Altman,1/2,1
@@ -177,6 +177,9 @@ Netherlands,Chemistry,Netherlands,2016,http://en.wikipedia.org/wiki/Ben_Feringa,
 Switzerland,Chemistry,Switzerland,2017,https://en.wikipedia.org/wiki/Jacques_Dubochet,Jacques Dubochet,1/3,0
 Germany,Chemistry,Germany|US,2017,https://en.wikipedia.org/wiki/Joachim_Frank,Joachim Frank,1/3,0
 UK_SCO,Chemistry,UK,2017,https://en.wikipedia.org/wiki/Richard_Henderson_(biologist),Richard Henderson,1/3,0
+US_PA,Chemistry,US,2018,https://en.wikipedia.org/wiki/Frances_Arnold,Frances H. Arnold,1/2,0
+US_CT,Chemistry,US,2018,https://en.wikipedia.org/wiki/George_Smith_(chemist),George P. Smith,1/4,0
+UK_ENG,Chemistry,US,2018,https://en.wikipedia.org/wiki/Greg_Winter,Greg Winter,1/4,0
 Norway,Economics,Norway,1969,http://en.wikipedia.org/wiki/Ragnar_Frisch,Ragnar Frisch,1/2,0
 Netherlands,Economics,Netherlands,1969,http://en.wikipedia.org/wiki/Jan_Tinbergen,Jan Tinbergen,1/2,0
 US_IN,Economics,US,1970,http://en.wikipedia.org/wiki/Paul_Samuelson,Paul Samuelson,1,1
@@ -255,6 +258,9 @@ France,Economics,France,2014,http://en.wikipedia.org/wiki/Jean_Tirole,Jean Tirol
 UK_SCO,Economics,UK|US,2015,http://en.wikipedia.org/wiki/Angus_Deaton,Angus Deaton,1,0
 UK_ENG,Economics,UK|US,2016,http://en.wikipedia.org/wiki/Oliver_Hart_(economist),Oliver Hart,1/2,1
 Finland,Economics,Finland,2016,http://en.wikipedia.org/wiki/Bengt_R._Holmstr%C3%B6m,Bengt Holmström,1/2,0
+US_NJ,Economics,US,2017,https://en.wikipedia.org/wiki/Richard_Thaler,Richard Thaler,1,0
+US_NM,Economics,US,2018,https://en.wikipedia.org/wiki/William_Nordhaus,William Nordhaus,1/2,0
+US_CO,Economics,US,2018,https://en.wikipedia.org/wiki/Paul_Romer,Paul Romer,1/2,0
 France,Literature,France,1901,http://en.wikipedia.org/wiki/Sully_Prudhomme,Sully Prudhomme,1,0
 Germany,Literature,Germany,1902,http://en.wikipedia.org/wiki/Theodor_Mommsen,Theodor Mommsen,1,0
 Norway,Literature,Norway,1903,http://en.wikipedia.org/wiki/Bj%C3%B8rnstjerne_Bj%C3%B8rnson,Bjørnstjerne Bjørnson,1,0
@@ -354,7 +360,7 @@ Poland,Literature,Germany,1999,http://en.wikipedia.org/wiki/G%C3%BCnter_Grass,G�
 China,Literature,China|France,2000,http://en.wikipedia.org/wiki/Gao_Xingjian,Gao Xingjian,1,0
 Trinidad and Tobago,Literature,Trinidad and Tobago|UK,2001,http://en.wikipedia.org/wiki/V._S._Naipaul,V. S. Naipaul,1,0
 Hungary,Literature,Hungary,2002,http://en.wikipedia.org/wiki/Imre_Kert%C3%A9sz,Imre Kertész,1,1
-South Africa,Literature,South Africa|Australia,2003,http://en.wikipedia.org/wiki/J._M._Coetzee,J. M. Coetzee,1,0
+South Africa,Literature,South Africa,2003,http://en.wikipedia.org/wiki/J._M._Coetzee,J. M. Coetzee,1,0
 Austria,Literature,Austria,2004,http://en.wikipedia.org/wiki/Elfriede_Jelinek,Elfriede Jelinek,1,1/2
 UK_ENG,Literature,UK,2005,http://en.wikipedia.org/wiki/Harold_Pinter,Harold Pinter,1,1
 Turkey,Literature,Turkey,2006,http://en.wikipedia.org/wiki/Orhan_Pamuk,Orhan Pamuk,1,0
@@ -500,6 +506,8 @@ Pakistan,Peace,Pakistan,2014,http://en.wikipedia.org/wiki/Malala_Yousafzai,Malal
 Tunisia,Peace,,2015,http://en.wikipedia.org/wiki/Tunisian_National_Dialogue_Quartet,Tunisian National Dialogue Quartet,1,0
 Colombia,Peace,Colombia,2016,https://en.wikipedia.org/wiki/Juan_Manuel_Santos,Juan Manuel Santos,1,0
 Australia,Peace,,2017,https://en.wikipedia.org/wiki/International_Campaign_to_Abolish_Nuclear_Weapons,International Campaign to Abolish Nuclear Weapons,1,0
+DR Congo,Peace,DR Congo,2018,https://en.wikipedia.org/wiki/Denis_Mukwege,Denis Mukwege,1/2,0
+Iraq,Peace,Iraq,2018,https://en.wikipedia.org/wiki/Nadia_Murad,Nadia Murad,1/2,0
 Germany,Physics,Germany,1901,http://en.wikipedia.org/wiki/Wilhelm_R%C3%B6ntgen,Wilhelm Röntgen,1,0
 Netherlands,Physics,Netherlands,1902,http://en.wikipedia.org/wiki/Hendrik_Lorentz,Hendrik Lorentz,1/2,0
 Netherlands,Physics,Netherlands,1902,http://en.wikipedia.org/wiki/Pieter_Zeeman,Pieter Zeeman,1/2,0
@@ -524,11 +532,11 @@ UK_ENG,Physics,UK,1917,http://en.wikipedia.org/wiki/Charles_Glover_Barkla,Charle
 Germany,Physics,Germany,1918,http://en.wikipedia.org/wiki/Max_Planck,Max Planck,1,0
 Germany,Physics,Germany,1919,http://en.wikipedia.org/wiki/Johannes_Stark,Johannes Stark,1,0
 Switzerland,Physics,Switzerland,1920,http://en.wikipedia.org/wiki/Charles_%C3%89douard_Guillaume,Charles Édouard Guillaume,1,0
-Germany,Physics,Germany|Switzerland|US,1921,http://en.wikipedia.org/wiki/Albert_Einstein,Albert Einstein,1,1
+Germany,Physics,Germany|Switzerland,1921,http://en.wikipedia.org/wiki/Albert_Einstein,Albert Einstein,1,1
 Denmark,Physics,Denmark,1922,http://en.wikipedia.org/wiki/Niels_Bohr,Niels Bohr,1,1/2
 US_IL,Physics,US,1923,http://en.wikipedia.org/wiki/Robert_Andrews_Millikan,Robert Andrews Millikan,1,0
 Sweden,Physics,Sweden,1924,http://en.wikipedia.org/wiki/Manne_Siegbahn,Manne Siegbahn,1,0
-Germany,Physics,Germany|US,1925,http://en.wikipedia.org/wiki/James_Franck,James Franck,1/2,1
+Germany,Physics,Germany,1925,http://en.wikipedia.org/wiki/James_Franck,James Franck,1/2,1
 Germany,Physics,Germany,1925,http://en.wikipedia.org/wiki/Gustav_Ludwig_Hertz,Gustav Ludwig Hertz,1/2,1/4
 France,Physics,France,1926,http://en.wikipedia.org/wiki/Jean_Baptiste_Perrin,Jean Baptiste Perrin,1,0
 US_OH,Physics,US,1927,http://en.wikipedia.org/wiki/Arthur_Compton,Arthur Compton,1/2,0
@@ -537,18 +545,18 @@ UK_ENG,Physics,UK,1928,http://en.wikipedia.org/wiki/Owen_Willans_Richardson,Owen
 France,Physics,France,1929,http://en.wikipedia.org/wiki/Louis_de_Broglie,Louis de Broglie,1,0
 India,Physics,India,1930,http://en.wikipedia.org/wiki/C._V._Raman,C. V. Raman,1,0
 Germany,Physics,Germany,1932,http://en.wikipedia.org/wiki/Werner_Heisenberg,Werner Heisenberg,1,0
-Austria,Physics,Austria|Ireland,1933,http://en.wikipedia.org/wiki/Erwin_Schr%C3%B6dinger,Erwin Schrödinger,1/2,0
+Austria,Physics,Austria,1933,http://en.wikipedia.org/wiki/Erwin_Schr%C3%B6dinger,Erwin Schrödinger,1/2,0
 UK_ENG,Physics,Switzerland|UK,1933,http://en.wikipedia.org/wiki/Paul_Dirac,Paul Dirac,1/2,0
 UK_ENG,Physics,UK,1935,http://en.wikipedia.org/wiki/James_Chadwick,James Chadwick,1,0
-Austria,Physics,Austria|US,1936,http://en.wikipedia.org/wiki/Victor_Francis_Hess,Victor Francis Hess,1/2,0
+Austria,Physics,Austria,1936,http://en.wikipedia.org/wiki/Victor_Francis_Hess,Victor Francis Hess,1/2,0
 US_NY,Physics,US,1936,http://en.wikipedia.org/wiki/Carl_David_Anderson,Carl David Anderson,1/2,0
 US_IL,Physics,US,1937,http://en.wikipedia.org/wiki/Clinton_Davisson,Clinton Davisson,1/2,0
 UK_ENG,Physics,UK,1937,http://en.wikipedia.org/wiki/George_Paget_Thomson,George Paget Thomson,1/2,0
-Italy,Physics,Italy|US,1938,http://en.wikipedia.org/wiki/Enrico_Fermi,Enrico Fermi,1,0
+Italy,Physics,Italy,1938,http://en.wikipedia.org/wiki/Enrico_Fermi,Enrico Fermi,1,0
 US_SD,Physics,US,1939,http://en.wikipedia.org/wiki/Ernest_Lawrence,Ernest Lawrence,1,0
 Poland,Physics,Germany,1943,http://en.wikipedia.org/wiki/Otto_Stern,Otto Stern,1,1
 Poland,Physics,Poland|US,1944,http://en.wikipedia.org/wiki/Isidor_Isaac_Rabi,Isidor Isaac Rabi,1,1
-Austria,Physics,Austria|Switzerland|US,1945,http://en.wikipedia.org/wiki/Wolfgang_Pauli,Wolfgang Pauli,1,3/4
+Austria,Physics,Austria,1945,http://en.wikipedia.org/wiki/Wolfgang_Pauli,Wolfgang Pauli,1,3/4
 US_MA,Physics,US,1946,http://en.wikipedia.org/wiki/Percy_Williams_Bridgman,Percy Williams Bridgman,1,0
 UK_ENG,Physics,UK,1947,http://en.wikipedia.org/wiki/Edward_Victor_Appleton,Edward Victor Appleton,1,0
 UK_ENG,Physics,UK,1948,"http://en.wikipedia.org/wiki/Patrick_Blackett,_Baron_Blackett",Patrick Blackett,1,0
@@ -566,8 +574,8 @@ Germany,Physics,Germany|US,1955,http://en.wikipedia.org/wiki/Polykarp_Kusch,Poly
 US_WI,Physics,US,1956,http://en.wikipedia.org/wiki/John_Bardeen,John Bardeen,1/3,0
 China,Physics,US,1956,http://en.wikipedia.org/wiki/Walter_Houser_Brattain,Walter Houser Brattain,1/3,0
 UK_ENG,Physics,US,1956,http://en.wikipedia.org/wiki/William_Shockley,William Shockley,1/3,0
-China,Physics,China|US,1957,http://en.wikipedia.org/wiki/Chen_Ning_Yang,Chen Ning Yang,1/2,0
-China,Physics,China|US,1957,http://en.wikipedia.org/wiki/Tsung-Dao_Lee,Tsung-Dao Lee,1/2,0
+China,Physics,China,1957,http://en.wikipedia.org/wiki/Chen_Ning_Yang,Chen Ning Yang,1/2,0
+China,Physics,China,1957,http://en.wikipedia.org/wiki/Tsung-Dao_Lee,Tsung-Dao Lee,1/2,0
 Russia,Physics,Russia,1958,http://en.wikipedia.org/wiki/Pavel_Cherenkov,Pavel Cherenkov,1/3,0
 Russia,Physics,Russia,1958,http://en.wikipedia.org/wiki/Ilya_Frank,Ilya Frank,1/3,1/2
 Russia,Physics,Russia,1958,http://en.wikipedia.org/wiki/Igor_Tamm,Igor Tamm,1/3,1/2
@@ -633,7 +641,7 @@ Germany,Physics,Germany,1987,http://en.wikipedia.org/wiki/Johannes_Georg_Bednorz
 Switzerland,Physics,Switzerland,1987,http://en.wikipedia.org/wiki/Karl_Alexander_M%C3%BCller,Karl Alexander Müller,1/2,1/2
 US_NY,Physics,US,1988,http://en.wikipedia.org/wiki/Leon_M._Lederman,Leon M. Lederman,1/3,1
 US_NY,Physics,US,1988,http://en.wikipedia.org/wiki/Melvin_Schwartz,Melvin Schwartz,1/3,1
-Germany,Physics,Germany|US|Switzerland,1988,http://en.wikipedia.org/wiki/Jack_Steinberger,Jack Steinberger,1/3,1
+Germany,Physics,Germany|US,1988,http://en.wikipedia.org/wiki/Jack_Steinberger,Jack Steinberger,1/3,1
 US_DC,Physics,US,1989,"http://en.wikipedia.org/wiki/Norman_Foster_Ramsey,_Jr.","Norman Foster Ramsey, Jr.",1/2,0
 Germany,Physics,Germany|US,1989,http://en.wikipedia.org/wiki/Hans_Georg_Dehmelt,Hans Georg Dehmelt,1/4,0
 Germany,Physics,Germany,1989,http://en.wikipedia.org/wiki/Wolfgang_Paul,Wolfgang Paul,1/4,0
@@ -707,6 +715,9 @@ UK_SCO,Physics,UK|US,2016,http://en.wikipedia.org/wiki/John_M._Kosterlitz,John M
 Germany,Physics,Germany|US,2017,https://en.wikipedia.org/wiki/Rainer_Weiss,Rainer Weiss,1/2,3/4
 US_NE,Physics,US,2017,https://en.wikipedia.org/wiki/Barry_Barish,Barry Barish,1/4,1
 US_UT,Physics,US,2017,https://en.wikipedia.org/wiki/Kip_Thorne,Kip Thorne,1/4,0
+US_NY,Physics,US,2018,https://en.wikipedia.org/wiki/Arthur_Ashkin,Arthur Ashkin,1/2,1
+France,Physics,France,2018,https://en.wikipedia.org/wiki/G%C3%A9rard_Mourou,Gérard Mourou,1/4,0
+Canada,Physics,Canada,2018,https://en.wikipedia.org/wiki/Donna_Strickland,Donna Strickland,1/4,0
 Poland,Physiology and Medicine,Germany,1901,http://en.wikipedia.org/wiki/Emil_Adolf_von_Behring,Emil Adolf von Behring,1,0
 India,Physiology and Medicine,UK,1902,http://en.wikipedia.org/wiki/Ronald_Ross,Ronald Ross,1,0
 Faroe Islands,Physiology and Medicine,Faroe Islands|Denmark,1903,http://en.wikipedia.org/wiki/Niels_Ryberg_Finsen,Niels Ryberg Finsen,1,0
@@ -722,7 +733,7 @@ Germany,Physiology and Medicine,Germany,1910,http://en.wikipedia.org/wiki/Albrec
 Sweden,Physiology and Medicine,Sweden,1911,http://en.wikipedia.org/wiki/Allvar_Gullstrand,Allvar Gullstrand,1,0
 France,Physiology and Medicine,France,1912,http://en.wikipedia.org/wiki/Alexis_Carrel,Alexis Carrel,1,0
 France,Physiology and Medicine,France,1913,http://en.wikipedia.org/wiki/Charles_Richet,Charles Richet,1,0
-Austria,Physiology and Medicine,Austria|Sweden,1914,http://en.wikipedia.org/wiki/Robert_B%C3%A1r%C3%A1ny,Robert Bárány,1,1
+Austria,Physiology and Medicine,Austria,1914,http://en.wikipedia.org/wiki/Robert_B%C3%A1r%C3%A1ny,Robert Bárány,1,1
 Belgium,Physiology and Medicine,Belgium,1919,http://en.wikipedia.org/wiki/Jules_Bordet,Jules Bordet,1,0
 Denmark,Physiology and Medicine,Denmark,1920,http://en.wikipedia.org/wiki/August_Krogh,August Krogh,1,0
 UK_ENG,Physiology and Medicine,UK,1922,http://en.wikipedia.org/wiki/Archibald_Hill,Archibald Hill,1/2,0
@@ -745,8 +756,8 @@ US_MA,Physiology and Medicine,US,1934,http://en.wikipedia.org/wiki/George_Minot,
 US_WI,Physiology and Medicine,US,1934,http://en.wikipedia.org/wiki/William_P._Murphy,William P. Murphy,1/3,0
 Germany,Physiology and Medicine,Germany,1935,http://en.wikipedia.org/wiki/Hans_Spemann,Hans Spemann,1,0
 UK_ENG,Physiology and Medicine,UK,1936,http://en.wikipedia.org/wiki/Henry_Hallett_Dale,Henry Hallett Dale,1/2,0
-Germany,Physiology and Medicine,Germany|Austria|US,1936,http://en.wikipedia.org/wiki/Otto_Loewi,Otto Loewi,1/2,1
-Hungary,Physiology and Medicine,Hungary|US,1937,http://en.wikipedia.org/wiki/Albert_Szent-Gy%C3%B6rgyi,Albert Szent-Györgyi,1,0
+Germany,Physiology and Medicine,Germany|Austria,1936,http://en.wikipedia.org/wiki/Otto_Loewi,Otto Loewi,1/2,1
+Hungary,Physiology and Medicine,Hungary,1937,http://en.wikipedia.org/wiki/Albert_Szent-Gy%C3%B6rgyi,Albert Szent-Györgyi,1,0
 Belgium,Physiology and Medicine,Belgium,1938,http://en.wikipedia.org/wiki/Corneille_Heymans,Corneille Heymans,1,0
 Poland,Physiology and Medicine,Germany,1939,http://en.wikipedia.org/wiki/Gerhard_Domagk,Gerhard Domagk,1,0
 Denmark,Physiology and Medicine,Denmark,1943,http://en.wikipedia.org/wiki/Henrik_Dam,Henrik Dam,1/2,0
@@ -789,7 +800,7 @@ Hungary,Physiology and Medicine,Hungary,1961,http://en.wikipedia.org/wiki/Georg_
 UK_ENG,Physiology and Medicine,UK,1962,http://en.wikipedia.org/wiki/Francis_Crick,Francis Crick,1/3,0
 US_IL,Physiology and Medicine,US,1962,http://en.wikipedia.org/wiki/James_D._Watson,James D. Watson,1/3,0
 New Zealand,Physiology and Medicine,New Zealand|UK,1962,http://en.wikipedia.org/wiki/Maurice_Wilkins,Maurice Wilkins,1/3,0
-Australia,Physiology and Medicine,Australia|Switzerland,1963,http://en.wikipedia.org/wiki/John_Eccles_(neurophysiologist),John Eccles,1/3,0
+Australia,Physiology and Medicine,Australia,1963,http://en.wikipedia.org/wiki/John_Eccles_(neurophysiologist),John Eccles,1/3,0
 UK_ENG,Physiology and Medicine,UK,1963,http://en.wikipedia.org/wiki/Alan_Lloyd_Hodgkin,Alan Lloyd Hodgkin,1/3,0
 UK_ENG,Physiology and Medicine,UK,1963,http://en.wikipedia.org/wiki/Andrew_Huxley,Andrew Huxley,1/3,0
 Poland,Physiology and Medicine,Germany|US,1964,http://en.wikipedia.org/wiki/Konrad_Emil_Bloch,Konrad Emil Bloch,1/2,1
@@ -921,3 +932,5 @@ Japan,Physiology and Medicine,Japan,2016,http://en.wikipedia.org/wiki/Yoshinori_
 US_NY,Physiology and Medicine,US,2017,https://en.wikipedia.org/wiki/Jeffrey_C._Hall,Jeffrey C. Hall,1/3,0
 US_MO,Physiology and Medicine,US,2017,https://en.wikipedia.org/wiki/Michael_Rosbash,Michael Rosbash,1/3,1
 US_FL,Physiology and Medicine,US,2017,https://en.wikipedia.org/wiki/Michael_W._Young,Michael W. Young,1/3,0
+US,TX,Physiology and Medicine,US,2018,https://en.wikipedia.org/wiki/James_P._Allison,James P. Allison,1/2,0
+Japan,Physiology and Medicine,Japan,2018,https://en.wikipedia.org/wiki/Tasuku_Honjo,Tasuku Honjo,1/2,0

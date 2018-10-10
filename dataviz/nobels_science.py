@@ -6,9 +6,15 @@ INTERVAL = 20
 CONTINENTS = ["Europe", "North America", "Asia", "Oceania", "Africa", "South America"]
 PALETTE = [VegaPalette10[c] for c in ("Blue", "Red", "Orange", "Purple", "Brown", "Green")]
 
+FILTER = {"Chemistry", "Physics", "Physiology and Medicine" }
+TITLE = "Science Nobel Prize winners by continent"
+SUBTITLE = "Physics, Chemistry and Medicine prizes by the nationality of the winners*"
+FILENAME = "nobels_science"
+
 atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country')
 nobels = pd.read_csv("datasets/nobels.csv").split_columns('countries', '|')
-nobels = nobels[nobels.category.isin({"Chemistry", "Physics", "Physiology and Medicine"})]
+nobels = nobels[nobels.countries != ()]
+nobels = nobels[nobels.category.isin(FILTER)]
 nobels = nobels.assign_rows(continents = lambda d: frozenset(atlas.continent[c] for c in d.countries))
 
 by_continent = nobels.split_rows('continents')
@@ -25,8 +31,12 @@ by_country = nobels.split_rows('countries')
 country_dict = {}
 for n,i in enumerate(range(nobels.date.min(), nobels.date.max() + 1, INTERVAL)):
     df = by_country[(by_country.date >= i) & (by_country.date < i + INTERVAL)]
-    country_dict[n] = tuple(df.groupby("countries").count().name.sort_values(ascending=False)[:5].items())
-country_dict[len(country_dict)] = tuple(by_country.groupby("countries").count().name.sort_values(ascending=False)[:5].items())
+    count = df.groupby("countries").count().name.sort_values(ascending=False)
+    if (count[4] == count[5]): logger.log(logging.WARNING, "{} tie for 5/6 between {} and {}".format(i, count.index[4], count.index[5]))
+    country_dict[n] = tuple(count[:5].items())
+count = by_country.groupby("countries").count().name.sort_values(ascending=False)
+if (count[4] == count[5]): logger.log(logging.WARNING, "Total tie for 5/6 between {} and {}".format(count.index[4], count.index[5]))
+country_dict[len(country_dict)] = tuple(count[:5].items())
 
 # plot
 
@@ -45,6 +55,7 @@ def flag(r,i):
         flag = Image.from_url_with_cache("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_the_German_Empire.svg/1024px-Flag_of_the_German_Empire.svg.png").to_rgba()
     elif c == "Switzerland" and i == 4:
         flag = half_and_half(Image.from_url_with_cache(atlas.flag["Sweden"]).to_rgba().resize((900,600)), Image.from_url_with_cache(atlas.flag["Switzerland"]).to_rgba().resize((900,600)))
+        n = f"{n} (tie)"
     else:
         flag = Image.from_url_with_cache(atlas.flag[c]).to_rgba()
     flag = flag.resize((70,50)).pad(1, "grey")
@@ -64,8 +75,8 @@ chart = bar_chart(data, 80, 1400, horizontal=True, spacing=2, type=BarChartType.
      )
 
 title = Image.from_column([
-Image.from_text("Science Nobel Prize winners by continent".upper(), arial(64, bold=True), padding=(5,10,5,2)),
-Image.from_text("Physics, Chemistry and Medicine prizes by the nationality of the winners*", arial(40, bold=False), padding=(5,2,5,10))
+Image.from_text(TITLE.upper(), arial(64, bold=True), padding=(5,10,5,2)),
+Image.from_text(SUBTITLE, arial(40, bold=False), padding=(5,2,5,10))
 ], bg="white")
 
 # TODO: legend, title, 
@@ -77,5 +88,5 @@ legend = Image.from_row([
 footer = Image.from_row([legend, Image.from_text("(*nationalites at or prior to award; winners from multiple continents are counted under each)", arial(24))], padding=10)
 
 img = Image.from_column([title, chart.pad(10, "white"), footer], bg="white")
-img.save("output/nobels_science.png")
+img.save(f"output/{FILENAME}.png")
 

@@ -179,7 +179,7 @@ Germany,Chemistry,Germany|US,2017,https://en.wikipedia.org/wiki/Joachim_Frank,Jo
 UK_SCO,Chemistry,UK,2017,https://en.wikipedia.org/wiki/Richard_Henderson_(biologist),Richard Henderson,1/3,0
 US_PA,Chemistry,US,2018,https://en.wikipedia.org/wiki/Frances_Arnold,Frances H. Arnold,1/2,0
 US_CT,Chemistry,US,2018,https://en.wikipedia.org/wiki/George_Smith_(chemist),George P. Smith,1/4,0
-UK_ENG,Chemistry,US,2018,https://en.wikipedia.org/wiki/Greg_Winter,Greg Winter,1/4,0
+UK_ENG,Chemistry,UK,2018,https://en.wikipedia.org/wiki/Greg_Winter,Greg Winter,1/4,0
 Norway,Economics,Norway,1969,http://en.wikipedia.org/wiki/Ragnar_Frisch,Ragnar Frisch,1/2,0
 Netherlands,Economics,Netherlands,1969,http://en.wikipedia.org/wiki/Jan_Tinbergen,Jan Tinbergen,1/2,0
 US_IN,Economics,US,1970,http://en.wikipedia.org/wiki/Paul_Samuelson,Paul Samuelson,1,1
@@ -932,5 +932,5 @@ Japan,Physiology and Medicine,Japan,2016,http://en.wikipedia.org/wiki/Yoshinori_
 US_NY,Physiology and Medicine,US,2017,https://en.wikipedia.org/wiki/Jeffrey_C._Hall,Jeffrey C. Hall,1/3,0
 US_MO,Physiology and Medicine,US,2017,https://en.wikipedia.org/wiki/Michael_Rosbash,Michael Rosbash,1/3,1
 US_FL,Physiology and Medicine,US,2017,https://en.wikipedia.org/wiki/Michael_W._Young,Michael W. Young,1/3,0
-US,TX,Physiology and Medicine,US,2018,https://en.wikipedia.org/wiki/James_P._Allison,James P. Allison,1/2,0
+US_TX,Physiology and Medicine,US,2018,https://en.wikipedia.org/wiki/James_P._Allison,James P. Allison,1/2,0
 Japan,Physiology and Medicine,Japan,2018,https://en.wikipedia.org/wiki/Tasuku_Honjo,Tasuku Honjo,1/2,0

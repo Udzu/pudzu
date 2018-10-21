@@ -310,8 +310,10 @@ def make_sequence(v):
     return v if non_string_sequence(v) else () if v is None else (v,)
     
 def unmake_sequence(v):
-    """Return the first element of a sequence of length 1, otherwise leave unchanged."""
-    return v[0] if non_string_sequence(v) and len(v) == 1 else v
+    """Return None for an empty sequence, the first element of a sequence of length 1, otherwise leave unchanged."""
+    if not non_string_sequence(v) or len(v) > 1: return v
+    elif len(v) == 1: return v[0]
+    else: return None
         
 def remove_duplicates(seq, key=lambda v:v, keep_last=False):
     """Return an order preserving tuple copy containing items from an iterable, deduplicated

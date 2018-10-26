@@ -33,13 +33,13 @@ def clabel(c,r,v,w,h):
         boxes.append(Image.from_column([name, thumb, label]))
     return Image.from_row(boxes) if boxes else None
 
-chart = bar_chart(data, HEIGHT, WIDTH*data.max()[0], horizontal=True,
+chart = bar_chart(data, HEIGHT, WIDTH*data.max()[0], horizontal=True, ylabels=None, grid_width=None,
     grid_interval=1, label_interval=1, label_font=FONT(BIG_FONT_SIZE, italics=True),
     clabels={ BarChartLabelPosition.INSIDE : clabel }
     )
 
 title = Image.from_column([
-Image.from_text("America's foreignest Presidents".upper(), FONT(64, bold=True), padding=(5,10,5,2)),
+Image.from_text("America's immigrant Presidents".upper(), FONT(64, bold=True), padding=(5,10,5,2)),
 Image.from_text("US presidents with foreign-born parents or grandparents", FONT(40, bold=False), padding=(5,2,5,10))
 ], bg="white")
 

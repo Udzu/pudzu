@@ -38,11 +38,11 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 class MissingModule(types.ModuleType):
     def __getattr__(self, k):
-        raise AttributeError("Missing module '{}' has no attribute '{}'".format(self.__name__, k))
+        raise AttributeError(f"Missing module '{self.__name__}' has no attribute '{k}'")
     def __bool__(self):
         return False
     def __repr__(self):
-        return "<missing module '{}'>".format(self.__name__)
+        return f"<missing module '{self.__name__}'>"
 
 def optional_import(name, **bindings):
     """Optionally import a module, returning a MissingModule with the given bindings on failure."""
@@ -77,10 +77,6 @@ class OptionalModuleImporter(importlib.abc.PathEntryFinder, importlib.abc.Loader
     def exec_module(self, module):
         pass
 
-if OptionalModuleImporter not in sys.path_hooks:
-    sys.path_hooks.append(OptionalModuleImporter)
-    sys.path.append(OptionalModuleImporter.PATH_TRIGGER)
-
 class AlternativeModuleImporter(importlib.abc.PathEntryFinder):
 
     INFIX = "_OR_"
@@ -94,10 +90,6 @@ class AlternativeModuleImporter(importlib.abc.PathEntryFinder):
             first, second = name.split(self.INFIX, 1)
             return importlib.util.find_spec(first) or importlib.util.find_spec(second)
         return None
-    
-if AlternativeModuleImporter not in sys.path_hooks:
-    sys.path_hooks.append(AlternativeModuleImporter)
-    sys.path.append(AlternativeModuleImporter.PATH_TRIGGER)
 
 class VersionModuleImporter(importlib.abc.PathEntryFinder):
 
@@ -118,9 +110,17 @@ class VersionModuleImporter(importlib.abc.PathEntryFinder):
                     return importlib.util.find_spec(match["base"])
         return None
             
-if VersionModuleImporter not in sys.path_hooks:
-    sys.path_hooks.append(VersionModuleImporter)
-    sys.path.append(VersionModuleImporter.PATH_TRIGGER)
+def register_import_hooks():
+    """Enable the import hooks in this file."""
+    if OptionalModuleImporter not in sys.path_hooks:
+        sys.path_hooks.append(OptionalModuleImporter)
+        sys.path.append(OptionalModuleImporter.PATH_TRIGGER)
+    if AlternativeModuleImporter not in sys.path_hooks:
+        sys.path_hooks.append(AlternativeModuleImporter)
+        sys.path.append(AlternativeModuleImporter.PATH_TRIGGER)
+    if VersionModuleImporter not in sys.path_hooks:
+        sys.path_hooks.append(VersionModuleImporter)
+        sys.path.append(VersionModuleImporter.PATH_TRIGGER)
 
 # Classes
     
@@ -299,11 +299,10 @@ def make_iterable(v):
     """Return an iterable from an object, wrapping it in a tuple if needed."""
     return v if non_string_iterable(v) else () if v is None else (v,)
 
-np = optional_import("numpy", ndarray=list)
 def non_string_sequence(v, types=None):
     """Return whether the object is a Sequence other than str, optionally 
     with the given element types."""
-    return (isinstance(v, Sequence) and not isinstance(v, str) or isinstance(v, np.ndarray)) and (types is None or all(any(isinstance(x, t) for t in make_iterable(types)) for x in v))
+    return (isinstance(v, Sequence) and not isinstance(v, str) or type(v).__name__ == 'ndarray') and (types is None or all(any(isinstance(x, t) for t in make_iterable(types)) for x in v))
 
 def make_sequence(v):
     """Return a sequence from an object, wrapping it in a tuple if needed."""
@@ -552,25 +551,26 @@ def shortify(s, width, tail=5, placeholder='[...]', collapse_whitespace=True):
     else:
         return s[:width-tail-len(placeholder)] + placeholder + s[-tail:]
 
-@with_vars(GERMAN_CONVERSIONS = { 'ß': 'ss', 'ẞ': 'SS', 'Ä': 'AE', 'ä': 'ae', 'Ö': 'OE', 'ö': 'oe', 'Ü': 'UE', 'ü': 'ue' },
-           EXTRA_CONVERSIONS =  { 'ß': 'ss', 'ẞ': 'SS', 'Æ': 'AE', 'æ': 'ae', 'Œ': 'OE', 'œ': 'oe', 'Ĳ': 'IJ', 'ĳ': 'ij',
-                                  'ﬀ': 'ff', 'ﬃ': 'ffi', 'ﬄ': 'ffl', 'ﬁ': 'fi', 'ﬂ': 'fl' })
 def strip_accents(str, aggressive=False, german=False):
     """Strip accents from a string. Default behaviour is to use NFD normalization
     (canonical decomposition) and strip combining characters. Aggressive mode also
-    replaces ß with ss, l with l, ø with o and so on. German mode replaces ö with oe, etc."""
+    replaces ß with ss, l with l, ø with o and so on. German mode first replaces ö
+    with oe, etc."""
     if german:
-        def german_strip(c,d):
-            c = this().GERMAN_CONVERSIONS.get(c, c)
+        def german_strip(c, d, german_conversions={ 'ß': 'ss', 'ẞ': 'SS', 'Ä': 'AE', 'ä': 'ae',
+                                                    'Ö': 'OE', 'ö': 'oe', 'Ü': 'UE', 'ü': 'ue' }):
+            c = german_conversions.get(c, c)
             if len(c) > 1 and c[0].isupper() and d.islower(): c = c.title()
             return c
         str = "".join(german_strip(c,d) for c,d in generate_ngrams(str+" ", 2))
     str = "".join(c for c in unicodedata.normalize('NFD', str) if not unicodedata.combining(c))
     if aggressive:
         @partial(ignoring_exceptions, handler=identity, exceptions=KeyError)
-        def aggressive_strip(c):
-            if c in this().EXTRA_CONVERSIONS:
-                return this().EXTRA_CONVERSIONS[c]
+        def aggressive_strip(c, extra_conversions={ 'ß': 'ss', 'ẞ': 'SS', 'Æ': 'AE', 'æ': 'ae',
+                                                    'Œ': 'OE', 'œ': 'oe', 'Ĳ': 'IJ', 'ĳ': 'ij',
+                                                    'ﬀ': 'ff', 'ﬃ': 'ffi', 'ﬄ': 'ffl', 'ﬁ': 'fi', 'ﬂ': 'fl' }):
+            if c in extra_conversions:
+                return extra_conversions[c]
             name = unicodedata.name(c, '')
             variant = name.find(' WITH ')
             if variant: 

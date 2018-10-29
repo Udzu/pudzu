@@ -2,7 +2,7 @@
 
 ## Summary
 
-Various Python 3 utility functions, mostly geared towards dataviz and used to create the data visualisations in this [flickr account](https://www.flickr.com/photos/zarfo/albums). Most have been posted to reddit at some point by [/u/Udzu](https://www.reddit.com/user/Udzu/).
+Various Python 3.6+ utility functions, mostly geared towards dataviz and used to create the data visualisations in this [flickr account](https://www.flickr.com/photos/zarfo/albums). Most have been posted to reddit at some point by [/u/Udzu](https://www.reddit.com/user/Udzu/).
 
 The modules aren't properly tested or packaged up (yet) but are reasonably simple, generic and docstringed. They are not optimised for speed or resilience. They are targeted at for-fun, interactive work.
 
@@ -23,4 +23,4 @@ The modules aren't properly tested or packaged up (yet) but are reasonably simpl
 
 ## Copyright
 
-Copyright © 2017 by Udzu. Licensed under the [MIT License](LICENSE).
+Copyright © 2017–18 by Udzu. Licensed under the [MIT License](LICENSE).

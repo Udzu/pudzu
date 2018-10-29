@@ -1,13 +1,17 @@
 group,name,description,image
-flags of states\nor protostates,Kingdom of Prussia,1701–1918; civil flag,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Civil_flag_of_Prussia_1701-1935.svg/1000px-Civil_flag_of_Prussia_1701-1935.svg.png
-flags of states\nor protostates,Corsican Republic,"1755–1769; also Corsica, France",https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Flag_of_Corsica.svg/1024px-Flag_of_Corsica.svg.png
-flags of states\nor protostates,Free Territory,1918–1921; variant,https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/%D0%9C%D0%B0%D1%85%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%BD%D0%B0%D0%BC%D1%8F.svg/1024px-%D0%9C%D0%B0%D1%85%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%BD%D0%B0%D0%BC%D1%8F.svg.png
+flags of states\nor proto-states,Republic of Siena,????–1555,https://upload.wikimedia.org/wikipedia/commons/d/d3/Bandera_de_Siena.png
+flags of states\nor proto-states,Kingdom of Prussia,1701–1918; civil flag,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Civil_flag_of_Prussia_1701-1935.svg/1000px-Civil_flag_of_Prussia_1701-1935.svg.png
+flags of states\nor proto-states,Corsican Republic,"1755–1769; also Corsica, France",https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Flag_of_Corsica.svg/1024px-Flag_of_Corsica.svg.png
+flags of states\nor proto-states,Free Territory,1918–1921; variant,https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/%D0%9C%D0%B0%D1%85%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%BD%D0%B0%D0%BC%D1%8F.svg/1024px-%D0%9C%D0%B0%D1%85%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%BD%D0%B0%D0%BC%D1%8F.svg.png
+_states,Japan (Shogunate),18??–1868,https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Flag_of_the_Tokugawa_Shogunate.svg/1280px-Flag_of_the_Tokugawa_Shogunate.svg.png
 _states,Afghanistan,1901–1919,https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Flag_of_Afghanistan_%281901%E2%80%931919%29.svg/1280px-Flag_of_Afghanistan_%281901%E2%80%931919%29.svg.png
 _states,Afghanistan (Taliban),1997–2001,https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Flag_of_Taliban.svg/1280px-Flag_of_Taliban.svg.png
 _states,Islamic State,2006–2017,https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/AQMI_Flag_asymmetric.svg/1280px-AQMI_Flag_asymmetric.svg.png
-subnational flags,"Prussia, Germany",1892–1918,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Prussia_%281892-1918%29.svg/1280px-Flag_of_Prussia_%281892-1918%29.svg.png
-subnational flags,"Cornwall, UK",,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Cornwall.svg/1024px-Flag_of_Cornwall.svg.png
-subnational flags,"Brittany, France",,https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_Brittany_%28Gwenn_ha_du%29.svg/1024px-Flag_of_Brittany_%28Gwenn_ha_du%29.svg.png
+regional flags,"Prussia, Germany",1892–1918,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Prussia_%281892-1918%29.svg/1280px-Flag_of_Prussia_%281892-1918%29.svg.png
+regional flags,"Cornwall, UK",,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Cornwall.svg/1024px-Flag_of_Cornwall.svg.png
+regional flags,"Brittany, France",,https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_Brittany_%28Gwenn_ha_du%29.svg/1024px-Flag_of_Brittany_%28Gwenn_ha_du%29.svg.png
+regional flags,"Terengganu, Malaysia",,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Flag_of_Terengganu.svg/1024px-Flag_of_Terengganu.svg.png
 _subnational,"Ceuta, Spain",,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Flag_Ceuta.svg/1024px-Flag_Ceuta.svg.png
 _subnational,"Fribourg, Switzerland",,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_Canton_of_Fribourg.svg/1022px-Flag_of_Canton_of_Fribourg.svg.png
 _subnational,"Basel-Stadt, Switzerland",,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Flag_of_Canton_of_Basel.svg/1022px-Flag_of_Canton_of_Basel.svg.png
+_subnational,"Appenzell, Switzerland",,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Canton_of_Appenzell_Innerrhoden.svg/1022px-Flag_of_Canton_of_Appenzell_Innerrhoden.svg.png

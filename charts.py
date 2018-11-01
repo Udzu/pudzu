@@ -1,10 +1,11 @@
-from bamboo import *
-from pillar import *
 from os.path import splitext
 from enum import Enum
-from dates import *
 from functools import reduce
 from itertools import chain
+
+from pudzu.bamboo import *
+from pudzu.dates import *
+from pudzu.pillar import *
     
 # Random collection of Pillow-based charting functions
 

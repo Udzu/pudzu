@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
-from charts import *
-from bamboo import *
+from pudzu.charts import *
+from pudzu.bamboo import *
 
 # ------------
 # UK elections

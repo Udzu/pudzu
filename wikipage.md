@@ -4,7 +4,7 @@
 Classes for using Wikipedia and Wikidata pages.
  
 ## Dependencies
-*Required*: [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/), [lxml](http://lxml.de/), [requests](http://docs.python-requests.org/en/master/), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [tureen](tureen.md), [dates](dates.md).
+*Required*: [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/), [lxml](http://lxml.de/), [requests](http://docs.python-requests.org/en/master/), [pandas](http://pandas.pydata.org/), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [tureen](tureen.md), [dates](dates.md).
 
 *Optional*: [requests_cache](https://requests-cache.readthedocs.io/en/latest/) (for request cacheing)
 

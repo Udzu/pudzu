@@ -7,7 +7,7 @@ from functools import reduce, total_ordering
 from numbers import Integral
 from collections import namedtuple
 
-from utils import *
+from pudzu.utils import *
 
 cdate = optional_import("convertdate")
 

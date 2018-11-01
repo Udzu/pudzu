@@ -1,6 +1,6 @@
 import sys
 sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 
 # get data
 df = pd.read_html("https://en.wikipedia.org/wiki/Small_Arms_Survey")[0]

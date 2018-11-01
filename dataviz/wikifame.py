@@ -2,7 +2,7 @@ import sys
 import seaborn as sns
 sys.path.append('..')
 
-from charts import *
+from pudzu.charts import *
 
 # wikifame birth grids
 

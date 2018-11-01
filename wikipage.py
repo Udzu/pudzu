@@ -5,13 +5,13 @@ from urllib.parse import unquote
 import bs4
 import lxml
 import requests
+import pandas as pd
 
-from utils import *
-from tureen import *
-from dates import *
+from pudzu.utils import *
+from pudzu.tureen import *
+from pudzu.dates import *
 
 requests_cache = optional_import("requests_cache")
-pd = optional_import("pandas")
 
 # Utilities for scraping with Wikipedia and WikiData.
 

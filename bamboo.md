@@ -7,7 +7,7 @@ A handful of utilities monkey-patched onto the pandas DataFrame class. Aim is co
 ## Dependencies
 *Required*: [pandas](http://pandas.pydata.org/), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
 
-*Optional*: [pyparsing](http://pyparsing.wikispaces.com/) (for filter expressions).
+*Optional*: [pyparsing](http://pyparsing.wikispaces.com/) (for filter expressions), [tqdm](https://pypi.org/project/tqdm/) (for progress bars).
  
 ## Documentation
 

@@ -1,5 +1,3 @@
-import sys
-sys.path.append('..')
 from pudzu.charts import *
 
 PALETTE = { "D": VegaPalette10.BLUE, "R": VegaPalette10.RED, "DR": VegaPalette10.GREEN, "U": VegaPalette10.GREY }

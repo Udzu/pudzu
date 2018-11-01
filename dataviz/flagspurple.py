@@ -1,5 +1,3 @@
-import sys
-sys.path.append('..')
 from pudzu.charts import *
 
 df = pd.read_csv("datasets/flagspurple.csv")

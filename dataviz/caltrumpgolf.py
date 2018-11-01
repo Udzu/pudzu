@@ -1,5 +1,3 @@
-import sys
-sys.path.append('..')
 from pudzu.charts import *
 
 def parse_date(d): return Date(tmap(int, (d[0:4], d[5:7], d[8:10])))

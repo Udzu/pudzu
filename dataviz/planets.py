@@ -1,5 +1,3 @@
-import sys
-sys.path.append('..')
 from pudzu.charts import *
 
 # https://www.webcitation.org/5msUtFmJu?url=http://aa.usno.navy.mil/faq/docs/minorplanets.php

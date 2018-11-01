@@ -1,5 +1,3 @@
-import sys
-sys.path.append('..')
 from pudzu.charts import *
 from pudzu.dates import *
 from collections import defaultdict

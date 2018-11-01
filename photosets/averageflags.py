@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
-from charts import *
-from bamboo import *
+from pudzu.charts import *
+from pudzu.bamboo import *
 
 flags = pd.read_csv("../dataviz/datasets/countries.csv").filter_rows("organisations >> un").split_columns('country', "|").split_rows('country').set_index('country').drop_duplicates(subset='flag', keep='first')
 

@@ -1,7 +1,5 @@
-import sys
 import pathlib
 from math import log
-sys.path.append('..')
 
 from wikipage import *
 from pudzu.bamboo import *

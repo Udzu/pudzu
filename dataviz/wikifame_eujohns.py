@@ -1,6 +1,4 @@
-import sys
 import seaborn as sns
-sys.path.append('..')
 from pudzu.charts import *
 
 countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country')

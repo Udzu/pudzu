@@ -1,8 +1,6 @@
 import pickle
 import seaborn as sns
 import string
-import sys
-sys.path.append('..')
 
 from markov import *
 from pudzu.bamboo import *

@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
-from pillar import *
-from bamboo import *
+from pudzu.pillar import *
+from pudzu.bamboo import *
 
 CREDIT_FONTS = partial(verdana, 16)
 

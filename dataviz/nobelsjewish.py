@@ -1,6 +1,3 @@
-import sys
-
-sys.path.append('..')
 from pudzu.charts import *
 from pudzu.bamboo import *
 from fractions import Fraction

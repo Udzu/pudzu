@@ -1,5 +1,3 @@
-import sys
-sys.path.append('..')
 
 import hashlib
 import matplotlib.pyplot as plt

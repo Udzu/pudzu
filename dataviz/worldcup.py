@@ -1,7 +1,4 @@
-import sys
-
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 
 flags = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country')['flag']
 flags['England'] = "https://upload.wikimedia.org/wikipedia/en/thumb/b/be/Flag_of_England.svg/1280px-Flag_of_England.svg.png"

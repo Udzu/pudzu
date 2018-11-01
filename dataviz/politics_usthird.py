@@ -1,6 +1,4 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 
 FONT_SIZE = 16
 BLUE = "#377eb8"

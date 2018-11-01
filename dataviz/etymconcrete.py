@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
-from charts import *
-from bamboo import *
+from pudzu.charts import *
+from pudzu.bamboo import *
 
 df = pd.read_csv("datasets/etymconcrete.csv").set_index("language")
 

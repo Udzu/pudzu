@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
 
-from charts import *
+from pudzu.charts import *
 
 DEFAULT_IMG = "http://www.socialstudiesforkids.com/graphics/edwardtheconfessor-color.jpg"
 TOP_BAR_BG = RGBA(230, 230, 240, 255)

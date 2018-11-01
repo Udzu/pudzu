@@ -1,7 +1,7 @@
 from collections import abc
 import re
 
-from utils import *
+from pudzu.utils import *
 
 # Pronouncing dictionary class, largely targeted at English
 

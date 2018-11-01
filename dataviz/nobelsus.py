@@ -1,9 +1,6 @@
-import sys
 import seaborn as sns
-
-sys.path.append('..')
-from charts import *
-from bamboo import *
+from pudzu.charts import *
+from pudzu.bamboo import *
 
 # ------------------------
 # Nobel prizes by US state

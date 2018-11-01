@@ -1,6 +1,4 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 from statistics import mean
 from colorsys import rgb_to_hls, hls_to_rgb
 

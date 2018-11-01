@@ -1,12 +1,12 @@
+import sys
+sys.path.append('..')
 import pickle
 import seaborn as sns
 import string
-import sys
-sys.path.append('..')
 
 from markov import *
-from bamboo import *
-from charts import *
+from pudzu.bamboo import *
+from pudzu.charts import *
 from math import log
 
 CORPUS = "wikienglish"

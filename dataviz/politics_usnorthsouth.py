@@ -1,8 +1,6 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 import seaborn as sns
-from dates import *
+from pudzu.dates import *
 import dateparser
 
 CONFEDERATE = ["South Carolina", "Mississippi", "Florida", "Alabama", "Georgia", "Louisiana", "Texas"] + ["Arkansas", "North Carolina", "Tennessee", "Virginia"]

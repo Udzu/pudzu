@@ -15,7 +15,7 @@ from urllib.parse import urlparse
 from urllib.request import urlopen
 
 from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageOps, ImageFilter, ImageChops
-from utils import *
+from pudzu.utils import *
 
 pyphen = optional_import("pyphen")
 requests = optional_import("requests")

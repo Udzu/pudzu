@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
-from charts import *
-from bamboo import *
+from pudzu.charts import *
+from pudzu.bamboo import *
 
 df = pd.read_csv("datasets/eurovision_votes.csv").set_index("country")
 countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country')

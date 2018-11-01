@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
-from charts import *
-from bamboo import *
+from pudzu.charts import *
+from pudzu.bamboo import *
 
 # B = born in what is now India
 # b = born in what was then British India

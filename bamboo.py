@@ -6,10 +6,10 @@ import pandas as pd
 import numpy as np
 import re
 
-from utils import *
+from pudzu.utils import *
 
 tqdm = optional_import("tqdm")
-if optional_import("pyparsing"): from pyparsing import *
+pyparsing = optional_import("pyparsing")
 
 logger = logging.getLogger('bamboo')
 
@@ -103,74 +103,76 @@ def read_csvs(files, *args, **kwargs):
     
 # filter expressions
 
-class FilterExpression:
-    """Filter factory based on filter expressions such as "name~John and (age>18 or consent:true)".
-    Filters consist of:
-        - boolean expressions using and, not, or and parentheses.
-        - field expressions, which consist of:
-          - a key name (with optional wildcards) or _index_
-          - an operator
-          - a value (with type appropriate to the operator)
-        - operators are one of:
-          - numeric comparisons: =, !=, <, <=, >, >=
-          - length comparisons: #=, #<, etc
-          - string comparisons: =, !=, ~ (regex match), !~
-          - containment: >> (contains), !>>
-          - existence: KEY:exists (has value that's not NaN or None), KEY:true (has true value)
-    """
-    
-    sign = oneOf('+ -')
-    integer = Word(nums)
-    number_base = (integer + Optional('.' + Optional(integer))('float')) | Literal('.')('float') + integer
-    number_exponent = CaselessLiteral('E')('float') + Optional(sign) + integer
-    number = Combine( Optional(sign) + number_base + Optional(number_exponent) ).setParseAction(lambda t: float(t[0]) if t.float else int(t[0]))
+if pyparsing:
+    from pyparsing import *
+    class FilterExpression:
+        """Filter factory based on filter expressions such as "name~John and (age>18 or consent:true)".
+        Filters consist of:
+            - boolean expressions using and, not, or and parentheses.
+            - field expressions, which consist of:
+              - a key name (with optional wildcards) or _index_
+              - an operator
+              - a value (with type appropriate to the operator)
+            - operators are one of:
+              - numeric comparisons: =, !=, <, <=, >, >=
+              - length comparisons: #=, #<, etc
+              - string comparisons: =, !=, ~ (regex match), !~
+              - containment: >> (contains), !>>
+              - existence: KEY:exists (has value that's not NaN or None), KEY:true (has true value)
+        """
+        
+        sign = oneOf('+ -')
+        integer = Word(nums)
+        number_base = (integer + Optional('.' + Optional(integer))('float')) | Literal('.')('float') + integer
+        number_exponent = CaselessLiteral('E')('float') + Optional(sign) + integer
+        number = Combine( Optional(sign) + number_base + Optional(number_exponent) ).setParseAction(lambda t: float(t[0]) if t.float else int(t[0]))
 
-    def onlen(f): return lambda x,y: f(len(x), y)
-    num_ops = { '<': operator.lt, '<=': operator.le,
-                '=': operator.eq, '!=': operator.ne,
-                '>': operator.gt, '>=': operator.ge,
-                '#<': onlen(operator.lt), '#<=': onlen(operator.le),
-                '#=': onlen(operator.eq), '#!=': onlen(operator.ne),
-                '#>': onlen(operator.gt), '#>=': onlen(operator.ge) }
-    str_ops = { '=': lambda x,y: x==str(y), '!=': lambda x,y: x!=str(y),
-                '~': lambda x,y: re.search(y,str(x)), '!~': lambda x,y: not re.search(y,str(x)),
-                '>>': lambda x,y: y in x, '!>>': lambda x,y: y not in x }
-    exist_ops = { ':': lambda x,y: { 'exists': not non(x), 'true': bool(x) }[y.lower()] }
-                
-    def oneOfOpMap(map): return oneOf(list(map.keys())).setParseAction(lambda t: ignoring_exceptions(map[t[0]], False))
-    num_op = oneOfOpMap(num_ops)
-    str_op = oneOfOpMap(str_ops)
-    exist_op = oneOfOpMap(exist_ops)
+        def onlen(f): return lambda x,y: f(len(x), y)
+        num_ops = { '<': operator.lt, '<=': operator.le,
+                    '=': operator.eq, '!=': operator.ne,
+                    '>': operator.gt, '>=': operator.ge,
+                    '#<': onlen(operator.lt), '#<=': onlen(operator.le),
+                    '#=': onlen(operator.eq), '#!=': onlen(operator.ne),
+                    '#>': onlen(operator.gt), '#>=': onlen(operator.ge) }
+        str_ops = { '=': lambda x,y: x==str(y), '!=': lambda x,y: x!=str(y),
+                    '~': lambda x,y: re.search(y,str(x)), '!~': lambda x,y: not re.search(y,str(x)),
+                    '>>': lambda x,y: y in x, '!>>': lambda x,y: y not in x }
+        exist_ops = { ':': lambda x,y: { 'exists': not non(x), 'true': bool(x) }[y.lower()] }
+                    
+        def oneOfOpMap(map): return oneOf(list(map.keys())).setParseAction(lambda t: ignoring_exceptions(map[t[0]], False))
+        num_op = oneOfOpMap(num_ops)
+        str_op = oneOfOpMap(str_ops)
+        exist_op = oneOfOpMap(exist_ops)
 
-    quoted_string = QuotedString('"', '\\') | QuotedString("'", '\\')
-    key_value = Word(alphas + alphas8bit + '*?[]_') | quoted_string
-    str_value = Word(alphas + alphas8bit + '_') | quoted_string
-    exist_value = CaselessLiteral('True') | CaselessLiteral('Exists')
+        quoted_string = QuotedString('"', '\\') | QuotedString("'", '\\')
+        key_value = Word(alphas + alphas8bit + '*?[]_') | quoted_string
+        str_value = Word(alphas + alphas8bit + '_') | quoted_string
+        exist_value = CaselessLiteral('True') | CaselessLiteral('Exists')
 
-    base_expr = (key_value + ( str_op + str_value | num_op + number | exist_op + exist_value)).setParseAction(lambda t: [t])
-    expr = operatorPrecedence(base_expr, [(Literal('not').setParseAction(lambda t: operator.not_), 1, opAssoc.RIGHT),
-                                          (Literal('and').setParseAction(lambda t: operator.and_), 2, opAssoc.LEFT),
-                                          (Literal('or').setParseAction(lambda t: operator.or_), 2, opAssoc.LEFT)])
+        base_expr = (key_value + ( str_op + str_value | num_op + number | exist_op + exist_value)).setParseAction(lambda t: [t])
+        expr = operatorPrecedence(base_expr, [(Literal('not').setParseAction(lambda t: operator.not_), 1, opAssoc.RIGHT),
+                                              (Literal('and').setParseAction(lambda t: operator.and_), 2, opAssoc.LEFT),
+                                              (Literal('or').setParseAction(lambda t: operator.or_), 2, opAssoc.LEFT)])
 
-    @classmethod
-    def _eval_parse(cls, parse, d, i):
-        if not isinstance(parse, list):
-            return parse
-        elif len(parse) == 1:
-            return cls._eval_parse(parse[0], d, i)
-        elif callable(parse[0]):
-            return parse[0](cls._eval_parse(parse[1], d, i))
-        else:
-            x, y = cls._eval_parse(parse[0], d, i), cls._eval_parse(parse[2], d, i)
-            if x == "_index_":
-                return parse[1](i, y)
-            elif isinstance(x, str):
-                return any(parse[1](d[k], y) for k in d.keys() if fnmatch.fnmatch(k, x))
+        @classmethod
+        def _eval_parse(cls, parse, d, i):
+            if not isinstance(parse, list):
+                return parse
+            elif len(parse) == 1:
+                return cls._eval_parse(parse[0], d, i)
+            elif callable(parse[0]):
+                return parse[0](cls._eval_parse(parse[1], d, i))
             else:
-                return parse[1](x, y)
-            
-    @classmethod
-    def make_filter(cls, string):
-        """Generates a filter function from a filter expression."""
-        parse = cls.expr.parseString(string, parseAll=True).asList()
-        return lambda d, i=None: cls._eval_parse(parse, d, i)
+                x, y = cls._eval_parse(parse[0], d, i), cls._eval_parse(parse[2], d, i)
+                if x == "_index_":
+                    return parse[1](i, y)
+                elif isinstance(x, str):
+                    return any(parse[1](d[k], y) for k in d.keys() if fnmatch.fnmatch(k, x))
+                else:
+                    return parse[1](x, y)
+                
+        @classmethod
+        def make_filter(cls, string):
+            """Generates a filter function from a filter expression."""
+            parse = cls.expr.parseString(string, parseAll=True).asList()
+            return lambda d, i=None: cls._eval_parse(parse, d, i)

@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
-from charts import *
-from bamboo import *
+from pudzu.charts import *
+from pudzu.bamboo import *
 from PIL import ImageEnhance
 
 df = pd.read_csv("datasets/euendian.csv").set_index("country")

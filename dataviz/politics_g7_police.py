@@ -1,6 +1,4 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 
 FONT = calibri
 SCALE = 2.25

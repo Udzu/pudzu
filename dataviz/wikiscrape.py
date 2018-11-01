@@ -1,10 +1,10 @@
 import sys
+sys.path.append('..')
 import pathlib
 from math import log
-sys.path.append('..')
 
 from wikipage import *
-from bamboo import *
+from pudzu.bamboo import *
 
 # wikifame scraping (messy; also requires manual cleanup and verificaiton at the moment)
 

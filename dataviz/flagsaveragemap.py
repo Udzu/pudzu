@@ -1,6 +1,4 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 from statistics import mean
 
 countries = pd.read_csv("datasets/countries.csv").split_columns(('country'), "|").split_rows('country').set_index('country')

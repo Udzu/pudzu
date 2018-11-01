@@ -1,6 +1,4 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 
 PALETTE = { "s": VegaPalette10.BLUE, "i": VegaPalette10.GREEN, "w": VegaPalette10.ORANGE, "e": VegaPalette10.RED, "n": VegaPalette10.PURPLE }
 FONT = calibri

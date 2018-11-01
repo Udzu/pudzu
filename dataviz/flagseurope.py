@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
-from charts import *
-from bamboo import *
+from pudzu.charts import *
+from pudzu.bamboo import *
 
 df = pd.read_csv("datasets/eucapitals.csv")
 data = pd.DataFrame(list(generate_batches([dict(row) for _,row in df.iterrows()], 4))[:2])

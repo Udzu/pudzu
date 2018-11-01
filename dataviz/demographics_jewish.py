@@ -1,8 +1,5 @@
-import sys
-
-sys.path.append('..')
-from charts import *
-from bamboo import *
+from pudzu.charts import *
+from pudzu.bamboo import *
 
 atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index("country")
 df = pd.read_csv("datasets/demographics_jewish.csv").set_index("country").sort_values("historical", ascending=False).fillna(0)

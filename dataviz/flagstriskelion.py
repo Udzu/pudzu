@@ -1,6 +1,4 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 
 df = pd.read_csv("datasets/flagstriskelion.csv")
 groups = list(remove_duplicates(df.group))

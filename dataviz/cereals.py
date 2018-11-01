@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
-from charts import *
-from bamboo import *
+from pudzu.charts import *
+from pudzu.bamboo import *
 
 df = pd.read_csv("datasets/cereals.csv").assign_rows(sort=lambda d: "ZZZ" if d["cereal"] == "Special K" else d["cereal"]).sort_values("sort")
 data = pd.DataFrame(list(generate_batches((dict(row) for _,row in df.iterrows()), 5)))

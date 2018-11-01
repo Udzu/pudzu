@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
-from charts import *
-from bamboo import *
+from pudzu.charts import *
+from pudzu.bamboo import *
 import seaborn as sns
 
 # a selection of words dervied from European toponyms (excluding wines and cheeses)

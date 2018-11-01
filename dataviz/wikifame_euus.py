@@ -1,7 +1,5 @@
-import sys
 import seaborn as sns
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 
 FONT, fg, bg = calibri, "white", "black"
 

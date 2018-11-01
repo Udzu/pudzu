@@ -5,7 +5,7 @@ import re
 import bs4
 
 from collections import OrderedDict
-from utils import *
+from pudzu.utils import *
 
 # Various utilities for BeautifulSoup
 

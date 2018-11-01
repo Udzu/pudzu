@@ -1,6 +1,4 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 import json
 
 # Some adhoc utilities for generating d3 datamaps (including one for converting them to raster map templates)

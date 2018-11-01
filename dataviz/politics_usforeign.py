@@ -1,6 +1,4 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 
 PALETTE = { "D": VegaPalette10.BLUE, "R": VegaPalette10.RED, "DR": VegaPalette10.GREEN, "U": VegaPalette10.GREY }
 PARTIES = { "D": "Democratic", "R": "Republican", "DR": "Democratic-Republican", "U": "Unaffiliated" }

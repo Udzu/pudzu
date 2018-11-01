@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
-from charts import *
-from dates import *
+from pudzu.charts import *
+from pudzu.dates import *
 
 df = pd.read_csv("datasets/timeline_mukachevo.csv")
 

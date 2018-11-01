@@ -1,12 +1,9 @@
-import sys
-sys.path.append('..')
 
 import hashlib
 import matplotlib.pyplot as plt
 from scipy import signal
 from functools import wraps
-from pillar import *
-from charts import *
+from pudzu.charts import *
 
 logger.setLevel(logging.INFO)
 

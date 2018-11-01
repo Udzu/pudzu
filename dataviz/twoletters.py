@@ -1,6 +1,4 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 from string import ascii_lowercase as lc
 
 df = pd.read_csv("datasets/twoletters.csv")

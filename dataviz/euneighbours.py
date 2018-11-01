@@ -1,6 +1,4 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 from scipy import ndimage
 import seaborn as sns
 import tqdm

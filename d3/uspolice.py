@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
 from generate import *
-from charts import *
+from pudzu.charts import *
 
 # generate d3 html
 

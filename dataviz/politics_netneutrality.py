@@ -1,6 +1,4 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 import seaborn as sns
 
 PALETTE = tmap(RGBA, sns.color_palette())

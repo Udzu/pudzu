@@ -1,6 +1,4 @@
-import sys
-sys.path.append('..')
-from charts import *
+from pudzu.charts import *
 
 INTERVAL = 20
 CONTINENTS = ["Europe", "North America", "Asia", "Oceania", "Africa", "South America"]

@@ -1,7 +1,5 @@
-import sys
-sys.path.append('..')
-from charts import *
-from bamboo import *
+from pudzu.charts import *
+from pudzu.bamboo import *
 
 flags = pd.read_csv("datasets/countries.csv").filter_boolean(lambda df: df.code != "EUU").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country').drop_duplicates(subset='flag', keep='first')
 bg = "#EEEEEE"

@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 import pickle
 import seaborn as sns
 import string

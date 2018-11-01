@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 import pathlib
 from math import log
 

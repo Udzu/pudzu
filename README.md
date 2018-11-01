@@ -2,21 +2,23 @@
 
 ## Summary
 
-Various Python 3.6+ utility functions, mostly geared towards dataviz and used to create the data visualisations in this [flickr account](https://www.flickr.com/photos/zarfo/albums). Most have been posted to reddit at some point by [/u/Udzu](https://www.reddit.com/user/Udzu/).
+Various utility functions, mostly geared towards dataviz and used to create the data visualisations in this [flickr account](https://www.flickr.com/photos/zarfo/albums) (most of which been posted to reddit at some point by [/u/Udzu](https://www.reddit.com/user/Udzu/)). The modules aren't properly tested but are reasonably simple, generic and docstringed.
 
-The modules aren't properly tested but are reasonably simple, generic and docstringed. They are not optimised for speed or resilience. They are targeted at for-fun, interactive work.
+## Install
+
+The stable modules can be installed using `pip install pudzu` or by directly running the `setup.py` file.
 
 ## Modules
 
 ### General modules
-- [utils.py](utils.md) - various utility functions and data structures.
-- [dates.py](dates.md) - date classes supporting flexible calendars, deltas and ranges.
+- [pudzu.utils](utils.md) - various utility functions and data structures.
+- [pudzu.dates](dates.md) - date classes supporting flexible calendars, deltas and ranges.
 
 ### Dataviz modules
-- [bamboo.py](bamboo.md) - various monkey-patched pandas utilities.
-- [pillar.py](pillar.md) - various monkey-patched Pillow utilities.
-- [charts.py](charts.md) - Pillow-based charting tools.
-- [tureen.py](tureen.md) - various BeautifulSoup utilities.
+- [pudzu.bamboo](bamboo.md) - various monkey-patched pandas utilities.
+- [pudzu.pillar](pillar.md) - various monkey-patched Pillow utilities.
+- [pudzu.charts](charts.md) - Pillow-based charting tools.
+- [pudzu.tureen](tureen.md) - various BeautifulSoup utilities.
 
 ### Unstable modules (not packaged for now)
 - [markov.py](markov.md) - simple Markov Chain n-gram based generator.

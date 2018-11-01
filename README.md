@@ -2,25 +2,23 @@
 
 ## Summary
 
-Various utility functions, mostly geared towards dataviz and used to create the data visualisations in this [flickr account](https://www.flickr.com/photos/zarfo/albums) (most of which been posted to reddit at some point by [/u/Udzu](https://www.reddit.com/user/Udzu/)). The modules aren't properly tested but are reasonably simple, generic and docstringed.
+Various Python utility functions, mostly geared towards dataviz and used to create the data visualisations in this [flickr account](https://www.flickr.com/photos/zarfo/albums) (most of which been posted to reddit at some point by [/u/Udzu](https://www.reddit.com/user/Udzu/)). The modules aren't properly tested but are reasonably simple, generic and docstringed.
 
-## Install
+## Installation
 
-The stable modules can be installed using `pip install pudzu` or by directly running the `setup.py` file.
+The stable modules can be installed using `pip install pudzu` or by directly running `python setup.py install`.
 
-## Modules
+## Package modules
 
-### General modules
 - [pudzu.utils](utils.md) - various utility functions and data structures.
 - [pudzu.dates](dates.md) - date classes supporting flexible calendars, deltas and ranges.
-
-### Dataviz modules
 - [pudzu.bamboo](bamboo.md) - various monkey-patched pandas utilities.
 - [pudzu.pillar](pillar.md) - various monkey-patched Pillow utilities.
 - [pudzu.charts](charts.md) - Pillow-based charting tools.
 - [pudzu.tureen](tureen.md) - various BeautifulSoup utilities.
 
-### Unstable modules (not packaged for now)
+## Unpackaged modules
+
 - [markov.py](markov.md) - simple Markov Chain n-gram based generator.
 - [nounce.py](nounce.md) - simple IPA-based pronouncing and rhyming dictionary.
 - [wikipage.py](wikipage.md) - wikipedia and wikidata parsing utilities.

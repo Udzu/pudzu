@@ -2,13 +2,13 @@
 
 ## Summary
 
-Various Python utility functions, mostly geared towards dataviz and used to create the data visualisations in this [flickr account](https://www.flickr.com/photos/zarfo/albums) (most of which been posted to reddit at some point by [/u/Udzu](https://www.reddit.com/user/Udzu/)). The modules aren't properly tested but are reasonably simple, generic and docstringed.
+Various Python 3.6+ utility functions, mostly geared towards dataviz and used to create the data visualisations in this [flickr account](https://www.flickr.com/photos/zarfo/albums) (most of which been posted to reddit at some point by [/u/Udzu](https://www.reddit.com/user/Udzu/)). The modules aren't properly tested but are reasonably simple, generic and docstringed.
 
 ## Installation
 
-The stable modules can be installed using `pip install pudzu` or by directly running `python setup.py install`.
+The packaged modules can be installed using `pip install pudzu` (for the latest release) or by directly running `python setup.py install`.
 
-## Package modules
+## Packaged modules
 
 - [pudzu.utils](utils.md) - various utility functions and data structures.
 - [pudzu.dates](dates.md) - date classes supporting flexible calendars, deltas and ranges.

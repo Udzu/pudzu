@@ -4,6 +4,8 @@ from itertools import accumulate
 
 # HORRIBLE HACK FOR NOW SINCE MONTH_CHARTS CAN'T COPE WITH LEAP WEEKDAYS
 
+WEEKEND_BG = "#9ecae1"
+
 class MyCalendar(Calendar):
 
     MONTHS = ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
@@ -62,7 +64,7 @@ def bgfn(d, w, h):
         return "grey" # fake day
     else:
         weekend = (d.ymd.day % 6 == 0) or (d.ymd.day % 12 == 4) or d.ymd.day == 35
-    bg = VegaPalette10.LIGHTBLUE if weekend else "white"
+    bg = WEEKEND_BG if weekend else "white"
     if d.ymd.month == 2 and d.ymd.day == 35: bg = Stripe(10, bg, "white")
     rec = Rectangle((w,h), bg)
     g = d - d.ymd.day // 6 if d.ymd.month == 2 else d
@@ -103,16 +105,16 @@ LEGEND = """**SUMMARY**
 **ADVANTAGES**
 
 • **weeks are aligned with months and years**
-   they start on Monday and end on Sunday
+   both start on Monday and end on Sunday
    
-• **weekday are obvious from the date**
+• **weekdays are obvious from the date**
    no need even for your 7 times table!
    
-• **there's a year-independent mapping to
-   and from the Gregorian calendar**
+• **there's a year-independent conversion
+   to and from the Gregorian calendar**
    
 • **there are slightly more weekends**
-   110 versus 104/5 (on non-leap years)
+   110 versus 104/5 on non-leap years
    
 • **familiar month and weekday names**
 
@@ -131,8 +133,8 @@ LEGEND = """**SUMMARY**
 • **less business for calendar makers**
 """
 
-box = generate_legend([VegaPalette10.LIGHTBLUE,
-Rectangle(40, Stripe(10, VegaPalette10.LIGHTBLUE, "white")),
+box = generate_legend([WEEKEND_BG,
+Rectangle(40, Stripe(10, WEEKEND_BG, "white")),
 Rectangle(40, "white").place(Image.from_text("2 FEB", arial(10), "#A0A0A0", beard_line=True))
 ], ["weekend", "leap day (leap years only)", "equivalent Gregorian date"], font_family=partial(arial, 16))
 title = Image.from_text(TITLE.upper(), arial(60, bold=True), bg="white")

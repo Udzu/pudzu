@@ -19,7 +19,7 @@ def generate_photo(filepath, url, align=None, size=(600,200), crop=True, credit_
         credit = "**Source{}**: {}".format("s"*(len(urls)>1), ", ".join(sources))
         credit_img = Image.from_markup(credit, credit_fonts, credit_fg, credit_bg, padding=(3,1), beard_line=True)
         img = img.place(credit_img, align=(0,1)) if credit_overlay else img.pin(credit_img, (0,img.height), align=0, bg=credit_bg)
-    img.convert("RGB").save(filepath.replace("|", ", "))
+    img.convert("RGBA").save(filepath.replace("|", ", "))
 
 def generate_temp(url, label="__temp__", **kwargs):
     os.makedirs("output/__temp__", exist_ok=True)
@@ -33,5 +33,5 @@ def generate_photoset(datapath, batch_size=1, **kwargs):
         df = df.assign_rows(align=lambda d: get_non(d, 'align', '|' * d['image'].count('|')))
         df = df.groupby_rows(lambda r,i: i//batch_size).reduce(lambda c: "|".join(str(x) for x in c))
     for i,(_,d) in enumerate(df.iterrows(), 1):
-        generate_photo("{}/{}. {}.jpg".format(dirname, i, d.label), d.image, align=get_non(d, 'align'), **kwargs)
+        generate_photo("{}/{}. {}.png".format(dirname, i, d.label), d.image, align=get_non(d, 'align'), **kwargs)
 

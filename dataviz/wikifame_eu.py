@@ -25,7 +25,7 @@ for i in range(3):
         
     def cell(name):
         if not name: return None
-        img = Image.from_url_with_cache(get_non(dfi['image'], n, DEFAULT_IMG))
+        img = Image.from_url_with_cache(get_non(dfi['image'], name, DEFAULT_IMG))
         box = Image.new("RGB", (180,200), bg)
         box = box.place(Image.from_column([
           img.crop_to_aspect(100, 100, (0.5, 0.2)).resize_fixed_aspect(width=160),

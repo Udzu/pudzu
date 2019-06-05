@@ -1,0 +1,65 @@
+country,link,rank,image
+Germany,Johann Sebastian Bach,1,https://pbs.twimg.com/media/CLClV2bVAAAylyQ.jpg
+Germany,Ludwig van Beethoven,3,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Beethoven.jpg/1200px-Beethoven.jpg
+Germany,Johannes Brahms,5,http://www.gstatic.com/tv/thumb/persons/188752/188752_v9_ba.jpg
+Austria,Wolfgang Amadeus Mozart,2,https://s2-ssl.dmcdn.net/TVIxi.jpg
+Austria,Franz Schubert,4,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Franz_Schubert_by_Wilhelm_August_Rieder_1875.jpg/220px-Franz_Schubert_by_Wilhelm_August_Rieder_1875.jpg
+Austria,Joseph Haydn,9,https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Joseph_Haydn.jpg/475px-Joseph_Haydn.jpg
+Italy,Giuseppe Verdi,7,https://upload.wikimedia.org/wikipedia/commons/5/55/Giuseppe_Verdi_by_Giovanni_Boldini.jpg
+Italy,Giacomo Puccini,15,http://www.puccinifestival.it/wp-content/uploads/2015/04/puccini_1.jpg
+Italy,Antonio Vivaldi,22,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Vivaldi.jpg/858px-Vivaldi.jpg
+Poland,Fryderyk Chopin,10,http://cdn-images.audioaddict.com/8/b/8/3/f/7/8b83f76da0c88bf71fe7e63eae1fd986.png
+Poland,Witold Lutosławski,125,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Lutoslawski3.jpg/506px-Lutoslawski3.jpg
+Poland,Karol Szymanowski,130,https://api.europeana.eu/api/v2/thumbnail-by-url.json?size=w400&type=IMAGE&uri=http%3A%2F%2Feuropeana.parisiennedephotographie.fr%2FSSEU%2FFiles%2F124dfcb9fd7c1461b750b7edb7effebdac87e468ebef4a7fb0075587890850ba
+Russia,Pyotr Ilyich Tchaikovsky,11,http://cdn-images.audioaddict.com/3/0/3/1/7/7/303177293f1308b00e152c8993902cdd.png
+Russia,Igor Stravinsky,16,https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Igor_Stravinsky_LOC_32392u.jpg/745px-Igor_Stravinsky_LOC_32392u.jpg
+Russia,Sergei Rachmaninoff,24,https://upload.wikimedia.org/wikipedia/commons/b/b8/Sergei_Rachmaninoff_LOC_33969u.jpg
+Hungary,Franz Liszt,12,https://upload.wikimedia.org/wikipedia/commons/e/e5/Liszt-1870.jpg
+Hungary,Béla Bartók,25,https://dkv1m6tr6w4ev.cloudfront.net/picture/4070/pivot_1024x512/de-munt-mtqwotq0mjm0.jpg
+Hungary,Zoltán Kodály,74,https://cps-static.rovicorp.com/3/JPG_400/MI0002/864/MI0002864202.jpg?partner=allrovi.com
+France,Claude Debussy,14,https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Claude_Debussy_atelier_Nadar.jpg/220px-Claude_Debussy_atelier_Nadar.jpg
+France,Maurice Ravel,20,https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Maurice_Ravel_1925.jpg/220px-Maurice_Ravel_1925.jpg
+France,Hector Berlioz,29,https://cps-static.rovicorp.com/3/JPG_400/MI0002/870/MI0002870667.jpg?partner=allrovi.com
+Czech Republic,Gustav Mahler,19,https://www.mfiles.co.uk/composers/mahler-picture-big.jpg
+Czech Republic,Antonín Dvořák,21,https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Dvorak.jpg/220px-Dvorak.jpg
+Czech Republic,Leoš Janáček,64,https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Leos_Jan%C3%A1cek_%281926%29.jpg/220px-Leos_Jan%C3%A1cek_%281926%29.jpg
+UK,Benjamin Britten,26,https://karsh.org/wordpress/wp-content/uploads/2016/10/Yousuf-Karsh-Benjamin-Britten-1954-1556x1960.jpg
+UK,Ralph Vaughan Williams,39,https://cps-static.rovicorp.com/3/JPG_400/MI0003/737/MI0003737527.jpg?partner=allrovi.com
+UK,Henry Purcell,40,https://upload.wikimedia.org/wikipedia/commons/5/53/Henry_Purcell.jpg
+Norway,Edvard Grieg,33,"https://m.media-amazon.com/images/M/MV5BOTU3OTE3NTMtOWUwMi00ZTlmLThmNTYtMDAzMTc2Mjc0MTU4XkEyXkFqcGdeQXVyMjUyNDk2ODc@._V1_UY317_CR18,0,214,317_AL_.jpg"
+Norway,Johan Svendsen,409,https://upload.wikimedia.org/wikipedia/commons/1/16/Portrett_av_komponist_og_dirigent_Johan_Svendsen_%281840-1911%29_%2834133117716%29_%28cropped%29.jpg
+Norway,Christian Sinding,488,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Christian_Sinding_OB.F06421a.jpg/220px-Christian_Sinding_OB.F06421a.jpg
+Finland,Jean Sibelius,36,https://ichef.bbci.co.uk/images/ic/640x360/p05x45v2.jpg
+Finland,Einojuhani Rautavaara,268,http://5against4.com/images/composers/einojuhanirautavaara.jpg
+Finland,Aulis Sallinen,420,https://images.ctfassets.net/2hnbm9tfxdca/3NdMkjiieISgIs62IGIuCm/48747e392b838665bc7d3f7677af33c3/aulis-sallinen-1935.jpg?fm=jpg&w=900&h=900
+Belgium,César Franck,52,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/C%C3%A9sar_Franck_by_Pierre_Petit.jpg/250px-C%C3%A9sar_Franck_by_Pierre_Petit.jpg
+Belgium,Orlande de Lassus,77,https://musicakaleidoscope.files.wordpress.com/2017/03/orlando-de-lassus.jpg
+Belgium,Guillaume Du Fay,174,https://upload.wikimedia.org/wikipedia/commons/3/3b/Portrait_of_a_Young_Man_by_Jan_van_Eyck.jpg
+Spain,Manuel de Falla,66,http://dbe.rah.es/sites/default/files/styles/wide/public/imagenes/biografias/Manuel-de-Falla.jpg
+Spain,Isaac Albéniz,87,https://cps-static.rovicorp.com/3/JPG_400/MI0003/823/MI0003823079.jpg?partner=allrovi.com
+Spain,Joaquín Rodrigo,107,http://s3.amazonaws.com/static.musicsalesclassical.com/images/composer/img-1309.jpg
+Denmark,Carl Nielsen,84,https://cps-static.rovicorp.com/3/JPG_400/MI0004/088/MI0004088255.jpg?partner=allrovi.com
+Denmark,Dieterich Buxtehude,100,https://www.thefamouspeople.com/profiles/images/dieterich-buxtehude-4.jpg
+Denmark,Niels Gade,280,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Niels_W._Gade_%28undated_photograph%29.jpg/300px-Niels_W._Gade_%28undated_photograph%29.jpg
+Switzerland,Ernest Bloch,115,https://images.findagrave.com/photos250/photos/2007/205/20628361_118538930997.jpg
+Switzerland,Arthur Honegger,118,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Arthur_Honegger_b_Meurisse_1928.jpg/170px-Arthur_Honegger_b_Meurisse_1928.jpg
+Switzerland,Frank Martin,154,https://www.frankmartin.org/wp-content/uploads/3_2.jpg
+Estonia,Arvo Pärt,117,https://media.wnyc.org/i/1120/747/l/80/1/arvo-part-by-peter-adamik.jpg.jpg
+Estonia,Eduard Tubin,490,https://218rd4usljy36p1zb4dmoxrjzo-wpengine.netdna-ssl.com/wp-content/uploads/sites/2/2016/05/Eduard-Tubin.jpg
+Armenia,Aram Khachaturian,123,https://musicofarmenia.com/sites/default/files/styles/colorbox/public/musician/photo/Aram%20Khachaturian.jpg?itok=0W9ateoU
+Romania,George Enescu,157,"https://m.media-amazon.com/images/M/MV5BNzVjMTUzNTAtN2MzMC00YTVhLWEzZTAtM2VlMjhlZTUwNTQ1XkEyXkFqcGdeQXVyNDkzNTM2ODg@._V1_UY317_CR26,0,214,317_AL_.jpg"
+Greece,Iannis Xenakis,160,https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/XenakisMDaniel_crop.jpg/220px-XenakisMDaniel_crop.jpg
+Greece,Nikos Skalkottas,453,http://adagiomode.com/wp-content/uploads/2017/07/Skalkottas-Nikolaos.jpg
+Ireland,Charles Villiers Stanford,166,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Stanford-Bassano-1921.jpg/220px-Stanford-Bassano-1921.jpg
+Ireland,John Field,258,http://cdn3.classical-music.com/sites/default/files/imagecache/250px_wide/images/John_field_Free_Hires_WIki.jpg
+Moldova,Anton Rubinstein,170,https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Rubinstein_repin.jpg/220px-Rubinstein_repin.jpg
+Netherlands,Jan Pieterszoon Sweelinck,192,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Jan_Pietersz._Sweelinck_LACMA_M.88.91.370.jpg/250px-Jan_Pietersz._Sweelinck_LACMA_M.88.91.370.jpg
+Netherlands,Heinrich Isaac,251,https://www.ndceditions.com/images/Composers/composer-isaac1.jpg
+Netherlands,Louis Andriessen,360,http://www.boosey.com/images/composer/Snap_Andriessen2_x2.jpg
+Liechtenstein,Josef Rheinberger,226,https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Josef_Rheinberger_001.jpg/220px-Josef_Rheinberger_001.jpg
+Ukraine,Reinhold Glière,250,https://live.staticflickr.com/4465/36688317213_5cbc11b4a1_b.jpg
+Sweden,Franz Berwald,331,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Franz_Berwald_Painting.jpg/220px-Franz_Berwald_Painting.jpg
+Sweden,Hugo Alfvén,384,https://ichef.bbci.co.uk/images/ic/960x540/p039q9jl.jpg
+Sweden,Wilhelm Stenhammar,410,http://www.levandemusikarv.se/files/composers/stenhammar-wilhelm/Stenhammar_50.jpg
+Monaco,Franz Schreker,356,https://3.bp.blogspot.com/-8ET_XWbU6Y0/VZQQzp822AI/AAAAAAAACcw/RwXiwXIjKdM/s1600/franzschreker.jpg
+Lithuania,César Cui,431,https://cuimusicfest.com/wp-content/uploads/2014/10/Cesar-Cui.jpg

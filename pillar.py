@@ -857,7 +857,7 @@ class _Image(Image.Image):
         color = RGBA(color)[:n]
         data = np.array(self)
         mask = _nparray_mask_by_color(data, color, n)
-        return Image.fromarray(mask * 255).convert("1")
+        return Image.fromarray(mask.astype('uint8') * 255).convert("1")
         
     def replace_colors(self, mapping, ignore_alpha=False):
         """Return an image with the colors specified by the mapping keys replaced by the colors
@@ -871,7 +871,7 @@ class _Image(Image.Image):
             color1 = RGBA(c1)[:n]
             mask = _nparray_mask_by_color(original, color1, n)
             if isinstance(c2, Image.Image):
-                mask = Image.fromarray(mask * 255).convert("1")
+                mask = Image.fromarray(mask.astype('uint8') * 255).convert("1")
                 pattern = Image.from_pattern(c2, self.size)
                 if ignore_alpha and "A" in self.mode:
                     pattern.putalpha(self.getchannel(3))
@@ -880,7 +880,7 @@ class _Image(Image.Image):
                 color2 = RGBA(c2)[:n]
                 data = np.array(output)
                 data[:,:,:n][mask] = color2
-                output = Image.fromarray(data)
+                output = Image.fromarray(data.astype('uint8'))
         return output
                 
     def replace_color(self, color, to, ignore_alpha=False):

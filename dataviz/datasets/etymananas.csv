@@ -1,6 +1,6 @@
 country,word,category
 Andorra,pinya,p
-Armenia,Արքայախնձոր (arkʿayaxnjor),o
+Armenia,Արքայախնձոր (arkʿayaxnjor),oa
 Ireland,pineapple,p
 Spain,piña,p
 United Kingdom,pineapple,p
@@ -9,6 +9,8 @@ Brazil,abacaxi,o
 Chile,piña,p
 Colombia,piña,p
 Ecuador,piña|chirimaway,po
+Falkland Islands,,p
+South Georgia and the South Sandwich Islands,,p
 Guyana,,p
 Paraguay,piña|avakachi,po
 Peru,piña|chirimaway,po
@@ -34,6 +36,7 @@ Saint Kitts and Nevis,p,
 Saint Vincent and the Grenadines,,p
 Trinidad and Tobago,,p
 United States,,p
+Puerto Rico,,p
 Australia,,p
 Federated States of Micronesia,,p
 Fiji,painapiu,p
@@ -76,7 +79,6 @@ South Korea,,p
 North Korea,,p
 Laos,ໝາກນັດ,o
 Mongolia,хан боргоцой,o
-Myanmar,,o
 Philippines,pinya,p
 Singapore,,o
 Thailand,สัปปะรด,o

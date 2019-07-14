@@ -1030,7 +1030,10 @@ def font(name, size, bold=False, italics=False, **kwargs):
     """Return a truetype font object. Name is either a sequence of 4 names representing
     normal, italics, bold and bold-italics variants, or just a single name (in which the
     suffixes i, b/bd and z/bi are added for the variants)."""
-    SUFFIXES = [["","i","bd","bi"],["", "i", "b", "z"]]
+    SUFFIXES = [["","i","bd","bi"],
+                ["", "i", "b", "z"],
+                ["","Oblique","Bold","BoldOblique"],
+                ["","_Oblique","_Bold","_BoldOblique"]]
     variants = [name] if non_string_sequence(name) else [[name+suffix for suffix in suffixes] for suffixes in SUFFIXES]
     names = [list(generate_batches(variants, 2))[bold][italics] for variants in variants]
     for name in names:

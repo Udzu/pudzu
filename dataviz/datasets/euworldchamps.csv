@@ -1,8 +1,9 @@
 sport,men,women
 football,Germany|Italy|France|England|Spain,Germany|Norway
 basketball,Yugoslavia|USSR|Spain,USSR
+cricket,England,England
 rugby,England,England
 ice hockey,Russia|USSR|Czech Republic|Czechoslovakia|Sweden|Finland|UK|Slovakia,
-baseball,UK|Netherlands
-field hockey,Netherlands|Germany|Belgium
-handball,France|Sweden|Romania|Germany|Russia|Spain|Croatia|Denmark|Czechoslovakia|USSR|Yugoslavia
+baseball,UK|Netherlands,
+field hockey,Netherlands|Germany|Belgium,Netherlands|Germany
+handball,France|Sweden|Romania|Germany|Russia|Spain|Croatia|Denmark|Czechoslovakia|USSR|Yugoslavia,Russia|Norway|USSR|Germany|France|Hungary|Yugoslavia|Denmark|Romania|Czechoslovakia

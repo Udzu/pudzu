@@ -3,6 +3,7 @@ Finland,1906
 Norway,1913
 Denmark,1915
 Iceland,1915
+Faroe Islands,1915
 Belarus,1917
 Estonia,1917
 Latvia,1917
@@ -13,7 +14,7 @@ Austria,1918
 Germany,1918
 Poland,1918
 Isle of Man,1919,1881
-Sweden,1919,1718
+Sweden,1919,1718¹
 Luxembourg,1919
 Netherlands,1919
 Albania,1920
@@ -43,7 +44,9 @@ San Marino,1959
 Cyprus,1960
 Monaco,1962
 Andorra,1970
-Portugal,1976,1931
+Portugal,1976,1931²
 Liechtenstein,1984
-Switzerland,1990,1971
-
+Switzerland,1990,1971³
+Algeria,1958
+Morocco,1963
+Tunisia,1957

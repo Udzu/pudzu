@@ -1,76 +1,156 @@
-colours,name,flag
-RWR,"Austria",https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Austria.svg/1024px-Flag_of_Austria.svg.png
-RWG,"Hungary",https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1024px-Flag_of_Hungary.svg.png
-RWB,"Netherlands",https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_the_Netherlands.svg/1024px-Flag_of_the_Netherlands.svg.png
-RWK,"Libya (1969-72)",https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Flag_of_Libya_%281969%E2%80%931972%29.svg/1024px-Flag_of_Libya_%281969%E2%80%931972%29.svg.png
-RWY,"Świebodzin, Poland",https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/POL_%C5%9Awiebodzin_flag.svg/1024px-POL_%C5%9Awiebodzin_flag.svg.png
-GWR,"N. Rhine-Westphalia, Germany",https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_North_Rhine-Westphalia.svg/1024px-Flag_of_North_Rhine-Westphalia.svg.png
-GWG,"Rotterdam, Netherlands",https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Flag_of_Rotterdam.svg/1024px-Flag_of_Rotterdam.svg.png
-GWB,"Sierra Leone",https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Flag_of_Sierra_Leone.svg/1024px-Flag_of_Sierra_Leone.svg.png
-GWK,"Hereroland, SW Africa (1968-89)",https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Flag_of_Hereroland.svg/1024px-Flag_of_Hereroland.svg.png
-GWY,"Armenia, Colombia",https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Flag_of_Armenia%2C_Colombia.svg/1024px-Flag_of_Armenia%2C_Colombia.svg.png
-BWR,"Mannheim, Germany",https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Mannheim-Flagge.svg/1024px-Mannheim-Flagge.svg.png
-BWG,"Córdoba, Colombia",https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Flag_of_C%C3%B3rdoba.svg/1024px-Flag_of_C%C3%B3rdoba.svg.png
-BWB,"Tienen, Belgium",https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Flag_of_Tienen.svg/1024px-Flag_of_Tienen.svg.png
-BWK,"Saar Protectorate (1920-35)",https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Flag_of_Saar_1920-1935.svg/1024px-Flag_of_Saar_1920-1935.svg.png
+colours,name,description,flag
+RWR,"Austria",,https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Austria.svg/1024px-Flag_of_Austria.svg.png
+RWG,"Hungary",,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1024px-Flag_of_Hungary.svg.png
+RWB,"Netherlands",,https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_the_Netherlands.svg/1024px-Flag_of_the_Netherlands.svg.png
+RWK,"Libya (1969-72)",,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Flag_of_Libya_%281969%E2%80%931972%29.svg/1024px-Flag_of_Libya_%281969%E2%80%931972%29.svg.png
+RWY,"Świebodzin","Poland",https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/POL_%C5%9Awiebodzin_flag.svg/1024px-POL_%C5%9Awiebodzin_flag.svg.png
+GWR,"North Rhine-Westphalia","Germany",https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_North_Rhine-Westphalia.svg/1024px-Flag_of_North_Rhine-Westphalia.svg.png
+GWG,"Rotterdam","Netherlands",https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Flag_of_Rotterdam.svg/1024px-Flag_of_Rotterdam.svg.png
+GWB,"Sierra Leone",,https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Flag_of_Sierra_Leone.svg/1024px-Flag_of_Sierra_Leone.svg.png
+GWK,"Hereroland (1968-89)","South West Africa",https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Flag_of_Hereroland.svg/1024px-Flag_of_Hereroland.svg.png
+GWY,"Armenia","Colombia",https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Flag_of_Armenia%2C_Colombia.svg/1024px-Flag_of_Armenia%2C_Colombia.svg.png
+BWR,"Mannheim","Germany",https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Mannheim-Flagge.svg/1024px-Mannheim-Flagge.svg.png
+BWG,"Córdoba","Colombia",https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Flag_of_C%C3%B3rdoba.svg/1024px-Flag_of_C%C3%B3rdoba.svg.png
+BWB,"Tienen","Belgium",https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Flag_of_Tienen.svg/1024px-Flag_of_Tienen.svg.png
+BWK,"Saar Mandate (1920-35)",,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Flag_of_Saar_1920-1935.svg/1024px-Flag_of_Saar_1920-1935.svg.png
 BWY,
-KWR,"German Empire (1871-1918)",https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_the_German_Empire.svg/1024px-Flag_of_the_German_Empire.svg.png
-KWG,"Gelsenkirchen, Germany",https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flagge_der_kreisfreien_Stadt_Gelsenkirchen.svg/1024px-Flagge_der_kreisfreien_Stadt_Gelsenkirchen.svg.png
-KWB,"Neutral Moresnet (1816-1920)",https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Flag_of_Moresnet.svg/1024px-Flag_of_Moresnet.svg.png
-KWK,"Prussia, Germany* (1919-33)",https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Prussia_%281918%E2%80%931933%29.svg/1024px-Flag_of_Prussia_%281918%E2%80%931933%29.svg.png
+KWR,"Germany (1871-1918)",,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_the_German_Empire.svg/1024px-Flag_of_the_German_Empire.svg.png
+KWG,"Gelsenkirchen","Germany",https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flagge_der_kreisfreien_Stadt_Gelsenkirchen.svg/1024px-Flagge_der_kreisfreien_Stadt_Gelsenkirchen.svg.png
+KWB,"Neutral Moresnet (1816-1920)",,https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Flag_of_Moresnet.svg/1024px-Flag_of_Moresnet.svg.png
+KWK,"Prussia* (1919-33)","Germany",https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Prussia_%281918%E2%80%931933%29.svg/1024px-Flag_of_Prussia_%281918%E2%80%931933%29.svg.png
 KWY,
 YWR,
-YWG,"Transkei, South Africa (1976-94)",https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Transkei.svg/1024px-Flag_of_Transkei.svg.png
-YWB,"Mariánské Lázně, Czech Republic",https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_Vla%C5%A1im.svg/1024px-Flag_of_Vla%C5%A1im.svg.png
-YWK,"Cabinda, Angola",https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Flag_of_Cabinda_Province.svg/1024px-Flag_of_Cabinda_Province.svg.png
+YWG,"Transkei (1976-94)","South Africa",https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Transkei.svg/1024px-Flag_of_Transkei.svg.png
+YWB,"Mariánské Lázně","Czech Republic",https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_Vla%C5%A1im.svg/1024px-Flag_of_Vla%C5%A1im.svg.png
+YWK,"Cabinda","Angola",https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Flag_of_Cabinda_Province.svg/1024px-Flag_of_Cabinda_Province.svg.png
 YWY,
+
 GRG,
 GRB,
-GRW,"Heligoland, Germany"
+GRW,"Heligoland","Germany"
 GRK,
-GRY,"Żarów, Poland"
+GRY,"Żarów","Poland"
 BRG,"Azerbaijan*"
 BRB,"Cambodia*"
 BRW,
 BRK,
-BRY,"Galicia and Lodomeria, Austrian Empire (1849-90)"
-WRG,"Żmigród, Poland"
-WRB,"Schaumburg-Lippe, Germany (1880-1935)"
+BRY,"Galicia (1849-90)","Austrian Empire"
+WRG,"Żmigród","Poland"
+WRB,"Schaumburg-Lippe (1880-1935)","Germany"
 WRW,"Belarus (1918, 1991-95)"
 WRK,
 WRY,"South Ossetia"
 KRG,"Malawi*"
-KRB,"East Frisia, Germany"
+KRB,"East Frisia","Germany"
 KRW,
 KRK,
 KRY,"Germany"
-YRG,"Bilzen, Belgium"
-YRB,"North Holland, Netherlands"
-YRW,"Carinthia, Austria"
+YRG,"Bilzen","Belgium"
+YRB,"North Holland","Netherlands"
+YRW,"Carinthia","Austria"
 YRK,
-YRY,"Baden, Germany (1806-1952)"
-RGR,"Tungurahua, Ecuador"
+YRY,"Baden(1806-1952)","Germany"
+
+RGR,"Tungurahua","Ecuador"
 RGB,
-RGW,"Ipiales, Colombia"
+RGW,"Ipiales","Colombia"
 RGK,
 RGY,
-BGR,"Villavicencio, Colombia"
+BGR,"Villavicencio","Colombia"
 BGB,
-BGW,"Komi Republic, Russia"
+BGW,"Komi Republic","Russia"
 BGK
-BGY,"Rwenzururu, Uganda*"
+BGY,"Rwenzururu*,"Uganda"
 WGR,"Bulgaria"
-WGB,"Labrador, Canada
-WGW,"Groningen, Netherlands"
+WGB,"Labrador","Canada"
+WGW,"Groningen","Netherlands"
 WGK
-WGY,"Huila, Colombia"
+WGY,"Huila","Colombia"
 KGR
 KGB
 KGW
 KGK
-KGY,"Saxe-Weimar-Eisenach, Germany (1813-97)"
+KGY,"Saxe-Weimar-Eisenach (1813-97)","Germany"
 YGR,"Lithuania"
-YGB,"Yekaterinburg, Russia*"
-YGW,"Františkovy Lázně, Czech Republic"
+YGB,"Yekaterinburg*","Russia"
+YGW,"Františkovy Lázně","Czech Republic"
 YGK
-YGY,"Võru, Estonia"
+YGY,"Võru","Estonia"
+
+RBR
+RBG
+RBW
+RBK
+RBY
+GBR
+GBG
+GBW
+GBK
+GBY
+WBR
+WBG
+WBW
+WBK
+WBY
+KBR
+KBG
+KBW
+KBK
+KBY
+YBR
+YBG
+YBW
+YBK
+YBY
+
+RKR,"Albania (civil ensign)"
+RKG,"Pan-Africanism"
+RKB,"Lord's Resistance Army",
+RKW
+RKY
+GKR
+GKG
+GKB
+GKW
+GKY
+BKR
+BKG,"Zanzibar (1964)"
+BKB
+BKW,"Estonia"
+BKY,"Placilla","Chile"
+WKR
+WKG,"Kadrina Parish","Estonia"
+WKB
+WKW,"Delft","Netherlands"
+WKY
+YKR,"Transcaucasian Federation (1918)"
+YKG
+YKB
+YKW
+YKY,"Herne*","Germany"
+
+RYR,"Karlsruhe","Germany"
+RYG,"Bolivia (civil variant)",,
+RYB,"Free State of Fiume (1920-24)",,
+RYW
+RYK
+GYR,"Ethiopia (1914-36)"
+GYG,"Cauca","Colombia"
+GYB,"Gabon"
+GYW
+GYK
+BYR,"Mecklenburg","Germany"
+BYG,"Sudan (1956-70)"
+BYB,"Silesian Voivodeship","Poland"
+BYW
+BYK,"Gelderland","Netherlands"
+WYR,"Hradec Králové","Czech Republic"
+WYG,"Guayanilla","Puerto Rico"
+WYB
+WYW
+WYK,"Perak","Malaysia"
+KYR
+KYG,"Bushmanland (1989)","South West Africa"
+KYB
+KYW,"Russia (1858-83)"
+KYK

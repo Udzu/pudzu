@@ -559,7 +559,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                fg="white", bg="black", xalign=0.5, yalign=0.5, padding=(0,0,0,0), 
                group_fg_colors=tuple(VegaPalette10), group_bg_colors=lambda _,c: c._replace(alpha=128), group_bg_patterns=None,
                group_border=2, group_padding=(0,0,0,0), group_rounded=True,
-               row_label=Ellipsis, col_label=Ellipsis, label_font=None, group_label=None, title=None):
+               row_label=Ellipsis, col_label=Ellipsis, corner_label=None, label_font=None, title=None):
     """Plot an image grid chart with optional Venn-like groupings.
     - data (pandas dataframe): table to base chart on
     - cell (datavalue,row,column->image/None): content of each grid cell [None]
@@ -578,6 +578,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
     - group_rounded (Boolean): round group edges [True]
     - row_label (row, rowvalues -> image/string): image or string for row labels; optionally a dict keyed by GridChartLabelPosition [row name]
     - col_label (col, colvalues -> image/string): image or string for column labels; optionally a dict keyed by GridChartLabelPosition [column name]
+    - corner_label (image): corner image to use in conjunction with row and column labels [None]
     - label_font (font): font to use for text labels [none]
     - title (image): image to use for title [none]
     Functional arguments don't need to accept all the arguments and can also be passed in as
@@ -734,12 +735,13 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                 euler_bgs[group_array[r][c]] = RGBA(max(euler.getcolors(euler.width * euler.height))[1])
 
     for rlabel_pos, rlabel_fn in rlabel_dict.items():
+        row_n = 0 if rlabel_pos == GridChartLabelPosition.LEFT else 2
         for r, row in enumerate(data.values):
             label = rlabel_fn(r, list(row))
             if isinstance(label, str):
                 label = Image.from_text(label, label_font, fg=fg, bg=bg, padding=(10,0)) if label_font else None
             if label is not None:
-                label = label.pad(padding, bg=bg)
+                label = Image.new("RGBA", (label.width+padding.x, img_heights[r]), tbg).place(label, align=(xalign[row_n],yalign[1]))
             if groups:
                 empty_label = label and Rectangle(label.size, tbg)
             if rlabel_pos == GridChartLabelPosition.LEFT:
@@ -750,14 +752,21 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
                 if groups: euler_array[r].append(empty_label)
             
     for clabel_pos, clabel_fn in clabel_dict.items():
-        col_labels = [None] * int(GridChartLabelPosition.LEFT in rlabel_dict)
+        col_labels = []
+        col_n = 0 if clabel_pos == GridChartLabelPosition.TOP else 2
         for c, col in enumerate(data.values.transpose()):
             label = clabel_fn(c, list(col))
             if isinstance(label, str):
                 label = Image.from_text(label, label_font, fg=fg, bg=bg, padding=(0,10)) if label_font else None
             if label is not None:
-                label = label.pad(padding, bg=bg)
+                label = Image.new("RGBA", (img_widths[c], label.height+padding.y), tbg).place(label, align=(xalign[1],yalign[col_n]))
             col_labels.append(label)
+            
+        if GridChartLabelPosition.LEFT in rlabel_dict:
+            col_labels.insert(0, corner_label)
+        else: 
+            col_labels.append(corner_label)
+        
         if groups: 
             empty_labels = [ label and Rectangle(label.size, tbg) for label in col_labels ]
         if clabel_pos == GridChartLabelPosition.TOP:
@@ -766,6 +775,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
         else:
             img_array.append(col_labels)
             if groups: euler_array.append(empty_labels)
+            
 
     xaligns = [xalign[1]] * len(img_array[0])
     if GridChartLabelPosition.LEFT in rlabel_dict: xaligns[0] = xalign[0]
@@ -773,6 +783,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
     yaligns = [yalign[1]] * len(img_array)
     if GridChartLabelPosition.TOP in clabel_dict: yaligns[0] = yalign[0]
     if GridChartLabelPosition.BOTTOM in clabel_dict: yaligns[-1] = yalign[-1]
+    
     chart = Image.from_array(img_array, xalign=xaligns, yalign=yaligns, bg=tbg)
     
     if groups: 

@@ -37,4 +37,8 @@ def grid(middle):
     return grid
 
 grids = list(generate_batches([grid(c) for c in "WRGBKY"], 3))
-img = Image.from_array(grids, padding=5, bg=bg)
+grid = Image.from_array(grids, padding=5, bg=bg)
+title = Image.from_text("A compendium of horizontal triband flags".upper(), FONT(240, bold=True), fg=fg, bg=bg).pad(40, bg)
+img = Image.from_column([title, grid], bg=bg, padding=(20,0))
+img.place(Image.from_text("/u/Udzu", FONT(24), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=5, copy=False)
+img.save("output/flagstriband.png")

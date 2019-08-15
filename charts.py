@@ -578,7 +578,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
     - group_rounded (Boolean): round group edges [True]
     - row_label (row, rowvalues -> image/string): image or string for row labels; optionally a dict keyed by GridChartLabelPosition [row name]
     - col_label (col, colvalues -> image/string): image or string for column labels; optionally a dict keyed by GridChartLabelPosition [column name]
-    - corner_label (image): corner image to use in conjunction with row and column labels [None]
+    - corner_label (image): corner image to use in conjunction with row and column labels (currently used in all relevant corners) [None]
     - label_font (font): font to use for text labels [none]
     - title (image): image to use for title [none]
     Functional arguments don't need to accept all the arguments and can also be passed in as
@@ -741,7 +741,7 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
             if isinstance(label, str):
                 label = Image.from_text(label, label_font, fg=fg, bg=bg, padding=(10,0)) if label_font else None
             if label is not None:
-                label = Image.new("RGBA", (label.width+padding.x, img_heights[r]), tbg).place(label, align=(xalign[row_n],yalign[1]))
+                label = Image.new("RGBA", (label.width+padding.x, max(label.height+padding.y,img_heights[r])), tbg).place(label, align=(xalign[row_n],yalign[1]))
             if groups:
                 empty_label = label and Rectangle(label.size, tbg)
             if rlabel_pos == GridChartLabelPosition.LEFT:
@@ -759,12 +759,12 @@ def grid_chart(data, cell=lambda v: str(v), group=None,
             if isinstance(label, str):
                 label = Image.from_text(label, label_font, fg=fg, bg=bg, padding=(0,10)) if label_font else None
             if label is not None:
-                label = Image.new("RGBA", (img_widths[c], label.height+padding.y), tbg).place(label, align=(xalign[1],yalign[col_n]))
+                label = Image.new("RGBA", (max(label.width+padding.x,img_widths[c]), label.height+padding.y), tbg).place(label, align=(xalign[1],yalign[col_n]))
             col_labels.append(label)
             
         if GridChartLabelPosition.LEFT in rlabel_dict:
             col_labels.insert(0, corner_label)
-        else: 
+        if GridChartLabelPosition.RIGHT in rlabel_dict:
             col_labels.append(corner_label)
         
         if groups: 

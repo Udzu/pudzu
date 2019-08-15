@@ -13,7 +13,7 @@ def label(c, size):
     w, h = size
     label = Image.from_text_bounded(" ", (W,H), SIZE, partial(FONT, bold=True), beard_line=True)
     description = Image.from_text_bounded(" ", (W,H), SIZE, partial(FONT, italics=True), beard_line=True)
-    flag = Rectangle((w-2, h-2), RGBA(COLORS.get(c)).blend(bg, 0.25)).pad(1, "grey") # TODO: orange
+    flag = Rectangle((w-2, h-2), RGBA(COLORS.get(c)).blend(bg, 0.1)).pad(1, "grey") # TODO: orange
     return Image.from_column([label, description, flag], padding=2, bg=bg)
     
 def process(d):
@@ -36,9 +36,9 @@ def grid(middle):
                       row_label=lambda row: label(data.index[row], (100, H)), col_label=lambda col: label(data.columns[col], (W,100)), corner_label=label(middle, (100,100)))
     return grid
 
-grids = list(generate_batches([grid(c) for c in "WRGBKY"], 3))
-grid = Image.from_array(grids, padding=20, bg=bg)
-title = Image.from_text("A compendium of horizontal triband flags".upper(), FONT(240, bold=True), fg=fg, bg=bg).pad(40, bg)
+grids = list(generate_batches([grid(c) for c in "WRGBKY"], 2))
+grid = Image.from_array(grids, padding=60, bg=bg)
+title = Image.from_text_bounded("A compendium of horizontal triband flags".upper(), grid.size, 240, partial(FONT, bold=True), fg=fg, bg=bg, padding=40)
 img = Image.from_column([title, grid], bg=bg, padding=(20,0))
 img.place(Image.from_text("/u/Udzu", FONT(24), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=5, copy=False)
 img.save("output/flagstriband.png")

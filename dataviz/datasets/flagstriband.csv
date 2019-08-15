@@ -27,29 +27,29 @@ YWY,
 
 GRG,
 GRB,
-GRW,"Heligoland","Germany"
+GRW,"Heligoland","Germany",https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Flag_of_Helgoland.svg/1024px-Flag_of_Helgoland.svg.png
 GRK,
-GRY,"Żarów","Poland"
-BRG,"Azerbaijan*"
-BRB,"Cambodia*"
+GRY,"Żarów","Poland",https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/POL_%C5%BBar%C3%B3w_flag.svg/1024px-POL_%C5%BBar%C3%B3w_flag.svg.png
+BRG,"Azerbaijan*",,https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Azerbaijan.svg/1024px-Flag_of_Azerbaijan.svg.png
+BRB,"Cambodia*",,https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_Cambodia.svg/1024px-Flag_of_Cambodia.svg.png
 BRW,
 BRK,
-BRY,"Galicia (1849-90)","Austrian Empire"
-WRG,"Żmigród","Poland"
-WRB,"Schaumburg-Lippe (1880-1935)","Germany"
-WRW,"Belarus (1918, 1991-95)"
+BRY,"Galicia and Lodomeria (1849-90)","Austrian Empire",https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Galicia_and_Lodomeria_%281849-1890%29.svg/1024px-Flag_of_Galicia_and_Lodomeria_%281849-1890%29.svg.png
+WRG,"Żmigród","Poland",https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/POL_%C5%BBmigr%C3%B3d_flag.svg/1024px-POL_%C5%BBmigr%C3%B3d_flag.svg.png
+WRB,"Schaumburg-Lippe (1880-1935)","Germany",https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flagge_F%C3%BCrstentum_Schaumburg-Lippe.svg/1024px-Flagge_F%C3%BCrstentum_Schaumburg-Lippe.svg.png
+WRW,"Belarus (1918, 1991-95)",,https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Flag_of_Belarus_%281918%2C_1991%E2%80%931995%29.svg/1024px-Flag_of_Belarus_%281918%2C_1991%E2%80%931995%29.svg.png
 WRK,
-WRY,"South Ossetia"
-KRG,"Malawi*"
-KRB,"East Frisia","Germany"
+WRY,"South Ossetia",,https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Flag_of_South_Ossetia.svg/1024px-Flag_of_South_Ossetia.svg.png
+KRG,"Malawi*",,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Flag_of_Malawi.svg/1024px-Flag_of_Malawi.svg.png
+KRB,"East Frisia","Germany",https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Flag_of_East_Frisia.svg/1024px-Flag_of_East_Frisia.svg.png
 KRW,
 KRK,
-KRY,"Germany"
-YRG,"Bilzen","Belgium"
-YRB,"North Holland","Netherlands"
-YRW,"Carinthia","Austria"
+KRY,"Germany",,https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/1024px-Flag_of_Germany.svg.png
+YRG,"Bilzen","Belgium",https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Flag_of_Bilzen.svg/1024px-Flag_of_Bilzen.svg.png
+YRB,"North Holland","Netherlands",https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Flag_of_North_Holland.svg/1024px-Flag_of_North_Holland.svg.png
+YRW,"Carinthia","Austria",https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Flag_of_Carinthia.svg/1024px-Flag_of_Carinthia.svg.png
 YRK,
-YRY,"Baden(1806-1952)","Germany"
+YRY,"Baden(1806-1952)","Germany",https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Flagge_Gro%C3%9Fherzogtum_Baden_%281891%E2%80%931918%29.svg/1024px-Flagge_Gro%C3%9Fherzogtum_Baden_%281891%E2%80%931918%29.svg.png
 
 RGR,"Tungurahua","Ecuador"
 RGB,

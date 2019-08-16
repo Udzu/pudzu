@@ -36,7 +36,7 @@ def grid(middle):
                       row_label=lambda row: label(data.index[row], (100, H)), col_label=lambda col: label(data.columns[col], (W,100)), corner_label=label(middle, (100,100)))
     return grid
 
-grids = list(generate_batches([grid(c) for c in "WRGBKY"], 2))
+grids = list(generate_batches([grid(c) for c in COLORS], 3))
 grid = Image.from_array(grids, padding=60, bg=bg)
 title = Image.from_text_bounded("A compendium of horizontal triband flags".upper(), grid.size, 240, partial(FONT, bold=True), fg=fg, bg=bg, padding=40)
 img = Image.from_column([title, grid], bg=bg, padding=(20,0))

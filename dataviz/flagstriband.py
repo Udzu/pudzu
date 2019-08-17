@@ -9,11 +9,18 @@ default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b063
 COLORS = { "W": "white", "Y": "yellow", "R": "red", "G": "green", "B": "blue", "K": "black", }
 W, H = 320, 200
 
+# Estonian Students' Society (not KBW)
+# Club Atlético Nueva Chicago (not KGK)
+# Puntland flag proposal (RBK)
+
 def label(c, size):
     w, h = size
     label = Image.from_text_bounded(" ", (W,H), SIZE, partial(FONT, bold=True), beard_line=True)
     description = Image.from_text_bounded(" ", (W,H), SIZE, partial(FONT, italics=True), beard_line=True)
-    flag = Rectangle((w-2, h-2), RGBA(COLORS.get(c)).blend(bg, 0.1)).pad(1, "grey") # TODO: orange
+    if c == "Y":
+        flag = Triangle(max(w,h), "orange", "yellow", p=1.0).crop_to_aspect(w,h).trim(1).pad(1, "grey")
+    else:
+        flag = Rectangle((w-2, h-2), RGBA(COLORS.get(c)).blend(bg, 0.1)).pad(1, "grey")
     return Image.from_column([label, description, flag], padding=2, bg=bg)
     
 def process(d):
@@ -36,17 +43,16 @@ def grid(middle):
                       row_label=lambda row: label(data.index[row], (100, H)), col_label=lambda col: label(data.columns[col], (W,100)), corner_label=label(middle, (100,100)))
     return grid
 
-grids = list(generate_batches([grid(c) for c in COLORS], 3))
-grid = Image.from_array(grids, padding=60, bg=bg)
+PAD = 100
+
+grids = list(generate_batches([grid(c) for c in COLORS], 2))
+grid = Image.from_array(grids, padding=(PAD,PAD//2), bg=bg)
 
 title = Image.from_column([
-    Image.from_text_bounded("From Austria to Zanzibar".upper(), grid.size, 360, partial(FONT, bold=True), fg=fg, bg=bg, padding=10),
-    Image.from_text_bounded("a color catalog of horizontal tribands".upper(), grid.size, 240, partial(FONT, bold=True), fg=fg, bg=bg, padding=10),
-    ], padding=5)
-img = Image.from_column([title, grid], bg=bg, padding=(20,0))
-img.place(Image.from_text("/u/Udzu", FONT(24), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=5, copy=False)
+    Image.from_text_bounded("From Austria to Zanzibar".upper(), grid.size, 360, partial(FONT, bold=True), fg=fg, bg=bg, padding=(PAD,20)),
+    Image.from_text_bounded("a catalog of horizontal triband flags".upper(), grid.size, 240, partial(FONT, bold=True), fg=fg, bg=bg, padding=(PAD,20)),
+    ], padding=0)
+img = Image.from_column([title, grid], bg=bg, padding=(20,0)).pad(10, bg)
+img.place(Image.from_text("/u/Udzu", FONT(48), fg=fg, bg=bg, padding=10).pad((2,2,0,0), fg), align=1, padding=10, copy=False)
 img.save("output/flagstriband.png")
-
-# Estonian Students' Society (not KBW)
-# Club Atlético Nueva Chicago (not KGK)
-# Puntland flag proposal (RBK)
+img.resize_fixed_aspect(scale=0.5).save("output/flagstriband2.png")

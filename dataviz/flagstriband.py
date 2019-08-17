@@ -6,7 +6,7 @@ df = pd.concat([pd.DataFrame(df.colours.apply(list).tolist(), columns=list("TMB"
 FONT, SIZE = calibri, 24
 fg, bg = "black", "#EEEEEE"
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
-COLORS = { "R": "red", "G": "green", "B": "blue", "K": "black", "W": "white", "Y": "yellow" }
+COLORS = { "W": "white", "Y": "yellow", "R": "red", "G": "green", "B": "blue", "K": "black", }
 W, H = 320, 200
 
 def label(c, size):
@@ -38,7 +38,15 @@ def grid(middle):
 
 grids = list(generate_batches([grid(c) for c in COLORS], 3))
 grid = Image.from_array(grids, padding=60, bg=bg)
-title = Image.from_text_bounded("A compendium of horizontal triband flags".upper(), grid.size, 240, partial(FONT, bold=True), fg=fg, bg=bg, padding=40)
+
+title = Image.from_column([
+    Image.from_text_bounded("From Austria to Zanzibar".upper(), grid.size, 360, partial(FONT, bold=True), fg=fg, bg=bg, padding=10),
+    Image.from_text_bounded("a color catalog of horizontal tribands".upper(), grid.size, 240, partial(FONT, bold=True), fg=fg, bg=bg, padding=10),
+    ], padding=5)
 img = Image.from_column([title, grid], bg=bg, padding=(20,0))
 img.place(Image.from_text("/u/Udzu", FONT(24), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=5, copy=False)
 img.save("output/flagstriband.png")
+
+# Estonian Students' Society (not KBW)
+# Club Atlético Nueva Chicago (not KGK)
+# Puntland flag proposal (RBK)

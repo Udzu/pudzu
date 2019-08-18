@@ -9,10 +9,6 @@ default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b063
 COLORS = { "W": "white", "Y": "yellow", "R": "red", "G": "green", "B": "blue", "K": "black", }
 W, H = 320, 200
 
-# Estonian Students' Society (not KBW)
-# Club Atlético Nueva Chicago (not KGK)
-# Puntland flag proposal (RBK)
-
 def label(c, size):
     w, h = size
     label = Image.from_text_bounded(" ", (W,H), SIZE, partial(FONT, bold=True), beard_line=True)
@@ -37,7 +33,7 @@ def process(d):
 def grid(middle):
     ms = df[df.M == middle]
     colors = "".join(COLORS).replace(middle,"")
-    array = [[dict(ms.loc[t+middle+b][["name", "description", "flag"]]) for b in colors] for t in colors]
+    array = [[dict(ms.loc[b+middle+t][["name", "description", "flag"]]) for b in colors] for t in colors]
     data = pd.DataFrame(array, index=list(colors), columns=list(colors))
     grid = grid_chart(data, process, padding=(10,20), fg=fg, bg=bg, yalign=1,
                       row_label=lambda row: label(data.index[row], (100, H)), col_label=lambda col: label(data.columns[col], (W,100)), corner_label=label(middle, (100,100)))

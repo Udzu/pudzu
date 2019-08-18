@@ -723,7 +723,13 @@ class _Image(Image.Image):
     def from_markup_bounded(cls, text, box_size, max_font_size, font_fn, *args, min_font_size=6, **kwargs):
         """Create image from markup, reducing the font size until it fits. Inefficient."""
         return cls.generate_bounded(box_size, range(max_font_size, min_font_size-1, -1), lambda size: cls.from_markup(text, font_fn(size), *args, **kwargs))
-        
+
+    @classmethod
+    def from_text_justified(cls, text, width, max_font_size, font_fn, *args, bg=None, padding=0, line_spacing=0, **kwargs):
+        """Create image from multiple lines of text, fitting each line in the given width. Inefficient."""
+        return cls.from_column([cls.from_text_bounded(line, (width, max_font_size * 10), max_font_size, font_fn, *args, bg=bg, **kwargs) for line in text.split("\n")],
+                               bg=bg, padding=line_spacing).pad(padding, bg=bg)
+    
     def to_rgba(self):
         """Return an RGBA copy of the image (or leave unchanged if it already is)."""
         return self if self.mode == "RGBA" else self.convert("RGBA")
@@ -993,6 +999,7 @@ Image.from_url_with_cache = _Image.from_url_with_cache
 Image.generate_bounded = _Image.generate_bounded
 Image.from_text_bounded = _Image.from_text_bounded
 Image.from_markup_bounded = _Image.from_markup_bounded
+Image.from_text_justified = _Image.from_text_justified
 Image.EMPTY_IMAGE = Image.new("RGBA", (0,0))
 
 Image.Image.to_rgba = _Image.to_rgba

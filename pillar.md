@@ -275,6 +275,14 @@ RGBA(red=187, green=188, blue=0, alpha=255)
 
 ![alt](images/fromtextbounded.png)
 
+**Image.from_text_justified**: like from_text_bounded, but generates each line of text separately to fit in the given width.
+
+```python
+>> Image.from_text_justified("The rain in Spain stays mainly in\nthe plain", 200, 100, arial, fg="white", bg="#1f5774", padding=10).show()
+```
+
+![alt](images/fromtextjustified.png)
+
 **Image.from_array**: create an image from an array of images. Similarly, **Image.from_row** and **Image.from_column** create images form a list of images.
 
 ```python
@@ -366,7 +374,7 @@ RGBA(red=187, green=188, blue=0, alpha=255)
 
 ![alt](images/pin2.png)
 
-**Image.Image.pad**: pad an image.
+**Image.Image.pad**: pad an image. Similarly, **Image.Image.trim** trims an image.
 
 ```python
 >> base.pad(5, "grey").show()

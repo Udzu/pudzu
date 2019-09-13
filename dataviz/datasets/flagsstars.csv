@@ -1,0 +1,28 @@
+group,name,description,image
+countries,Burundi,,https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Flag_of_Burundi.svg/1024px-Flag_of_Burundi.svg.png
+countries,Israel,,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Flag_of_Israel.svg/1024px-Flag_of_Israel.svg.png
+countries,Croatia,,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Croatia.svg/1024px-Flag_of_Croatia.svg.png
+countries,Slovenia,,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Flag_of_Slovenia.svg/1024px-Flag_of_Slovenia.svg.png
+_countries,Equatorial Guinea,,https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Equatorial_Guinea.svg/1024px-Flag_of_Equatorial_Guinea.svg.png
+_countries,Nigeria,(1914-52),https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Flag_of_Nigeria_%281914%E2%80%931952%29.svg/1024px-Flag_of_Nigeria_%281914%E2%80%931952%29.svg.png
+_countries,Paraguay,(1826-42),https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Flag_of_Paraguay_%281826-1842%29.svg/1024px-Flag_of_Paraguay_%281826-1842%29.svg.png
+_countries,Republic of the Rif,(1921-26),https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Flag_of_the_Republic_of_the_Rif.svg/1024px-Flag_of_the_Republic_of_the_Rif.svg.png
+
+regions,Bonaire,Caribbean Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Flag_of_Bonaire.svg/1024px-Flag_of_Bonaire.svg.png
+regions,Liguria,Italy,https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_Liguria.svg/1024px-Flag_of_Liguria.svg.png
+regions,Northern Territory,Australia,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_the_Northern_Territory.svg/1024px-Flag_of_the_Northern_Territory.svg.png
+regions,Salta Province,Argentina,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Bandera_de_la_Provincia_de_Salta.svg/1024px-Bandera_de_la_Provincia_de_Salta.svg.png
+
+_regions,Tavastia Proper,Finland,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Tavastia_Proper.svg/1024px-Flag_of_Tavastia_Proper.svg.png
+_regions,Northern Ireland,United Kingdom (1920-72),https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Ulster_Banner.svg/1024px-Ulster_Banner.svg.png
+_regions,Federation of BiH,BiH (1996-2007),https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_the_Federation_of_Bosnia_and_Herzegovina_%281996%E2%80%932007%29.svg/1024px-Flag_of_the_Federation_of_Bosnia_and_Herzegovina_%281996%E2%80%932007%29.svg.png
+_regions,Nagaland,India (unofficial flag),https://www.crwflags.com/fotw/images/i/in-nl.gif
+
+towns,Chicago,USA,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Flag_of_Chicago%2C_Illinois.svg/1024px-Flag_of_Chicago%2C_Illinois.svg.png
+towns,Haarlem,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Flag_Haarlem.svg/1024px-Flag_Haarlem.svg.png
+towns,Halle,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Flag_of_Halle_%28Saale%29.svg/1024px-Flag_of_Halle_%28Saale%29.svg.png
+towns,Tulsa,USA,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Tulsa%2C_Oklahoma_%282018%E2%80%93present%29.svg/1024px-Flag_of_Tulsa%2C_Oklahoma_%282018%E2%80%93present%29.svg.png
+_towns,Areia,Brazil,https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Bandeiraareia.png/1024px-Bandeiraareia.png
+_towns,Oldambt,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Oldambt_vlag.svg/1024px-Oldambt_vlag.svg.png
+_towns,Villores,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Bandera_de_Villores.svg/1024px-Bandera_de_Villores.svg.png
+_towns,"Washington, NY",USA,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Flag_of_Washington%2C_New_York.svg/1024px-Flag_of_Washington%2C_New_York.svg.png

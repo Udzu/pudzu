@@ -6,8 +6,8 @@ from pudzu.pillar import *
 from pudzu.dates import *
 from pudzu.bamboo import *
 
-# FONT = partial(font, "/usr/share/fonts/truetype/freefont/FreeSans")
-FONT = arial
+FONT = partial(font, "/usr/share/fonts/truetype/freefont/FreeSans")
+# FONT = arial
 W1, W2 = 100, 420
 PALETTE = {"b": VegaPalette10.RED, "n": VegaPalette10.ORANGE, "c": VegaPalette10.GREEN, "w": VegaPalette10.BLUE, "j": VegaPalette10.BROWN }
 bg, fg = RGBA("white"), RGBA("black")
@@ -38,7 +38,7 @@ def make_row(r: pd.Series):
 
 rows = [make_row(r) for _, r in tqdm.tqdm(df.iterrows())]
 
-
+# TODO: fix and remerge
 def generate_subsequences(iterable, start_if, end_if):
     """Generator that returns subsequences based on start and end condition functions. Both functions get passed the current element, while the end function optionally gets passed the current subsequence too."""
     sourceiter = iter(iterable)
@@ -64,7 +64,7 @@ grid = Image.from_row(columns, yalign=0, bg="white")
 
 title = Image.from_text_justified("A guide for dating European maps published after 1900".upper(), grid.width, 80, partial(FONT, bold=True), bg="white", padding=20)
 
-legend = Image.from_multitext(["Change to: ", "country border", " / ", "country name", " / ", "city name", " / ", "body of water", " / ", "bridge",
+legend = Image.from_multitext(["Changes to: ", "country border", " / ", "country name", " / ", "city name", " / ", "body of water", " / ", "bridge",
                                "             Change is: ", "major change", " / ", "limited recognition", " / ", "outside Europe"],
                               [FONT(24), FONT(24), FONT(24), FONT(24), FONT(24), FONT(24), FONT(24), FONT(24), FONT(24), FONT(24),
                                FONT(24), FONT(24, bold=True), FONT(24), FONT(24, italics=True), FONT(24), FONT(24)],
@@ -73,7 +73,7 @@ legend = Image.from_multitext(["Change to: ", "country border", " / ", "country 
                               [bg, bg, bg, bg, bg, bg, bg, bg, bg, bg,
                                bg, "#FFFF80", bg, bg, bg, "#CCCCCC"], beard_line=True).pad(20, "white")
 
-subtitle = Image.from_markup("based on a list produced by Sasha Trubetskoy ([[@sasha_trub]]); maps are from 'History of Europe: Every Year' YouTube video by Cottereau", partial(FONT, 24), bg="white", padding=(0,0,0,20))
+subtitle = Image.from_markup("based on a list produced by Sasha Trubetskoy ([[@sasha_trub]]); maps are from [[History of Europe: Every Year]] YouTube video by Cottereau", partial(FONT, 24), bg="white", padding=(0,0,0,20))
 
 img = Image.from_column([title, grid, legend, subtitle], bg="white").pad((20,0), bg="white")
 img.place(Image.from_text("/u/Udzu", FONT(24), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=5, copy=False)

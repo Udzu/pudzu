@@ -26,6 +26,7 @@ bL,1992 Apr 07,Republika Srpska declares independence from Bosnia and Herzegovni
 bM,1992 Apr 06,Bosnia and Herzegovnia internationally recognised
 c,1992 Apr 02,"Titograd, Yugoslavia renamed Podgorica"
 bL,1992 Mar 03,Bosnia and Herzegovnia declares independence from Yugoslavia
+bL,1992 Jul 21,Transnistria becomes de facto independent from Moldova
 bM,1992 Jan 15,Slovenia and Croatia internationally recognised
 bM,1991 Dec 26,Dissolution of USSR into constituent republics
 c,1991 Sep 23,"Zagorsk, Russia renamed Sergiyev Posad"
@@ -36,6 +37,7 @@ cM,1991 Sep 06,"Leningrad, Russia renamed Saint Petersburg"
 c,1991 Sep 04,"Sverdlovsk, Russia renamed Yekaterinburg"
 bL,1991 Sep 02,Nagorno-Karabakh declares independence from Azerbaijan
 bL,1991 Aug 30,Azerbaijan delcares independence from USSR
+bL,1991 Aug 24,Ukraine declares independence from USSR
 bL,1991 Aug 20,Estonia declares independence from USSR
 bL,1991 Jun 25,Slovenia and Croatia declare independence from Yugoslavia
 bL,1991 Apr 09,Georgia declares independence from USSR
@@ -94,7 +96,7 @@ c,1957 Oct 30,"Scherbakov, Russia renamed to Rybinsk"
 c,1957 Oct 02,"Molotov, Russia renamed to Perm"
 w,1957 Jun 29,Eastern Flevoland polder drained in the Netherlands
 w,1957 May,"Kuybyshev Reservoir, Russia completely filled"
-bM,1957 Jan 01,Saar Protectorate rejoins West Germany
+b,1957 Jan 01,Saar Protectorate rejoins West Germany
 c,1956 Dec 10,"Stalinogród, Poland renamed Katowice"
 bO,1956 Oct 29,Tangier International Zone incorporated into Morocco
 c,1956 Oct 20,"Stalin, Bulgaria renamed Varna"
@@ -102,7 +104,7 @@ w,1956,"Kakhovka Reservoir, Ukraine completely filled"
 bO,1956 Apr 07,"Morocco becomes indepdent from France, incorporates Spanish territory"
 nO,1956 Mar 20,Tunisia becomes independent from France
 b,1956 Jan 26,Porkkala Naval Base returned to Finland by USSR
-bM,1955 Jul 27,"Austria regains sovereignty, Allied occupation ended"
+b,1955 Jul 27,"Austria regains sovereignty, Allied occupation ended"
 b,1954 Oct 05,Free Territory of Triste de facto split between Italy and Yugoslavia
 c,1954 Jun,"Kardeljevo, Yugoslavia renamed Ploče"
 c,1954 Feb 24,"Dzaudzhikau, Russia renamed Ordzhonikidze"
@@ -120,10 +122,10 @@ c,1950 Jan 29,"Shumen, Bulgaria renamed Kolarovgrad"
 c,1949 Dec 20,"Varna, Bulgaria renamed Stalin"
 bL,1949 Oct 07,East Germany declares independence
 n,1949 Apr 18,Ireland renamed Republic of Ireland
-n,1949 May 23,West Germany regains sovereignty
+b,1949 May 23,West Germany regains sovereignty
 c,1948 Oct 22,"Mariupol,  Ukraine renamed Zhdanov"
 c,1948 Jul 25,"Podgorica, Yugoslavia renamed Titograd"
-bM,1947 Dec 15,Saar Protectorate established
+b,1947 Dec 15,Saar Protectorate established
 bM,1947 Sep 15,"Dodecanese, Adriatic Islands and Istria ceded by Italy to Yugoslavia and Greece; Free Territory of Trieste established"
 w,1947,"Rybinsk Reservoir, Russia completely filled"
 c,1946 Sep 13,"Rybinsk, Russia renamed Shcherbakov"
@@ -175,7 +177,7 @@ n,1937 Dec 29,Irish Free State becomes Ireland/Éire
 c,1936 Aug 17,"Erivan, Armenia renamed Yerevan"
 c,1935 Nov 05,"Lugansk, Ukraine renamed Voroshilovgrad"
 c,1935 May 05,"Stavropol, Russia renamed Voroshilovsk"
-bM,1935 Mar 01,Saar Basin returned to Germany
+b,1935 Mar 01,Saar Basin returned to Germany
 c,1935 Jan 27,"Samara, Russia renamed to Kuybyshev"
 c,1934 Dec 27,Zinovyevsk renamed to Kirovo
 bO,1934 Jan 01,Italian Cyrenaica and Tripolitania merged into Libya
@@ -209,7 +211,7 @@ c,1924 Apr 22,"Yuzovka, Ukraine renamed Stalino"
 b,1924 Feb 22,Italy annexes Free State of Fiume (bar Sušak)
 cM,1924 Jan 26,"Petrograd, Russia renamed Leningrad"
 n,1924,USSR recognized by most European countries
-bM,1923 Oct 29,"Republic of Turkey declares independence, with Ankara as its capital"
+bM,1923 Oct 29,"Republic of Turkey declared, with Ankara as its capital"
 bM,1923 Jul 24,Turkey gains Eastern Thrace and Ionia; Italy annexes Dodecanese Islands
 bM,1923 Mar 15,Polish-Soviet border recognised internationally
 b,1923 Jan 09,Memel Territory occupied by Lithuania
@@ -224,6 +226,7 @@ c,1920 Dec 07,"Yekaterinodar, Russia renamed to Krasnodar"
 n,1920 Dec 02,Armenian Soviet Socialist Republic proclaimed
 b,1920 Nov 15,Free City of Danzig estalished
 b,1920 Nov 12,Free State of Fiume established
+b,1920 Sep 20,Belgium annexes Eupen-Malmedy
 bM,1920 Aug 10,Ottoman Empire cedes Eastern Thrace and Ionia to Greece
 bM,1920 Jun 15,Northern Schleswig transferred to Denmark
 bM,1920 Jun 04,Hungary officially cedes lost territory as well as rest of Transylvania and Carpathian Ruthenia
@@ -234,7 +237,7 @@ n,1920 Feb 09,Spitsbergen becomes Norwegian
 b,1920 Jan 10,"Saar Basin established, Neutral Morenset annexed by Belgium"
 bM,1919 Sep 10,"Austrian Republic declared, cedes Sudetenland, South Tyrol, and other territories"
 cO,1919 Jul 17,"Ashgabat, Turkmenistan renamed Poltoratsk"
-bM,1919 Jun 28,"Germany cedes Alsace-Lorraine, Polish corridor, and other territories"
+bM,1919 Jun 28,"Germany cedes Alsace-Lorraine, the Polish corridor, and other territories"
 c,1919 Feb 17,"Tsaryovokokshaysk, Russia renamed Krasnokokshaysk"
 bM,1918 Dec 01,Union of Transylvania with Romania
 n,1918 Dec 01,Iceland renamed the Kingdom of Iceland
@@ -253,13 +256,14 @@ bL,1918 May 28,"Georgia, Armenia and Azerbaijan declare independence"
 cL,1918 Mar 12,Russia's capital moves from Petrograd to Moscow
 bL,1918 Feb,Lithuania and Estonia declare independence from Russia
 bL,1918 Jan 22,Ukrainian People's Republic declares independence from Russia
-bM,1917 Dec 06,Finland declares independence from Russia
+b,1917 Dec 06,Finland declares independence from Russia
 b,1915 Sep 06,Ottoman Empire cedes Didymoteicho to Bulgaria
 n,1914 Nov 14,Cyprus (already under de facto rule) annexed by the UK
 cM,1914 Sep 01,"Saint Petersburg, Russia renamed Petrograd"
 c,1914 Mar 07,Albanian capital moves from Vlorë to Durrës
-bM,1913 Dec 01,Cretan State unifies with Greece
+b,1913 Dec 01,Cretan State (already under de facto rule) unifies with Greece
 bM,1913 Aug 10,"Bulgaria gains Western Thrace; Romania gains Southern Dobruja; Serbia gains Kosovo and North Macedonia; Greece gains South Macedonia"
+bM,1913 May 30,"Ottoman Empire cedes European territory"
 bM,1912 Nov 28,Albania declares independence from Ottoman Empire
 bO,1912 Nov 27,Spanish Morocco established
 bO,1912 Oct 18,Italian Cyrenaica and Tripolitania established in Libya
@@ -268,5 +272,5 @@ bO,1912 Mar 30,French Morocco established
 n,1910 Oct 05,Kingdom of Portugal becomes the Portuguese Republic
 n,1910 Aug 28,Principality of Montenegro becomes a Kingdom
 b,1908 Oct 06,Bosnia (already under de facto rule) is formally annexed by Austria-Hungary
-bM,1908 Aug 05,Bulgaria declares independence from Ottoman Empire
-b,1905 Jun 07,Norway secedes from the United Kingdom of Sweden and Norway
+b,1908 Aug 05,Bulgaria declares independence from Ottoman Empire
+b,1905 Jun 07,Norway secedes from the United Kingdoms of Sweden and Norway

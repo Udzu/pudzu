@@ -1050,9 +1050,21 @@ def font(name, size, bold=False, italics=False, **kwargs):
             continue
     raise OSError("Could not find TTF font: tried {}".format(", ".join(sorted(set("{}.ttf".format(n) for n in names)))))
 
-arial = partial(font, "arial")
-calibri = partial(font, "calibri")
-verdana = partial(font, "verdana")
+def font_family(*names):
+    """Return a font function supporting optional bold and italics parameters."""
+    for name in names:
+        try:
+            family = partial(font, name)
+            family(16)
+            return family
+        except OSError:
+            continue
+    return None
+
+arial = font_family("arial")
+calibri = font_family("calibri")
+verdana = font_family("verdana")
+sans = font_family("arial", "/usr/share/fonts/truetype/freefont/FreeSans")
 
 # Shapes
 

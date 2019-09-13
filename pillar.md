@@ -80,7 +80,7 @@ RGBPalette[2]
  RGBA(red=55, green=126, blue=184, alpha=255)]
 ```
 
-**font**: shorthand function for generating a truetype font object defaulting to standard variant naming (e.g. arialbd or calibrib). Also, **arial**, **calibri** and **verdana** are predefined.
+**font**: shorthand function for generating a truetype font object defaulting to standard variant naming (e.g. arialbd or calibrib).
 
 ```python
 >> font("times", 24, italics=True)
@@ -90,6 +90,14 @@ RGBPalette[2]
 >> arial(24, bold=True)
 <PIL.ImageFont.FreeTypeFont at 0x4a335f0>
 ```
+
+**font_family**: returns a partial font function for the first valid font name. Also, **sans**, **arial**, **calibri** and **verdana** are predefined.
+
+```python
+>> font_family("voodoo", "arial")
+functools.partial(<function font at 0x7f031c193510>, 'arial')
+```
+
 
 ### Colormap generators
 

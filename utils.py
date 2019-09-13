@@ -418,14 +418,22 @@ def filter_proportion(iterable, proportion):
 def generate_subsequences(iterable, start_if, end_if):
     """Generator that returns subsequences based on start and end condition functions. Both functions get passed the current element, while the end function optionally gets passed the current subsequence too."""
     sourceiter = iter(iterable)
-    start = next(x for x in sourceiter if start_if(x))
-    while True:
-        x, subseq = next(sourceiter), [start]
-        while not ignoring_extra_args(end_if)(x, subseq):
-            subseq.append(x)
-            x = next(sourceiter)
-        yield subseq
-        start = x if start_if(x) else next(x for x in sourceiter if start_if(x))
+    try:
+        start = next(x for x in sourceiter if start_if(x))
+        while True:
+            subseq = [start]
+            try:
+                x = next(sourceiter)
+                while not ignoring_extra_args(end_if)(x, subseq):
+                    subseq.append(x)
+                    x = next(sourceiter)
+            except StopIteration:
+                yield subseq
+                return
+            yield subseq
+            start = x if start_if(x) else next(x for x in sourceiter if start_if(x))
+    except StopIteration:
+        pass
 
 def riffle_shuffle(iterable, n=2):
     """Generator that performs a perfect riffle shuffle on the input, using a given number of subdecks."""

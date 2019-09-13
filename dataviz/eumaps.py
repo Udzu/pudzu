@@ -6,8 +6,7 @@ from pudzu.pillar import *
 from pudzu.dates import *
 from pudzu.bamboo import *
 
-FONT = partial(font, "/usr/share/fonts/truetype/freefont/FreeSans")
-# FONT = arial
+FONT = sans
 W1, W2 = 100, 420
 PALETTE = {"b": VegaPalette10.RED, "n": VegaPalette10.ORANGE, "c": VegaPalette10.GREEN, "w": VegaPalette10.BLUE, "j": VegaPalette10.BROWN }
 bg, fg = RGBA("white"), RGBA("black")
@@ -37,25 +36,6 @@ def make_row(r: pd.Series):
     return row
 
 rows = [make_row(r) for _, r in tqdm.tqdm(df.iterrows())]
-
-# TODO: fix and remerge
-def generate_subsequences(iterable, start_if, end_if):
-    """Generator that returns subsequences based on start and end condition functions. Both functions get passed the current element, while the end function optionally gets passed the current subsequence too."""
-    sourceiter = iter(iterable)
-    start = next(x for x in sourceiter if start_if(x))
-    subseq = []
-    try:
-        while True:
-            x, subseq = next(sourceiter), [start]
-            while not ignoring_extra_args(end_if)(x, subseq):
-                subseq.append(x)
-                x = next(sourceiter)
-            yield subseq
-            start = x if start_if(x) else next(x for x in sourceiter if start_if(x))
-    except StopIteration:
-        yield subseq
-        return
-
 headers = [Image.open(n).crop_to_aspect(1.23, align=1).resize_fixed_aspect(width=W1+W2) for n in sorted(Path(".").glob("maps/eumaps/*"))]
 column_height = sum(i.height for i in rows) / len(headers)
 bare_columns = list(generate_subsequences(rows, lambda r: True, lambda r, rs: sum(i.height for i in rs) >= column_height-10))

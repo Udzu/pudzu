@@ -25,4 +25,4 @@ The packaged modules can be installed using `pip install pudzu` (for the latest 
 
 ## Copyright
 
-Copyright © 2017–18 by Udzu. Licensed under the [MIT License](LICENSE).
+Copyright © 2017–19 by Udzu. Licensed under the [MIT License](LICENSE).

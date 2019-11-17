@@ -7,7 +7,7 @@ countries = pd.read_csv("datasets/countries.csv").split_columns("country", "|").
 nobels = pd.read_csv("datasets/nobels.csv").split_columns("countries", "|")
 nobels = nobels.assign_rows(eu=lambda r: any(countries.continent.get(c) == 'Europe' for c in r.countries))
 nobels = nobels.assign_rows(us=lambda r: any(c == "US" for c in r.countries))
-nobels.loc[nobels.name=="Orhan Pamuk", "eu"] = True
+countries.loc["Turkey", "continent"] = "Europe"
 years = list(range(nobels.date.min(), nobels.date.max()+1))
 
 def calc_scores(filter):
@@ -61,7 +61,7 @@ results_text = ["{} v {} ({} ties)".format(d["eu"], d["us"], d["tie"]) for d in 
 legend2 = generate_legend([], [], font_family=partial(FONT, 16), header="Overall winners".upper(), footer=Image.from_array(
 [[Image.from_text(type, FONT(16)), Image.from_text(result, FONT(16, bold=True))] for type,result in zip(["All Prizes:", "w/o Economics:", "Science Prizes:"], results_text)], xalign=0, padding=4
 ), border=False)
-legend3 = Image.from_text("* based on winners' nationalities at or before the time of award; Russian winners are all counted as European, as is Orhan Pamuk, but not Aziz Sancar; dual nationals may be counted as both European and American.\n** the three winner columns correspond to: all the prizes; all the prizes apart from Economics; and only the science prizes.", FONT(12, italics=True), max_width=legend2.width, padding=4)
+legend3 = Image.from_text("* based on winners' nationalities at or before the time of award; Russian and Turkish winners are counted as European; dual nationals may be counted as both European and American.\n** the three winner columns correspond to: all the prizes; all the prizes apart from Economics; and only the science prizes.", FONT(12, italics=True), max_width=legend2.width, padding=4)
 legend = Image.from_column([legend1, legend2, legend3], xalign=0, bg="white").pad(1, "black")
 
 gridlegend = grid.place(legend, align=0, padding=(40,80))
@@ -70,5 +70,6 @@ title = Image.from_text_justified("Nobel Prize Ryder Cup".upper(), grid.width-60
 subtitle = Image.from_text_justified("US versus European* Nobel laureates per year", grid.width-60, 80, partial(FONT, bold=True), bg="white", padding=(0,5,0,5))
 
 img = Image.from_column([title, subtitle, gridlegend], bg="white")
+img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((0,1,1,0), "black"), align=(0,1), padding=10, copy=False)
 img.save("output/nobelsryder.png")
 

@@ -3,7 +3,7 @@ from pudzu.charts import *
 
 FONT, fg, bg = calibri, "white", "black"
 
-countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country')
+countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").explode('country').set_index('country')
 df = pd.read_csv("datasets/eustamps.csv")
 
 countries.flag["Zurich"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Flag_of_Canton_of_Z%C3%BCrich.svg/599px-Flag_of_Canton_of_Z%C3%BCrich.svg.png"

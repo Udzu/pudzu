@@ -3,7 +3,7 @@ from pudzu.bamboo import *
 from fractions import Fraction
 
 # data
-df = pd.read_csv("datasets/nobels.csv").split_columns('countries', '|').split_rows('countries').update_columns(jewish=Fraction)
+df = pd.read_csv("datasets/nobels.csv").split_columns('countries', '|').explode('countries').update_columns(jewish=Fraction)
 countries = sorted(c for c in set(df.countries) if len(df[df.countries == c]) >= 5)
 dj = pd.DataFrame([{ 'total': len(dc), 'jewish': len(dc[dc.jewish == 1]), 'half': len(dc[(dc.jewish < 1) & (dc.jewish >= 0.5)]) } for c in countries for dc in [df[df.countries == c]]], index=countries)
 do = df.filter_rows(lambda d: d['countries'] not in countries).groupby("name").head()
@@ -14,7 +14,7 @@ dj["rest"] = 400 - dj["total"]
 dj["pc"] = dj["jewish"] / dj["total"]
 
 # graphs
-flags = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index("country").flag
+flags = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index("country").flag
 flags["Other*"] = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_the_United_Nations.svg/1024px-Flag_of_the_United_Nations.svg.png'
 dem = pd.read_csv("datasets/demographics_jewish2.csv").set_index("country")
 

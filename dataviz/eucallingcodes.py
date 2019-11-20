@@ -3,7 +3,7 @@ from pudzu.bamboo import *
 import seaborn as sns
 
 # generate map
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country')
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')
 
 
 CATEGORIES = { 2: "Africa", 3: "Europe", 4: "Europe", 7: "Soviet Union", 9: "Asia"}

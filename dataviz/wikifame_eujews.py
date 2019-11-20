@@ -3,7 +3,7 @@ from pudzu.charts import *
 
 FONT, fg, bg = calibri, "white", "black"
 
-countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country')
+countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").explode('country').set_index('country')
 df = pd.read_csv("datasets/eujews.csv")
 
 def entitle(img):

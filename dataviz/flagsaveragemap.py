@@ -1,7 +1,7 @@
 from pudzu.charts import *
 from statistics import mean
 
-countries = pd.read_csv("datasets/countries.csv").split_columns(('country'), "|").split_rows('country').set_index('country')
+countries = pd.read_csv("datasets/countries.csv").split_columns(('country'), "|").explode('country').set_index('country')
 states = pd.read_csv("datasets/usstates.csv").set_index('name')
 
 def to_linear(srgb):

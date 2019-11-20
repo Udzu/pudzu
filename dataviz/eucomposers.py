@@ -2,7 +2,7 @@ from pudzu.charts import *
 
 # https://people.wku.edu/charles.smith/music/images/stats6.pdf
 
-countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country')
+countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").explode('country').set_index('country')
 
 df = pd.read_csv("datasets/eucomposerstop.csv")
 dfi = df.set_index('link')

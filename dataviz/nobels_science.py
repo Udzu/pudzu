@@ -9,13 +9,13 @@ TITLE = "Science Nobel Prize winners by continent"
 SUBTITLE = "Physics, Chemistry and Medicine prizes by the nationality of the winners*"
 FILENAME = "nobels_science"
 
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country')
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')
 nobels = pd.read_csv("datasets/nobels.csv").split_columns('countries', '|')
 nobels = nobels[nobels.countries != ()]
 nobels = nobels[nobels.category.isin(FILTER)]
 nobels = nobels.assign_rows(continents = lambda d: frozenset(atlas.continent[c] for c in d.countries))
 
-by_continent = nobels.split_rows('continents')
+by_continent = nobels.explode('continents')
 df_continent = pd.DataFrame(columns=["date"]+CONTINENTS)
 for i in range(nobels.date.min(), nobels.date.max() + 1, INTERVAL):
     df = by_continent[(by_continent.date >= i) & (by_continent.date < i + INTERVAL)]
@@ -25,7 +25,7 @@ d = by_continent.groupby("continents").count().name
 df_continent.loc[len(df_continent)] = ["TOTAL" if c == "date" else d.get(c, 0) for c in df_continent.columns]
 data = df_continent.set_index("date")
 
-by_country = nobels.split_rows('countries')
+by_country = nobels.explode('countries')
 country_dict = {}
 for n,i in enumerate(range(nobels.date.min(), nobels.date.max() + 1, INTERVAL)):
     df = by_country[(by_country.date >= i) & (by_country.date < i + INTERVAL)]

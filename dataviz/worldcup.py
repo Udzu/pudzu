@@ -1,6 +1,6 @@
 from pudzu.charts import *
 
-flags = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country')['flag']
+flags = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')['flag']
 flags['England'] = "https://upload.wikimedia.org/wikipedia/en/thumb/b/be/Flag_of_England.svg/1280px-Flag_of_England.svg.png"
 df = pd.read_csv("datasets/worldcup.csv").split_columns(["wcs", "wws"], "|") \
                                          .assign(wcc=lambda df: df.wcs.str.len()) \

@@ -2,7 +2,7 @@ import seaborn as sns
 from pudzu.charts import *
 from pudzu.bamboo import *
 
-countries = pd.read_csv("datasets/countries.csv")[["country", "continent", "flag"]].split_columns('country', "|").split_rows('country').set_index('country')
+countries = pd.read_csv("datasets/countries.csv")[["country", "continent", "flag"]].split_columns('country', "|").explode('country').set_index('country')
 
 df = pd.read_csv("datasets/nobels.csv")
 df = df[df['category'] == "Literature"][["name", "countries"]].split_columns("countries", "|")

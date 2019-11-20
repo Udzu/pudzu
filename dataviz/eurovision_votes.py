@@ -2,7 +2,7 @@ from pudzu.charts import *
 from pudzu.bamboo import *
 
 df = pd.read_csv("datasets/eurovision_votes.csv").set_index("country")
-countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country')
+countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").explode('country').set_index('country')
 
 RANGES = [12, 10, 8, 6, 4, 2]
 LABELS = ["twelve points (douze points)", ">ten points (dix points)", ">eight points (huit points)", ">six points (six points)", ">four points (quatre points)", ">two points (deux points)"]

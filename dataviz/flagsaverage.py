@@ -1,7 +1,7 @@
 from pudzu.charts import *
 from pudzu.bamboo import *
 
-flags = pd.read_csv("datasets/countries.csv")[lambda df: df.code != "EUU"].split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country').drop_duplicates(subset='flag', keep='first')
+flags = pd.read_csv("datasets/countries.csv")[lambda df: df.code != "EUU"].split_columns(('nationality', 'tld', 'country'), "|").explode('country').set_index('country').drop_duplicates(subset='flag', keep='first')
 bg = "#EEEEEE"
 
 def image_flag(c):

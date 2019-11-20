@@ -39,7 +39,7 @@ stategrid = grid_chart(statetable, statecell, bg="white")
 
 # foreign-born winners
 
-flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country')['flag']
+flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").explode('country').set_index('country')['flag']
 foreignplaces = sorted(((-uswinners[c].sum(), c) for c in uswinners.index.levels[0] if not c.startswith("US_")))
 foreigntable = pd.DataFrame([[foreignplaces[12*y+x][1] if 12*y+x < len(foreignplaces) else None for x in range(12)] for y in range(3)])
 

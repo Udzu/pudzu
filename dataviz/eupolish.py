@@ -2,7 +2,7 @@ from pudzu.charts import *
 
 # generate map
 df = pd.read_csv("datasets/eupolish.csv").set_index("country")
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country')
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')
 
 df["percapita"] = df["total"] * 100.0 / atlas.loc[df.index].population
 

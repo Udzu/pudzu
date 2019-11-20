@@ -3,7 +3,7 @@ from pudzu.bamboo import *
 
 FONT = verdana
 
-flags = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country').flag
+flags = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country').flag
 flags["Sealand (current post)"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Flag_of_Sealand.svg/1024px-Flag_of_Sealand.svg.png"
 df = pd.read_csv("datasets/eureddit.csv").set_index("country")
 df["controversy"] = df["comments"] / df["upvotes"]

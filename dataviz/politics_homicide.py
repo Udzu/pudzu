@@ -6,7 +6,7 @@ FONT = calibri
 LIMITS = [10, 5, 2, 1, 0]
 REDS = treversed(tmap(RGBA, sns.color_palette("Reds", len(LIMITS))))
 
-countries = pd.read_csv("datasets/countries.csv").split_columns(['country', 'organisations', 'tld'], "|").split_rows('country').set_index("country")
+countries = pd.read_csv("datasets/countries.csv").split_columns(['country', 'organisations', 'tld'], "|").explode('country').set_index("country")
 states = pd.read_csv("datasets/usstates.csv").set_index('name')
 
 eus = pd.read_html("https://en.wikipedia.org/wiki/List_of_countries_by_intentional_homicide_rate")

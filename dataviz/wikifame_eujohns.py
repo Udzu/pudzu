@@ -1,7 +1,7 @@
 import seaborn as sns
 from pudzu.charts import *
 
-countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country')
+countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").explode('country').set_index('country')
 
 df = pd.read_csv("datasets/eujohns.csv")
 average_scores = df.groupby('country').mean().score

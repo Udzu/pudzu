@@ -17,8 +17,8 @@ NOPRIZE = "#EEEEEE"
 tiles = pd.read_csv("maps/europe_tiles.csv", names=range(15)).as_matrix()
 generate_tile_map(tiles, "cache/europe_tiles_map.png", SIZE)
 
-countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('tld').update_columns(tld=lambda v: v[1:]).set_index('tld')
-nobels = pd.read_csv("datasets/nobels.csv").split_columns('countries', '|').split_rows('countries')
+countries = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").explode('tld').update_columns(tld=lambda v: v[1:]).set_index('tld')
+nobels = pd.read_csv("datasets/nobels.csv").split_columns('countries', '|').explode('countries')
 # .assign_rows(countries=lambda d: set(d['countries'] + (d['birthplace'],)))
 bycountry = nobels.groupby(('countries', 'category')).count()['name']
 

@@ -9,7 +9,7 @@ SMALLFONT = s(14)
 SUBTITLEFONT = s(36)
 TITLEFONT = s(40)
 
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index("country")
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index("country")
 df = pd.read_csv("datasets/g7_policedeaths.csv").set_index("country")
 df["policedeaths_pm"] = df["policedeaths_total"] * 1000000 / atlas.loc[df.index].population
 

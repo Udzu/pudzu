@@ -1,7 +1,7 @@
 from pudzu.charts import *
 from pudzu.bamboo import *
 
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country')
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')
 df = pd.read_csv("datasets/euarea.csv").set_index("country").assign_rows(ratio=lambda d: d.european / d.overall).sort_values("ratio", ascending=True).fillna(" ")
 ylabel = Image.from_text("% of area in Europe", arial(14), padding=(5,2,5,10), bg="white").transpose(Image.ROTATE_90)
 

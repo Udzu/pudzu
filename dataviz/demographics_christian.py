@@ -1,7 +1,7 @@
 from pudzu.charts import *
 from pudzu.bamboo import *
 
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country')
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')
 df = pd.read_csv("datasets/demographics_christian.csv").set_index("country").sort_values("in 1910", ascending=False)
 
 def rlabel(r):

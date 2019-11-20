@@ -57,8 +57,8 @@ CLABELS = {"uk": "UK", "se": "Sweden", "fr": "France", "de": "Germany", "ru": "R
 TLABELS = ["color", "myth", "person", "place"]
 
 gdata = df.groupby('group').count().Z
-cdata = df.split_rows('countries').update_columns(countries=lambda v: v if v in CLABELS else 'other').groupby('countries').count().Z
-tdata = df.split_rows('types').groupby('types').count().Z
+cdata = df.explode('countries').update_columns(countries=lambda v: v if v in CLABELS else 'other').groupby('countries').count().Z
+tdata = df.explode('types').groupby('types').count().Z
 
 def make_legend(array, title):
     aimg = Image.from_array(array, xalign=(0.5,0), padding=(5,6), bg="white")

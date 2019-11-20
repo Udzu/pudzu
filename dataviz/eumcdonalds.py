@@ -34,7 +34,7 @@ legend = generate_legend(REDS + (VegaPalette10.BLUE,"#AAAAAA"), ["{}+ per millio
 map = map.place(legend, align=(1,0), padding=10)
 
 # bar chart
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country')
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')
 df2 = df.select(lambda c: c != "Vatican City" and atlas.continent.get(c) == "Europe" or c in ["Georgia", "Azerbaijan", "Armenia"])
 df2 = df2.sort_values("permillion", ascending=False)[["permillion"]]
 bar = bar_chart(df2, 24, 400, horizontal=True, spacing=1, colors=["#003399"], ymax=df2.iloc[0][0], rlabels=lambda r: Image.from_url_with_cache(atlas.flag[df2.index[r]]).to_rgba().resize((33,22)).pad(1, "grey"), grid_interval=10, clabels=None, label_font=arial(16), ylabel=Image.from_text("McDonald's outlets per million population", arial(16)))

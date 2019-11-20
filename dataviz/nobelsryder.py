@@ -3,7 +3,7 @@ from pudzu.charts import *
 
 # analysis
 
-countries = pd.read_csv("datasets/countries.csv").split_columns("country", "|").split_rows("country").set_index("country")
+countries = pd.read_csv("datasets/countries.csv").split_columns("country", "|").explode("country").set_index("country")
 nobels = pd.read_csv("datasets/nobels.csv").split_columns("countries", "|")
 nobels = nobels.assign_rows(eu=lambda r: any(countries.continent.get(c) == 'Europe' for c in r.countries))
 nobels = nobels.assign_rows(us=lambda r: any(c == "US" for c in r.countries))
@@ -29,7 +29,7 @@ economics_winners = calc_scores(FILTERS[0])[["eu","us"]] - calc_scores(FILTERS[1
 
 # visualisation
 
-FONT = arial
+FONT = sans
 COLORS = { "eu": VegaPalette10.BLUE, "us": VegaPalette10.RED, "tie": "#BBBBBB" }
 
 def summary_cell(winner):
@@ -70,6 +70,6 @@ title = Image.from_text_justified("Nobel Prize Ryder Cup".upper(), grid.width-60
 subtitle = Image.from_text_justified("US versus European* Nobel laureates per year", grid.width-60, 80, partial(FONT, bold=True), bg="white", padding=(0,5,0,5))
 
 img = Image.from_column([title, subtitle, gridlegend], bg="white")
-img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((0,1,1,0), "black"), align=(0,1), padding=10, copy=False)
+img.place(Image.from_text("/u/Udzu", FONT(16), fg="black", bg="white", padding=5).pad((0,1,1,0), "black"), align=(0,1), padding=10, copy=False)
 img.save("output/nobelsryder.png")
 

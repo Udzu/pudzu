@@ -4,7 +4,7 @@ FONT = calibri
 BARBG = "#AAAAAA80"
 SCALE = 2.65
 s = lambda i: round(i * SCALE)
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index("country")
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index("country")
 df = pd.read_csv("datasets/g20_deathpenalty.csv").assign_rows(parity = lambda d, i: (i+1) % 2).set_index("country")
 df["pm"] = df["executions"] * 100000000 / atlas.loc[df.index].population
 df["bar"] = 500 - df["pm"]

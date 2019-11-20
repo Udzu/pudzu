@@ -25,7 +25,7 @@ def process(name, row, column):
       ], bg=bg))
     return box
     
-flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('tld').set_index('tld')['flag']
+flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").explode('tld').set_index('tld')['flag']
 flags[".en"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/English_language.svg/1024px-English_language.svg.png"
 flags[".ja"] = flags[".jp"]
 flags[".zh"] = flags[".cn"]

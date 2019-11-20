@@ -50,7 +50,7 @@ chart = chart.place(legend, align=(1,0), padding=10)
 df = pd.read_csv("datasets/eufemaleleaders_timeline.csv")
 tdata = pd.DataFrame([[df.loc[i+j] for j in range(13) if i + j < len(df)] for i in range(0,39,13)])
 
-flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('tld').set_index('tld')['flag']
+flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").explode('tld').set_index('tld')['flag']
 flags[".kv"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Kosovo.svg/1024px-Flag_of_Kosovo.svg.png"
 flags[".yu"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_SFR_Yugoslavia.svg/1000px-Flag_of_SFR_Yugoslavia.svg.png"
 

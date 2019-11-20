@@ -3,7 +3,7 @@ from pudzu.charts import *
 # get data
 df = pd.read_html("https://en.wikipedia.org/wiki/Small_Arms_Survey")[0]
 df = df.set_index(0).iloc[3:][[1]].rename(columns=lambda i: "weapons").update_columns(weapons=int)
-countries = pd.read_csv("datasets/countries.csv").split_columns(('country'), "|").split_rows('country').set_index('country')
+countries = pd.read_csv("datasets/countries.csv").split_columns(('country'), "|").explode('country').set_index('country')
 
 def get_name(c):
     for i in [c, strip_from(c, " ("), strip_from(c, ", "), strip_accents(c)]:

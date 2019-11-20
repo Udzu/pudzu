@@ -19,7 +19,7 @@ YES = Image.open("icons/yes.png").pad(150, "white").resize((50,50))
 NO = Image.open("icons/no.png").pad(150, "white").resize((50,50))
 
 df = pd.read_csv("datasets/eunotquite.csv")
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index("country")
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index("country")
 data = pd.DataFrame([{ k : k in d.groups for k in ORDER } for _,d in df.iterrows() ], index=df.country, columns=list(ORDER))
 
 FOOTER = "Designed by Milano83 / Freepik"

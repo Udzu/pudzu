@@ -6,7 +6,7 @@ data = pd.DataFrame(list(generate_batches([dict(row) for _,row in df.iterrows()]
 fg, bg="black", "#EEEEEE"
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 
-flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country')['flag']
+flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").explode('country').set_index('country')['flag']
 
 def process(d):
     if d is None: return None

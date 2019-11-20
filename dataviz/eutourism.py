@@ -1,6 +1,6 @@
 from pudzu.charts import *
 
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country')
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')
 df = pd.read_csv("datasets/eutourism.csv").set_index("Destination").select(lambda c: atlas.continent[c] == "Europe" or c in ["Georgia", "Azerbaijan", "Armenia"])
 df = df.fillna({'2015': df['2014']})[['2015','2015.1']]
 df.columns = ['arrivals', 'receipts']

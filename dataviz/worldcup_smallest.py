@@ -2,7 +2,7 @@ from pudzu.charts import *
 
 FONT = calibri
 BARBG = "#AAAAAA80"
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index("country")
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index("country")
 atlas.flag["Northern Ireland"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Northern_Ireland.svg/1024px-Flag_of_Northern_Ireland.svg.png"
 atlas.flag["Wales"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Flag_of_Wales_2.svg/1024px-Flag_of_Wales_2.svg.png"
 data = pd.read_csv("datasets/worldcup_smallest.csv")

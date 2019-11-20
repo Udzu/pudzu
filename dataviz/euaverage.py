@@ -4,7 +4,7 @@ from statistics import mean
 import seaborn as sns
 
 # generate map
-flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").split_rows('country').set_index('country')
+flags = pd.read_csv("datasets/countries.csv").split_columns(('nationality', 'tld', 'country'), "|").explode('country').set_index('country')
 
 def colorfn(c):
     if c not in flags.index: # or flags['continent'][c] != 'Europe':

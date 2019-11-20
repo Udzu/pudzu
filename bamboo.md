@@ -41,21 +41,6 @@ A handful of utilities monkey-patched onto the pandas DataFrame class. Gradually
 1         2  Wilma  Flintstone
 ```
 
-**filter_columns**: filter columns by column name, collection of names or name predicate.
-
-```python
->> df.filter_columns('children')
-   children
-0         2
-1         2
-2        15
->> df.filter_columns(lambda c: 'name' in c)
-    name     surname
-0   Fred  Flintstone
-1  Wilma  Flintstone
-2   Dino         NaN
-```
-
 **assign_rows**: assign or update columns using a row/index function or constant, with an optional row/index predicate condition.
 
 ```python
@@ -89,23 +74,6 @@ A handful of utilities monkey-patched onto the pandas DataFrame class. Gradually
    children  name  surname
 4         2     2        1
 5         1     1        1
-```
-
-**split_rows**: split rows by column, making one copy for each item in the column value.
-
-```python
->> df.assign(children=[["Pebbles", "Stony"],["Pebbles", "Stony"], np.nan])
-           children   name     surname
-0  [Pebbles, Stony]   Fred  Flintstone
-1  [Pebbles, Stony]  Wilma  Flintstone
-2               NaN   Dino         NaN
->> _.split_rows("children")
-  children   name     surname
-0  Pebbles   Fred  Flintstone
-1    Stony   Fred  Flintstone
-2  Pebbles  Wilma  Flintstone
-3    Stony  Wilma  Flintstone
-4      NaN   Dino         NaN
 ```
 
 **split_columns**: split column string values on a given delimiter.

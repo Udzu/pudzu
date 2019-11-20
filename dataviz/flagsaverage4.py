@@ -2,7 +2,7 @@ from pudzu.charts import *
 from pudzu.bamboo import *
 import scipy.stats
 
-df = pd.read_csv("../dataviz/datasets/countries.csv").filter_rows("organisations >> un").split_columns('country', "|").split_rows('country').set_index('country').drop_duplicates(subset='flag', keep='first')
+df = pd.read_csv("../dataviz/datasets/countries.csv").filter_rows("organisations >> un").split_columns('country', "|").explode('country').set_index('country').drop_duplicates(subset='flag', keep='first')
 
 wf = pd.read_html("https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_area")[0]
 wf = wf.rename(columns=wf.iloc[0])[1:].fillna("0")

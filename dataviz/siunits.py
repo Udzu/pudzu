@@ -1,6 +1,6 @@
 from pudzu.charts import *
 
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country')
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')
 df = pd.read_csv("datasets/siunits.csv").fillna("d")
 
 # TODO: count by type, add two types and sort

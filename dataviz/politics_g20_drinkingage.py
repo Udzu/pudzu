@@ -2,7 +2,7 @@ from pudzu.charts import *
 
 FONT = calibri
 BARBG = "#AAAAAA80"
-atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index("country")
+atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index("country")
 df = pd.read_csv("datasets/g20_drinkingage.csv")
 df = df.assign_rows(parity = lambda d, i: (i+1) % 2)
 df = df.set_index("country")

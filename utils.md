@@ -1,7 +1,7 @@
 # [utils.py](utils.py)
 
 ## Summary 
-Various utility functions and data structures.
+Various utility functions and data structures used in the other modules.
 
 ## Dependencies
 *Required*: [toolz](http://toolz.readthedocs.io/en/latest/index.html).

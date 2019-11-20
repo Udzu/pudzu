@@ -49,7 +49,7 @@ def score_people(df, lang="en", translate_from=None):
                         # revisions=lambda d: 1 if d['wp'] is None else d['wp'].revision_count(),
                         disambiguation=lambda d: d['wp'] and bool(d['wp'].bs4.find(alt="Disambiguation icon")))
     df = df.assign_rows(score=lambda d: harmonic_mean([log(max(d[k], 2)) / log(max_value) for k,max_value in LIMITS.items()]))
-    return df.filter_columns(lambda k: k != 'wp').sort_values("score", ascending=False)
+    return df.loc[:,df.columns != 'wp'].sort_values("score", ascending=False)
 
 def score_by_name(names, *args, **kwargs):
     df = pd.DataFrame([{'link': name} for name in make_iterable(names)])
@@ -85,22 +85,22 @@ def normalise_scores(df, using=None):
 def combine_scores(decades=range(100,190), langs=["en", "de", "es", "fr", "ja", "ru", "zh"]):
     dfs = [load_decades(decades, lang) for lang in tqdm.tqdm(langs)]
     dfs = [df.groupby('link').first() for df in dfs]
-    df = normalise_scores(sum(df.filter_columns(['length', 'pageviews']) for df in dfs)) # , 'revisions'
-    return pd.concat([df, dfs[0].filter_columns(['year', 'title'])], axis=1).sort_values("score", ascending=False)
+    df = normalise_scores(sum(df[['length', 'pageviews']] for df in dfs)) # , 'revisions'
+    return pd.concat([df, dfs[0][['year', 'title']]], axis=1).sort_values("score", ascending=False)
 
 def normalise_and_combine_scores(decades=range(100,190), langs=["en", "de", "es", "fr", "ja", "ru", "zh"]):
     dfs = [normalise_scores(load_decades(decades, lang)) for lang in tqdm.tqdm(langs)]
     dfs = [df.groupby('link').first() for df in dfs]
-    df = sum(df.filter_columns(['score']) for df in dfs) / len(langs)
+    df = sum(df[['score']] for df in dfs) / len(langs)
     df = df.sort_values('score', ascending=False)
-    return pd.concat([df, dfs[0].filter_columns(['year', 'title'])], axis=1).sort_values("score", ascending=False)
+    return pd.concat([df, dfs[0][['year', 'title']]], axis=1).sort_values("score", ascending=False)
        
 def score_and_normalise_by_name(names, langs=["en", "de", "es", "fr", "ja", "ru", "zh"]):
     dfs = [normalise_scores(score_by_name(names, lang=lang, translate_from="en"), using=load_decades(range(100,190), lang=lang)) for lang in tqdm.tqdm(langs)]
     dfs = [df.groupby('link').first() for df in dfs]
-    df = sum(df.filter_columns(['score']) for df in dfs) / len(langs)
+    df = sum(df[['score']] for df in dfs) / len(langs)
     df = df.sort_values('score', ascending=False)
-    return pd.concat([df, dfs[0].filter_columns(['year', 'title'])], axis=1).sort_values("score", ascending=False)
+    return pd.concat([df, dfs[0][['year', 'title']]], axis=1).sort_values("score", ascending=False)
     
 def top_per_x(df, x=10):
     return df.reset_index(drop=True).groupby_rows(lambda r: r['year'] // x).first()

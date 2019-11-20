@@ -22,14 +22,6 @@ def _tqdm_wrapper(t, func, *args, **kwargs):
 def _make_filter(filter):
     return ignoring_extra_args((lambda: True) if filter is None else filter if callable(filter) else FilterExpression.make_filter(filter))
 
-def _filter_columns(df, filter):
-    """Filter columns using a name, list of names or name predicate."""
-    return df.select(filter, axis=1) if callable(filter) else df.filter(make_iterable(filter), axis=1)
-
-def _filter_boolean(df, filter):
-    """Shorthand for boolean indexing with unnamed dataframes: df.boolean_index(filter) = df[filter(df)]."""
-    return df[filter(df)]
-
 def _filter_rows(df, filter):
     """Filter rows using either a row/index predicate or a RecordFilter expression. Slower than boolean indexing."""
     filter_fn = _make_filter(filter)
@@ -69,8 +61,6 @@ def _split_columns(df, columns, delimiter, converter=identity):
     """Split column string values into tuples with the given delimiter."""
     return df.update_columns(**{column : ignoring_exceptions(lambda s: tuple(converter(x) for x in s.split(delimiter)), (), (AttributeError)) for column in make_iterable(columns) })
 
-pd.DataFrame.filter_boolean = _filter_boolean
-pd.DataFrame.filter_columns = _filter_columns
 pd.DataFrame.filter_rows = _filter_rows
 pd.DataFrame.assign_rows = _assign_rows
 pd.DataFrame.update_columns = _update_columns

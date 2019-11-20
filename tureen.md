@@ -1,7 +1,7 @@
 # [tureen.py](tureen.py)
 
 ## Summary 
-A few utilities for BeautifulSoup.
+A handful of utilities for BeautifulSoup.
 
 ## Dependencies
 *Required*: [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).

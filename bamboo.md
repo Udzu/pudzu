@@ -2,7 +2,7 @@
 
 ## Summary 
 
-A handful of utilities monkey-patched onto the pandas DataFrame class. Aim is convenience rather than performance.
+A handful of utilities monkey-patched onto the pandas DataFrame class. Gradually obsoleting these and replacing them with pure pandas.
 
 ## Dependencies
 *Required*: [pandas](http://pandas.pydata.org/), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
@@ -19,14 +19,6 @@ A handful of utilities monkey-patched onto the pandas DataFrame class. Aim is co
 0         2   Fred  Flintstone
 1         2  Wilma  Flintstone
 2        15   Dino         NaN
-```
-
-**filter_boolean**: boolean indexing variant that takes a function, useful in chaining.
-
-```python
->> df.filter_boolean(lambda df: df.name.map(lambda n: n.startswith("F")))
-   children  name     surname
-0         2  Fred  Flintstone
 ```
 
 **filter_rows**: filter rows by a row/index predicate or a filter expression (see `FilterExpression` docstring for details). Less efficient than boolean indexing.

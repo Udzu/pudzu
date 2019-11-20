@@ -12,7 +12,6 @@ The packaged modules can be installed using `pip install pudzu` (for the latest 
 
 - [pudzu.utils](utils.md) - various utility functions and data structures.
 - [pudzu.dates](dates.md) - date classes supporting flexible calendars, deltas and ranges.
-- [pudzu.bamboo](bamboo.md) - various monkey-patched pandas utilities.
 - [pudzu.pillar](pillar.md) - various monkey-patched Pillow utilities.
 - [pudzu.charts](charts.md) - Pillow-based charting tools.
 - [pudzu.tureen](tureen.md) - various BeautifulSoup utilities.

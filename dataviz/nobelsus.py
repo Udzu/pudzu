@@ -13,11 +13,11 @@ CATPAL = sns.color_palette("colorblind")
 PALETTE = { cat : RGBA(col) for cat,col in zip(CATS, CATPAL) }
 
 nobels = pd.read_csv("datasets/nobels.csv").split_columns('countries', '|').update_columns(birthplace=lambda v: 'UK' if v.startswith('UK') else v)
-uswinners = nobels.filter_boolean(lambda df: df.countries.map(lambda cs: 'US' in cs)).groupby(('birthplace', 'category')).count()['countries']
+uswinners = nobels[nobels.countries.map(lambda cs: 'US' in cs)].groupby(('birthplace', 'category')).count()['countries']
 
 # US-born winners
 
-states = pd.read_csv("datasets/usstates.csv").filter_boolean(lambda df: df.code != 'PR')
+states = pd.read_csv("datasets/usstates.csv")[lambda df: df.code != 'PR']
 statetable = pd.DataFrame([[first([dict(d) for _,d in states[(states.grid_x == x) & (states.grid_y == y)].iterrows()]) for x in range(states.grid_x.max()+1)] for y in range(states.grid_y.max()+1)])
 
 def statecell(d):
@@ -73,7 +73,7 @@ for i in range(0,6):
     gradimg = gradimg.pin(label, (GW, GH * (5-i) // 5), align=(0,0.5), bg="white")
 gradleg = Image.from_column([Image.from_text("Prizes per capita", arial(16, bold=True)), gradimg], bg="white", xalign=0, padding=(0,5))
 
-catdict = nobels.filter_boolean(lambda df: df.countries.map(lambda cs: 'US' in cs)).groupby('category').count()['countries']
+catdict = nobels[nobels.countries.map(lambda cs: 'US' in cs)].groupby('category').count()['countries']
 def catbox(cat):
     img = Image.new("RGBA", (GW,GW), PALETTE[cat])
     img = img.place(Image.from_text(str(catdict[cat]), arial(14), "black", bg=PALETTE[cat]))

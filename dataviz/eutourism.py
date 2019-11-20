@@ -4,7 +4,7 @@ atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").spli
 df = pd.read_csv("datasets/eutourism.csv").set_index("Destination").select(lambda c: atlas.continent[c] == "Europe" or c in ["Georgia", "Azerbaijan", "Armenia"])
 df = df.fillna({'2015': df['2014']})[['2015','2015.1']]
 df.columns = ['arrivals', 'receipts']
-df = pd.concat([df, atlas[['population']]], join='inner', axis=1).filter_boolean(lambda df: df.population > 100000)
+df = pd.concat([df, atlas[['population']]], join='inner', axis=1)[lambda df: df.population > 100000]
 df['arrivals_pc'] = df['arrivals'] / df['population'] * 1000000
 df['receipts_pc'] = df['receipts'] / df['population'] * 1000000
 

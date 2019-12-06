@@ -12,7 +12,7 @@ PALETTE = [PairedClass12.GREEN, PairedClass12.LIGHTGREEN, PairedClass12.RED, Pai
 
 DESCRIPTIONS = [
 """from Latin **december** (“tenth month”)
-   //December was the tenth month in the calednar of Romulus//""",
+   //December was the tenth month in the calendar of Romulus//""",
 """from a **translation** of december:
 – Albanian: from //dhjetë// (“ten”)""",
 """from a word referring to **Christmas**:

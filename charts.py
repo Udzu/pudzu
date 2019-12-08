@@ -3,7 +3,8 @@ from enum import Enum
 from functools import reduce
 from itertools import chain
 
-from pudzu.bamboo import *
+import pandas as pd
+
 from pudzu.dates import *
 from pudzu.pillar import *
     
@@ -808,9 +809,14 @@ def labelbox_csv_path(map): return splitext(map)[0] + "_lbox.csv"
 def overlay_img_path(map): return splitext(map)[0] + "_ov" + splitext(map)[1]
 def overlay_mask_img_path(map): return splitext(map)[0] + "_ovmask" + splitext(map)[1]
 
-def load_name_csv(map): return pd.read_csv(name_csv_path(map)).split_columns('color', '|', int)
-def load_boundingbox_csv(map): return pd.read_csv(boundingbox_csv_path(map)).split_columns(('bbox', 'color'), '|', int)
-def load_labelbox_csv(map): return pd.read_csv(labelbox_csv_path(map)).split_columns(('bbox', 'color'), '|', int)
+def expand_color_columns(df, *columns):
+    for column in columns:
+        df[column] = df[column].str.split("|").apply(partial(tmap, int))
+    return df
+    
+def load_name_csv(map): return expand_color_columns(pd.read_csv(name_csv_path(map)), 'color')
+def load_boundingbox_csv(map): return expand_color_columns(pd.read_csv(boundingbox_csv_path(map)), 'bbox', 'color')
+def load_labelbox_csv(map): return expand_color_columns(pd.read_csv(labelbox_csv_path(map)), 'bbox', 'color')
 
 class ImageMapSort(Enum):
     """Image map color sort in name CSV file."""

@@ -10,6 +10,12 @@ Various Python 3.6+ utility modules and scripts, mostly geared towards dataviz a
 
 The stable modules can be installed using `pip` as described in the [pudzu-packages](https://github.com/Udzu/pudzu-packages) repository. Experimental (WIP) models can be installed using `pip install pudzu` (for the latest release) or by directly running `python setup.py install`.
 
+## Stable modules
+- [pudzu-utils](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-utils) - various utility functions and data structures.
+- [pudzu-dates](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-dates) - date classes supporting flexible calendars, deltas and ranges.
+- [pudzu-pillar](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-pillar) - various monkey-patched Pillow utilities.
+- [pudzu-charts](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-charts) - Pillow-based charting tools.
+
 ## Experimental modules
 
 - [pudzu.experimental.markov](markov.md) - simple Markov Chain n-gram based generator.

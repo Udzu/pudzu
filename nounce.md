@@ -1,4 +1,4 @@
-# [nounce.py](nounce.py)
+# [nounce.py](pudzu/experimental/nounce.py)
 
 ## Summary 
 Simple IPA-based pronouncing and rhyming dictionary. 

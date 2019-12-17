@@ -1,3 +1,3 @@
 from setuptools import setup, find_packages
 
-setup(packages=['pudzu', 'pudzu.experimental'])
+setup(packages=['pudzu', 'pudzu.experimental', 'pudzu.experimental.unicode'])

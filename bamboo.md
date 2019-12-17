@@ -1,4 +1,4 @@
-# [bamboo.py](bamboo.py)
+# [bamboo.py](pudzu/experimental/bamboo.py)
 
 ## Summary 
 

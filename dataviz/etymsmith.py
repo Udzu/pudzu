@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.bamboo import *
+from pudzu.experimental.bamboo import *
 from PIL import ImageEnhance
 
 df = pd.read_csv("datasets/etymsmith.csv").set_index("language").fillna("")

@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.bamboo import *
+from pudzu.experimental.bamboo import *
 
 # ----------------------
 # 40 under 40 grid chart

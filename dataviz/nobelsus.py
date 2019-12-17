@@ -1,6 +1,6 @@
 import seaborn as sns
 from pudzu.charts import *
-from pudzu.bamboo import *
+from pudzu.experimental.bamboo import *
 
 # ------------------------
 # Nobel prizes by US state

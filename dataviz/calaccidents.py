@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.bamboo import *
+from pudzu.experimental.bamboo import *
 
 def to_date(d):
     return Date(tmap(int, (d[6:], d[3:5], d[0:2])))

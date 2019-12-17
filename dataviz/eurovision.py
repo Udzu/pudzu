@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.bamboo import *
+from pudzu.experimental.bamboo import *
 
 # generate map
 df = pd.read_csv("datasets/eurovision.csv").set_index("country")

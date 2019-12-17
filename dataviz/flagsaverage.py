@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.bamboo import *
+from pudzu.experimental.bamboo import *
 
 flags = pd.read_csv("datasets/countries.csv")[lambda df: df.code != "EUU"].split_columns(('nationality', 'tld', 'country'), "|").explode('country').set_index('country').drop_duplicates(subset='flag', keep='first')
 bg = "#EEEEEE"

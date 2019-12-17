@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.bamboo import *
+from pudzu.experimental.bamboo import *
 
 df = pd.read_csv("datasets/etymtv.csv").set_index("language").fillna("tv")
 

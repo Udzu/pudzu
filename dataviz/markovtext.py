@@ -1,11 +1,9 @@
-import sys
-sys.path.append('..')
 import pickle
 import seaborn as sns
 import string
 
-from markov import *
-from pudzu.bamboo import *
+from pudzu.experimental.markov import *
+from pudzu.experimental.bamboo import *
 from pudzu.charts import *
 from math import log
 

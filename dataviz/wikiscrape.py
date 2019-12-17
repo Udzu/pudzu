@@ -1,10 +1,8 @@
-import sys
-sys.path.append('..')
 import pathlib
 from math import log
 
-from wikipage import *
-from pudzu.bamboo import *
+from pudzu.experimental.wikipage import *
+from pudzu.experimental.bamboo import *
 
 # wikifame scraping (messy; also requires manual cleanup and verificaiton at the moment)
 

@@ -1,5 +1,5 @@
 from pudzu.pillar import *
-from pudzu.bamboo import *
+from pudzu.experimental.bamboo import *
 
 CREDIT_FONTS = partial(verdana, 16)
 

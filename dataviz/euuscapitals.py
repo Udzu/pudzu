@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.bamboo import *
+from pudzu.experimental.bamboo import *
 
 # visualisation
 df = pd.read_csv("datasets/euuscapitals.csv").fillna(False)

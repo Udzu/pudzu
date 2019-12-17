@@ -8,7 +8,7 @@ Various Python 3.6+ utility modules and scripts, mostly geared towards dataviz a
 
 ## Installation
 
-The stable modules can be installed using `pip` as described in the [pudzu-packages](https://github.com/Udzu/pudzu-packages) repository. Experimental (WIP) models can be installed using `pip install pudzu` (for the latest release) or by directly running `python setup.py install`.
+The stable modules can be installed using `pip` as described in the [pudzu-packages](https://github.com/Udzu/pudzu-packages) repository. Experimental (WIP) models can be installed using `pip install pudzu` (for the latest release) or by directly running `pip install .`.
 
 ## Stable modules
 - [pudzu-utils](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-utils) - various utility functions and data structures.

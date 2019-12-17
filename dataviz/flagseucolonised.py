@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.bamboo import *
+from pudzu.experimental.bamboo import *
 
 df = pd.read_csv("datasets/flagseucolonised.csv")
 data = pd.DataFrame(list(generate_batches([dict(row) for _,row in df.iterrows()], 7)))

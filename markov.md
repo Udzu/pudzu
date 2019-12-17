@@ -1,4 +1,4 @@
-# [markov.py](markov.py)
+# [markov.py](pudzu/experimental/markov.py)
 
 ## Summary 
 Simple Markov Chain n-gram based generator, supporting arbitrary iterables. Slow.

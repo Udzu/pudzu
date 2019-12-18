@@ -48,15 +48,22 @@ def additional_data(filename, properties):
         df = pd.read_csv(fh, sep=";", header=None, skip_blank_lines=True, comment="#",
                          names=['Code_Point'] + properties)
 
-    # remove whitespace and set index (TODO: handle non-unique properties)
+    # remove whitespace and set (possibly non-unique) index
     df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
     df.index = df.Code_Point.str.replace("\.\..*","").apply(artial(int, 16))
-    df = df.sort_index()
 
     # expand code ranges
-    for az in df[df.Code_Point.str.contains("\.\.")].Code_Point:
+    expanded = df
+    for i, az in enumerate(df[df.Code_Point.str.contains("\.\.")].Code_Point):
         a, z = map(artial(int, 16), az.split(".."))
-        df = df.reindex(df.index.append(pd.Index(range(a+1,z+1))).sort_values(), method='pad')
+        copies = pd.DataFrame([df.iloc[i]]*(z-a), index=range(a+1,z+1))
+        expanded = pd.concat([expanded, copies])
+
+    # combine properties
+    df = expanded.sort_index()
+    df = df.groupby(df.index).agg(set)
+    exclusive = (df.applymap(len) == 1).all()
+    df = df.apply(lambda s: s.apply(lambda i: next(iter(i))) if exclusive[s.name] else s.apply(tuple))
 
     return df.drop(columns=["Code_Point"])
 
@@ -65,5 +72,6 @@ def unicode_data():
     # TODO: logging
     df = ucd_data()
     scripts = additional_data("Scripts.txt", ["Script"])
-    df = pd.concat([df, scripts], axis=1)
+    emoji = additional_data("emoji-data.txt", ["Emoji"])
+    df = pd.concat([df, scripts, emoji], axis=1)
     return df

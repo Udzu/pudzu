@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.bamboo import *
 
 atlas = pd.read_csv("datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')
 df = pd.read_csv("datasets/euarea.csv").set_index("country").assign_rows(ratio=lambda d: d.european / d.overall).sort_values("ratio", ascending=True).fillna(" ")

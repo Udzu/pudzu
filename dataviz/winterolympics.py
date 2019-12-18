@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.bamboo import *
 
 data = [
 ("Norway", "5m", 118, 111, 100),

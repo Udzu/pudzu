@@ -8,7 +8,7 @@ import requests
 import pandas as pd
 
 from pudzu.utils import *
-from pudzu.experimental.tureen import *
+from pudzu.sandbox.tureen import *
 from pudzu.dates import *
 
 requests_cache = optional_import("requests_cache")

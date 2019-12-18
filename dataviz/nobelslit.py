@@ -1,6 +1,6 @@
 import seaborn as sns
 from pudzu.charts import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.bamboo import *
 
 countries = pd.read_csv("datasets/countries.csv")[["country", "continent", "flag"]].split_columns('country', "|").explode('country').set_index('country')
 

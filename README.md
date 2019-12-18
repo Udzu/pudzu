@@ -18,10 +18,10 @@ The stable modules can be installed using `pip` as described in the [pudzu-packa
 
 ## Experimental modules
 
-- [pudzu.experimental.markov](markov.md) - simple Markov Chain n-gram based generator.
-- [pudzu.experimental.nounce](nounce.md) - simple IPA-based pronouncing and rhyming dictionary.
-- [pudzu.experimental.tureen](tureen.md) - various BeautifulSoup utilities.
-- [pudzu.experimental.wikipage](wikipage.md) - wikipedia and wikidata parsing utilities.
+- [pudzu.sandbox.markov](markov.md) - simple Markov Chain n-gram based generator.
+- [pudzu.sandbox.nounce](nounce.md) - simple IPA-based pronouncing and rhyming dictionary.
+- [pudzu.sandbox.tureen](tureen.md) - various BeautifulSoup utilities.
+- [pudzu.sandbox.wikipage](wikipage.md) - wikipedia and wikidata parsing utilities.
 
 ## Copyright
 

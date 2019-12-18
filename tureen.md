@@ -1,4 +1,4 @@
-# [tureen.py](pudzu/experimental/tureen.py)
+# [tureen.py](pudzu.sandbox/tureen.py)
 
 ## Summary 
 A handful of utilities for BeautifulSoup.

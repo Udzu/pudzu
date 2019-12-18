@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.bamboo import *
 
 COLS = ["WORDCLASS", "EXAMPLE1", "EXAMPLE2" ]
 

@@ -1,6 +1,6 @@
 import seaborn as sns
 from pudzu.charts import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.bamboo import *
 
 # -----------------------------
 # European Nobel prizes winners

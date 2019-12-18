@@ -1,8 +1,8 @@
 import pathlib
 from math import log
 
-from pudzu.experimental.wikipage import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.wikipage import *
+from pudzu.sandbox.bamboo import *
 
 # wikifame scraping (messy; also requires manual cleanup and verificaiton at the moment)
 

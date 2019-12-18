@@ -1,4 +1,4 @@
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.bamboo import *
 from pudzu.charts import *
 
 # analysis

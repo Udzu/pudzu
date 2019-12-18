@@ -2,8 +2,8 @@ import pickle
 import seaborn as sns
 import string
 
-from pudzu.experimental.markov import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.markov import *
+from pudzu.sandbox.bamboo import *
 from pudzu.charts import *
 from math import log
 

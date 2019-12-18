@@ -1,4 +1,4 @@
-# [wikipage.py](pudzu/experimental/wikipage.py)
+# [wikipage.py](pudzu.sandbox/wikipage.py)
 
 ## Summary 
 Classes for using Wikipedia and Wikidata pages.

@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.bamboo import *
 import seaborn as sns
 
 df = pd.read_csv("datasets/eugoogle.csv").set_index('country')

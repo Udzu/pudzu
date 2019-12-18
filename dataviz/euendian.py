@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.bamboo import *
 from PIL import ImageEnhance
 
 df = pd.read_csv("datasets/euendian.csv").set_index("country")

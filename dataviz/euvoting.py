@@ -1,6 +1,6 @@
 import seaborn as sns
 from pudzu.charts import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.bamboo import *
 
 df = pd.read_csv("datasets/euvoting.csv").set_index('country')
 palette = tmap(RGBA, sns.color_palette("Blues", 4))

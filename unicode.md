@@ -1,4 +1,4 @@
-# [unicode.py](pudzu/experimental/unicode/unicode.py)
+# [unicode.py](pudzu.sandbox/unicode/unicode.py)
 
 ## Summary 
 Unicode data and manipulation.

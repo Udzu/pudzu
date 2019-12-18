@@ -4,7 +4,7 @@ from typing import Sequence
 
 from pudzu.pillar import *
 from pudzu.dates import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.bamboo import *
 
 FONT = sans
 W1, W2 = 100, 420

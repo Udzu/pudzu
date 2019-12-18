@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.bamboo import *
 
 df = pd.read_csv("datasets/euworldchamps.csv").set_index("sport").split_columns(["men", "women"], "|")
 FONT = calibri

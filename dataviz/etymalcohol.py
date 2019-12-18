@@ -1,5 +1,5 @@
 from pudzu.charts import *
-from pudzu.experimental.bamboo import *
+from pudzu.sandbox.bamboo import *
 
 df = pd.read_csv("datasets/etymalcohol.csv").set_index("language")
 

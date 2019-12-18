@@ -2,7 +2,7 @@
 
 ## Summary
 
-Various Python 3.6+ utility modules and scripts, mostly geared towards dataviz and used to create the data visualisations in this [flickr account](https://www.flickr.com/photos/zarfo/albums) (most of which been posted to reddit at some point by [/u/Udzu](https://www.reddit.com/user/Udzu/)). The modules aren't properly tested but are reasonably simple, generic and docstringed.
+Various Python 3.7+ utility modules and scripts, mostly geared towards dataviz and used to create the data visualisations in this [flickr account](https://www.flickr.com/photos/zarfo/albums) (most of which been posted to reddit at some point by [/u/Udzu](https://www.reddit.com/user/Udzu/)). The modules aren't properly tested but are reasonably simple, generic and docstringed.
 
 **Note that the stable modules have now been moved to the [pudzu-packages](https://github.com/Udzu/pudzu-packages) repository.**
 

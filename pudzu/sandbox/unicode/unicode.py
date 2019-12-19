@@ -22,10 +22,10 @@ UNICODEDATA_COLUMNS = [
     "Simple_Titlecase_Mapping"
 ]
 
-
 def extract_unicodedata():
     """ Convert UnicodeData.txt into a DataFrame. """
-
+    print("Extracting UnicodeData.txt...")  # TODO: logging
+    
     with importlib.resources.open_text(__package__, "UnicodeData.txt") as fh:
         df = pd.read_csv(fh, sep=";", header=None, names=UNICODEDATA_COLUMNS, index_col="Code_Point",
                          converters={'Code_Point': artial(int, 16)})
@@ -46,7 +46,8 @@ def extract_unicodedata():
 
 def extract_property(filename, property):
     """ Convert a standard UCD file. Currently only handles a subset of enumerated and binary properties. """
-
+    print(f"Extracting {property} from {filename}...")  # TODO: logging
+    
     with importlib.resources.open_text(__package__, filename) as fh:
         df = pd.read_csv(fh, sep=";", header=None, skip_blank_lines=True, comment="#",
                          names=['Code_Point', property])
@@ -54,9 +55,11 @@ def extract_property(filename, property):
     # remove whitespace and set (possibly non-unique) index
     df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
     df.index = df.Code_Point.str.replace("\.\..*","").apply(artial(int, 16))
-    # TODO: filter out Surrogate and Private Use characters
+    
+    # Filter out Surrogate and Private Use characters (though non-existent characters may remain)
+    df = df.loc[(df.index < 0xD800) | ((df.index > 0xF8FF) & (df.index < 0xF0000))]
 
-    # expand code ranges
+    # expand code ranges (TODO: make more efficient)
     expanded = df
     ranges = df[df.Code_Point.str.contains("\.\.")]
     for i, az in enumerate(ranges.Code_Point):
@@ -74,10 +77,9 @@ def extract_property(filename, property):
 
 
 def unicode_data():
-    # TODO: logging
     df = extract_unicodedata()
-    scripts = extract_property("Scripts.txt", "Script")
-    emoji = extract_property("emoji-data.txt", "Emoji")
-    # TODO: PropList, Blocks
-    df = pd.concat([df, scripts, emoji], axis=1)
+    df["Script"] = extract_property("Scripts.txt", "Script")["Script"]
+    df["Emoji"] = extract_property("emoji-data.txt", "Emoji")["Emoji"]
+    df["Properties"] = extract_property("PropList.txt", "Properties")["Properties"]
+    df["Block"] = extract_property("Blocks.txt", "Block")["Block"]
     return df

@@ -1,8 +1,11 @@
 import importlib.resources
 import re
+import numpy as np
 import pandas as pd
 
 from pudzu.utils import *
+
+logger = logging.getLogger('unicode')
 
 UNICODEDATA_COLUMNS = [
     "Code_Point",
@@ -24,7 +27,7 @@ UNICODEDATA_COLUMNS = [
 
 def extract_unicodedata():
     """ Convert UnicodeData.txt into a DataFrame. """
-    print("Extracting UnicodeData.txt...")  # TODO: logging
+    logger.info("Extracting UnicodeData.txt...")
     
     with importlib.resources.open_text(__package__, "UnicodeData.txt") as fh:
         df = pd.read_csv(fh, sep=";", header=None, names=UNICODEDATA_COLUMNS, index_col="Code_Point",
@@ -46,7 +49,7 @@ def extract_unicodedata():
 
 def extract_property(filename, property):
     """ Convert a standard UCD file. Currently only handles a subset of enumerated and binary properties. """
-    print(f"Extracting {property} from {filename}...")  # TODO: logging
+    logger.info(f"Extracting {property} from {filename}...")
     
     with importlib.resources.open_text(__package__, filename) as fh:
         df = pd.read_csv(fh, sep=";", header=None, skip_blank_lines=True, comment="#",
@@ -64,8 +67,9 @@ def extract_property(filename, property):
     ranges = df[df.Code_Point.str.contains("\.\.")]
     for i, az in enumerate(ranges.Code_Point):
         a, z = map(artial(int, 16), az.split(".."))
-        copies = pd.DataFrame([ranges.iloc[i]]*(z-a), index=range(a+1,z+1))
-        expanded = pd.concat([expanded, copies])
+        copies = ranges.iloc[np.full(z-a, i)]
+        copies.index = range(a+1,z+1)
+        expanded = expanded.append(copies)
 
     # combine properties
     df = expanded.sort_index()
@@ -79,6 +83,7 @@ def extract_property(filename, property):
 def unicode_data():
     df = extract_unicodedata()
     df["Script"] = extract_property("Scripts.txt", "Script")["Script"]
+    df["ScriptExtensions"] = extract_property("ScriptExtensionss.txt", "ScriptExtensions")["ScriptExtensions"]
     df["Emoji"] = extract_property("emoji-data.txt", "Emoji")["Emoji"]
     df["Properties"] = extract_property("PropList.txt", "Properties")["Properties"]
     df["Block"] = extract_property("Blocks.txt", "Block")["Block"]

@@ -9,6 +9,8 @@ from pudzu.utils import *
 
 logger = logging.getLogger('unicode')
 
+UNICODEDATA_FILENAME = "UnicodeData.txt"
+
 UNICODEDATA_COLUMNS = [
     "Code_Point",
     "Name",
@@ -29,10 +31,9 @@ UNICODEDATA_COLUMNS = [
 
 def extract_unicodedata(path: Optional[Path] = None) -> pd.DataFrame:
     """ Convert UnicodeData.txt into a DataFrame. """
-    filename = "UnicodeData.txt"
-    logger.info(f"Extracting {filename} from {path or 'package'}...")
+    logger.info(f"Extracting {UNICODEDATA_FILENAME} from {path or 'package'}...")
     
-    with open(path/filename, encoding="utf-8") if path else importlib.resources.open_text(__package__, filename) as fh:
+    with open(path/UNICODEDATA_FILENAME, encoding="utf-8") if path else importlib.resources.open_text(__package__, UNICODEDATA_FILENAME) as fh:
         df = pd.read_csv(fh, sep=";", header=None, names=UNICODEDATA_COLUMNS, index_col="Code_Point",
                          converters={'Code_Point': artial(int, 16)})
 

@@ -3,6 +3,8 @@ import re
 import numpy as np
 import pandas as pd
 
+from pathlib import Path
+from typing import Optional, Sequence
 from pudzu.utils import *
 
 logger = logging.getLogger('unicode')
@@ -25,16 +27,20 @@ UNICODEDATA_COLUMNS = [
     "Simple_Titlecase_Mapping"
 ]
 
-def extract_unicodedata():
+def extract_unicodedata(path: Optional[Path] = None) -> pd.DataFrame:
     """ Convert UnicodeData.txt into a DataFrame. """
-    logger.info("Extracting UnicodeData.txt...")
+    filename = "UnicodeData.txt"
+    logger.info(f"Extracting {filename} from {path or 'package'}...")
     
-    with importlib.resources.open_text(__package__, "UnicodeData.txt") as fh:
+    with open(path/filename) if path else importlib.resources.open_text(__package__, filename) as fh:
         df = pd.read_csv(fh, sep=";", header=None, names=UNICODEDATA_COLUMNS, index_col="Code_Point",
                          converters={'Code_Point': artial(int, 16)})
 
     # remove Surrogate and Private Use characters
     df = df[~df["General_Category"].isin(["Cs","Co"])]
+    
+    # drop obsolete columns
+    df = df.drop(columns=["Unicode_1_Name", "ISO_Comment"])
 
     # expand code ranges (TODO: generate correct names)
     for a,z in zip(df[df.Name.str.contains("First")].index, df[df.Name.str.contains("Last")].index):
@@ -47,13 +53,13 @@ def extract_unicodedata():
     return df
 
 
-def extract_property(filename, property):
-    """ Convert a standard UCD file. Currently only handles a subset of enumerated and binary properties. """
-    logger.info(f"Extracting {property} from {filename}...")
+def extract_property(filename: str, path: Optional[Path] = None) -> pd.DataFrame:
+    """ Convert a UCD file containing enumerated or binary properties. """
+    logger.info(f"Extracting {filename} from {path or 'package'}...")
     
-    with importlib.resources.open_text(__package__, filename) as fh:
+    with open(path/filename) if path else importlib.resources.open_text(__package__, filename) as fh:
         df = pd.read_csv(fh, sep=";", header=None, skip_blank_lines=True, comment="#",
-                         names=['Code_Point', property])
+                         names=['Code_Point', Path(filename).stem])
 
     # remove whitespace and set (possibly non-unique) index
     df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
@@ -62,7 +68,7 @@ def extract_property(filename, property):
     # Filter out Surrogate and Private Use characters (though non-existent characters may remain)
     df = df.loc[(df.index < 0xD800) | ((df.index > 0xF8FF) & (df.index < 0xF0000))]
 
-    # expand code ranges (TODO: make more efficient)
+    # expand code ranges
     expanded = df
     ranges = df[df.Code_Point.str.contains("\.\.")]
     for i, az in enumerate(ranges.Code_Point):
@@ -71,20 +77,20 @@ def extract_property(filename, property):
         copies.index = range(a+1,z+1)
         expanded = expanded.append(copies)
 
-    # combine properties
-    df = expanded.sort_index()
-    df = df.groupby(df.index).agg(set)
+    # combine properties (TODO: handle valued properties)
+    df = expanded.drop(columns=["Code_Point"]).sort_index()
+    df = df.groupby(df.index).agg(tuple)
     exclusive = (df.applymap(len) == 1).all()
-    df = df.apply(lambda s: s.apply(lambda i: next(iter(i))) if exclusive[s.name] else s.apply(tuple))
+    df = df.apply(lambda s: s.apply(lambda i: i[0]) if exclusive[s.name] else s)
 
-    return df.drop(columns=["Code_Point"])
+    return df
 
 
-def unicode_data():
+def unicode_data(path: Optional[Path] = None) -> pd.DataFrame:
     df = extract_unicodedata()
-    df["Script"] = extract_property("Scripts.txt", "Script")["Script"]
-    df["ScriptExtensions"] = extract_property("ScriptExtensionss.txt", "ScriptExtensions")["ScriptExtensions"]
-    df["Emoji"] = extract_property("emoji-data.txt", "Emoji")["Emoji"]
-    df["Properties"] = extract_property("PropList.txt", "Properties")["Properties"]
-    df["Block"] = extract_property("Blocks.txt", "Block")["Block"]
+    df["Block"] = extract_property("Blocks.txt", path).iloc[:,0]
+    df["Emoji"] = extract_property("emoji-data.txt", path).iloc[:,0]
+    df["Properties"] = extract_property("PropList.txt", path).iloc[:,0]
+    df["Script"] = extract_property("Scripts.txt", path).iloc[:,0]
+    df["Script_Extension"] = extract_property("ScriptExtensions.txt", path).iloc[:,0]
     return df

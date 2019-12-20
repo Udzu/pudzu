@@ -32,7 +32,7 @@ def extract_unicodedata(path: Optional[Path] = None) -> pd.DataFrame:
     filename = "UnicodeData.txt"
     logger.info(f"Extracting {filename} from {path or 'package'}...")
     
-    with open(path/filename) if path else importlib.resources.open_text(__package__, filename) as fh:
+    with open(path/filename, encoding="utf-8") if path else importlib.resources.open_text(__package__, filename) as fh:
         df = pd.read_csv(fh, sep=";", header=None, names=UNICODEDATA_COLUMNS, index_col="Code_Point",
                          converters={'Code_Point': artial(int, 16)})
 
@@ -57,7 +57,7 @@ def extract_property(filename: str, path: Optional[Path] = None) -> pd.DataFrame
     """ Convert a UCD file containing enumerated or binary properties. """
     logger.info(f"Extracting {filename} from {path or 'package'}...")
     
-    with open(path/filename) if path else importlib.resources.open_text(__package__, filename) as fh:
+    with open(path/filename, encoding="utf-8") if path else importlib.resources.open_text(__package__, filename) as fh:
         df = pd.read_csv(fh, sep=";", header=None, skip_blank_lines=True, comment="#",
                          names=['Code_Point', Path(filename).stem])
 
@@ -87,7 +87,7 @@ def extract_property(filename: str, path: Optional[Path] = None) -> pd.DataFrame
 
 
 def unicode_data(path: Optional[Path] = None) -> pd.DataFrame:
-    df = extract_unicodedata()
+    df = extract_unicodedata(path)
     df["Block"] = extract_property("Blocks.txt", path).iloc[:,0]
     df["Emoji"] = extract_property("emoji-data.txt", path).iloc[:,0]
     df["Properties"] = extract_property("PropList.txt", path).iloc[:,0]

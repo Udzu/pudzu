@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 from pathlib import Path
-from typing import Optional, Sequence
+from typing import Optional, Collection
 from pudzu.utils import *
 
 logger = logging.getLogger('unicode')
@@ -87,11 +87,8 @@ def extract_property(filename: str, path: Optional[Path] = None) -> pd.DataFrame
     return df
 
 
-def unicode_data(path: Optional[Path] = None) -> pd.DataFrame:
+def unicode_data(properties: Collection[str] = ("Blocks", "PropList"), path: Optional[Path] = None) -> pd.DataFrame:
     df = extract_unicodedata(path)
-    df["Block"] = extract_property("Blocks.txt", path).iloc[:,0]
-    df["Emoji"] = extract_property("emoji-data.txt", path).iloc[:,0]
-    df["Properties"] = extract_property("PropList.txt", path).iloc[:,0]
-    df["Script"] = extract_property("Scripts.txt", path).iloc[:,0]
-    df["Script_Extension"] = extract_property("ScriptExtensions.txt", path).iloc[:,0]
+    for property in sorted(set(properties)):
+        df[property] = extract_property(f"{property}.txt", path)
     return df

@@ -53,10 +53,6 @@ def _groupby_rows(df, by):
     """Group rows using a row/index function, index map, index list or column name."""
     return df.groupby(lambda i: ignoring_extra_args(by)(df.ix[i], i) if callable(by) else by[i] if non_string_iterable(by) else df.ix[i].get(by))
 
-def _split_rows(df, by):
-    """Split rows by column, making one copy for each item in the column value."""
-    return pd.DataFrame(pd.Series(assoc_in(row, [by], v)) for _, row in df.iterrows() for v in make_iterable(row[by]))
-
 def _split_columns(df, columns, delimiter, converter=identity):
     """Split column string values into tuples with the given delimiter."""
     return df.update_columns(**{column : ignoring_exceptions(lambda s: tuple(converter(x) for x in s.split(delimiter)), (), (AttributeError)) for column in make_iterable(columns) })
@@ -65,7 +61,6 @@ pd.DataFrame.filter_rows = _filter_rows
 pd.DataFrame.assign_rows = _assign_rows
 pd.DataFrame.update_columns = _update_columns
 pd.DataFrame.groupby_rows = _groupby_rows
-pd.DataFrame.split_rows = _split_rows
 pd.DataFrame.split_columns = _split_columns
 
 def _reduce(groupby, fn):
@@ -90,7 +85,13 @@ def prompt_for_value(default=np.nan, prompt=lambda r: r.to_dict()):
 def read_csvs(files, *args, **kwargs):
     """Read and concatenate multiple csv files"""
     return pd.concat([pd.read_csv(file, *args, **kwargs) for file in glob.glob(files)], ignore_index=True)
-    
+
+def pd_print(item, **kwargs):
+    """Print an item with pandas the given display options (e.g. min_rows=60)."""
+    options = [[f"display.{k}", v] for k,v in kwargs.items()]
+    with pd.option_context(*[v for o in options for v in o]):
+        print(df)
+        
 # filter expressions
 
 if pyparsing:

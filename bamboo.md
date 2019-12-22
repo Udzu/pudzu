@@ -2,7 +2,7 @@
 
 ## Summary 
 
-A handful of utilities monkey-patched onto the pandas DataFrame class. Gradually obsoleting these and replacing them with pure pandas.
+A handful of utilities monkey-patched onto the pandas DataFrame class. Some where written before I properly understood pandas, and should be obsoleted.
 
 ## Dependencies
 *Required*: [pandas](http://pandas.pydata.org/), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).

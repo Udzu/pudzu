@@ -18,6 +18,7 @@ The stable modules can be installed using `pip` as described in the [pudzu-packa
 
 ## Experimental modules
 
+- [pudzu.sandbox.bamboo](bamboo.md) - various monkey-patched Pandas utilities.
 - [pudzu.sandbox.markov](markov.md) - simple Markov Chain n-gram based generator.
 - [pudzu.sandbox.nounce](nounce.md) - simple IPA-based pronouncing and rhyming dictionary.
 - [pudzu.sandbox.tureen](tureen.md) - various BeautifulSoup utilities.

@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import re
 
+from contextlib import nullcontext
 from pudzu.utils import *
 
 tqdm = optional_import("tqdm")
@@ -57,11 +58,22 @@ def _split_columns(df, columns, delimiter, converter=identity):
     """Split column string values into tuples with the given delimiter."""
     return df.update_columns(**{column : ignoring_exceptions(lambda s: tuple(converter(x) for x in s.split(delimiter)), (), (AttributeError)) for column in make_iterable(columns) })
 
+def _explode_to_columns(df, column):
+    """Transform each element of list-likes into a new column, with NaNs for unfilled columns."""
+    max_length = df[column].apply(ignoring_exceptions(len, 0)).max()
+    return df.assign(**{f"{column}_{i}" : df[column].apply(ignoring_exceptions(lambda v: v[i], np.nan)) for i in range(max_length) })
+    
+def _combine_columns(df, columns):
+    """Combine columns into a tuple, ignoring NaNs and Nones, returning a series."""
+    return df[columns].apply(lambda s: tuple(x for x in s if nnn(x)), axis=1)
+
 pd.DataFrame.filter_rows = _filter_rows
 pd.DataFrame.assign_rows = _assign_rows
 pd.DataFrame.update_columns = _update_columns
 pd.DataFrame.groupby_rows = _groupby_rows
 pd.DataFrame.split_columns = _split_columns
+pd.DataFrame.explode_to_columns = _explode_to_columns
+pd.DataFrame.combine_columns = _combine_columns
 
 def _reduce(groupby, fn):
     """Reduce a groupby by applying a function to every column."""
@@ -87,11 +99,11 @@ def read_csvs(files, *args, **kwargs):
     return pd.concat([pd.read_csv(file, *args, **kwargs) for file in glob.glob(files)], ignore_index=True)
 
 def pd_print(item, **kwargs):
-    """Print an item with pandas the given display options (e.g. min_rows=60)."""
+    """Print an item with pandas using the given display options (e.g. min_rows=60)."""
     options = [[f"display.{k}", v] for k,v in kwargs.items()]
-    with pd.option_context(*[v for o in options for v in o]):
+    with pd.option_context(*[v for o in options for v in o]) if options else nullcontext():
         print(df)
-        
+
 # filter expressions
 
 if pyparsing:

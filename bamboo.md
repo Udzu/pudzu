@@ -2,7 +2,7 @@
 
 ## Summary 
 
-A handful of utilities monkey-patched onto the pandas DataFrame class. Some where written before I properly understood pandas, and should be obsoleted.
+A handful of utilities monkey-patched onto the pandas DataFrame class. Some were written before I properly understood pandas, and should be obsoleted.
 
 ## Dependencies
 *Required*: [pandas](http://pandas.pydata.org/), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
@@ -21,7 +21,7 @@ A handful of utilities monkey-patched onto the pandas DataFrame class. Some wher
 
 ### standalone functions
 
-**pd_print**: print an item with pandas using the given `display.` options (e.g. min_rows=60)
+**pd_print**: print a value using the given pandas `display.` options (e.g. min_rows=60)
 
 ```python
 >> pd_print(df, max_rows=2)

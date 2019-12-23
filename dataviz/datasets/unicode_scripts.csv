@@ -22,7 +22,7 @@ Caucasian_Albanian,alphabet
 Chakma,abugida
 Cham,abugida
 Cherokee,syllabary
-Common,other
+Common,common
 Coptic,alphabet
 Cuneiform,logographic
 Cypriot,syllabary
@@ -34,7 +34,7 @@ Duployan,alphabet
 Egyptian_Hieroglyphs,logographic
 Elbasan,alphabet
 Elymaic,abjad
-Emoji,other
+Emoji,common
 Ethiopic,abugida
 Georgian,alphabet
 Glagolitic,alphabet
@@ -52,7 +52,7 @@ Hatran,abjad
 Hebrew,abjad
 Hiragana,syllabary
 Imperial_Aramaic,abjad
-Inherited,other
+Inherited,common
 Inscriptional_Pahlavi,abjad
 Inscriptional_Parthian,abjad
 Javanese,abugida
@@ -80,7 +80,7 @@ Mandaic,abjad
 Manichaean,abjad
 Marchen,abugida
 Masaram_Gondi,abugida
-Mathematical_Notation,other
+Mathematical_Notation,common
 Medefaidrin,alphabet
 Meetei_Mayek,abugida
 Mende_Kikakui,syllabary

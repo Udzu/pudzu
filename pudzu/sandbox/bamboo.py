@@ -101,7 +101,7 @@ def read_csvs(files, *args, **kwargs):
     return pd.concat([pd.read_csv(file, *args, **kwargs) for file in glob.glob(files)], ignore_index=True)
 
 def pd_print(item, **kwargs):
-    """Print an item with pandas using the given display options (e.g. min_rows=60)."""
+    """Print a value using the given pandas display options (e.g. min_rows=60)."""
     options = [[f"display.{k}", v] for k,v in kwargs.items()]
     with pd.option_context(*[v for o in options for v in o]) if options else nullcontext():
         print(df)

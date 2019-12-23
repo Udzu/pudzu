@@ -58,10 +58,12 @@ def _split_columns(df, columns, delimiter, converter=identity):
     """Split column string values into tuples with the given delimiter."""
     return df.update_columns(**{column : ignoring_exceptions(lambda s: tuple(converter(x) for x in s.split(delimiter)), (), (AttributeError)) for column in make_iterable(columns) })
 
-def _explode_to_columns(df, column):
+def _explode_to_columns(df, column, append=True):
     """Transform each element of list-likes into a new column, with NaNs for unfilled columns."""
     max_length = df[column].apply(ignoring_exceptions(len, 0)).max()
-    return df.assign(**{f"{column}_{i}" : df[column].apply(ignoring_exceptions(lambda v: v[i], np.nan)) for i in range(max_length) })
+    new_cols = {f"{column}_{i}" : df[column].apply(ignoring_exceptions(lambda v: v[i], np.nan)) for i in range(max_length) }
+    df = df.assign(**new_cols)
+    return df if append else df[list(new_cols)]
     
 def _combine_columns(df, columns):
     """Combine columns into a tuple, ignoring NaNs and Nones, returning a series."""

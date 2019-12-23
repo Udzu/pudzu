@@ -105,7 +105,7 @@ A handful of utilities monkey-patched onto the pandas DataFrame class. Some wher
 
 **explode_to_columns**: explode column sequence values to multiple columns.
 
-```
+```python
 >> _.explode_to_columns("children")
            children   name     surname children_0 children_1
 0        (Pebbles,)   Fred  Filntstone    Pebbles        NaN
@@ -115,7 +115,7 @@ A handful of utilities monkey-patched onto the pandas DataFrame class. Some wher
 
 **combine_columns**: combine columns into a tuple, ignoring NaNs and Nones, returning a series.
 
-```
+```python
 >> _.combine_columns(["children_1", "children_0"])
 0          (Pebbles,)
 1    (Stony, Pebbles)

@@ -13,14 +13,18 @@ df["Script"] = np.select([~df["Scripts"].isin(["Common", "Inherited"]), df["Emoj
 
 scripts = pd.read_csv("datasets/unicode_scripts.csv", index_col="Name")
 scripts["Count"] = df.Script.value_counts()
-scripts = scripts.sort_values("Count", ascending=False)
+scripts["Other"] = scripts.index != "Common"
+scripts = scripts.fillna(0).sort_values(["Other", "Count"], ascending=False)
 
 script_types = scripts.reset_index().groupby("Type").agg(tuple)
-script_types = script_types.reindex(["abjad", "alphabet", "abugida", "semi-syllabary", "syllabary", "logographic", "featural", "common"])
+script_types["Total"] = script_types.Count.apply(sum)
+# script_types = script_types.reindex(["logographic", "syllabary", "abjad", "alphabet", "semi-syllabary", "abugida", "featural", "common"])
+script_types = script_types.sort_values("Total", ascending=False)
 counts = script_types.explode_to_columns("Count", append=False)
 names = script_types.explode_to_columns("Name", append=False)
 
-LABEL_RENAME = { "Common": "Other\nCommon", "Mathematical_Notation": "Math", "Egyptian_Hieroglyphs": "Hieroglyphs" }
+LABEL_RENAME = { "Common": "(other)", "Mathematical_Notation": "Math", "Egyptian_Hieroglyphs": "Hieroglyphs" }
+TYPE_RENAME = {"logographic": "logographic\nscript", "featural": "featural\nscript",}
 
 def colorfn(c,r,v):
     def bar(sz):
@@ -33,12 +37,19 @@ def clabelfn(c,r,v):
     if v < 1000: return None
     label = names.iloc[r,c]
     return LABEL_RENAME.get(label,label)
+
+def rlabelfn(r):
+    count = counts.count(axis=1)[r]
+    label = TYPE_RENAME.get(counts.index[r], counts.index[r])
+    if label == "common": return "shared\ncharacters"
+    plural = label[:-1]+"ies" if label.endswith("y") else label+"s"
+    return f"{count} {plural}"
     
 chart = bar_chart(counts.fillna(0), 100, 1200, type=BarChartType.STACKED,
-                  ymax=counts.sum(axis=1).max(),
+                  ymax=ceil_significant(counts.fillna(0).sum(axis=1).max(), 3)-1,
                   colors=colorfn,
-                  spacing=5, label_font=arial(12), clabels=clabelfn,
-                  # ylabels=lambda v: str(v)[0:2]+" million" if v > 0 else "0",
+                  spacing=5, label_font=arial(12), clabels=clabelfn, rlabels=rlabelfn, ylabels="{:,}",
+                  ylabel=Image.from_text("# of assigned codepoints", arial(20), padding=10).transpose(Image.ROTATE_90),
                   grid_interval=5000, tick_interval=1000)
 
 # TODO: palette, top script examples, % asian?

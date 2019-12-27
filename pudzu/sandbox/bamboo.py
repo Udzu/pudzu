@@ -104,7 +104,7 @@ def pd_print(item, **kwargs):
     """Print a value using the given pandas display options (e.g. min_rows=60)."""
     options = [[f"display.{k}", v] for k,v in kwargs.items()]
     with pd.option_context(*[v for o in options for v in o]) if options else nullcontext():
-        print(df)
+        print(item)
 
 # filter expressions
 

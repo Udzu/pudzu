@@ -8,6 +8,7 @@ from typing import Optional, Collection
 from pudzu.utils import *
 
 logger = logging.getLogger('unicode')
+logger.setLevel(logging.INFO)
 
 UNICODEDATA_FILENAME = "UnicodeData.txt"
 

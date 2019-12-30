@@ -65,22 +65,21 @@ chart = bar_chart(counts.fillna(0), 100, 1800, type=BarChartType.STACKED,
 
 # legend (WIP) (TODO: figure out how to properly handle missing Unicode characters!)
 
-
 LOGOGRAPHIC = f"""**LOGOGRAPHIC SCRIPTS** ({script_types.Total["logographic"]:,})
 The earliest writing scripts used hundreds of symbols to represent different words or concepts. They were never //fully// logographic though: new words were constructed via the //rebus principle//, using characters for their sounds (e.g. writing 'idea' as 'eye'+'dear').
 
 **Han script** 汉字 ({scripts.Count["Han"]:,})
-//Chinese characters are used to write Chinese, Japanese, and (to a lesser extent) Korean. Despite the unification of the sometimes visually distinct characters used in those languages, they alone make up {scripts.Count["Han"]/len(df):.0%} of all Unicode characters. Functional literacy in Chinese requires knowing around 3,000 characters.//
+//Chinese characters are used in Chinese, Japanese, and (to a small extent) Korean. Despite the unification of the sometimes visually distinct variants, they make up {scripts.Count["Han"]/len(df):.0%} of all Unicode characters. Functional literacy in Chinese requires knowing around 3,000 characters.//
 
 **Egyptian Hieroglyphs**                    ({scripts.Count["Egyptian_Hieroglyphs"]:,})
-//Deciphered in 1820 using the Rosetta Stone, Egyptian Hieroglyphs are (via the Sinaitic abjad) the direct ancestor of almost every alphabet in use today.//
+//Deciphered in 1820 using the Rosetta Stone, Egyptian Hieroglyphs are (via the Sinaitic abjad) the ancestor of almost every alphabet in use today.//
 
 **Sumero-Akkadian Cuneiform**               ({scripts.Count["Cuneiform"]:,})
 //These wedge-shaped marks on clay tablets compete with Egyptian Hieroglyphs for the title of oldest writing.//
 """
 
 SYLLABARY = f"""**SYLLABARIES** ({script_types.Total["syllabary"]:,})
-Later scripts used ...dozens...syllabels..., often derived from simplified logograms.
+One transition to a purely phonetic script involved using dozens of symbols to represent every possible syllable (typically a consonant + a vowel). These were often derived from simplified logograms.
 
 **Hiragana** ひらがな ({scripts.Count["Hiragana"]:,})
 //One of two syllabaries used in Japanese, Hiragana is mostly used to write grammatical and function words. The other, Katakana, is for loanwords or emphasis.//
@@ -89,89 +88,90 @@ Later scripts used ...dozens...syllabels..., often derived from simplified logog
 //Invented in 1821 by Sequoyah and soon adopted by the Cherokee Nation. Many characters look like Latin, but represent unrelated sounds: e.g. 4 spells /se/.//
 
 **Linear B** ({scripts.Count["Linear_B"]:,})
-//Deciphered only in 1952, Linear B was the earliest form of written Greek. It succeeded Linear A, a still undeciphered (though likely syllabic) script.//
+//Deciphered only in 1952, Linear B was the earliest form of written Greek. It succeeded Linear A, a still undeciphered (but probably still syllabic) script.//
 """
 
 ABJAD = f"""**ABJADS** ({script_types.Total["abjad"]:,})
-Writing script writing script writing script writing script writing script writing script.
+The first alphabets only included signs for consonants, with vowel sounds implied by the phonology (or later indicated with optional markings). Most are written right-to-left, like Egyptian usually was.
 
 **Arabic** اَلْعَرَبِيَّةُ \u200e({scripts.Count["Arabic"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+//Also used for Persian and Urdu, Arabic is the fourth most used script in the world. It is heavily cursive, resulting in multiple presentation forms for each letter.//
 
 **Hebrew** עברית \u200e({scripts.Count["Hebrew"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+//A stylised form of the Aramaic abjad, Hebrew is also used to write Yiddish and Ladino. The first letter, א, is a rare mathematical symbol not from Latin or Greek.//
 
-**Phoenician**                                    \u200e({scripts.Count["Phoenician"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+**Phoenician**                                 \u200e({scripts.Count["Phoenician"]:,})
+//An early abjad, and an ancestor Greek, Aramaic, and (through them) most other alphabets. Its ancestor, Proto-Sinaitic, is not yet encoded in Unicode.//
 """
 
 ALPHABET = f"""**ALPHABETS** ({script_types.Total["alphabet"]:,})
-Writing script writing script writing script writing script writing script writing script.
+Alphabet in the wide sense includes any script that encodes individual sounds (rather than syllables or words). Narrowly, however, it is restricted to those that write consonants and vowels as independent letters.
 
 **Latin** ({scripts.Count["Latin"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+//Latin is by far the most widely used script in the world, used by around 70% of the world (including Chinese pinyin). Its wide usage, by unrelated languages, has resulted in a plethora of diacritics and ligatures.//
 
 **Greek** Ελληνικά ({scripts.Count["Greek"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+//Greek was the first true alphabet, repurposing unused Phoenician consonants as vowels. It is also why most alphabets are written left-to-right, a switch that followed an intermediate alternating 'boustrophedon' phase.//
 
 **Cyrillic** Кириллица ({scripts.Count["Cyrillic"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+//A descendent of Greek, Cyrillic (named after St Cyril) was created in Bulgaria, and is used by both Orthodox Slavic and other Russian-influenced languages.//
 """
 
 SEMISYLLABARY = f"""**SEMI-SYLLABARIES** ({script_types.Total["semi-syllabary"]:,})
-Writing script writing script writing script writing script writing script writing script.
+A small number of scripts behaves partly as an alphabet and partly as a syllabary. These include the Paleohispanic scripts of ancient Spain, not yet encoded in Unicode, as well as the following.
 
 **Bopomofo** ㄅㄆㄇㄈ ({scripts.Count["Bopomofo"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+While Mainland Chine uses the Latin script (as pinyin) to transliterate Chinese, Taiwan mostly uses Bopomofo (or Zhuyin). XXX
 
 **Bamum** ({scripts.Count["Bamum"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 
-**Old Persian** ({scripts.Count["Old_Persian"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+**Old Persian cuneiform** ({scripts.Count["Old_Persian"]:,})
+Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 """
 
 ABUGIDA = f"""**ABUGIDAS** ({script_types.Total["abugida"]:,})
 Writing script writing script writing script writing script writing script writing script.
 
 **Devanagari** देवनागरी ({scripts.Count["Devanagari"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 
 **Thai** อักษรไทย ({scripts.Count["Thai"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 
 **Ge'ez** ግዕዝ ({scripts.Count["Ethiopic"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 """
 
 FEATURAL = f"""**FEATURAL SCRIPTS** ({script_types.Total["featural"]:,})
 Writing script writing script writing script writing script writing script writing script.
 
 **Hangul** 한글 ({scripts.Count["Hangul"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 
 **Canadian Aboriginal syllabics** ᖃᓂᐅᔮᖅᐸᐃᑦ ({scripts.Count["Canadian_Aboriginal"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 
-**SignWriting** ግዕዝ ({scripts.Count["SignWriting"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+**SignWriting** ({scripts.Count["SignWriting"]:,})
+Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 """
 
 COMMON = f"""**SHARED CHARACTERS** ({script_types.Total["featural"]:,})
 Writing script writing script writing script writing script writing script writing script.
 
 **Emoji** 😂 ({scripts.Count["Emoji"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 
 **Mathematical Notation** ({scripts.Count["Mathematical_Notation"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 
 **Other shared characters** ({scripts.Count["Common"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing.
+Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 """
 
 def color(script_type): return VegaPalette10[np.where(script_types.index==script_type)[0][0]]
 arialu = partial(font, "fonts/arialu")
+hyphenator = language_hyphenator()
 
 logographic_legend = Image.from_markup(LOGOGRAPHIC, partial(arialu, 14), max_width=350, fg=color("logographic"), bg="white")
 syllabary_legend = Image.from_markup(SYLLABARY, partial(arialu, 14), max_width=350, fg=color("syllabary"), bg="white")
@@ -182,10 +182,10 @@ abugida_legend = Image.from_markup(ABUGIDA, partial(arialu, 14), max_width=350, 
 featural_legend = Image.from_markup(FEATURAL, partial(arialu, 14), max_width=350, fg=color("featural"), bg="white")
 common_legend = Image.from_markup(COMMON, partial(arialu, 14), max_width=350, fg=color("common"), bg="white")
 
-logographic_legend.place(Image.open("text/Egyptian.png"), align=0, padding=(155,267), copy=False) # 𓂋𓏤𓈖𓆎𓅓𓏏𓊖
-logographic_legend.place(Image.open("text/Cuneiform.png"), align=0, padding=(200,358), copy=False) # 𒅴𒂠
-syllabary_legend.place(Image.open("text/Cherokee.png"), align=0, padding=(70,160), copy=False) # ᏣᎳᎩ ᎦᏬᏂᎯᏍᏗ
-abjad_legend.place(Image.open("text/Phoenician.png"), align=0, padding=(80,190), copy=False) # 𐤃𐤁𐤓𐤉𐤌 𐤊𐤍𐤏𐤍𐤉𐤌
+logographic_legend.place(Image.open("text/Egyptian.png"), align=0, padding=(155,250), copy=False) # 𓂋𓏤𓈖𓆎𓅓𓏏𓊖
+logographic_legend.place(Image.open("text/Cuneiform.png"), align=0, padding=(200,340), copy=False) # 𒅴𒂠
+syllabary_legend.place(Image.open("text/Cherokee.png"), align=0, padding=(70,196), copy=False) # ᏣᎳᎩ ᎦᏬᏂᎯᏍᏗ
+abjad_legend.place(Image.open("text/Phoenician.png"), align=0, padding=(85,287), copy=False) # 𐤃𐤁𐤓𐤉𐤌 𐤊𐤍𐤏𐤍𐤉𐤌
 
 left_legend = Image.from_column([logographic_legend, syllabary_legend, abjad_legend, alphabet_legend], xalign=0, padding=(0,0,0,20))
 right_legend = Image.from_column([semisyllabary_legend, abugida_legend, featural_legend, common_legend], xalign=0, padding=(0,0,0,20))
@@ -193,19 +193,33 @@ legend = Image.from_row([left_legend, right_legend], yalign=0, padding=(15,0)).r
 
 chart = chart.place(legend, align=0, padding=(230,20))
 
+# addendum
+
+SCRIPT_ORIGINS = {
+    'China': ['Bopomofo', 'Han', 'Lisu', 'Miao', 'New_Tai_Lue', 'Nushu', 'Tangut', 'Tai_Le', 'Yi'],
+    'Japan': ['Hiragana', 'Katakana'],
+    'Korea': ['Hangul'],
+    'Mongolia': ['Mongolian', 'Soyombo', 'Zanabazar_Square'],
+    'Tibet': ['Phags_Pa', 'Tibetan']
+}
+ASIAN_SCRIPTS = sorted(script for scripts in SCRIPT_ORIGINS.values() for script in scripts)
+scripts["Asian"] = scripts.index.isin(ASIAN_SCRIPTS)
+asian_counts = scripts[scripts.Type != "common"].groupby("Asian").sum().sort_values("Count", ascending=False)
+asian_chart = bar_chart(asian_counts[["Count"]].transpose(), 20, chart.width-200, type=BarChartType.STACKED_PERCENTAGE, horizontal=True,
+                     label_font=sans(12), grid_interval=0.1, rlabels=None, colors=[VegaPalette10.RED, VegaPalette10.BLUE],
+                     clabels=lambda c: [f"{int(asian_counts.Other[True])} East Asian scripts ({asian_counts.Count[True]:,} characters)", 
+                                        f"{int(asian_counts.Other[False])} other scripts"][c]).pad((0,0,0,10), "white")
+script_list = ", ".join(x.replace("_"," ") for x in ASIAN_SCRIPTS)
+ADDENDUM = f"**BONUS FACT**: the 17 East Asian scripts ({script_list}) between them contain 86% of all single-script characters:"
+                                        
 # title, etc
 
 title = Image.from_text_justified(TITLE.upper(), chart.width-50, 80, partial(sans, bold=True), bg="white", padding=(0,5))
 subtitle = Image.from_text_justified(SUBTITLE, chart.width-100, 40, partial(sans, italics=True), bg="white", padding=(0,5,0,20))
 footer = Image.from_markup(FOOTER, partial(sans, 14), max_width=chart.width-100, align="left", beard_line=True, bg="white", padding=(0,20,0,10))
+addendum = Image.from_markup(ADDENDUM, partial(sans, 14), max_width=chart.width-100, align="left", beard_line=True, bg="white", padding=(0,10,0,10))
 img = Image.from_column([title, subtitle, chart, footer], bg="white")
 img.save("output/unicode_scripts.png")
 
-# SCRIPT_ORIGINS = {
-    # 'China': ['Bopomofo', 'Han', 'Lisu', 'Miao', 'New_Tai_Lue', 'Nushu', 'Tangut', 'Tai_Le', 'Yi'],
-    # 'Japan': ['Hiragana', 'Katakana'],
-    # 'Korea': ['Hangul'],
-    # 'Mongolia': ['Mongolian', 'Soyombo', 'Zanabazar_Square'],
-    # 'Tibet': ['Phags_Pa', 'Tibetan']
-# }
-# ASIAN_SCRIPTS = [ script for scripts in SCRIPT_ORIGINS.values() for script in scripts ]
+                      
+# TODO: colors, labels (17 East Asian scripts / 133 others)

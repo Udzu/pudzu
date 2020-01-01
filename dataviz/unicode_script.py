@@ -25,7 +25,6 @@ scripts = scripts.sort_values(["Other", "Count"], ascending=False)
 
 script_types = scripts.reset_index().groupby("Type").agg(tuple)
 script_types["Total"] = script_types.Count.apply(sum)
-# script_types = script_types.reindex(["logographic", "syllabary", "abjad", "alphabet", "semi-syllabary", "abugida", "featural", "common"])
 script_types = script_types.sort_values("Total", ascending=False)
 counts = script_types.explode_to_columns("Count", append=False)
 names = script_types.explode_to_columns("Name", append=False)
@@ -56,7 +55,7 @@ def rlabelfn(r):
     plural = label[:-1]+"ies" if label.endswith("y") else label+"s"
     return f"{count} {plural}"
     
-chart = bar_chart(counts.fillna(0), 100, 1800, type=BarChartType.STACKED,
+chart = bar_chart(counts.fillna(0), 100, 1900, type=BarChartType.STACKED,
                   ymax=ceil_significant(counts.fillna(0).sum(axis=1).max(), 3)-1,
                   colors=colorfn,
                   spacing=5, label_font=sans(12), clabels=clabelfn, rlabels=rlabelfn, ylabels="{:,}",
@@ -114,71 +113,66 @@ Alphabet in the wide sense includes any script that encodes individual sounds (r
 //Greek was the first true alphabet, repurposing unused Phoenician consonants as vowels. It is also why most alphabets are written left-to-right, a switch that followed an intermediate alternating 'boustrophedon' phase.//
 
 **Cyrillic** Кириллица ({scripts.Count["Cyrillic"]:,})
-//A descendent of Greek, Cyrillic (named after St Cyril) was created in Bulgaria, and is used by both Orthodox Slavic and other Russian-influenced languages.//
+//A descendent of Greek, Cyrillic (named after St Cyril) was created in Bulgaria, and is used by both Orthodox Slavic and other Russian-influenced languages.//"""
+
+ABUGIDA = f"""**ABUGIDAS** ({script_types.Total["abugida"]:,})
+In the third type of alphabet, syllables consist of an explicit consonant and an optional vowel modifier; the lack of a modifier typically results in a default //inherent// vowel. Most abugidas derive from the Brāhmī script of ancient India, itself based on the Aramaic abjad.
+
+**Devanagari** देवनागरी ({scripts.Count["Devanagari"]:,})
+//The third most used script in the world, Devanagari ('divine town script') is used by many Indian languages, including Hindi, Punjabi, Marathi and Nepali.//
+
+**Thai** อักษรไทย ({scripts.Count["Thai"]:,})
+//The spread of Buddhism brought the Southern Brahmic scripts (aka Tamil-Brahmi) to South East Asia, where they evolved further. Unlike Devenagari (and English), Thai doesn't use spaces to separate words.//
+
+**Geʽez**          ({scripts.Count["Ethiopic"]:,})
+//Geʽez (or Ethiopic) is one of the few alphabets not derived from Phoenician: it instead comes from a sister script, Ancient South Arabian. It is used to write a number of languages, including Amharic and Tigrinya.//
 """
 
 SEMISYLLABARY = f"""**SEMI-SYLLABARIES** ({script_types.Total["semi-syllabary"]:,})
-A small number of scripts behaves partly as an alphabet and partly as a syllabary. These include the Paleohispanic scripts of ancient Spain, not yet encoded in Unicode, as well as the following.
+A small number of scripts behaves partly as an alphabet and partly as a syllabary. These include the Paleohispanic scripts of ancient Spain (not yet encoded in Unicode) as well as the following.
 
 **Bopomofo** ㄅㄆㄇㄈ ({scripts.Count["Bopomofo"]:,})
-While Mainland Chine uses the Latin script (as pinyin) to transliterate Chinese, Taiwan mostly uses Bopomofo (or Zhuyin). XXX
+//While China uses Latin-based pinyin to transliterate Chinese, Taiwan uses Bopomofo (aka Zhuyin). It has characters for initial consonants (onsets) and syllable ends (rimes): e.g. kan ㄎㄢ is spelled k+an.//
 
 **Bamum** ({scripts.Count["Bamum"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
+//Created by King Njoya of Cameroon, Bamum evolved from a pictographic system to a semi-syllabary in just 14 years. The script died out after French colonisation.//
 
-**Old Persian cuneiform** ({scripts.Count["Old_Persian"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
-"""
-
-ABUGIDA = f"""**ABUGIDAS** ({script_types.Total["abugida"]:,})
-Writing script writing script writing script writing script writing script writing script.
-
-**Devanagari** देवनागरी ({scripts.Count["Devanagari"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
-
-**Thai** อักษรไทย ({scripts.Count["Thai"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
-
-**Ge'ez** ግዕዝ ({scripts.Count["Ethiopic"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
+**Old Persian Cuneiform**                               ({scripts.Count["Old_Persian"]:,})
+//Invented during the reign of Darius I, this semi-syllabary was only loosely inspired by Sumero-Akkadian Cuneiform, which it superficially resembles.//
 """
 
 FEATURAL = f"""**FEATURAL SCRIPTS** ({script_types.Total["featural"]:,})
-Writing script writing script writing script writing script writing script writing script.
+A featural script represents even finer detail than an alphabet, in that its symbols are not arbitrary but attempt to encode phonological features of the sounds they represent. The symbols themselves may be combined into alphabetic letters or syllabic blocks. 
 
 **Hangul** 한글 ({scripts.Count["Hangul"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
+//The Korean alphabet's 28 letters (jamo) mimic the shape of the speaker's mouth. Letters are written in syllabic blocks, so that ㅎㅏㄴㄱㅡㄹ is written as 한글. The huge number of possible syllables explains the number of assigned characters, though it's also possible to write Hangul by directly combining jamo.//
 
-**Canadian Aboriginal syllabics** ᖃᓂᐅᔮᖅᐸᐃᑦ ({scripts.Count["Canadian_Aboriginal"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
+**Canadian syllabics**                            ({scripts.Count["Canadian_Aboriginal"]:,})
+//A family of abugidas used to write indigenous Canadian languages. Vowels are indicated by changing the orientation of consonants (or by adding dots or dashes): e.g. ∧ pi, ∨ pe, < pa and > po.//
 
 **SignWriting** ({scripts.Count["SignWriting"]:,})
 Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 """
 
-COMMON = f"""**SHARED CHARACTERS** ({script_types.Total["featural"]:,})
+COMMON = f"""**SHARED CHARACTERS** ({script_types.Total["common"]:,})
 Writing script writing script writing script writing script writing script writing script.
 
 **Emoji** 😂 ({scripts.Count["Emoji"]:,})
 Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 
-**Mathematical Notation** ({scripts.Count["Mathematical_Notation"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
-
-**Other shared characters** ({scripts.Count["Common"]:,})
+**Mathematical Notation** ∫𝑑𝜏(𝜖𝐸²+𝜇𝐻²) ({scripts.Count["Mathematical_Notation"]:,})
 Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
 """
 
 def color(script_type): return VegaPalette10[np.where(script_types.index==script_type)[0][0]]
 arialu = partial(font, "fonts/arialu")
-hyphenator = language_hyphenator()
 
 logographic_legend = Image.from_markup(LOGOGRAPHIC, partial(arialu, 14), max_width=350, fg=color("logographic"), bg="white")
 syllabary_legend = Image.from_markup(SYLLABARY, partial(arialu, 14), max_width=350, fg=color("syllabary"), bg="white")
 abjad_legend = Image.from_markup(ABJAD, partial(arialu, 14), max_width=350, fg=color("abjad"), bg="white")
 alphabet_legend = Image.from_markup(ALPHABET, partial(arialu, 14), max_width=350, fg=color("alphabet"), bg="white")
-semisyllabary_legend = Image.from_markup(SEMISYLLABARY, partial(arialu, 14), max_width=350, fg=color("semi-syllabary"), bg="white")
 abugida_legend = Image.from_markup(ABUGIDA, partial(arialu, 14), max_width=350, fg=color("abugida"), bg="white")
+semisyllabary_legend = Image.from_markup(SEMISYLLABARY, partial(arialu, 14), max_width=350, fg=color("semi-syllabary"), bg="white")
 featural_legend = Image.from_markup(FEATURAL, partial(arialu, 14), max_width=350, fg=color("featural"), bg="white")
 common_legend = Image.from_markup(COMMON, partial(arialu, 14), max_width=350, fg=color("common"), bg="white")
 
@@ -186,9 +180,12 @@ logographic_legend.place(Image.open("text/Egyptian.png"), align=0, padding=(155,
 logographic_legend.place(Image.open("text/Cuneiform.png"), align=0, padding=(200,340), copy=False) # 𒅴𒂠
 syllabary_legend.place(Image.open("text/Cherokee.png"), align=0, padding=(70,196), copy=False) # ᏣᎳᎩ ᎦᏬᏂᎯᏍᏗ
 abjad_legend.place(Image.open("text/Phoenician.png"), align=0, padding=(85,287), copy=False) # 𐤃𐤁𐤓𐤉𐤌 𐤊𐤍𐤏𐤍𐤉𐤌
+abugida_legend.place(Image.open("text/Geez.png"), align=0, padding=(40,322), copy=False) # ግዕዝ
+semisyllabary_legend.place(Image.open("text/Persian.png"), align=0, padding=(158,304), copy=False) # 𐎧𐏁𐎠𐎹𐎰𐎡𐎹
+featural_legend.place(Image.open("text/Aboriginal.png"), align=0, padding=(135,268), copy=False) # ᖃᓂᐅᔮᖅᐸᐃᑦ
 
 left_legend = Image.from_column([logographic_legend, syllabary_legend, abjad_legend, alphabet_legend], xalign=0, padding=(0,0,0,20))
-right_legend = Image.from_column([semisyllabary_legend, abugida_legend, featural_legend, common_legend], xalign=0, padding=(0,0,0,20))
+right_legend = Image.from_column([abugida_legend, semisyllabary_legend, featural_legend, common_legend], xalign=0, padding=(0,0,0,20))
 legend = Image.from_row([left_legend, right_legend], yalign=0, padding=(15,0)).remove_transparency("white")
 
 chart = chart.place(legend, align=0, padding=(230,20))

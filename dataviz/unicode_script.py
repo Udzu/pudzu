@@ -2,7 +2,19 @@ from pudzu.sandbox.unicode import *
 from pudzu.sandbox.bamboo import *
 from pudzu.charts import *
 
-# cf http://www.cesarkallas.net/arquivos/livros/informatica/unicode/ch06.pdf
+DOCS = r"""
+
+The graph shows the number of assigned Unicode characters by the type of writing script they belong to. The types of scripts are described in the text, including three examples of each.
+
+The Unicode 12.1 data is from https://unicode.org/Public/12.1.0/ucd/ and https://unicode.org/Public/emoji/12.1/. The data was processed and plotted using Python, pandas and [https://github.com/Udzu/pudzu-packages](pillar).
+
+**Bonus script facts**
+
+- The 17/150 scripts created in Eastern Asia (Bopomofo, Han, Hangul, Hiragana, Katakana, Lisu, Miao, Mongolian, New Tai Lue, Nushu, Phags Pa, Soyombo, Tai Le, Tangut, Tibetan, Yi and Zanabazar Square) account for 86% of all single-script characters.
+- Unicode 1 reserved just 20,940 characters for Han characters, in the hugely optimistic hope of creating a 16-bit standard. Abandoning this also meant abandoning the fixed-width UCS-2 encoding and introducing surrogate code points, which increased the number of code points that can be accommodated from 65,536 to 1,114,112.
+- The large number of code points for Hiragana is mostly due to hentaigana, historical stylistic variants that are no longer in use.
+- My computer fonts didn't include support for Linear B, Bamum and SignWriting.
+"""
 
 try:
     df = pd.read_csv("cache/unicode_data.csv", index_col=0, low_memory=False)
@@ -74,7 +86,7 @@ The earliest writing scripts used hundreds of symbols to represent different wor
 //Deciphered in 1820 using the Rosetta Stone, Egyptian Hieroglyphs are (via the Sinaitic abjad) the ancestor of almost every alphabet in use today.//
 
 **Sumero-Akkadian Cuneiform**               ({scripts.Count["Cuneiform"]:,})
-//These wedge-shaped marks on clay tablets compete with Egyptian Hieroglyphs for the title of oldest writing.//
+//Originally pictographic like Egyptian Hieroglyphs, these wedge-shaped marks on clay tablets compete with Hieroglyphs for the title of world's oldest writing.//
 """
 
 SYLLABARY = f"""**SYLLABARIES** ({script_types.Total["syllabary"]:,})
@@ -113,18 +125,18 @@ Alphabet in the wide sense includes any script that encodes individual sounds (r
 //Greek was the first true alphabet, repurposing unused Phoenician consonants as vowels. It is also why most alphabets are written left-to-right, a switch that followed an intermediate alternating 'boustrophedon' phase.//
 
 **Cyrillic** Кириллица ({scripts.Count["Cyrillic"]:,})
-//A descendent of Greek, Cyrillic (named after St Cyril) was created in Bulgaria, and is used by both Orthodox Slavic and other Russian-influenced languages.//"""
+//A descendent of Greek, Cyrillic (named after St Cyril) was created in Bulgaria, and is used by both Orthodox Slavic and some Russian-influenced languages.//"""
 
 ABUGIDA = f"""**ABUGIDAS** ({script_types.Total["abugida"]:,})
-In the third type of alphabet, syllables consist of an explicit consonant and an optional vowel modifier; the lack of a modifier typically results in a default //inherent// vowel. Most abugidas derive from the Brāhmī script of ancient India, itself based on the Aramaic abjad.
+In the third alphabet type, syllables are made up of an explicit consonant and an optional vowel modifier; the lack of a modifier typically results in a default //inherent// vowel. Most abugidas derive from the Brāhmī script of ancient India, itself based on the Aramaic abjad.
 
 **Devanagari** देवनागरी ({scripts.Count["Devanagari"]:,})
 //The third most used script in the world, Devanagari ('divine town script') is used by many Indian languages, including Hindi, Punjabi, Marathi and Nepali.//
 
 **Thai** อักษรไทย ({scripts.Count["Thai"]:,})
-//The spread of Buddhism brought the Southern Brahmic scripts (aka Tamil-Brahmi) to South East Asia, where they evolved further. Unlike Devenagari (and English), Thai doesn't use spaces to separate words.//
+//The spread of Buddhism brought the Southern Brahmic scripts (aka Tamil-Brahmi) to South East Asia, where they evolved further. Unlike Devenagari (or English), Thai doesn't use spaces to separate words.//
 
-**Geʽez**          ({scripts.Count["Ethiopic"]:,})
+**Geʽez**           ({scripts.Count["Ethiopic"]:,})
 //Geʽez (or Ethiopic) is one of the few alphabets not derived from Phoenician: it instead comes from a sister script, Ancient South Arabian. It is used to write a number of languages, including Amharic and Tigrinya.//
 """
 
@@ -138,30 +150,30 @@ A small number of scripts behaves partly as an alphabet and partly as a syllabar
 //Created by King Njoya of Cameroon, Bamum evolved from a pictographic system to a semi-syllabary in just 14 years. The script died out after French colonisation.//
 
 **Old Persian Cuneiform**                               ({scripts.Count["Old_Persian"]:,})
-//Invented during the reign of Darius I, this semi-syllabary was only loosely inspired by Sumero-Akkadian Cuneiform, which it superficially resembles.//
+//Invented during the reign of Darius I, this semi-syllabary was only loosely inspired by Sumero-Akkadian Cuneiform, which it visually resembles.//
 """
 
 FEATURAL = f"""**FEATURAL SCRIPTS** ({script_types.Total["featural"]:,})
 A featural script represents even finer detail than an alphabet, in that its symbols are not arbitrary but attempt to encode phonological features of the sounds they represent. The symbols themselves may be combined into alphabetic letters or syllabic blocks. 
 
 **Hangul** 한글 ({scripts.Count["Hangul"]:,})
-//The Korean alphabet's 28 letters (jamo) mimic the shape of the speaker's mouth. Letters are written in syllabic blocks, so that ㅎㅏㄴㄱㅡㄹ is written as 한글. The huge number of possible syllables explains the number of assigned characters, though it's also possible to write Hangul by directly combining jamo.//
+//The Korean alphabet's 28 letters (jamo) mimic the shape of the speakers' mouths. Letters are written in syllabic blocks, so that ㅎㅏㄴㄱㅡㄹ is written as 한글. The huge number of possible syllables explains the number of assigned characters, though it's also possible to write Hangul by directly combining jamo.//
 
 **Canadian syllabics**                            ({scripts.Count["Canadian_Aboriginal"]:,})
 //A family of abugidas used to write indigenous Canadian languages. Vowels are indicated by changing the orientation of consonants (or by adding dots or dashes): e.g. ∧ pi, ∨ pe, < pa and > po.//
 
-**SignWriting** ({scripts.Count["SignWriting"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
+**Sutton SignWriting** ({scripts.Count["SignWriting"]:,})
+//SignWriting, a system for writing sign languages like ASL, is highly featural, both in character shapes (representing hands, face and body) and spatial arrangement (top-to-bottom but not strictly sequential).//
 """
 
 COMMON = f"""**SHARED CHARACTERS** ({script_types.Total["common"]:,})
-Writing script writing script writing script writing script writing script writing script.
+A number of Unicode characters are either used in more than one script (e.g. punctuation marks or currency symbols) or combine with characters in multiple scripts (e.g. ´ can produce both á and ά).
 
-**Emoji** 😂 ({scripts.Count["Emoji"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
+**Mathematical Notation**                           ({scripts.Count["Mathematical_Notation"]:,})
+//Unicode includes virtually all the standard characters used in mathematics, though layout decisions are often left to the implementations.//
 
-**Mathematical Notation** ∫𝑑𝜏(𝜖𝐸²+𝜇𝐻²) ({scripts.Count["Mathematical_Notation"]:,})
-Japanese writing Japanese writing Japanese writing Japanese writing. Japanese writing Japanese writing Japanese writing Japanese writing.
+**Emoji**        ({scripts.Count["Emoji"]:,})
+//Unicode started adding emoji characters in 2010, which helped increase their popularity outside Japan. Some character traits, such as skin tone or gender, are encoded using modifier sequences, meaning that the true number of emoji glyphs is over 3,000.//
 """
 
 def color(script_type): return VegaPalette10[np.where(script_types.index==script_type)[0][0]]
@@ -180,9 +192,11 @@ logographic_legend.place(Image.open("text/Egyptian.png"), align=0, padding=(155,
 logographic_legend.place(Image.open("text/Cuneiform.png"), align=0, padding=(200,340), copy=False) # 𒅴𒂠
 syllabary_legend.place(Image.open("text/Cherokee.png"), align=0, padding=(70,196), copy=False) # ᏣᎳᎩ ᎦᏬᏂᎯᏍᏗ
 abjad_legend.place(Image.open("text/Phoenician.png"), align=0, padding=(85,287), copy=False) # 𐤃𐤁𐤓𐤉𐤌 𐤊𐤍𐤏𐤍𐤉𐤌
-abugida_legend.place(Image.open("text/Geez.png"), align=0, padding=(40,322), copy=False) # ግዕዝ
+abugida_legend.place(Image.open("text/Geez.png"), align=0, padding=(43,322), copy=False) # ግዕዝ
 semisyllabary_legend.place(Image.open("text/Persian.png"), align=0, padding=(158,304), copy=False) # 𐎧𐏁𐎠𐎹𐎰𐎡𐎹
 featural_legend.place(Image.open("text/Aboriginal.png"), align=0, padding=(135,268), copy=False) # ᖃᓂᐅᔮᖅᐸᐃᑦ
+common_legend.place(Image.open("text/Math.png"), align=0, padding=(160,108), copy=False) # ∫𝑑𝜏(𝜖𝐸²+𝜇𝐻²)
+common_legend.place(Image.open("text/Emoji.png"), align=0, padding=(42,195), copy=False) # 😂
 
 left_legend = Image.from_column([logographic_legend, syllabary_legend, abjad_legend, alphabet_legend], xalign=0, padding=(0,0,0,20))
 right_legend = Image.from_column([abugida_legend, semisyllabary_legend, featural_legend, common_legend], xalign=0, padding=(0,0,0,20))
@@ -202,10 +216,10 @@ SCRIPT_ORIGINS = {
 ASIAN_SCRIPTS = sorted(script for scripts in SCRIPT_ORIGINS.values() for script in scripts)
 scripts["Asian"] = scripts.index.isin(ASIAN_SCRIPTS)
 asian_counts = scripts[scripts.Type != "common"].groupby("Asian").sum().sort_values("Count", ascending=False)
-asian_chart = bar_chart(asian_counts[["Count"]].transpose(), 20, chart.width-200, type=BarChartType.STACKED_PERCENTAGE, horizontal=True,
-                     label_font=sans(12), grid_interval=0.1, rlabels=None, colors=[VegaPalette10.RED, VegaPalette10.BLUE],
-                     clabels=lambda c: [f"{int(asian_counts.Other[True])} East Asian scripts ({asian_counts.Count[True]:,} characters)", 
-                                        f"{int(asian_counts.Other[False])} other scripts"][c]).pad((0,0,0,10), "white")
+addendum_chart = bar_chart(asian_counts[["Count"]].transpose(), 20, chart.width-200, type=BarChartType.STACKED_PERCENTAGE, horizontal=True,
+                           label_font=sans(12), grid_interval=0.1, rlabels=None, colors=[VegaPalette10.RED, VegaPalette10.BLUE],
+                           clabels=lambda c: [f"{int(asian_counts.Other[True])} East Asian scripts ({asian_counts.Count[True]:,} characters)", 
+                                              f"{int(asian_counts.Other[False])} other scripts"][c]).pad((0,0,0,10), "white")
 script_list = ", ".join(x.replace("_"," ") for x in ASIAN_SCRIPTS)
 ADDENDUM = f"**BONUS FACT**: the 17 East Asian scripts ({script_list}) between them contain 86% of all single-script characters:"
                                         
@@ -217,6 +231,3 @@ footer = Image.from_markup(FOOTER, partial(sans, 14), max_width=chart.width-100,
 addendum = Image.from_markup(ADDENDUM, partial(sans, 14), max_width=chart.width-100, align="left", beard_line=True, bg="white", padding=(0,10,0,10))
 img = Image.from_column([title, subtitle, chart, footer], bg="white")
 img.save("output/unicode_scripts.png")
-
-                      
-# TODO: colors, labels (17 East Asian scripts / 133 others)

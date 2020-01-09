@@ -1,0 +1,67 @@
+country,group
+Albania,D25
+Algeria,N
+Andorra,D25
+Armenia,J6
+Austria,D25
+Azerbaijan,N
+Belarus,D25&J7
+Belgium,D25
+Bosnia,D25|J7|N
+Bulgaria,D25
+Croatia,D25
+Cyprus,D25
+Czech Republic,D25
+Denmark,D25
+Estonia,D25
+Faroe Islands,D25
+Finland,D25
+France,D25
+Georgia,J7
+Germany,D25
+Gibraltar,D25
+Greece,D25
+Guernsey,D25
+Hungary,D25
+Iceland,D25
+Iran,N
+Iraq,D25
+Ireland,D25
+Israel,N
+Italy,D25
+Jersey,D25
+Jordan,D25
+Kazakhstan,J7
+Kosovo,D25&J7
+Latvia,D25
+Lebanon,D25&J6
+Liechtenstein,D25
+Lithuania,D25
+Luxembourg,D25
+Macedonia,J7
+Malta,D25
+Moldova,D25&J7
+Monaco,D25
+Montenegro,J7
+Morocco,N
+Netherlands,D25
+Norway,D25
+Palestine,D25
+Poland,D25
+Portugal,D25
+Romania,D25
+Russia,J7
+San Marino,D25
+Saudi Arabia,N
+Serbia,J7
+Slovakia,D25
+Slovenia,D25
+Spain,D25
+Sweden,D25
+Switzerland,D25
+Syria,D25
+Tunisia,N
+Turkey,N
+UK,D25
+Ukraine,D25&J7
+Vatican City,D25

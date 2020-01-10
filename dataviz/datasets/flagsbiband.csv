@@ -1,0 +1,72 @@
+orientation,colours,name,description,flag
+S,R,China,,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1024px-Flag_of_the_People%27s_Republic_of_China.svg.png
+S,G,Saudi Arabia,,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/1024px-Flag_of_Saudi_Arabia.svg.png
+S,B,Kosovo,,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Kosovo.svg/1024px-Flag_of_Kosovo.svg.png
+S,W,Japan,,https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/1024px-Flag_of_Japan.svg.png
+S,K,Islamic State,,https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/AQMI_Flag_asymmetric.svg/1024px-AQMI_Flag_asymmetric.svg.png
+S,Y,New Mexico,USA,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_New_Mexico.svg/1024px-Flag_of_New_Mexico.svg.png
+
+H,RG,Burkina Faso,,https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Burkina_Faso.svg/1024px-Flag_of_Burkina_Faso.svg.png
+H,RB,Ticino,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Flag_of_Canton_of_Tessin.svg/1024px-Flag_of_Canton_of_Tessin.svg.png
+H,RW,Indonesia,,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/1024px-Flag_of_Indonesia.svg.png
+H,RK,Angola,,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Angola.svg/1024px-Flag_of_Angola.svg.png
+H,RY,Hampshire,UK,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/County_Flag_of_Hampshire.svg/1024px-County_Flag_of_Hampshire.svg.png
+H,GR
+H,GB
+H,GW
+H,GK
+H,GY,Saskatchewan,Canada,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Flag_of_Saskatchewan.svg/1024px-Flag_of_Saskatchewan.svg.png
+H,BR,Haiti,,https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Flag_of_Haiti.svg/1024px-Flag_of_Haiti.svg.png
+H,BG,Djibouti?
+H,BW
+H,BK
+H,BY,Ukraine,,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/1024px-Flag_of_Ukraine.svg.png
+H,WR,Poland,,https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Flag_of_Poland.svg/1024px-Flag_of_Poland.svg.png
+H,WG,Wales,UK,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Wales_%281959%E2%80%93present%29.svg/1024px-Flag_of_Wales_%281959%E2%80%93present%29.svg.png
+H,WB,San Marino,,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Flag_of_San_Marino.svg/1024px-Flag_of_San_Marino.svg.png
+H,WK,Pahang,Malaysia,https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Pahang.svg/1024px-Flag_of_Pahang.svg.png
+H,WY
+H,KR
+H,KG
+H,KB
+H,KW,Fribourg,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_Canton_of_Fribourg.svg/1024px-Flag_of_Canton_of_Fribourg.svg.png
+H,KY,Baden-Württemberg,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Baden-W%C3%BCrttemberg.svg/1024px-Flag_of_Baden-W%C3%BCrttemberg.svg.png
+H,YR
+H,YG,The Hague,Netherlands
+H,YB,County Durham,UK,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/County_Durham_Flag.svg/1024px-County_Durham_Flag.svg.png
+H,YW
+H,YK,Saxony-Anhalt,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Flag_of_Saxony-Anhalt_%28state%29.svg/1024px-Flag_of_Saxony-Anhalt_%28state%29.svg.png
+
+V,RG
+V,RB
+V,RW
+V,RK,Buckinghamshire,UK,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Flag_of_Buckinghamshire.svg/1024px-Flag_of_Buckinghamshire.svg.png
+V,RY
+V,GR,Portugal,,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1024px-Flag_of_Portugal.svg.png
+V,GB
+V,GW,Algeria,,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Algeria.svg/1024px-Flag_of_Algeria.svg.png
+V,GK
+V,GY
+V,BR
+V,BG
+V,BW
+V,BK
+V,BY,Australian Capital Territory,Australia,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_of_the_Australian_Capital_Territory.svg/1024px-Flag_of_the_Australian_Capital_Territory.svg.png
+V,WR,Malta,,https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Malta.svg/1024px-Flag_of_Malta.svg.png
+V,WG,Pakistan,,https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Flag_of_Pakistan.svg/1024px-Flag_of_Pakistan.svg.png
+V,WB
+V,WK
+V,WY
+V,KR
+V,KG
+V,KB,Aargau,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Flag_of_Canton_of_Aargau.svg/1020px-Flag_of_Canton_of_Aargau.svg.png
+V,KW
+V,KY
+V,YR,Geneva,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_Canton_of_Geneva.svg/1024px-Flag_of_Canton_of_Geneva.svg.png
+V,YG
+V,YB
+V,YW,Vatican City,,https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_the_Vatican_City.svg/1024px-Flag_of_the_Vatican_City.svg.png
+V,YK
+
+# TODO: diagonals?
+

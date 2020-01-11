@@ -1,4 +1,5 @@
 from pudzu.charts import *
+from glob import glob
 
 df = pd.read_csv("datasets/flagsbiband.csv").set_index("colours")
 
@@ -7,7 +8,7 @@ fg, bg = "black", "#EEEEEE"
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 COLORS = { "W": "white", "Y": "yellow", "R": "red", "G": "green", "B": "blue", "K": "black", }
 W, H = 320, 200
-MISSING = Rectangle((W,H),"#AAAAAA")
+MISSING = Rectangle((W,H),"#BBBBBB")
 
 def label(c, size):
     w, h = size
@@ -22,7 +23,7 @@ def label(c, size):
     return Image.from_column([label, description, flag], padding=2, bg=bg)
     
 def process(d):
-    if non(d.get('name')): return MISSING
+    if non(d.get('name')): return None if "code" in d and d["code"][0] == d["code"][-1] else MISSING
     label = Image.from_text_bounded(d['name'].replace("*","").upper(), (W,H), SIZE, partial(FONT, bold=True), beard_line=True)
     description = Image.from_text_bounded(get_non(d, 'description', " "), (W,H), SIZE, partial(FONT, italics=True), beard_line=True)
     flag = Image.from_url_with_cache(get_non(d, 'flag', default_img)).to_rgba()
@@ -35,7 +36,7 @@ def process(d):
 def bi_grid(orientation):
     ms = df[df.orientation == orientation]
     colors = "".join(COLORS)
-    array = [[dict(ms.loc[code][["name", "description", "flag"]]) if (code) in ms.index else {} for b in colors for code in [(b+t) if orientation in "HS" else (t+b)]] for t in colors]
+    array = [[dict(ms.loc[code][["name", "description", "flag"]]) if (code) in ms.index else {"code":code} for b in colors for code in [(b+t) if orientation in "HS" else (t+b)]] for t in colors]
     data = pd.DataFrame(array, index=list(colors), columns=list(colors))
     grid = grid_chart(data, process, padding=(10,20), fg=fg, bg=bg, yalign=1,
                       row_label=lambda row: label(data.index[row], (100, H)),
@@ -69,3 +70,40 @@ img.place(Image.from_text("/u/Udzu", FONT(48), fg=fg, bg=bg, padding=10).pad((2,
 img.save("output/flagsbiband.png")
 img.resize_fixed_aspect(scale=0.5).save("output/flagsbiband2.png")
 
+# some ultra naive helper functions for finding biband flags from fotw
+# TODO: convert to RGB and posterize
+
+@artial(ignoring_exceptions, False)
+def is_biband(img, horizontal=True):
+    a = np.ascontiguousarray(img if not horizontal else np.array(img).transpose())
+    void_dt = np.dtype((np.void, a.dtype.itemsize * np.prod(a.shape[1:])))
+    _,ids, count = np.unique(a.view(void_dt).ravel(), return_index=1,return_counts=1)
+    if count.max() >= a.shape[0] * 0.38:
+        mode = a[ids[count.argmax()]]
+        groups = [len(list(v)) for k,v in itertools.groupby(mode)]
+        filtered = [n for n in groups if n >= 10]
+        if len(groups) <= 5 and len(filtered) == 2:
+            return True
+    return False
+
+@artial(ignoring_exceptions, False)
+def is_diagonal(img, horizontal=True):
+    a = np.array(img)
+    if horizontal: a = a.transpose()
+    def runs(i): return len([n for k,v in itertools.groupby(a[i]) for n in [len(list(v))] if n >1])
+    return runs(0) == 1 and runs(a.shape[0]//2) == 2 and runs(a.shape[0]-1) == 1
+
+def find_bibands(files="a/*gif", horizontal=True, filter_fn=is_biband):
+    images = []
+    for p in glob(files):
+        try:
+            i = Image.open(p)
+        except:
+            continue
+        if i.width < i.height: continue
+        if filter_fn(i, horizontal): 
+            print(f"{len(images)}. {p}")
+            icon = i.to_rgba().pad_to_aspect(80,50,bg=bg).resize_fixed_aspect(height=50)
+            label = Image.from_text(p, sans(10))
+            images.append(Image.from_column([icon, label], padding=(0,3)))
+    return Image.from_array(list(generate_batches(images, 18)), padding=5, bg=bg) if images else Rectangle(10, bg)

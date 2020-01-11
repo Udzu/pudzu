@@ -11,10 +11,10 @@ H,RB,Ticino,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1
 H,RW,Indonesia,,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/1024px-Flag_of_Indonesia.svg.png
 H,RK,Angola,,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Angola.svg/1024px-Flag_of_Angola.svg.png
 H,RY,Hampshire,UK,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/County_Flag_of_Hampshire.svg/1024px-County_Flag_of_Hampshire.svg.png
-H,GR
-H,GB
+H,GR,Landázuri,Colombia,https://www.crwflags.com/fotw/images/c/co-saola.gif
+H,GB,Carolina del Príncipe,Colombia,https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Carolina_del_Pr%C3%ADncipe_%28Antioquia%29.svg/1024px-Flag_of_Carolina_del_Pr%C3%ADncipe_%28Antioquia%29.svg.png
 H,GW,Sucre,Colombia,https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Flag_of_Sucre_%28Colombia%29.svg/1024px-Flag_of_Sucre_%28Colombia%29.svg.png
-H,GK
+H,GK,Angelópolis,Colombia,https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_Angel%C3%B3polis_%28Antioquia%29.svg/1024px-Flag_of_Angel%C3%B3polis_%28Antioquia%29.svg.png
 H,GY,Saskatchewan,Canada,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Flag_of_Saskatchewan.svg/1024px-Flag_of_Saskatchewan.svg.png
 H,BR,Haiti,,https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Flag_of_Haiti.svg/1024px-Flag_of_Haiti.svg.png
 H,BG,Romani people,,https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Flag_of_the_Romani_people.svg/1024px-Flag_of_the_Romani_people.svg.png
@@ -28,7 +28,7 @@ H,WB,San Marino,,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Flag_
 H,WK,Pahang,Malaysia,https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Pahang.svg/1024px-Flag_of_Pahang.svg.png
 H,WY,Jacksonville,USA,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_Jacksonville%2C_Florida.svg/1024px-Flag_of_Jacksonville%2C_Florida.svg.png
 H,KR,Cúcuta,Colombia,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Flag_of_C%C3%BAcuta.svg/1024px-Flag_of_C%C3%BAcuta.svg.png
-H,KG
+H,KG,Republic of Benin,"(unrecognised state, 1967)",https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Flag_of_the_Republic_of_Benin.svg/1024px-Flag_of_the_Republic_of_Benin.svg.png
 H,KB
 H,KW,Fribourg,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_Canton_of_Fribourg.svg/1024px-Flag_of_Canton_of_Fribourg.svg.png
 H,KY,Baden-Württemberg,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Baden-W%C3%BCrttemberg.svg/1024px-Flag_of_Baden-W%C3%BCrttemberg.svg.png
@@ -38,43 +38,45 @@ H,YB,County Durham,UK,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/
 H,YW,Kingdom of Hanover,(1814-1866),https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Flag_of_Hanover_1837-1866.svg/1024px-Flag_of_Hanover_1837-1866.svg.png
 H,YK,Saxony-Anhalt,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Flag_of_Saxony-Anhalt_%28state%29.svg/1024px-Flag_of_Saxony-Anhalt_%28state%29.svg.png
 
-V,RG
-V,RB
-V,RW
+V,RG,Tianeti,Georgia,https://www.crwflags.com/fotw/images/g/ge-tian.gif
+V,RB,Kaluga,Russia,https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Flag_of_Kaluga.svg/1024px-Flag_of_Kaluga.svg.png
+V,RW,Vendée,France,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Vend%C3%A9e.svg/1280px-Flag_of_Vend%C3%A9e.svg.png
 V,RK,Buckinghamshire,UK,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Flag_of_Buckinghamshire.svg/1024px-Flag_of_Buckinghamshire.svg.png
 V,RY,Kirovohrad Oblast,Ukraine,https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_Kirovohrad_Oblast.svg/1024px-Flag_of_Kirovohrad_Oblast.svg.png
 V,GR,Portugal,,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1024px-Flag_of_Portugal.svg.png
-V,GB
+V,GB,Cepeda la Mora,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Bandera_de_Cepeda_la_Mora.svg/1024px-Bandera_de_Cepeda_la_Mora.svg.png
 V,GW,Algeria,,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Algeria.svg/1024px-Flag_of_Algeria.svg.png
 V,GK
-V,GY
+V,GY,Oleksandrivka Raion,Ukraine,https://upload.wikimedia.org/wikipedia/commons/6/63/Olexandrivs_rh.png
 V,BR,Khmelnytskyi Oblast,Ukraine,https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Flag_of_Khmelnytskyi_Oblast.svg/1024px-Flag_of_Khmelnytskyi_Oblast.svg.png
-V,BG
+V,BG,Lentekhi,Georgia,https://fotw.info/images/g/ge-lent.gif
 V,BW,Azores,Portugal,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Flag_of_the_Azores.svg/1024px-Flag_of_the_Azores.svg.png
 V,BK
 V,BY,Australian Capital Territory,Australia,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_of_the_Australian_Capital_Territory.svg/1024px-Flag_of_the_Australian_Capital_Territory.svg.png
 V,WR,Malta,,https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Malta.svg/1024px-Flag_of_Malta.svg.png
 V,WG,Pakistan,,https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Flag_of_Pakistan.svg/1024px-Flag_of_Pakistan.svg.png
 V,WB,Connacht,Ireland,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Flag_of_Connacht.svg/1024px-Flag_of_Connacht.svg.png
-V,WK
+V,WK,Metz,France,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Metz_flag.svg/1024px-Metz_flag.svg.png
 V,WY
 V,KR,Paraíba,Brazil,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Bandeira_da_Para%C3%ADba.svg/1024px-Bandeira_da_Para%C3%ADba.svg.png
-V,KG
+V,KG,Piedrahíta,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Bandera_de_Piedrahita.svg/1024px-Bandera_de_Piedrahita.svg.png
 V,KB,Aargau,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Flag_of_Canton_of_Aargau.svg/1020px-Flag_of_Canton_of_Aargau.svg.png
-V,KW
-V,KY
+V,KW,Gembloux,Belgium,https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Flag_of_Gembloux.svg/1024px-Flag_of_Gembloux.svg.png
+V,KY,Sneek,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Flag_of_Sneek.svg/1024px-Flag_of_Sneek.svg.png
 V,YR,Geneva,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_Canton_of_Geneva.svg/1024px-Flag_of_Canton_of_Geneva.svg.png
-V,YG
-V,YB
+V,YG,Marcovia,Honduras,https://fotw.info/images/h/hn-ch-07.gif
+V,YB,Poti,Georgia,https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Flag_of_Poti.svg/1024px-Flag_of_Poti.svg.png
 V,YW,Vatican City,,https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_the_Vatican_City.svg/1024px-Flag_of_the_Vatican_City.svg.png
 V,YK,Norfolk,UK,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Flag_of_Norfolk.svg/1024px-Flag_of_Norfolk.svg.png
 
 # TODO: diagonals?
 
 D,RW,Utrecht,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Flag_of_Utrecht_city.svg/1024px-Flag_of_Utrecht_city.svg.png
+D,RY,Palermo,Italy,https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Flag_of_Palermo.svg/1024px-Flag_of_Palermo.svg.png
 D,BR,Central Province,Papua New Guinea,https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Flag_of_Central_Province_PNG.svg/1024px-Flag_of_Central_Province_PNG.svg.png
 D,BG,Christmas Island,Australia,https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Flag_of_Christmas_Island.svg/1024px-Flag_of_Christmas_Island.svg.png
 D,BW,Zürich,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Flag_of_Canton_of_Z%C3%BCrich.svg/1022px-Flag_of_Canton_of_Z%C3%BCrich.svg.png
+D,BY,Maartensdijk,Netherlands,https://fotw.info/images/n/nl-ut-md.gif
 D,GR,East Sepik,Papua New Guinea,https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_East_Sepik.png/1024px-Flag_of_East_Sepik.png
 D,GW,Thurgau,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Flag_of_Canton_of_Thurgau.svg/1022px-Flag_of_Canton_of_Thurgau.svg.png
 D,WB,Dnipropetrovsk Oblast,Ukraine,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Dnipropetrovsk_Oblast.svg/1024px-Flag_of_Dnipropetrovsk_Oblast.svg.png
@@ -85,7 +87,20 @@ D,YG,French Guiana,France (unofficial),https://upload.wikimedia.org/wikipedia/co
 D,YB,Tierra del Fuego,Argentina,https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Bandera_de_la_Provincia_de_Tierra_del_Fuego.svg/1024px-Bandera_de_la_Provincia_de_Tierra_del_Fuego.svg.png
 
 S,RG,Eastern Highlands,Papua New Guinea,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Flag_of_Eastern_Highlands.svg/1024px-Flag_of_Eastern_Highlands.svg.png
+S,RK,Anarcho-syndicalism,,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Anarchist_flag.svg/1024px-Anarchist_flag.svg.png
+S,RW,Hůry,Czech Republic,https://upload.wikimedia.org/wikipedia/commons/6/6e/Vlajka_obce_h%C3%BAry.gif
+S,GK,Anarcho-primitivism,,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Darker_green_and_Black_flag.svg/1024px-Darker_green_and_Black_flag.svg.png
+S,GY,Buenópolis,Brazil,https://fotw.info/images/b/br-mg-099.gif
+S,BG,Olešník,Czech Republic,https://upload.wikimedia.org/wikipedia/commons/e/e7/Olesnik_prapor.gif
+S,BW,Hantsavichy District,Belarus,https://www.crwflags.com/fotw/images/b/by-br-ga.gif
+S,BY,Lavras da Mangabeira,Brazil,https://fotw.info/images/b/br-ce-101.gif
+S,WR,Nova Santa Rosa,Brazil,https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Bandeira_de_Nova_Santa_Rosa.svg/1024px-Bandeira_de_Nova_Santa_Rosa.svg.png
+S,WG,San Isidro,Argentina,https://upload.wikimedia.org/wikipedia/commons/8/88/Bandera_de_San_Isidro.jpg
 S,WB,Sucre State,Argentina,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Sucre_State.svg/1024px-Flag_of_Sucre_State.svg.png
+S,WK,Anarcho-pacifism,,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Anarcho-Pacifist_flag.svg/1024px-Anarcho-Pacifist_flag.svg.png
+S,WY,Três Passos,Brazil,https://fotw.info/images/b/br-rs-460.gif
 S,KR,Sandaun,Papua New Guinea,https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Flag_of_Sandaun.svg/1024px-Flag_of_Sandaun.svg.png
 S,YG,Acre,Brazil,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Bandeira_do_Acre.svg/1024px-Bandeira_do_Acre.svg.png
+S,YB,Opperdoes,Netherlands,https://fotw.info/images/n/nl-nh0od.gif
+S,YK,Anarcho-capitalism,,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Flag_of_Anarcho-capitalism.svg/1024px-Flag_of_Anarcho-capitalism.svg.png
 S,YY,Bhutan,,https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Flag_of_Bhutan.svg/1024px-Flag_of_Bhutan.svg.png

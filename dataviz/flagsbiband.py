@@ -63,7 +63,7 @@ grid = Image.from_column([mono, bi1, bi2], padding=50, bg=bg)
 
 title = Image.from_column([
     Image.from_text_bounded("From Aargau to Zürich".upper(), grid.size, 360, partial(FONT, bold=True), fg=fg, bg=bg, padding=(100,20)),
-    Image.from_text_bounded("a catalog of solid and bicolor flags".upper(), grid.size, 240, partial(FONT, bold=True), fg=fg, bg=bg, padding=(100,20)),
+    Image.from_text_bounded("a selection of solid and bicolor flags".upper(), grid.size, 240, partial(FONT, bold=True), fg=fg, bg=bg, padding=(100,20)),
     ], padding=0)
 img = Image.from_column([title, grid], bg=bg, padding=(20,0)).pad(10, bg)
 img.place(Image.from_text("/u/Udzu", FONT(48), fg=fg, bg=bg, padding=10).pad((2,2,0,0), fg), align=1, padding=10, copy=False)
@@ -87,11 +87,16 @@ def is_biband(img, horizontal=True):
     return False
 
 @artial(ignoring_exceptions, False)
-def is_diagonal(img, horizontal=True):
+def is_diagonal(img, flip=False):
     a = np.array(img)
-    if horizontal: a = a.transpose()
-    def runs(i): return len([n for k,v in itertools.groupby(a[i]) for n in [len(list(v))] if n >1])
-    return runs(0) == 1 and runs(a.shape[0]//2) == 2 and runs(a.shape[0]-1) == 1
+    if flip: a = a.transpose()
+    def runs(i):
+        b = a[i]
+        b = np.concatenate([b[:b.size//3],b[-b.size//3:]])
+        return len([n for k,v in itertools.groupby(b) for n in [len(list(v))] if n >1])
+    if runs(0) == 1 and runs(a.shape[0]//2) == 2 and runs(a.shape[0]-1) == 1: return True
+    elif not flip: return is_diagonal(img, True)
+    else: return False
 
 def find_bibands(files="a/*gif", horizontal=True, filter_fn=is_biband):
     images = []

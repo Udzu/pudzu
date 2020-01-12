@@ -51,13 +51,13 @@ V,GY,Oleksandrivka Raion,Ukraine,https://upload.wikimedia.org/wikipedia/commons/
 V,BR,Khmelnytskyi Oblast,Ukraine,https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Flag_of_Khmelnytskyi_Oblast.svg/1024px-Flag_of_Khmelnytskyi_Oblast.svg.png
 V,BG,Lentekhi,Georgia,https://fotw.info/images/g/ge-lent.gif
 V,BW,Azores,Portugal,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Flag_of_the_Azores.svg/1024px-Flag_of_the_Azores.svg.png
-V,BK
+V,BK,Dunaivtsi,Ukraine,https://zname.com.ua/image/cache/catalog/content/Flagi-UK/Flagi_UG/Flag_Dunaenci_Hmel_Obl_city-800x533.jpg
 V,BY,Australian Capital Territory,Australia,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_of_the_Australian_Capital_Territory.svg/1024px-Flag_of_the_Australian_Capital_Territory.svg.png
 V,WR,Malta,,https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Malta.svg/1024px-Flag_of_Malta.svg.png
 V,WG,Pakistan,,https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Flag_of_Pakistan.svg/1024px-Flag_of_Pakistan.svg.png
 V,WB,Connacht,Ireland,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Flag_of_Connacht.svg/1024px-Flag_of_Connacht.svg.png
 V,WK,Metz,France,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Metz_flag.svg/1024px-Metz_flag.svg.png
-V,WY
+V,WY,Cadagua,Spain,https://images-na.ssl-images-amazon.com/images/I/51Za2eJWmPL._AC_SX569_.jpg
 V,KR,Paraíba,Brazil,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Bandeira_da_Para%C3%ADba.svg/1024px-Bandeira_da_Para%C3%ADba.svg.png
 V,KG,Piedrahíta,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Bandera_de_Piedrahita.svg/1024px-Bandera_de_Piedrahita.svg.png
 V,KB,Aargau,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Flag_of_Canton_of_Aargau.svg/1020px-Flag_of_Canton_of_Aargau.svg.png
@@ -71,6 +71,8 @@ V,YK,Norfolk,UK,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Flag_o
 
 # TODO: diagonals?
 
+D,RB,Military Police Corps,Israeli Defense Forces,https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Flag_of_the_Military_Police_Corps.svg/1024px-Flag_of_the_Military_Police_Corps.svg.png
+D,RG,Tréveneuc,France,https://fotw.info/images/f/fr-22-tr.gif
 D,RW,Utrecht,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Flag_of_Utrecht_city.svg/1024px-Flag_of_Utrecht_city.svg.png
 D,RY,Palermo,Italy,https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Flag_of_Palermo.svg/1024px-Flag_of_Palermo.svg.png
 D,BR,Central Province,Papua New Guinea,https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Flag_of_Central_Province_PNG.svg/1024px-Flag_of_Central_Province_PNG.svg.png
@@ -79,20 +81,34 @@ D,BW,Zürich,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/9/
 D,BY,Maartensdijk,Netherlands,https://fotw.info/images/n/nl-ut-md.gif
 D,GR,East Sepik,Papua New Guinea,https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_East_Sepik.png/1024px-Flag_of_East_Sepik.png
 D,GW,Thurgau,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Flag_of_Canton_of_Thurgau.svg/1022px-Flag_of_Canton_of_Thurgau.svg.png
+D,GK,Armored Corps,Israeli Defense Forces,https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Idf_armored_corps_flag.svg/1024px-Idf_armored_corps_flag.svg.png
+D,GY,El Empalme Canton,Ecuador,https://fotw.info/images/e/ec-g-eem1.gif
+D,WR,Medical Corps,Israeli Defense Forces,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_the_Israeli_Medical_Corps.svg/1024px-Flag_of_the_Israeli_Medical_Corps.svg.png
 D,WB,Dnipropetrovsk Oblast,Ukraine,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Dnipropetrovsk_Oblast.svg/1024px-Flag_of_Dnipropetrovsk_Oblast.svg.png
+D,WG,Dedgum,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Dedgum_vlag.svg/1024px-Dedgum_vlag.svg.png
+D,WK,Parrega,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Parrega_vlag.svg/1024px-Parrega_vlag.svg.png
 D,KR,Papua New Guinea,,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Flag_of_Papua_New_Guinea.svg/1024px-Flag_of_Papua_New_Guinea.svg.png
 D,KG,Enga,Papua New Guinea,https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Flag_of_Enga.png/1021px-Flag_of_Enga.png
+D,KB,Air Defense Network,Israeli Defense Forces,https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_the_Israeli_Air_Defense_Network.svg/1024px-Flag_of_the_Israeli_Air_Defense_Network.svg.png
+D,KY,Engineering Corps,Israeli Defense Forces,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Flag_of_the_Israeli_Combat_Engineering_Corps.svg/1024px-Flag_of_the_Israeli_Combat_Engineering_Corps.svg.png
 D,YR,Sicily,Italy,https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Sicilian_Flag.svg/1024px-Sicilian_Flag.svg.png
 D,YG,French Guiana,France (unofficial),https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_French_Guiana.svg/1024px-Flag_of_French_Guiana.svg.png
 D,YB,Tierra del Fuego,Argentina,https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Bandera_de_la_Provincia_de_Tierra_del_Fuego.svg/1024px-Bandera_de_la_Provincia_de_Tierra_del_Fuego.svg.png
+D,YW,Combat Intelligence Corps,Israeli Defense Forces,https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_Israeli_Field_Intelligence_Corps.svg/1024px-Flag_of_the_Israeli_Field_Intelligence_Corps.svg.png
 
 S,RG,Eastern Highlands,Papua New Guinea,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Flag_of_Eastern_Highlands.svg/1024px-Flag_of_Eastern_Highlands.svg.png
+S,RB,Riobamba,Ecuador,https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Bandera_de_Riobamba.svg/1024px-Bandera_de_Riobamba.svg.png
 S,RK,Anarcho-syndicalism,,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Anarchist_flag.svg/1024px-Anarchist_flag.svg.png
 S,RW,Hůry,Czech Republic,https://upload.wikimedia.org/wikipedia/commons/6/6e/Vlajka_obce_h%C3%BAry.gif
+S,RY,Brunstorf,Germany,https://fotw.info/images/d/de-rz-08-bt.gif
+S,GB,Kępice,Poland,https://fotw.info/images/p/pl-pm_kp.gif
 S,GK,Anarcho-primitivism,,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Darker_green_and_Black_flag.svg/1024px-Darker_green_and_Black_flag.svg.png
+S,GW,Oporapa,Colombia,https://www.crwflags.com/fotw/images/c/co-huiop.gif
 S,GY,Buenópolis,Brazil,https://fotw.info/images/b/br-mg-099.gif
+S,BR,Dříteň,Czech Republic,https://fotw.info/images/c/cz-cb-dr.gif
 S,BG,Olešník,Czech Republic,https://upload.wikimedia.org/wikipedia/commons/e/e7/Olesnik_prapor.gif
 S,BW,Hantsavichy District,Belarus,https://www.crwflags.com/fotw/images/b/by-br-ga.gif
+S,BK,Anarcho-transhumanism,,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Anarcho-Transhumanism.svg/1024px-Anarcho-Transhumanism.svg.png
 S,BY,Lavras da Mangabeira,Brazil,https://fotw.info/images/b/br-ce-101.gif
 S,WR,Nova Santa Rosa,Brazil,https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Bandeira_de_Nova_Santa_Rosa.svg/1024px-Bandeira_de_Nova_Santa_Rosa.svg.png
 S,WG,San Isidro,Argentina,https://upload.wikimedia.org/wikipedia/commons/8/88/Bandera_de_San_Isidro.jpg
@@ -100,6 +116,9 @@ S,WB,Sucre State,Argentina,https://upload.wikimedia.org/wikipedia/commons/thumb/
 S,WK,Anarcho-pacifism,,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Anarcho-Pacifist_flag.svg/1024px-Anarcho-Pacifist_flag.svg.png
 S,WY,Três Passos,Brazil,https://fotw.info/images/b/br-rs-460.gif
 S,KR,Sandaun,Papua New Guinea,https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Flag_of_Sandaun.svg/1024px-Flag_of_Sandaun.svg.png
+S,KB,Flag Proposal,New Zealand (2015-16),https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/NZ_flag_design_Silver_Fern_%28Black%2C_White_%26_Blue%29_by_Kyle_Lockwood.svg/1024px-NZ_flag_design_Silver_Fern_%28Black%2C_White_%26_Blue%29_by_Kyle_Lockwood.svg.png
+S,KW,Warning Flag,Formula 1,https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/F1_black_and_white_diagonal_flag.svg/1024px-F1_black_and_white_diagonal_flag.svg.png
+S,YR,Bhutan,(1956-69),https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Flag_of_Bhutan_%281956-1969%29.svg/960px-Flag_of_Bhutan_%281956-1969%29.svg.png
 S,YG,Acre,Brazil,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Bandeira_do_Acre.svg/1024px-Bandeira_do_Acre.svg.png
 S,YB,Opperdoes,Netherlands,https://fotw.info/images/n/nl-nh0od.gif
 S,YK,Anarcho-capitalism,,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Flag_of_Anarcho-capitalism.svg/1024px-Flag_of_Anarcho-capitalism.svg.png

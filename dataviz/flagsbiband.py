@@ -63,7 +63,7 @@ grid = Image.from_column([mono, bi1, bi2], padding=50, bg=bg)
 
 title = Image.from_column([
     Image.from_text_bounded("From Aargau to Zürich".upper(), grid.size, 360, partial(FONT, bold=True), fg=fg, bg=bg, padding=(100,20)),
-    Image.from_text_bounded("a selection of solid and bicolor flags".upper(), grid.size, 240, partial(FONT, bold=True), fg=fg, bg=bg, padding=(100,20)),
+    Image.from_text_bounded("a catalog of solid and bicolor flags".upper(), grid.size, 240, partial(FONT, bold=True), fg=fg, bg=bg, padding=(100,20)),
     ], padding=0)
 img = Image.from_column([title, grid], bg=bg, padding=(20,0)).pad(10, bg)
 img.place(Image.from_text("/u/Udzu", FONT(48), fg=fg, bg=bg, padding=10).pad((2,2,0,0), fg), align=1, padding=10, copy=False)

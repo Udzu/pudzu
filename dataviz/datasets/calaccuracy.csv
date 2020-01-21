@@ -1,10 +1,9 @@
 name,origin,type,year,accuracy
 Julian Calendar,"45BC, Rome",solar,365.25,11 minutes 15 seconds
-Hebrew Calendar,"~800, Babylonia",lunisolar,365.246827846,6 minutes 40 seconds
+Hebrew Calendar,"c.800, Babylonia",lunisolar,365.246827846,6 minutes 40 seconds
 Dàmíng Calendar,"510, China",lunisolar,365.2427960102302,52 seconds
 Gregorian Calendar,"1582, Papal States",solar,365.2425,27 seconds
 Revised Julian Calendar,"1923, Serbia",solar,365.242222222,2 seconds
-Chinese Calendar,"China",observational lunisolar,365.24218967,perfect
-Mayan Calendar*,"Mesoamerica",floating solar,365,5 hours 49 minutes
-Islamic Calendar,"638, Rashidun Caliphate",floating lunar,354.36708,10 days 11 hours
-
+Chinese Calendar,"China",lunisolar,365.24218967,kept in sync indefinitely by astronomical observations
+Mayan Calendar,"Mesoamerica",solar,365,5 hours 49 minutes
+Islamic Calendar,"638, Rashidun Caliphate",lunar,354.36708,10 days 11 hours

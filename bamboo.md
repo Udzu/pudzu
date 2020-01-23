@@ -1,4 +1,4 @@
-# [bamboo.py](pudzu.sandbox/bamboo.py)
+# [bamboo.py](pudzu/sandbox/bamboo.py)
 
 ## Summary 
 

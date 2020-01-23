@@ -4,7 +4,8 @@ import numpy as np
 import pandas as pd
 
 from pathlib import Path
-from typing import Optional, Collection
+from pkg_resources import resource_listdir
+from typing import Optional, Collection, Sequence
 from pudzu.utils import *
 
 logger = logging.getLogger('unicode')
@@ -89,7 +90,16 @@ def extract_property(filename: str, path: Optional[Path] = None) -> pd.DataFrame
 
 
 def unicode_data(properties: Collection[str] = ("Blocks", "PropList"), path: Optional[Path] = None) -> pd.DataFrame:
+    """ Extract core unicode data and properties, from the packaged files or from a given path. """
     df = extract_unicodedata(path)
     for property in sorted(set(properties)):
         df[property] = extract_property(f"{property}.txt", path)
     return df
+
+
+def unicode_resources(path: Optional[Path] = None) -> Sequence[str]:
+    """ List Unicode resource *.txt files in the package or given path. """
+    if path:
+        return sorted(r.stem for r in Path(path).glob("*.txt"))
+    else:
+        return sorted(r[:-4] for r in resource_listdir(__package__,"") if r.endswith(".txt"))

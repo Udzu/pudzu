@@ -1,4 +1,4 @@
-# [markov.py](pudzu.sandbox/markov.py)
+# [markov.py](pudzu/sandbox/markov.py)
 
 ## Summary 
 Simple Markov Chain n-gram based generator, supporting arbitrary iterables. Slow.

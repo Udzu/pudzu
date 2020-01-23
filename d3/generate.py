@@ -1,9 +1,10 @@
 from pudzu.charts import *
+from pudzu.sandbox.bamboo import *
 import json
 
 # Some adhoc utilities for generating d3 datamaps (including one for converting them to raster map templates)
 
-atlas = pd.read_csv("../dataviz/datasets/countries.csv").split_columns('country', "|").split_rows('country').set_index('country')
+atlas = pd.read_csv("../dataviz/datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')
 
 def codify_countries(datamap):
     extras = { "KSV": "kosovo", "CYP": "northern_cyprus", "SOM": "somaliland" }

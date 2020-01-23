@@ -22,8 +22,9 @@ The stable modules can be installed using `pip` as described in the [pudzu-packa
 - [pudzu.sandbox.markov](markov.md) - simple Markov Chain n-gram based generator.
 - [pudzu.sandbox.nounce](nounce.md) - simple IPA-based pronouncing and rhyming dictionary.
 - [pudzu.sandbox.tureen](tureen.md) - various BeautifulSoup utilities.
+- [pudzu.sandbox.unicode](unicode.md) - Unicode-related data and utilities.
 - [pudzu.sandbox.wikipage](wikipage.md) - wikipedia and wikidata parsing utilities.
 
 ## Copyright
 
-Copyright © 2017–19 by Udzu. Licensed under the [MIT License](LICENSE).
+Copyright © 2017–20 by Udzu. Licensed under the [MIT License](LICENSE).

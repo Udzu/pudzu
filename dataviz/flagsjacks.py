@@ -1,0 +1,30 @@
+from pudzu.charts import *
+
+df = pd.read_csv("datasets/flagsjacks.csv")
+groups = list(remove_duplicates(df.group))
+array = [[dict(r) for _,r in df.iterrows() if r.group == g] for g in groups]
+data = pd.DataFrame(array, index=list(remove_duplicates(df.group)))
+
+FONT = calibri
+FONT = partial(font, "/usr/share/fonts/truetype/freefont/FreeSans")
+W,H = 320,200
+fg, bg="black", "#EEEEEE"
+default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
+
+def process(d):
+    if not d: return None
+    flag = Image.from_url_with_cache(get_non(d, 'image', default_img)).to_rgba()
+    flag = flag.resize_fixed_aspect(height=H-2) if flag.width / flag.height < 1.3 else flag.resize((W-2,H-2))
+    pad = (1,1,0,1) if d['name'] in ["Sweden", "Germany", "Denmark"] else 1
+    flag = flag.pad(pad, "grey")
+    return Image.from_column([
+      Image.from_text(d['name'].upper(), FONT(32, bold=True), beard_line=True, fg=fg, padding=(0,0,0,10)),
+      flag
+      ], padding=2, bg=bg, equal_widths=True)
+
+
+grid = grid_chart(data, process, padding=(10,20), fg=fg, bg=bg, yalign=(0.5,0.5,0.5), row_label=lambda r: None if True else Image.from_text(data.index[r].replace(r"\n","\n").upper(), FONT(32, bold=True), align="center"))
+title = Image.from_text_justified("Selected Naval Jacks of Europe".upper(), grid.width, 80, partial(FONT, bold=True), fg=fg, bg=bg, padding=20)
+img = Image.from_column([title, grid, Rectangle((0,30))], bg=bg).pad((20,0), bg=bg)
+img.place(Image.from_text("/u/Udzu", FONT(24), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=5, copy=False)
+img.save("output/flagsjacks.png")

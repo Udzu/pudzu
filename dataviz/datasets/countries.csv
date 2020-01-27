@@ -23,7 +23,7 @@ BGD,Asia,Bangladesh,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Fl
 BGR,Europe,Bulgaria,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Bulgaria.svg/1024px-Flag_of_Bulgaria.svg.png,Bulgarian,7177991,.bg,eu|un,+359
 BHR,Asia,Bahrain,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Bahrain.svg/1024px-Flag_of_Bahrain.svg.png,Bahraini,1377237,.bh,un,+973
 BHS,North America,Bahamas|The Bahamas,https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Flag_of_the_Bahamas.svg/1024px-Flag_of_the_Bahamas.svg.png,Bahamian,388019,.bs,un,+1242
-BIH,Europe,Bosnia and Herzegovina|Bosnia,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Flag_of_Bosnia_and_Herzegovina.svg/1024px-Flag_of_Bosnia_and_Herzegovina.svg.png,Bosnian|Herzegovinian,3810416,.ba,un,+387
+BIH,Europe,Bosnia and Herzegovina|Bosnia-Herzegovina|Bosnia,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Flag_of_Bosnia_and_Herzegovina.svg/1024px-Flag_of_Bosnia_and_Herzegovina.svg.png,Bosnian|Herzegovinian,3810416,.ba,un,+387
 BLM,North America,Saint Barthélemy,https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Flag_of_Saint_Barthelemy_%28local%29.svg/1024px-Flag_of_Saint_Barthelemy_%28local%29.svg.png,Barthélemois,9279,.bl,,
 BLR,Europe,Belarus,https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Flag_of_Belarus.svg/1024px-Flag_of_Belarus.svg.png,Belarusian,9513000,.by|.бел,un,+375
 BLZ,North America,Belize,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Flag_of_Belize.svg/1024px-Flag_of_Belize.svg.png,Belizean,359287,.bz,un,+501
@@ -40,7 +40,7 @@ CCK,Asia,Cocos Islands,https://upload.wikimedia.org/wikipedia/commons/thumb/7/74
 CHE,Europe,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Switzerland.svg/1024px-Flag_of_Switzerland.svg.png,Swiss,8286976,.ch,un,+41
 CHL,South America,Chile,https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Flag_of_Chile.svg/1024px-Flag_of_Chile.svg.png,Chilean,17948141,.cl,un,+56
 CHN,Asia,China|People's Republic of China,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1024px-Flag_of_the_People%27s_Republic_of_China.svg.png,Chinese,1371220000,.cn|.中国|.中國,un,+86
-CIV,Africa,Ivory Coast|Côte d'Ivoire,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/1024px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png,Ivorian,22701556,.ci,un,+225
+CIV,Africa,Ivory Coast|Côte d'Ivoire|Cote D'Ivoire,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/1024px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png,Ivorian,22701556,.ci,un,+225
 CMR,Africa,Cameroon,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Cameroon.svg/1024px-Flag_of_Cameroon.svg.png,Cameroonian,23344179,.cm,un,+237
 COD,Africa,Democratic Republic of the Congo|Democratic Republic of Congo|DR Congo,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg/1024px-Flag_of_the_Democratic_Republic_of_the_Congo.svg.png,Congolese,77266814,.cd,un,+243
 COG,Africa,Republic of the Congo|Congo,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_the_Republic_of_the_Congo.svg/1024px-Flag_of_the_Republic_of_the_Congo.svg.png,Congolese,4620330,.cg,un,+242

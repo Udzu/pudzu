@@ -7,11 +7,18 @@ import json
 atlas = pd.read_csv("../dataviz/datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')
 
 def codify_countries(datamap):
-    extras = { "KSV": "kosovo", "CYP": "northern_cyprus", "SOM": "somaliland" }
+    extras = { 
+        "KSV": "kosovo", "CYP": "northern_cyprus", "SOM": "somaliland", 
+        "DNK": ("GRL", "FRO"), "NLD": "SXM", "FIN": "ALA", "NOR": "SJM",
+        "FRA": ("GUF", "GLP", "MTQ", "PYF", "ATF", "MAF", "NCL", "REU"),
+        "GBR": ("GIB", "FLK", "SGS"),
+        "USA": ("PRI", "GUM", "ASM")
+    }
     codified = keymap(lambda c: atlas.code.get(c, c), datamap)
-    for old, new in extras.items():
-        if old in codified and new not in codified:
-            codified[new] = codified[old]
+    for old, news in extras.items():
+        for new in make_iterable(news):
+            if old in codified and new not in codified:
+                codified[new] = codified[old]
     return codified
 
 def dict_from_vals(**kwargs):

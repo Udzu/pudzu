@@ -3,15 +3,23 @@ from generate import *
 
 # Source: Amnesty + Gambia
 
+PALETTE = {
+    "all": "#045a8d", "ordinary": "#2b8cbe", "moratorium": "#74a9cf", 
+    "hanging": VegaPalette10.RED, "shooting": VegaPalette10.ORANGE, "injection": VegaPalette10.PURPLE,
+    "other": "url(#hangingShooting)" }
+PATTERNS = """
+<defs>
+  <pattern id="hangingShooting" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+    <rect x="0" y="0" width="10" height="10" style="fill:#ff7f0e"/>  
+    <line x1="0" y1="0" x2="0" y2="10" style="stroke:#D62728; stroke-width:10" />
+  </pattern>
+</defs>
+"""
+
 df = pd.read_csv("datasets/deathpenalty.csv").set_index("country")
-
-assert set(df.index) < set(atlas.index), f'Unrecognised countris: {set(df.index) - set(atlas.index)}'
-
-# TODO: fill patterns
-PALETTE = { "all": "#045a8d", "ordinary": "#2b8cbe", "moratorium": "#74a9cf" }
-
-colormap = { c: PALETTE.get(df.position[c], VegaPalette10.RED) for c in df.index }
-generate_datamap("deathpenalty", colormap, default_fill=VegaPalette10.ORANGE)
+assert set(df.index) < set(atlas.index), f'Unrecognised countries: {set(df.index) - set(atlas.index)}'
+colormap = { c: df.position[c] if df.position[c] in PALETTE else "other" for c in df.index }
+generate_datamap("deathpenalty", colormap, palette=PALETTE, patterns=PATTERNS)
 
 # chart = Image.open("temp/jewishleaders.png")
 # legend = generate_legend(

@@ -159,7 +159,7 @@ Democratic Republic of the Congo,hanging
 Cuba,shooting
 Dominica,hanging
 Egypt,hanging,x
-Equatorial Guinea,,x
+Equatorial Guinea,shooting,x
 Ethiopia,shooting
 Gambia,shooting,x
 Guyana,hanging
@@ -176,10 +176,10 @@ Lesotho,hanging
 Libya,shooting,x
 Malaysia,hanging,x
 Nigeria,hanging|shooting|stoning|injection,x
-North Korea,hanging|shooting|decapitation,x
-Oman,,x
+North Korea,hanging|shooting,x
+Oman,shooting,x
 Pakistan,hanging,x
-Palestine,,x
+Palestine,hanging,x
 Qatar,hanging|shooting
 Saint Kitts and Nevis,hanging
 Saint Lucia,hanging
@@ -188,11 +188,11 @@ Saudi Arabia,decapitation|hanging|stoning,x
 Singapore,hanging,x
 Somalia,hanging|shooting|stoning,x
 South Sudan,hanging,x
-Sudan,,x
+Sudan,hanging,x
 Syria,hanging,x
 Taiwan,shooting,x
 Thailand,injection,x
-Trinidad and Tobago,
+Trinidad and Tobago,hanging
 Uganda,hanging
 United Arab Emirates,hanging|shooting|stoning,x
 United States of America,injection|electrocution|gas|shooting|hanging,x

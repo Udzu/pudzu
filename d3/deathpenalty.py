@@ -1,23 +1,35 @@
 from pudzu.charts import *
 from generate import *
 
-# Source: Amnesty + Gambia
-
-PALETTE = {
-    "all": "#045a8d", "ordinary": "#2b8cbe", "moratorium": "#74a9cf", 
-    "hanging": VegaPalette10.RED, "shooting": VegaPalette10.ORANGE, "injection": VegaPalette10.PURPLE,
-    "other": "url(#hangingShooting)" }
-PATTERNS = """
-<defs>
-  <pattern id="hangingShooting" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
-    <rect x="0" y="0" width="10" height="10" style="fill:#ff7f0e"/>  
-    <line x1="0" y1="0" x2="0" y2="10" style="stroke:#D62728; stroke-width:10" />
-  </pattern>
-</defs>
-"""
+# Source: Amnesty + (note Gambia, DR Congo, etc)
+# https://www.amnesty.org/download/Documents/ACT5098702019ENGLISH.PDF
+# only 20 in 2018 and only 36 in the last 10 years
 
 df = pd.read_csv("datasets/deathpenalty.csv").set_index("country")
 assert set(df.index) < set(atlas.index), f'Unrecognised countries: {set(df.index) - set(atlas.index)}'
+
+PALETTE = {
+    "all": "#045a8d", "ordinary": "#2b8cbe", "moratorium": "#74a9cf",
+    "hanging": VegaPalette10.RED, "shooting": VegaPalette10.ORANGE, "injection": VegaPalette10.GREEN, "stoning": VegaPalette10.BROWN,
+    "decapitation": VegaPalette10.PURPLE, "electrocution": VegaPalette10.PINK, "gas": VegaPalette10.LIGHTGREEN,
+    "other": VegaPalette10.GREY }
+
+PATTERNS = ""
+
+for p in df.position:
+    if isinstance(p, str) and p not in PALETTE:
+        ps = p.split("|")
+        if all(p in PALETTE for p in ps):
+            rects = [f'<rect x="{i*6}" y="0" width="{6}" height="{6*len(ps)}" style="fill:{PALETTE[p].to_hex()}"/>' for i,p in enumerate(ps)]
+            PATTERNS += f'''<defs>
+  <pattern id="{''.join(ps)}" width="{6*len(ps)}" height="{6*len(ps)}" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+    {'  '.join(rects)}
+  </pattern>
+</dev>
+'''
+            PALETTE[p] = f'url(#{"".join(ps)})'
+        else: print(ps)
+
 colormap = { c: df.position[c] if df.position[c] in PALETTE else "other" for c in df.index }
 generate_datamap("deathpenalty", colormap, palette=PALETTE, patterns=PATTERNS)
 

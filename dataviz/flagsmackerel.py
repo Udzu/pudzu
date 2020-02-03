@@ -17,8 +17,8 @@ def process(d):
     flag = flag.resize_fixed_aspect(height=198) if flag.width / flag.height < 1.3 else flag.resize((318,198))
     flag = flag.pad(1 if "Ohio" not in d["name"] else 0, "grey") 
     return Image.from_column([
-      Image.from_text(d['name'].replace(r'\n','\n'), FONT(24, bold=True), align="center", beard_line=True, fg=fg),
-      Image.from_text(description, FONT(20, italics=True), fg=fg),
+      Image.from_text(d['name'].replace(r'\n','\n'), FONT(28, bold=True), align="center", beard_line=True, fg=fg),
+      Image.from_text(description, FONT(24, italics=True), fg=fg),
       flag
       ], padding=2, bg=bg, equal_widths=True)
 

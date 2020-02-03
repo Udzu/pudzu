@@ -1,10 +1,6 @@
 from pudzu.charts import *
 from generate import *
 
-# Source: Amnesty + (note Gambia, DR Congo, etc)
-# https://www.amnesty.org/download/Documents/ACT5098702019ENGLISH.PDF
-# only 20 in 2018 and only 36 in the last 10 years
-
 df = pd.read_csv("datasets/deathpenalty.csv").set_index("country")
 assert set(df.index) < set(atlas.index), f'Unrecognised countries: {set(df.index) - set(atlas.index)}'
 
@@ -16,7 +12,7 @@ PALETTE = {
     "other": VegaPalette10.GREY }
 
 PATTERNS = ""
-WIDTH = 3
+WIDTH = 10
 
 for p in df.position:
     if isinstance(p, str) and p not in PALETTE:
@@ -42,9 +38,9 @@ legend1 = generate_legend(
   [Rectangle((40,40),PALETTE[x]).place(Image.from_text(str(counts[x]), sans(14), "white")) for x in ["all", "ordinary", "moratorium"]],
   ["Capital punishment abolished for all crimes.", 
    "Abolished for all but exceptional crimes such as treason, and no exeuctions in the last 20 years.",
-   "Abolished in practice: policy is not to execute, and no executions in the last 20 years."],
+   "Abolished in practice: an official policy not to execute, and no executions in the last 20 years."],
    40, partial(sans, 16), header="Abolitionist countries", max_width=400, border=False,
-   footer="Of the 56 retentionist countries, just 20 carried out executions in 2018, and only 36 the last 10 years.")
+   footer="Note that of the 56 countries that still have the death penalty, just 20 carried out executions in 2018, while another 20 have had no executions in the last 10 years.")
    
 legend2 = generate_legend(
   [Rectangle((40,40),PALETTE[x]).place(Image.from_text(str(counts[x]), sans(14), "white")) for x in ["hanging", "shooting", "stoning", "injection", "decapitation", "electrocution", "gas"]],
@@ -62,7 +58,10 @@ legend = Image.from_column([legend1, legend2], xalign=0).pad(1, "black")
 chart = chart.place(legend, align=(0,1), padding=50)
 
 title = Image.from_markup("**Death penalty methods around the world**".upper(), partial(sans, 80))
+footer = Image.from_markup("Abolitionist country list from [[https:\//www.amnesty.org/download/Documents/ACT5066652017ENGLISH.pdf]]", partial(sans, 16))
+
 # TODO: footer with source
 img = Image.from_column([title, chart], bg="white", padding=5)
+img.place(footer, align=(0.5,1), padding=15, copy=False)
 img.place(Image.from_text("/u/Udzu", sans(16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("output/deathpenalty.png")

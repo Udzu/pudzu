@@ -1,0 +1,78 @@
+country,category,word
+
+Andorra,t
+Armenia,t
+Austria,t
+Belgium,t
+Denmark,t
+Estonia,t
+Finland,t
+France,t
+Germany,t
+Hungary,t
+Iceland,t
+Ireland,t
+Italy,t
+Latvia,t
+Luxembourg,t
+Netherlands,t
+Monaco,t
+Norway,t
+San Marino,t
+Spain,t
+Sweden,t
+Switzerland,t
+United Kingdom,t
+
+Lithuania,ot
+Poland,ot
+
+Albania,c
+Azerbaijan,c
+Belarus,c
+Bosnia and Herzegovina,c
+Bulgaria,c
+Croatia,c
+Czech Republic,c
+Georgia,c
+Greece,c
+Kosovo,c
+Macedonia,c
+Moldova,c
+Montenegro,c
+Portugal,c
+Romania,c
+Russia,c
+Serbia,c
+Slovakia,c
+Slovenia,c
+Turkey,c
+Ukraine,c
+
+Egypt,c
+Palestine,c
+Jordan,c
+Saudi Arabia,c
+Oman,c
+Yemen,c
+Libya,c
+Tunisia,c
+Algeria,c
+Iraq,c
+Iran,c
+Syria,c
+Lebanon,c
+
+Israel,t
+Morocco,?
+
+
+United States,t
+Canada,t
+Mexico,t
+Costa Rica,t
+Argentina,t
+Bolivia,t|o,q’uñi yaku
+Paraguay,t|o,ñanary
+
+Brazil,c

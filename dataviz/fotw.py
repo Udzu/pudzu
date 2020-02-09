@@ -39,7 +39,7 @@ def generate_cribs(filter, prefix=None, max_cols=10, max_rows=10, base_path=FOTW
                 icons.append(both)
             img = Image.from_array(list(generate_batches(icons, max_cols)), padding=5, bg=BG)
             counts[cat] = counts.get(cat, 0) + 1
-            filename = f"{prefix or filter.__name__}_{cat}_{counts[cat]}.png"
+            filename = f"output/{prefix or filter.__name__}_{cat}_{counts[cat]}.png"
             print(f"Saving flags to {filename}")
             img.save(filename)
             images[cat] = []
@@ -88,4 +88,15 @@ def bands(n):
         return cat
     return bands
 
+def colors(color):
+    @omit_types
+    def colors(p):
+        img = Image.open(p)
+        if img.width < img.height: return None
+        ap = np.array(img.to_palette(HeraldicPalette))
+        u, f = np.unique(ap, return_counts=True)
+        d = { HeraldicPalette.names[k] : v for k,v in zip(u,f) }
+        if d.get(color) > (img.width * img.height / 6): return color
+    return colors
+    
 # TODO: color (e.g. pink), 

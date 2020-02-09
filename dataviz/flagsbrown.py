@@ -21,15 +21,13 @@ def process(d):
       flag
       ], padding=2, bg=bg, equal_widths=True)
 
-title = Image.from_text("Flags of the largest country subdivisions".upper(), FONT(68, bold=True), fg=fg, bg=bg, align="center").pad(30, bg).pad((0,0,0,10), bg)
-footer = Image.from_text("*Antarctic territorial claims are not recognised widely internationally, though the UK, France, Australia, New Zealand and Norway\nall recognize each other's claims. "
-"Some claims (specficially those of the UK, Argentina and Chile) overlap.", FONT(28), fg=fg, bg=bg).pad(10, bg)
+title = Image.from_text("Some flags with brown in them".upper(), FONT(68, bold=True), fg=fg, bg=bg, align="center").pad(30, bg).pad((0,0,0,10), bg)
 
 groups = list(remove_duplicates(df.group))
 array = [[dict(r) for _,r in df.iterrows() if r.group == g] for g in groups]
 data = pd.DataFrame(array, index=groups)
 grid1 = grid_chart(data, process, padding=(10,20), fg=fg, bg=bg, yalign=0, row_label=lambda r: Image.from_text("{}".format(data.index[r]).upper(), FONT(32, bold=True), align="center", line_spacing=3) if not data.index[r].startswith("_") else None).pad((10,0),bg)
 
-img = Image.from_column([title, grid1, footer, Rectangle((0,20))], bg=bg)
+img = Image.from_column([title, grid1, Rectangle((0,50))], bg=bg)
 img.place(Image.from_text("/u/Udzu", FONT(24), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=5, copy=False)
 img.save("output/flagsbrown.png")

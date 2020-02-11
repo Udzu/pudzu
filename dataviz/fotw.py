@@ -1,3 +1,4 @@
+import pandas as pd
 from pudzu.pillar import *
 from pathlib import Path
 from tqdm import tqdm
@@ -8,7 +9,7 @@ FOTW_DIR = Path("images")
 class HeraldicPalette(metaclass=NamedPaletteMeta):
     Y = "#fcdd09" # yellow
     W = "#ffffff" # white
-    B = "#0f47af" # black
+    B = "#0f47af" # blue
     R = "#da121a" # red
     P = "#9116a1" # purple
     K = "#000000" # black
@@ -28,6 +29,7 @@ def omit_types(filter, types="()^!~@}'$_"):
     
 def generate_cribs(filter, prefix=None, max_cols=10, max_rows=10, base_path=FOTW_DIR):
     i, counts, images = 0, {}, {}
+    index = []
     
     def save_and_increment(cat):
         if images.get(cat, []):
@@ -44,7 +46,7 @@ def generate_cribs(filter, prefix=None, max_cols=10, max_rows=10, base_path=FOTW
             img.save(filename)
             images[cat] = []
     
-    for p in base_path.rglob("*gif"):
+    for p in sorted(base_path.rglob("*gif")):
         try:
             cat = filter(p)
             if cat:
@@ -52,12 +54,14 @@ def generate_cribs(filter, prefix=None, max_cols=10, max_rows=10, base_path=FOTW
                 print(str(cat)[0], end="")
                 if i % max_cols == 0: print(f" {p.stem}")
                 images.setdefault(cat, []).append(p)
+                index.append((p, cat))
                 if len(images[cat]) >= max_cols * max_rows: save_and_increment(cat)
                     
-        except:
+        except Exception:
             continue
     print()
     for cat in images: save_and_increment(cat)
+    return pd.DataFrame(index, columns=["path", "category"])
 
 @omit_types
 def transparent(p):
@@ -99,4 +103,14 @@ def colors(color):
         if d.get(color) > (img.width * img.height / 6): return color
     return colors
     
-# TODO: color (e.g. pink), 
+@omit_types
+def rwb(p):
+    img = Image.open(p)
+    if img.width < img.height: return None
+    img = img.to_rgba().remove_transparency("white")
+    ap = np.array(img.to_palette(HeraldicPalette))
+    u, f = np.unique(ap, return_counts=True)
+    d = { k : v for k,v in zip(u,f) if v > img.height }
+    if len(d) == 3 and set(d) == { 1, 2, 3 } and all(v > ap.size // 10 for v in d.values()): return "RGB"
+
+

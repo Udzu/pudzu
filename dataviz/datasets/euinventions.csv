@@ -1,35 +1,35 @@
-country,invention,inventor,year
-Austria,printed circuit boards,Paul Eisler,1936
-Belarus,high-definition television,Isaac Shoenberg,1936
-Belgium,synthetic plastics,Leo Baekeland,1907
-Bulgaria,digital wristwatch,Peter Petroff,1970
-Croerbia,induction motor,Nikola Tesla,1887
-Czech Republic,plastic explosives,Stanislav Brebera/Radim Fukátko,late 1950s
-Denmark,magnetic recording
-Estonia,Schmidt telescope
-Finland,heart rate monitor
-France,vaccination
-Germany,printing press
-Greece,smear test
-Hungary,holography
-Ireland,induction coil
-Italy,battery
-Latvia,Minox camera
-Luxembourg,titanium extraction
-Moldova,foam extinguisher
-Netherlands,microscope and telescope
-Norway,aerosol spray
-Poland,kerosene lamp
-Portugal,mariner's astrolabe
-Romania,fountain pen
-Russia,synthetic rubber
-Serbatia,alternating current
-Slovakia,resonator guitar
-Slovenia,scientific pocket calculator
-Spain,mop
-Sweden,dynamite
-Switzerland,cellophane
-Turkey,
-UK,steam engine
-Ukraine,helicopter
+country,invention,inventor,year,image,align
+Austria,printed circuit board,Paul Eisler,1936,https://s3-eu-west-1.amazonaws.com/lowres-picturecabinet.com/43/main/52/132030.jpg
+Belarus,high-definition TV,Isaac Shoenberg,1936,https://live.staticflickr.com/5742/23785580771_563226ec5e_b.jpg
+Belgium,synthetic plastics,Leo Baekeland,1907,https://www.plasticsmakeitpossible.com/wp-content/uploads/2012/08/Professor-Plastic_Bracelets1.jpg
+Bulgaria,digital wristwatch,Peter Petroff,1970,https://i.pinimg.com/originals/2f/ca/ad/2fcaad75c333aeb282e77f475028e682.jpg
+Croerbia*,induction motor,Nikola Tesla*,1887,https://i.pinimg.com/originals/8d/cd/b9/8dcdb941320e802ee28d9e31c9904c26.jpg
+Czech Republic,plastic explosives,Brebera/Fukátko,late 1950s,https://upload.wikimedia.org/wikipedia/commons/b/b8/Semtex_H_1.jpg
+Denmark,magnetic recording,Valdemar Poulsen,1898,https://upload.wikimedia.org/wikipedia/commons/b/b4/Telegrafon_8154-2.jpg
+Estonia,Schmidt camera,Bernhard Schmidt ,1930,http://uploads.edubilla.com/inventions/ee/51/Schmidtcamera1.png
+Finland,heart rate monitor,Seppo Säynäjäkangas,1977,https://www.polar.com/sites/default/files/inno_pe2000.jpg
+France,pasteurization,Louis Pasteur,1880s,https://upload.wikimedia.org/wikipedia/commons/4/44/Louis_Pasteur_experiment.jpg
+Germany,printing press,Johannes Gutenberg,1440,https://carroftheoverflow.files.wordpress.com/2015/08/printing-press-invention-2.jpg?w=1000
+Greece,smear test,Georgios Papanikolaou,1928,https://www.keranews.org/sites/kera/files/styles/x_large/public/201810/pap_test_1.jpg
+Hungary,holography,Dennis Gabor,1948,https://img.thedailybeast.com/image/upload/v1492199444/articles/2014/05/27/new-york-s-holograph-king-is-also-the-city-s-last-holographer/140526-strochlic-hologram-embed2_jvedst.jpg
+Ireland,induction coil,Nicholas Callan,1836,https://www.radiomuseum.org/museum/irl/national-science-museum-maynooth/images/irl_nsm_callan_s_induction_coil.jpg
+Italy,electric battery,Alessandro Volta,1799,https://i.pinimg.com/originals/33/29/e3/3329e3ca67c2f14293d1cb28248971a0.jpg
+Latvia,Minox camera,Walter Zapp,1936,https://farm9.staticflickr.com/8381/8647303584_a01f9742d3.jpg
+Luxembourg,titanium extraction,William Kroll,1938,https://cdn.britannica.com/26/163326-050-5BC506B9/titanium-metal.jpg
+Moldova,foam extinguisher,Aleksandr Loran,1904,http://www.cherwellfiresafety.co.uk/images/history3.jpg,0
+Netherlands,microscope,Janssen/Drebbel,c.1600,https://webcdn.leica-microsystems.com/fileadmin/_migrated/media/114752-050-F5E2A2AA.jpg,1
+Norway,aerosol spray,Erik Rotheim,1927,https://upload.wikimedia.org/wikipedia/commons/d/dd/Aerosol_1943.jpg
+Poland,kerosene lamp,Ignacy Łukasiewicz,1853,https://www.researchgate.net/profile/Piotr_Dziadzio/publication/282217781/figure/fig7/AS:669948082933764@1536739478120/Kerosene-lamp-of-I-Lukasiewicz-Museum-of-Oil-and-Gas-Industry-in-Bobrka-photo-by-M.ppm
+Portugal,mariners astrolabe,various,15th century,https://exploration.marinersmuseum.org/wp-content/uploads/sites/7/2013/12/2000_52_01_Astrolabe_large-1_large.jpg
+Romania,fountain pen,Petrache Poenaru,1827,https://i.pinimg.com/originals/98/19/ca/9819ca1acb14f288e000d0155678eae1.jpg
+Russia,synthetic rubber,Sergey Lebedev,1920s,"https://img.etimg.com/thumb/width-640,height-480,imgsize-63418,resizemode-1,msid-64201687/costlier-synthetic-rubber-hits-tyre-sector.jpg"
+Serbatia*,alternating current,Nikola Tesla*,1888,https://cosmos-images2.imgix.net/file/spina/photo/11855/170914-Tesla-Full.jpg?ixlib=rails-2.1.4&auto=format&ch=Width%2CDPR&fit=max&w=835
+Slovakia,resonator guitar,John Dopyera,1925,https://www.ultimate-guitar.com/static/article/draft/77225_l7YYfflkIvr7UayL_38875.jpg,1
+Slovenia,scientific pocket calculator,France Rode,1972,https://www.hpmuseum.org/3qs/35v43q.jpg
+Spain,mop and bucket,Manuel Jalón Corominas,1956,https://static.independent.co.uk/s3fs-public/thumbnails/image/2015/04/15/18/web-mop.jpg
+Sweden,dynamite,Alfred Nobel,1860s,https://pbs.twimg.com/media/DMqI5P7W4AA7Qol.jpg
+Switzerland,cellophane,Jacques Brandenberger,1908,https://i0.wp.com/bioplasticsnews.com/wp-content/uploads/2019/07/Cellophane-Advertising.jpg?ssl=1,0.05
+Turkey,camshaft,Ismail al-Jazari,1206,https://lh3.googleusercontent.com/l31rdu0pxGJ6z1vymk6S59XmjBwAjsuvhhFBpSn_merwFapcMv7TkJUjipCc_Zcsng=s1200
+UK,steam engine,Newcomen-Watts,1712-76,https://secure.i.telegraph.co.uk/multimedia/archive/01843/hi-james-watt-0803_1843037c.jpg
+Ukraine,helicopter,Igor Sikorsky,1939,https://i.ytimg.com/vi/hgJy8-6SBR4/maxresdefault.jpg
 

@@ -7,16 +7,16 @@ BG = "#EEEEEE"
 FOTW_DIR = Path("images")
 
 class HeraldicPalette(metaclass=NamedPaletteMeta):
-    Y = "#fcdd09" # yellow
-    W = "#ffffff" # white
-    B = "#0f47af" # blue
-    R = "#da121a" # red
-    P = "#9116a1" # purple
-    K = "#000000" # black
-    G = "#009200" # green
-    T = "#804000" # brown
-    O = "#ff8000" # orange
-    C = "#75aadb" # sky blue
+    Y = "#fcdd09" # 0 yellow
+    W = "#ffffff" # 1 white
+    B = "#0f47af" # 2 blue
+    R = "#da121a" # 3 red
+    P = "#9116a1" # 4 purple
+    K = "#000000" # 5 black
+    G = "#009200" # 6 green
+    T = "#804000" # 7 brown
+    O = "#ff8000" # 8 orange
+    C = "#75aadb" # 9 sky blue
 
 def runs(row): return (np.ediff1d(row) != 0).sum() + 1
 
@@ -46,7 +46,7 @@ def generate_cribs(filter, prefix=None, max_cols=10, max_rows=10, base_path=FOTW
             img.save(filename)
             images[cat] = []
     
-    for p in sorted(base_path.rglob("*gif")):
+    for p in tqdm(sorted(base_path.rglob("*gif"))):
         try:
             cat = filter(p)
             if cat:
@@ -96,7 +96,7 @@ def colors(color):
     @omit_types
     def colors(p):
         img = Image.open(p)
-        if img.width < img.height: return None
+        if (img.width / img.height) < 0.8: return None
         ap = np.array(img.to_palette(HeraldicPalette))
         u, f = np.unique(ap, return_counts=True)
         d = { HeraldicPalette.names[k] : v for k,v in zip(u,f) }
@@ -110,7 +110,12 @@ def rwb(p):
     img = img.to_rgba().remove_transparency("white")
     ap = np.array(img.to_palette(HeraldicPalette))
     u, f = np.unique(ap, return_counts=True)
-    d = { k : v for k,v in zip(u,f) if v > img.height }
-    if len(d) == 3 and set(d) == { 1, 2, 3 } and all(v > ap.size // 10 for v in d.values()): return "RGB"
+    d = { k : v for k,v in zip(u,f) if v > img.width * 2 }
+    if all(v > ap.size // 50 for v in d.values()):
+        ds = set(d)
+        if ds == { 1, 2, 3 }: return "B"
+        elif ds == { 1, 9, 3}: return "C"
+        elif ds == { 1, 2, 3, 9}: return "X"
+
 
 

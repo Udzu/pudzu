@@ -23,6 +23,7 @@ Spain,t
 Sweden,t
 Switzerland,t
 United Kingdom,t
+Greenland,t
 
 Lithuania,ot
 Poland,ot
@@ -36,6 +37,7 @@ Croatia,c
 Czech Republic,c
 Georgia,c
 Greece,c
+Cyprus,c
 Kosovo,c
 Macedonia,c
 Moldova,c
@@ -62,17 +64,78 @@ Iraq,c
 Iran,c
 Syria,c
 Lebanon,c
+Bahrain,c
+United Arab Emirates,c
+Qatar,c
+Kuwait,c
 
 Israel,t
-Morocco,?
+Morocco,c
 
+Kazakhstan,c
+Kyrgyzstan,c
+Tajikistan,c
+Uzbekistan,c
+Turkmenistan,c
+Afghanistan,c
+
+Mongolia,c
+China,c
+Japan,oc
+South Korea,oc
+North Korea,oc
+Vietnam,oc,trà
+Taiwan,t|c
+Bhutan,o,ja
+
+Nepal,c
+India,c
+Bangladesh,c
+Pakistan,c
+Sri Lanka,t
+
+Thailand,c
+East Timor,c,xá
+Philippines,c
+Laos,c
+Indonesia,t
+Malaysia,t
+Cambodia,t
+
+Myanmar,o,lakhpak
 
 United States,t
 Canada,t
 Mexico,t
+Colombia,t
 Costa Rica,t
 Argentina,t
+Uruguay,t
+Peru,t
+Ecuador,t
+Chile,t
+Venezuela,t
+Panama,t
+Nicaragua,t
+Belize,t
+El Salvador,t
+Honduras,t
+Guatemala,t
+French Guiana,t
+Guyana,t
+Suriname,t
+Falkland Islands,t
+Cuba,t
+Dominican Republic,t
+Puerto Rico,t
+
 Bolivia,t|o,q’uñi yaku
 Paraguay,t|o,ñanary
 
 Brazil,c
+
+Papua New Guinea,t
+Australia,t
+New Zealand,t
+
+

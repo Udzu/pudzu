@@ -6,16 +6,20 @@ import json
 
 atlas = pd.read_csv("../dataviz/datasets/countries.csv").split_columns('country', "|").explode('country').set_index('country')
 
-def codify_countries(datamap):
+def codify_countries(datamap, dependencies=True):
     """Codifier for the world datamap that converts country names to code, and
     groups dependencies with their parents unless they're explicitly included."""
     extras = { 
         "KSV": "kosovo", "CYP": "northern_cyprus", "SOM": "somaliland", 
+    }
+    if dependencies:
+        extras.update(
+    {
         "DNK": ("GRL", "FRO"), "NLD": "SXM", "FIN": "ALA", "NOR": "SJM",
         "FRA": ("GUF", "GLP", "MTQ", "PYF", "ATF", "MAF", "NCL", "REU"),
         "GBR": ("GIB", "FLK", "SGS"),
         "USA": ("PRI", "GUM", "ASM")
-    }
+    })
     codified = keymap(lambda c: atlas.code.get(c, c), datamap)
     for old, news in extras.items():
         for new in make_iterable(news):

@@ -9,7 +9,7 @@ PALETTE = {
 "ot": VegaPalette10.PINK,
 "c": VegaPalette10.BLUE,
 "oc": VegaPalette10.LIGHTBLUE,
-"o": VegaPalette10.BROWN,
+"o": VegaPalette10.ORANGE,
  }
 PATTERNS = ""
 

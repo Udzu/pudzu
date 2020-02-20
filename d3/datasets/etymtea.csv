@@ -18,6 +18,7 @@ Luxembourg,t
 Netherlands,t
 Monaco,t
 Norway,t
+Svalbard,t
 San Marino,t
 Spain,t
 Sweden,t
@@ -26,7 +27,7 @@ United Kingdom,t
 Greenland,t
 
 Lithuania,ot
-Poland,ot
+Poland,ot,herbata
 
 Albania,c
 Azerbaijan,c
@@ -69,8 +70,12 @@ United Arab Emirates,c
 Qatar,c
 Kuwait,c
 
-Israel,t
+Western Sahara,c
 Morocco,c
+Mauritania,c
+Mali,t,(Bambara)
+
+Israel,t
 
 Kazakhstan,c
 Kyrgyzstan,c
@@ -128,6 +133,9 @@ Falkland Islands,t
 Cuba,t
 Dominican Republic,t
 Puerto Rico,t
+Haiti,t
+Jamaica,t
+Trinidad and Tobago,t
 
 Bolivia,t|o,q’uñi yaku
 Paraguay,t|o,ñanary
@@ -137,5 +145,36 @@ Brazil,c
 Papua New Guinea,t
 Australia,t
 New Zealand,t
+New Caledonia,t
+Fiji,t
+French Polynesia,t
+Solomon Islands,t
+Vanuatu,t
+Tuvalu,t
 
+Ethiopia,c
+Somalia,c
+Eritrea,c
+Djibouti,c
+Sudan,c
+Mozambique,c
+Madagascar,ot,dite
 
+Botswana,t
+Namibia,t
+South Africa,t
+Swaziland,t
+Lesotho,t
+Nigeria,t|c
+Tanzania,c
+Uganda,c
+Kenya,c
+Zimbabwe,t|o,putugadzike|tii
+Rwanda,c
+Burundi,c
+Congo,t
+DR Congo,t
+Zambia,t
+Malawi,t
+
+Angola,?,uMbundu

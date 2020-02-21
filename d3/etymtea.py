@@ -26,7 +26,7 @@ from Mandarin //chá///Cantonese //chàh//, via Persian or Portuguese""",
 "oc": """with an additional morpheme:
 • Wolof **àttaaya** < Arabic aš-šhāy""",
 "o": """from another origin:
-• Japanese/Korean **ta**, Vietname **trà**, Bhutanese **ja** < Middle Chinese
+• Vietnamese **trà**, Bhutanese **ja** < Middle Chinese
 • Burmese **lakhpak** ("arm leaf")
 • Quechua **q’uñi yaku** ("warm water")
 • Shona **putugadzike**

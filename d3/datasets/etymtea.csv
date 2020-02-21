@@ -86,10 +86,10 @@ Afghanistan,c
 
 Mongolia,c
 China,c
-Japan,oc
-South Korea,oc
-North Korea,oc
-Vietnam,oc,trà
+Japan,o|c
+South Korea,o|c
+North Korea,o|c
+Vietnam,o|c,trà
 Taiwan,t|c
 Bhutan,o,ja
 
@@ -130,6 +130,7 @@ French Guiana,t
 Guyana,t
 Suriname,t
 Falkland Islands,t
+South Georgia and the South Sandwich Islands,t
 Cuba,t
 Dominican Republic,t
 Puerto Rico,t
@@ -179,4 +180,23 @@ Malawi,t
 Angola,c
 Niger,t|c
 Chad,t|c
+
+Cameroon,t|c,(fulani|ewondo)
+South Sudan,c
+Central African Republic,t|c
+Guinea,t|c
+
+Gabon,t,(Fang)
+Equatorial Guinea,t,(Fang)
+Burkina Faso,t,Mooré
+Benin,t
+Ghana,t
+Togo,t
+Gambia,t
+Ivory Coast,t
+Senegal,oc,Wolof-àttaaya
+Guinea-Bissau,c
+Sierra Leone,oc,Krio-ataya
+Liberia,t
+
 

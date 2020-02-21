@@ -1,6 +1,10 @@
 from pudzu.charts import *
 from generate import *
 
+# t: from te
+# ot: + other morpheme: dute, herbata
+# c: from cha
+# oc: + other morpheme
 
 FONT = sans
 DEFAULT = VegaPalette10.GREEN
@@ -11,6 +15,23 @@ PALETTE = {
 "oc": VegaPalette10.LIGHTBLUE,
 "o": VegaPalette10.ORANGE,
  }
+DESCRIPTIONS = {
+"t": """**tea, thé, té**, etc
+from Min Nan //tê//, mostly via Dutch and English""",
+"ot": """with an additional morpheme:
+• Polish **herbata**, Lithuanian **arbata** < Latin //herba thea//
+• Malagasy **dite** < French //du thé//""",
+"c": """**chá, chāy, shāy**, etc
+from Mandarin //chá///Cantonese //chàh//, via Persian or Portuguese""",
+"oc": """with an additional morpheme:
+• Wolof **àttaaya** < Arabic aš-šhāy""",
+"o": """from another origin:
+• Japanese/Korean **ta**, Vietname **trà**, Bhutanese **ja** < Middle Chinese
+• Burmese **lakhpak** ("arm leaf")
+• Quechua **q’uñi yaku** ("warm water")
+• Shona **putugadzike**
+• Guarani **ñanary**"""
+}
 PATTERNS = ""
 
 df = pd.read_csv("datasets/etymtea.csv").set_index("country")
@@ -34,6 +55,22 @@ for c, r in df.iterrows():
 
 assert set(df.index) < set(atlas.index), f'Unrecognised countries: {set(df.index) - set(load_name_csv("../dataviz/maps/World.png").name)}'
 
-# TODO: stripes
 colormap = { c: df.category[c] if df.category[c] in PALETTE else "o" for c in df.index }
 generate_datamap("etymtea", colormap, palette=PALETTE, patterns=PATTERNS, codifier=partial(codify_countries, dependencies=False))
+
+chart = Image.open("temp/etymtea.png")
+legend = generate_legend(
+  [PALETTE[c] for c in DESCRIPTIONS],
+  [DESCRIPTIONS.get(c,c) for c in DESCRIPTIONS],
+  (40,...), partial(sans, 16), header="Most commmon word for tea".upper())
+chart = chart.place(legend, align=(0,1), padding=100)
+
+title = Image.from_column([
+Image.from_text("TEA VERSUS CHAI", sans(72, bold=True)),
+Image.from_text("the word for tea around the world", sans(36, italics=True))],
+bg="white")
+
+img = Image.from_column([title, chart], bg="white", padding=5)
+img.place(Image.from_text("/u/Udzu", sans(16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
+img.save("output/etymtea.png")
+

@@ -93,6 +93,7 @@ def bands(n):
     return bands
 
 def colors(color):
+    """Simple heuristic for detecting a Heraldic color."""
     @omit_types
     def colors(p):
         img = Image.open(p)
@@ -105,6 +106,7 @@ def colors(color):
     
 @omit_types
 def rwb(p):
+    """Red-white-blue flags"""
     img = Image.open(p)
     if img.width < img.height: return None
     img = img.to_rgba().remove_transparency("white")
@@ -117,5 +119,12 @@ def rwb(p):
         elif ds == { 1, 9, 3}: return "C"
         elif ds == { 1, 2, 3, 9}: return "X"
 
+@omit_types
+def grey(p):
+    """Flags with grey"""
+    img = Image.open(p)
+    if (img.width / img.height) < 0.8: return None
+    cols = img.to_rgba().getcolors(65536)
+    return any(r==g==b and a==255 and 20 <= r <= 240 and v > (img.width * img.height / 50) for v,(r,g,b,a) in cols)
 
 

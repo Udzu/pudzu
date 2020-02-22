@@ -36,7 +36,7 @@ FALSE_POSITIVES = [
 "hu-be-fz", "ht-state", "hr-os-sv", "gb-rfase", "fr-33-sl",
 "fm-pp-mh", "fi-nba", "br-sp-pb", "br-rs-257", "br-pb-006", "br-ce-077",
 "be-whtb2", "su-lv", "su-kg", "su-uz", "co-cautr", "rel-kofg",
-"ec-m2"
+"ec-m2",
 
 # thin
 "nl-pltd1", "nl-pltd4",

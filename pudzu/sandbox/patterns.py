@@ -39,7 +39,7 @@ class NFA:
             "states": set(sorted(states.values())),
             "initial_states": {states[self.start]},
             "accepting_states": {states[self.end]},
-            "transitions": {(states[s],move(i)): {states[t] for t in ts} for (s,i),ts in self.transitions.items()}
+            "transitions": {(states[s],move(i)): {states[t] for t in ts} or {states[s]+"'"} for (s,i),ts in self.transitions.items()}
         }
         renderer.nfa_to_dot(nfa_json, name, path)
 
@@ -76,8 +76,7 @@ def MatchIn(characters: str) -> NFA:
 
 def MatchNotIn(characters: str) -> NFA:
     """Handles: [^abc], ."""
-    # NB: the {-1} state is just so that the NFA displays better; set() shuold work fine
-    return NFA(0, 1, merge_trans({(0, Move.ALL): {1}}, {(0, c): {-1} for c in characters}))
+    return NFA(0, 1, merge_trans({(0, Move.ALL): {1}}, {(0, c): set() for c in characters}))
 
 def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: ab"""
@@ -134,10 +133,10 @@ def MatchReversed(nfa: NFA) -> NFA:
             if i == Move.ALL:
                 # handle *-transitions (if it's not too difficult)
                 if any(u==t and vs-{s} for (u,j),vs in transitions.items()):
-                    raise NotImplementedError
+                    raise NotImplementedError  # TODO?
                 for (r,j),_ in nfa.transitions.items():
                     if r == s and not isinstance(j, Move):
-                        transitions.setdefault((t,j),set()).add(-1)
+                        transitions.setdefault((t,j),set())
     nfa = NFA(nfa.end, nfa.start, transitions)
     nfa.remove_unreachable_states()
     return nfa

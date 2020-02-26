@@ -76,7 +76,8 @@ def MatchIn(characters: str) -> NFA:
 
 def MatchNotIn(characters: str) -> NFA:
     """Handles: [^abc], ."""
-    return NFA(0, 1, merge_trans({(0, Move.ALL): {1}}, {(0, c): set() for c in characters}))
+    # NB: the {-1} state is just so that the NFA displays better; set() shuold work fine
+    return NFA(0, 1, merge_trans({(0, Move.ALL): {1}}, {(0, c): {-1} for c in characters}))
 
 def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: ab"""
@@ -100,7 +101,7 @@ def MatchRepeated(nfa: NFA, repeat: bool, optional: bool) -> NFA:
 
 def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: a&b"""
-    # generate transitions on cartesian product
+    # generate transitions on cartesian product (take care when handling *-transitions)
     transitions = {}
     for (s1, i), ts1 in nfa1.transitions.items():
         for s2 in nfa2.states:
@@ -118,17 +119,28 @@ def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
                 ts1 = nfa1.transitions.get((s1, Move.ALL))
                 if ts1 is not None:
                     transitions = merge_trans(transitions, {((s1, s2), i): set(product(ts1, ts2))})
-
-    # remove redundant states
     nfa = NFA((nfa1.start, nfa2.start), (nfa1.end, nfa2.end), transitions)
     nfa.remove_unreachable_states()
     return nfa
 
 def MatchNot(nfa: NFA) -> NFA:
-    raise NotImplemented
+    raise NotImplementedError
 
 def MatchReversed(nfa: NFA) -> NFA:
-    raise NotImplemented
+    transitions = {}
+    for (s,i),ts in nfa.transitions.items():
+        for t in ts:
+            transitions.setdefault((t,i),set()).add(s)
+            if i == Move.ALL:
+                # handle *-transitions (if it's not too difficult)
+                if any(u==t and vs-{s} for (u,j),vs in transitions.items()):
+                    raise NotImplementedError
+                for (r,j),_ in nfa.transitions.items():
+                    if r == s and not isinstance(j, Move):
+                        transitions.setdefault((t,j),set()).add(-1)
+    nfa = NFA(nfa.end, nfa.start, transitions)
+    nfa.remove_unreachable_states()
+    return nfa
 
 # Parser
 class Pattern:
@@ -152,8 +164,8 @@ class Pattern:
         (atom + "*").setParseAction(lambda t: MatchRepeated(t[0], repeat=True, optional=True)) |
         (atom + "?").setParseAction(lambda t: MatchRepeated(t[0], repeat=False, optional=True)) |
         # TODO: {m,n}, {m,}
-        ("!" + atom).setParseAction(lambda t: MatchNot(t[0])) |
-        ("@r" + atom).setParseAction(lambda t: MatchReversed(t[0])) |
+        ("!" + atom).setParseAction(lambda t: MatchNot(t[1])) |
+        ("@r" + atom).setParseAction(lambda t: MatchReversed(t[1])) |
         atom
     )
     items = OneOrMore(item).setParseAction(lambda t: reduce(MatchAfter, t))

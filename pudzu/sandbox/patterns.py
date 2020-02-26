@@ -55,7 +55,7 @@ def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
     t1 = {((s,1),i): {(t,1) for t in ts} for (s,i),ts in nfa1.transitions.items()}
     t2 = {((nfa1.end, 1) if s == nfa2.start else (s,2),i): {(t,2) for t in ts} for (s,i),ts in nfa2.transitions.items()}
     return NFA((nfa1.start, 1), (nfa2.end, 2), merge(t1, t2))
-    
+
 def MatchEither(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: a|b"""
     t1 = {((s,1),i): {(t,1) for t in ts} for (s,i),ts in nfa1.transitions.items()}
@@ -72,26 +72,40 @@ def MatchRepeated(nfa: NFA, repeat: bool, optional: bool) -> NFA:
 
 
 class Pattern:
-    from pyparsing import Word, Optional, oneOf, Forward, OneOrMore, alphas, Group, Literal
-    
-    # TODO: parser actions, whitespace handling, braces, operators, unicode, escaping
-    literal = Word(alphas, exact=1).setParseAction(lambda t: MatchIn(t[0]))
+    from pyparsing import (
+        Word, Optional, oneOf, Forward, OneOrMore, alphas, Group, Literal, infixNotation, opAssoc,
+        ParserElement
+    )
+    ParserElement.setDefaultWhitespaceChars('')
+
+    # TODO: escaping, unicode
+    literal = Word(alphas + " '-", exact=1).setParseAction(lambda t: MatchIn(t[0]))
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
     set = ("[" + Word(alphas, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
-    negset = ("[^" + Word(alphas, min=1) + "]").setParseAction(lambda t: MatchNotIn(t[1]))
-    postfix = oneOf("?+*")
-    
+    nset = ("[^" + Word(alphas, min=1) + "]").setParseAction(lambda t: MatchNotIn(t[1]))
+
     expr = Forward()
-    group = Group("(" + expr + ")")
-    atom = literal | dot | set | negset | group
-    item = atom + Optional(postfix)
+    group = ("(" + expr + ")").setParseAction(lambda t: t[1])
+    atom = literal | dot | set | nset | group
+    item = (
+        (atom + "+").setParseAction(lambda t: MatchRepeated(t[0], repeat=True, optional=False)) |
+        (atom + "*").setParseAction(lambda t: MatchRepeated(t[0], repeat=True, optional=True)) |
+        (atom + "?").setParseAction(lambda t: MatchRepeated(t[0], repeat=False, optional=True)) |
+        # TODO: {m,n}, {m,}
+        ("!" + atom).setParseAction(lambda t: MatchNot(t[0])) |
+        # TODO: @a, @r, etc
+        atom
+    )
     items = OneOrMore(item).setParseAction(lambda t: reduce(MatchAfter, t))
     
-    expr <<= items
+    expr <<= infixNotation(items, [
+        ('&', 2, opAssoc.LEFT, lambda t: MatchBoth(t[0][0], t[0][2])),
+        ('|', 2, opAssoc.LEFT, lambda t: MatchEither(t[0][0], t[0][2])),
+    ])
 
     def __init__(self, pattern: str):
         self.pattern = pattern
-        self.nfa = self.expr.parseString(pattern)[0]
+        self.nfa = self.expr.parseString(pattern, parseAll=True)[0]
 
     def __repr__(self):
         return f"Pattern({self.pattern!r})"

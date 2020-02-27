@@ -16,7 +16,7 @@ renderer = optional_import("PySimpleAutomata.automata_IO")
 
 class NFA:
     """Nondeterministic Finite Automata with
-    - single start and end state
+    - single start state (with no inbounds) and end state (with no outbounds)
     - ε-moves (including potential ε loops)
     - *-moves (only used if there is no other matching move)
     """
@@ -57,13 +57,21 @@ class NFA:
             new = {t for s in new for t in self.transitions.get((s, Move.EMPTY), set()) if t not in old}
         return old
         
-    def remove_unreachable_states(self) -> None:
+    def remove_redundant_states(self) -> None:
+        # remove states not reachable from the start
         reachable, new = set(), {self.start}
         while new:
             reachable.update(new)
             new = {t for (s,i),ts in self.transitions.items() if s in new for t in ts if t not in reachable}
         self.states = reachable | { self.start, self.end }
         self.transitions = {(s,i): ts for (s,i),ts in self.transitions.items() if s in reachable}
+        # remove states that can't reach the end (and any transitions to those states)
+        acceptable, new = set(), {self.end}
+        while new:
+            acceptable.update(new)
+            new = {s for (s,i),ts in self.transitions.items() if any(t in new for t in ts) and s not in acceptable}
+        self.states = acceptable | { self.start, self.end }
+        self.transitions = {(s,i): {t for t in ts if t in acceptable} for (s,i),ts in self.transitions.items() if s in acceptable}
 
 # NFA constructors
 def merge_trans(*args):
@@ -93,10 +101,12 @@ def MatchEither(nfa1: NFA, nfa2: NFA) -> NFA:
 
 def MatchRepeated(nfa: NFA, repeat: bool, optional: bool) -> NFA:
     """Handles: a*, a+, a?"""
-    transitions = copy.deepcopy(nfa.transitions)
-    if optional: transitions.setdefault((nfa.start, Move.EMPTY), set()).add(nfa.end)
-    if repeat: transitions.setdefault((nfa.end, Move.EMPTY), set()).add(nfa.start)
-    return NFA(nfa.start, nfa.end, transitions)
+    transitions = {((s,1),i): {(t,1) for t in ts} for (s,i),ts in nfa.transitions.items()}
+    transitions[(0, Move.EMPTY)] = {(nfa.start, 1)}
+    if optional: transitions[(0, Move.EMPTY)].add(1)
+    transitions[((nfa.end, 1), Move.EMPTY)] = {1}
+    if repeat: transitions[((nfa.end, 1), Move.EMPTY)].add((nfa.start, 1))
+    return NFA(0, 1, transitions)
 
 def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: a&b"""
@@ -119,7 +129,7 @@ def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
                 if ts1 is not None:
                     transitions = merge_trans(transitions, {((s1, s2), i): set(product(ts1, ts2))})
     nfa = NFA((nfa1.start, nfa2.start), (nfa1.end, nfa2.end), transitions)
-    nfa.remove_unreachable_states()
+    nfa.remove_redundant_states()
     return nfa
 
 def MatchNot(nfa: NFA) -> NFA:
@@ -138,7 +148,7 @@ def MatchReversed(nfa: NFA) -> NFA:
                     if r == s and not isinstance(j, Move):
                         transitions.setdefault((t,j),set())
     nfa = NFA(nfa.end, nfa.start, transitions)
-    nfa.remove_unreachable_states()
+    nfa.remove_redundant_states()
     return nfa
 
 # Parser

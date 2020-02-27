@@ -30,8 +30,8 @@ class NFA:
     def __repr__(self) -> str:
         return f"NFA(start={self.start}, end={self.end}, transitions={self.transitions})"
 
-    def render(self, name: str, path: str = './') -> None:
-        states = {s : str(i) for i,s in enumerate(self.states)}
+    def render(self, name: str, path: str = './', rename_states=True) -> None:
+        states = {s : str(i) if rename_states else str(s) for i,s in enumerate(self.states)}
         def move(i): return {Move.ALL: '*', Move.EMPTY: 'ε'}.get(i, i)
         alphabet = {move(i) for (_,i),_ in self.transitions.items()}
         nfa_json = {
@@ -71,7 +71,9 @@ class NFA:
             acceptable.update(new)
             new = {s for (s,i),ts in self.transitions.items() if any(t in new for t in ts) and s not in acceptable}
         self.states = acceptable | { self.start, self.end }
-        self.transitions = {(s,i): {t for t in ts if t in acceptable} for (s,i),ts in self.transitions.items() if s in acceptable}
+        self.transitions = {(s,i): {t for t in ts if t in acceptable} for (s,i),ts in self.transitions.items()
+                            if s in acceptable and (any(t in acceptable for t in ts) or (s,Move.ALL) in self.transitions)}
+
 
 # NFA constructors
 def merge_trans(*args):
@@ -87,20 +89,20 @@ def MatchNotIn(characters: str) -> NFA:
     return NFA(0, 1, merge_trans({(0, Move.ALL): {1}}, {(0, c): set() for c in characters}))
 
 def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
-    """Handles: ab"""
+    """Handles: AB"""
     t1 = {((s,1),i): {(t,1) for t in ts} for (s,i),ts in nfa1.transitions.items()}
     t2 = {((nfa1.end, 1) if s == nfa2.start else (s,2),i): {(nfa1.end, 1) if t == nfa2.start else (t,2) for t in ts} for (s,i),ts in nfa2.transitions.items()}
     return NFA((nfa1.start, 1), (nfa2.end, 2), merge_trans(t1, t2))
 
 def MatchEither(nfa1: NFA, nfa2: NFA) -> NFA:
-    """Handles: a|b"""
+    """Handles: A|B"""
     t1 = {((s,1),i): {(t,1) for t in ts} for (s,i),ts in nfa1.transitions.items()}
     t2 = {((s,2),i): {(t,2) for t in ts} for (s,i),ts in nfa2.transitions.items()}
     t12 = {(0, Move.EMPTY): {(nfa1.start, 1), (nfa2.start, 2)}, ((nfa1.end, 1), Move.EMPTY): {1}, ((nfa2.end, 2), Move.EMPTY): {1}}
     return NFA(0, 1, merge_trans(t1, t2, t12))
 
 def MatchRepeated(nfa: NFA, repeat: bool, optional: bool) -> NFA:
-    """Handles: a*, a+, a?"""
+    """Handles: A*, A+, A?"""
     transitions = {((s,1),i): {(t,1) for t in ts} for (s,i),ts in nfa.transitions.items()}
     transitions[(0, Move.EMPTY)] = {(nfa.start, 1)}
     if optional: transitions[(0, Move.EMPTY)].add(1)
@@ -109,8 +111,10 @@ def MatchRepeated(nfa: NFA, repeat: bool, optional: bool) -> NFA:
     return NFA(0, 1, transitions)
 
 def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
-    """Handles: a&b"""
-    # generate transitions on cartesian product (take care when handling *-transitions)
+    """
+    Handles: A&B
+    Method: generate transitions on cartesian product (with special handling for *-transitions)
+    """
     transitions = {}
     for (s1, i), ts1 in nfa1.transitions.items():
         for s2 in nfa2.states:
@@ -136,6 +140,10 @@ def MatchNot(nfa: NFA) -> NFA:
     raise NotImplementedError
 
 def MatchReversed(nfa: NFA) -> NFA:
+    """
+    Handles: @r(A)
+    Method: reverse edges (with special handling for *-transitions)
+    """
     transitions = {}
     for (s,i),ts in nfa.transitions.items():
         for t in ts:
@@ -148,6 +156,34 @@ def MatchReversed(nfa: NFA) -> NFA:
                     if r == s and not isinstance(j, Move):
                         transitions.setdefault((t,j),set())
     nfa = NFA(nfa.end, nfa.start, transitions)
+    nfa.remove_redundant_states()
+    return nfa
+
+def MatchContains(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
+    """
+    Handles: A<B, A<<B, A>B, A>>B
+    Method: transition between A, (AxB), A states
+    """
+    t1, t1e, t4, t4e = {}, {}, {}, {}  # used only if proper is True
+
+    if proper:
+        t1 = {((s,1),i): {(t,1) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t1e = {((s,1),i): {(t,2) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
+
+    t2 = {((s,2),i): {(t,2) for t in ts} for (s,i),ts in nfa1.transitions.items()}
+    t2e = {((s, 2), Move.EMPTY): {(s, 3, nfa2.start)} for s in nfa1.states}
+
+    t3 = {((s,3,q), i): {(s,3,t) for t in ts} for (q,i),ts in nfa2.transitions.items() for s in nfa1.states}
+    t3e = {((s,3,nfa2.end), Move.EMPTY): {(s,4 if proper else 5)} for s in nfa1.states}
+
+    if proper:
+        t4 = {((s,4),i): {(t,4) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t4e = {((s, 4),i): {(t,5) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
+
+    t5 = {((s,5),i): {(t,5) for t in ts} for (s,i),ts in nfa1.transitions.items()}
+
+    transitions = merge_trans(t1, t1e, t2, t2e, t3, t3e, t4, t4e, t5)
+    nfa = NFA((nfa1.start, 1 if proper else 2), (nfa1.end, 5), transitions)
     nfa.remove_redundant_states()
     return nfa
 
@@ -181,6 +217,13 @@ class Pattern:
     
     expr <<= infixNotation(items, [
         ('&', 2, opAssoc.LEFT, lambda t: MatchBoth(t[0][0], t[0][2])),
+        (oneOf(('>', '<', '>>', '<<')), 2, opAssoc.LEFT, lambda t:
+            MatchContains(t[0][0], t[0][2], proper=True) if t[0][1] == '>' else
+            MatchContains(t[0][2], t[0][0], proper=True) if t[0][1] == '<' else
+            MatchContains(t[0][0], t[0][2], proper=False) if t[0][1] == '>>' else
+            MatchContains(t[0][2], t[0][0], proper=False) # '<<'
+            # TODO: shuffle, interleave
+         ),
         ('|', 2, opAssoc.LEFT, lambda t: MatchEither(t[0][0], t[0][2])),
     ])
 

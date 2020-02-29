@@ -138,10 +138,8 @@ def MatchRepeatedNplus(nfa: NFA, minimum: int) -> NFA:
         return MatchAfter(nfa, MatchRepeatedNplus(nfa, minimum-1))
     
 def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
-    """
-    Handles: A&B
-    Method: generate transitions on cartesian product (with special handling for *-transitions)
-    """
+    """Handles: A&B"""
+    # generate transitions on cartesian product (with special handling for *-transitions)
     transitions = {}
     for (s1, i), ts1 in nfa1.transitions.items():
         for s2 in nfa2.states:
@@ -167,10 +165,8 @@ def MatchNot(nfa: NFA) -> NFA:
     raise NotImplementedError
 
 def MatchReversed(nfa: NFA) -> NFA:
-    """
-    Handles: @r(A)
-    Method: reverse edges (with special handling for *-transitions)
-    """
+    """Handles: @r(A)"""
+    # just reverse the edges
     transitions = {}
     for (s,i),ts in nfa.transitions.items():
         for t in ts:
@@ -187,11 +183,10 @@ def MatchReversed(nfa: NFA) -> NFA:
     return nfa
 
 def MatchContains(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
-    """
-    Handles: A<B, A<<B, A>B, A>>B
-    Method: transition between A, (AxB), A states
-    """
-    t1, t1e, t4, t4e = {}, {}, {}, {}  # used only if proper is True
+    """Handles: A<B, A<<B, A>B, A>>B"""
+    # transition between (2) A, (3) AxB and (5) A states
+    # if proper, then use additional (1) A and (4) A states
+    t1, t1e, t4, t4e = {}, {}, {}, {}
 
     if proper:
         t1 = {(s+"1",i): {t+"1" for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
@@ -223,7 +218,7 @@ class Pattern:
     ParserElement.setDefaultWhitespaceChars('')
 
     # TODO: escaping, unicode
-    digit = Word(nums, exact=1)
+    _0_to_19 = Group(Optional("1") + Word(nums, exact=1)).setParseAction(lambda t: ''.join(t[0]))
     literal = Word(alphas + " '-", exact=1).setParseAction(lambda t: MatchIn(t[0]))
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
     set = ("[" + Word(alphas, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
@@ -236,9 +231,9 @@ class Pattern:
         (atom + "+").setParseAction(lambda t: MatchRepeated(t[0], repeat=True,)) |
         (atom + "*").setParseAction(lambda t: MatchRepeated(t[0], repeat=True, optional=True)) |
         (atom + "?").setParseAction(lambda t: MatchRepeated(t[0], optional=True)) |
-        (atom + "{" + digit + "}").setParseAction(lambda t: MatchRepeatedN(t[0], int(t[2]), int(t[2]))) |
-        (atom + "{" + digit + ",}").setParseAction(lambda t: MatchRepeatedNplus(t[0], int(t[2]))) |
-        (atom + "{" + digit + "," + digit + "}").setParseAction(lambda t: MatchRepeatedN(t[0], int(t[2]), int(t[4]))) |
+        (atom + "{" + _0_to_19 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], int(t[2]), int(t[2]))) |
+        (atom + "{" + _0_to_19 + ",}").setParseAction(lambda t: MatchRepeatedNplus(t[0], int(t[2]))) |
+        (atom + "{" + _0_to_19 + "," + _0_to_19 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], int(t[2]), int(t[4]))) |
         # TODO: not
         ("@r" + atom).setParseAction(lambda t: MatchReversed(t[1])) |
         atom
@@ -268,7 +263,7 @@ class Pattern:
         return self.nfa.match(string)
 
 def main():
-    # TODO: case-insensitive
+    # TODO: case-insensitive, predefined character ranges (in cfg)?
     parser = argparse.ArgumentParser(description = 'NFA-based pattern matcher')
     parser.add_argument("pattern", type=str, help="pattern to match against")
     parser.add_argument("file", type=str, help="filename to search")

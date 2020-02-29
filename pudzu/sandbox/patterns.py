@@ -105,7 +105,7 @@ def MatchEither(nfa1: NFA, nfa2: NFA) -> NFA:
     t12 = {("1", Move.EMPTY): {nfa1.start+"1", nfa2.start+"2"}, (nfa1.end+"1", Move.EMPTY): {"2"}, (nfa2.end+"2", Move.EMPTY): {"2"}}
     return NFA("1", "2", merge_trans(t1, t2, t12))
 
-def MatchRepeated(nfa: NFA, repeat: bool, optional: bool) -> NFA:
+def MatchRepeated(nfa: NFA, repeat: bool = False, optional: bool = False) -> NFA:
     """Handles: A*, A+, A?"""
     transitions = {(s+"0",i): {t+"0" for t in ts} for (s,i),ts in nfa.transitions.items()}
     transitions[("1", Move.EMPTY)] = {nfa.start+"0"}
@@ -114,6 +114,28 @@ def MatchRepeated(nfa: NFA, repeat: bool, optional: bool) -> NFA:
     if repeat: transitions[(nfa.end+"0", Move.EMPTY)].add(nfa.start+"0")
     return NFA("1", "2", transitions)
 
+def MatchRepeatedN(nfa: NFA, minimum: int, maximum: int) -> NFA:
+    """Handles: A{2,5}"""
+    if minimum == maximum == 0:
+        return NFA("1", "2", {("1", Move.EMPTY): {"2"}})
+    elif minimum == maximum == 1:
+        return nfa
+    elif minimum > 0:
+        return MatchAfter(nfa, MatchRepeatedN(nfa, minimum-1, maximum-1))
+    elif maximum == 1:
+        return MatchRepeated(nfa, optional=True)
+    else:
+        return MatchRepeated(MatchAfter(nfa, MatchRepeatedN(nfa, 0, maximum-1)), optional=True)
+    
+def MatchRepeatedNplus(nfa: NFA, minimum: int) -> NFA:
+    """Handles: A{2,}"""
+    if minimum == 0:
+        return MatchRepeated(nfa, repeat = True, optional=True)
+    elif minimum == 1:
+        return MatchRepeated(nfa, repeat = True)
+    else:
+        return MatchAfter(nfa, MatchRepeatedNplus(nfa, minimum-1))
+    
 def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
     """
     Handles: A&B
@@ -195,11 +217,12 @@ def MatchContains(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
 class Pattern:
     from pyparsing import (
         Word, Optional, oneOf, Forward, OneOrMore, alphas, Group, Literal, infixNotation, opAssoc,
-        ParserElement
+        ParserElement, nums
     )
     ParserElement.setDefaultWhitespaceChars('')
 
     # TODO: escaping, unicode
+    digit = Word(nums, exact=1)
     literal = Word(alphas + " '-", exact=1).setParseAction(lambda t: MatchIn(t[0]))
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
     set = ("[" + Word(alphas, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
@@ -209,10 +232,12 @@ class Pattern:
     group = ("(" + expr + ")").setParseAction(lambda t: t[1])
     atom = literal | dot | set | nset | group
     item = (
-        (atom + "+").setParseAction(lambda t: MatchRepeated(t[0], repeat=True, optional=False)) |
+        (atom + "+").setParseAction(lambda t: MatchRepeated(t[0], repeat=True,)) |
         (atom + "*").setParseAction(lambda t: MatchRepeated(t[0], repeat=True, optional=True)) |
-        (atom + "?").setParseAction(lambda t: MatchRepeated(t[0], repeat=False, optional=True)) |
-        # TODO: {m,n}, {m,}
+        (atom + "?").setParseAction(lambda t: MatchRepeated(t[0], optional=True)) |
+        (atom + "{" + digit + "}").setParseAction(lambda t: MatchRepeatedN(t[0], int(t[2]), int(t[2]))) |
+        (atom + "{" + digit + ",}").setParseAction(lambda t: MatchRepeatedNplus(t[0], int(t[2]))) |
+        (atom + "{" + digit + "," + digit + "}").setParseAction(lambda t: MatchRepeatedN(t[0], int(t[2]), int(t[4]))) |
         ("!" + atom).setParseAction(lambda t: MatchNot(t[1])) |
         ("@r" + atom).setParseAction(lambda t: MatchReversed(t[1])) |
         atom

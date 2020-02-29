@@ -78,6 +78,7 @@ class NFA:
         self.states = acceptable | { self.start, self.end }
         self.transitions = {(s,i): {t for t in ts if t in acceptable} for (s,i),ts in self.transitions.items()
                             if s in acceptable and (any(t in acceptable for t in ts) or (s,Move.ALL) in self.transitions)}
+        # TODO: remove redundant ε states?
 
 
 # NFA constructors
@@ -162,6 +163,7 @@ def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
     return nfa
 
 def MatchNot(nfa: NFA) -> NFA:
+    """Handles: !A"""
     raise NotImplementedError
 
 def MatchReversed(nfa: NFA) -> NFA:
@@ -184,8 +186,8 @@ def MatchReversed(nfa: NFA) -> NFA:
 
 def MatchContains(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     """Handles: A<B, A<<B, A>B, A>>B"""
-    # transition between (2) A, (3) AxB and (5) A states
-    # if proper, then use additional (1) A and (4) A states
+    # transition between (2) A, (3) AxB, and (5) A states
+    # for proper, also use (1) A and (4) A states
     t1, t1e, t4, t4e = {}, {}, {}, {}
 
     if proper:
@@ -208,6 +210,36 @@ def MatchContains(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     nfa = NFA(nfa1.start+"1" if proper else nfa1.start+"2", nfa1.end+"5", transitions)
     nfa.remove_redundant_states()
     return nfa
+
+def MatchInterleaved(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
+    """Handles: A^B, A^^B"""
+    # transition between (2) AxB and (3) AxB states
+    # for proper, also use (1) A and (4) A states
+    t1, t1e, t4, t4e = {}, {}, {}, {}
+
+    if proper:
+        t1 = {(s+"1",i): {t+"1" for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t1e = {(s+"1",i): {(t+"2",nfa2.start) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
+
+    t2 = {((s+"2",q), i): {(t+"2",q) for t in ts} for (s,i),ts in nfa1.transitions.items() for q in nfa2.states}
+    t2e = {((q+"2",s), Move.EMPTY): {(q+"3",s)} for q in nfa1.states for s in nfa2.states}
+    
+    t3 = {((q+"3",s), i): {(q+"3",t) for t in ts} for (s,i),ts in nfa2.transitions.items() for q in nfa1.states}
+    t3e = {((q+"3",s), Move.EMPTY): {(q+"2",s)} for q in nfa1.states for s in nfa2.states}
+    
+    if proper:
+        t4 = {((s+"2",nfa2.end),i): {t+"4" for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
+        t4e = {(s+"4",i): {t+"4" for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
+    
+    transitions = merge_trans(t1, t1e, t2, t2e, t3, t3e, t4, t4e)
+    nfa = NFA(nfa1.start+"1" if proper else (nfa1.start+"2", nfa2.start), 
+              nfa1.end+"4" if proper else (nfa1.end+"3", nfa2.end), transitions)
+    nfa.remove_redundant_states()
+    return nfa
+
+def MatchAlternating(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
+    """Handles: A#B, A##B"""
+    raise NotImplementedError
 
 # Parser
 class Pattern:
@@ -242,12 +274,14 @@ class Pattern:
     
     expr <<= infixNotation(items, [
         ('&', 2, opAssoc.LEFT, lambda t: MatchBoth(t[0][0], t[0][2])),
-        (oneOf(('>', '<', '>?', '<?')), 2, opAssoc.LEFT, lambda t:
-            MatchContains(t[0][0], t[0][2], proper=True) if t[0][1] == '>' else
-            MatchContains(t[0][2], t[0][0], proper=True) if t[0][1] == '<' else
-            MatchContains(t[0][0], t[0][2], proper=False) if t[0][1] == '>?' else
-            MatchContains(t[0][2], t[0][0], proper=False) # '<?'
-            # TODO: shuffle, interleave
+        (oneOf(('>', '<', '>>', '<<', '^', '^^')), 2, opAssoc.LEFT, lambda t:
+            MatchContains(t[0][0], t[0][2], proper=True) if t[0][1] == '>>' else
+            MatchContains(t[0][2], t[0][0], proper=True) if t[0][1] == '<<' else
+            MatchContains(t[0][0], t[0][2], proper=False) if t[0][1] == '>' else
+            MatchContains(t[0][2], t[0][0], proper=False) if t[0][1] == '<' else
+            MatchInterleaved(t[0][0], t[0][2], proper=True) if t[0][1] == '^^' else
+            MatchInterleaved(t[0][0], t[0][2], proper=False) # '^'
+            # TODO: alternating
          ),
         ('|', 2, opAssoc.LEFT, lambda t: MatchEither(t[0][0], t[0][2])),
     ])

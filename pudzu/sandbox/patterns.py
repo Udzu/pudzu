@@ -1,3 +1,4 @@
+import argparse
 import copy
 import json
 from functools import reduce
@@ -238,7 +239,7 @@ class Pattern:
         (atom + "{" + digit + "}").setParseAction(lambda t: MatchRepeatedN(t[0], int(t[2]), int(t[2]))) |
         (atom + "{" + digit + ",}").setParseAction(lambda t: MatchRepeatedNplus(t[0], int(t[2]))) |
         (atom + "{" + digit + "," + digit + "}").setParseAction(lambda t: MatchRepeatedN(t[0], int(t[2]), int(t[4]))) |
-        ("!" + atom).setParseAction(lambda t: MatchNot(t[1])) |
+        # TODO: not
         ("@r" + atom).setParseAction(lambda t: MatchReversed(t[1])) |
         atom
     )
@@ -246,11 +247,11 @@ class Pattern:
     
     expr <<= infixNotation(items, [
         ('&', 2, opAssoc.LEFT, lambda t: MatchBoth(t[0][0], t[0][2])),
-        (oneOf(('>', '<', '>>', '<<')), 2, opAssoc.LEFT, lambda t:
+        (oneOf(('>', '<', '>?', '<?')), 2, opAssoc.LEFT, lambda t:
             MatchContains(t[0][0], t[0][2], proper=True) if t[0][1] == '>' else
             MatchContains(t[0][2], t[0][0], proper=True) if t[0][1] == '<' else
-            MatchContains(t[0][0], t[0][2], proper=False) if t[0][1] == '>>' else
-            MatchContains(t[0][2], t[0][0], proper=False) # '<<'
+            MatchContains(t[0][0], t[0][2], proper=False) if t[0][1] == '>?' else
+            MatchContains(t[0][2], t[0][0], proper=False) # '<?'
             # TODO: shuffle, interleave
          ),
         ('|', 2, opAssoc.LEFT, lambda t: MatchEither(t[0][0], t[0][2])),
@@ -266,4 +267,21 @@ class Pattern:
     def match(self, string: str) -> bool:
         return self.nfa.match(string)
 
-# TODO: command line script
+def main():
+    # TODO: case-insensitive
+    parser = argparse.ArgumentParser(description = 'NFA-based pattern matcher')
+    parser.add_argument("pattern", type=str, help="pattern to match against")
+    parser.add_argument("file", type=str, help="filename to search")
+    parser.add_argument("-n", "--nfa", action="store_true", help="generate nfa diagram")
+    args = parser.parse_args()
+    
+    pattern = Pattern(args.pattern)
+    if args.nfa: pattern.nfa.render("nfa")
+    with open(args.file, "r", encoding="utf-8") as f:
+        for w in f:
+            word = w.rstrip("\n")
+            if pattern.match(word):
+                print(word, flush=True)
+
+if __name__ == '__main__':
+    main()

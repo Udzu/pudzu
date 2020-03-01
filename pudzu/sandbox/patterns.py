@@ -239,7 +239,19 @@ def MatchInterleaved(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
 
 def MatchAlternating(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     """Handles: A#B, A##B"""
-    raise NotImplementedError
+    # transition between (1) AxB and (2) AxB states
+    # for improper, also use (0) start state
+    t0 = {("0",Move.EMPTY): {(nfa1.start+"1",nfa2.start), (nfa1.start+"2",nfa2.start)}} if not proper else {}
+    t1 = {((s+"1",q),i): {(t+"1" if i == Move.EMPTY else t+"2",q) for t in ts} for (s,i),ts in nfa1.transitions.items() for q in nfa2.states}
+    t2 = {((q+"2",s),i): {(q+"2" if i == Move.EMPTY else q+"1",t) for t in ts} for (s,i),ts in nfa2.transitions.items() for q in nfa1.states}
+    # handle final transitions
+    t1e = {((nfa1.end+"1",s),i): {(nfa1.end+"1",t) for t in ts} for (s,i),ts in nfa2.transitions.items() if i==Move.EMPTY}
+    t2e = {((s+"2",nfa2.end),i): {(t+"2",nfa2.end) for t in ts} for (s,i),ts in nfa1.transitions.items() if i==Move.EMPTY}
+    t21 = {((nfa1.end+"2",nfa2.end),Move.EMPTY): {(nfa1.end+"1",nfa2.end)}}
+    transitions = merge_trans(t0, t1, t1e, t2, t2e, t21)
+    nfa = NFA("0" if not proper else (nfa1.start+"1",nfa2.start), (nfa1.end+"1",nfa2.end), transitions)
+    nfa.remove_redundant_states()
+    return nfa
 
 # Parser
 class Pattern:
@@ -274,14 +286,15 @@ class Pattern:
     
     expr <<= infixNotation(items, [
         ('&', 2, opAssoc.LEFT, lambda t: MatchBoth(t[0][0], t[0][2])),
-        (oneOf(('>', '<', '>>', '<<', '^', '^^')), 2, opAssoc.LEFT, lambda t:
+        (oneOf(('>', '<', '>>', '<<', '^', '^^', '#', '##')), 2, opAssoc.LEFT, lambda t:
             MatchContains(t[0][0], t[0][2], proper=True) if t[0][1] == '>>' else
             MatchContains(t[0][2], t[0][0], proper=True) if t[0][1] == '<<' else
             MatchContains(t[0][0], t[0][2], proper=False) if t[0][1] == '>' else
             MatchContains(t[0][2], t[0][0], proper=False) if t[0][1] == '<' else
             MatchInterleaved(t[0][0], t[0][2], proper=True) if t[0][1] == '^^' else
-            MatchInterleaved(t[0][0], t[0][2], proper=False) # '^'
-            # TODO: alternating
+            MatchInterleaved(t[0][0], t[0][2], proper=False) if t[0][1] == '^' else
+            MatchAlternating(t[0][0], t[0][2], proper=True) if t[0][1] == '##' else
+            MatchAlternating(t[0][0], t[0][2], proper=False) # if t[0][1] == '#'
          ),
         ('|', 2, opAssoc.LEFT, lambda t: MatchEither(t[0][0], t[0][2])),
     ])

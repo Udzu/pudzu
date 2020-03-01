@@ -1,6 +1,7 @@
 import argparse
 import copy
 import json
+import logging
 from functools import reduce
 from itertools import product
 from pathlib import Path
@@ -14,7 +15,7 @@ Input = Union[str, Move]
 Transitions = Dict[Tuple[State, Input], AbstractSet[State]]
 
 renderer = optional_import("PySimpleAutomata.automata_IO")
-
+logger = logging.getLogger('patterns')
 class NFA:
     """Nondeterministic Finite Automata with
     - single start state (with no inbounds) and end state (with no outbounds)
@@ -138,6 +139,28 @@ def MatchRepeatedNplus(nfa: NFA, minimum: int) -> NFA:
     else:
         return MatchAfter(nfa, MatchRepeatedNplus(nfa, minimum-1))
     
+def MatchNot(nfa: NFA) -> NFA:
+    """Handles: !A"""
+    raise NotImplementedError
+
+def MatchReversed(nfa: NFA) -> NFA:
+    """Handles: @r(A)"""
+    # just reverse the edges
+    transitions = {}
+    for (s,i),ts in nfa.transitions.items():
+        for t in ts:
+            transitions.setdefault((t,i),set()).add(s)
+            if i == Move.ALL:
+                # handle *-transitions (if it's not too difficult)
+                if any(u==t and vs-{s} for (u,j),vs in transitions.items()):
+                    raise NotImplementedError  # TODO?
+                for (r,j),_ in nfa.transitions.items():
+                    if r == s and not isinstance(j, Move):
+                        transitions.setdefault((t,j),set())
+    nfa = NFA(nfa.end, nfa.start, transitions)
+    nfa.remove_redundant_states()
+    return nfa
+    
 def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: A&B"""
     # generate transitions on cartesian product (with special handling for *-transitions)
@@ -159,28 +182,6 @@ def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
                 if ts1 is not None:
                     transitions = merge_trans(transitions, {((s1, s2), i): set(product(ts1, ts2))})
     nfa = NFA((nfa1.start, nfa2.start), (nfa1.end, nfa2.end), transitions)
-    nfa.remove_redundant_states()
-    return nfa
-
-def MatchNot(nfa: NFA) -> NFA:
-    """Handles: !A"""
-    raise NotImplementedError
-
-def MatchReversed(nfa: NFA) -> NFA:
-    """Handles: @r(A)"""
-    # just reverse the edges
-    transitions = {}
-    for (s,i),ts in nfa.transitions.items():
-        for t in ts:
-            transitions.setdefault((t,i),set()).add(s)
-            if i == Move.ALL:
-                # handle *-transitions (if it's not too difficult)
-                if any(u==t and vs-{s} for (u,j),vs in transitions.items()):
-                    raise NotImplementedError  # TODO?
-                for (r,j),_ in nfa.transitions.items():
-                    if r == s and not isinstance(j, Move):
-                        transitions.setdefault((t,j),set())
-    nfa = NFA(nfa.end, nfa.start, transitions)
     nfa.remove_redundant_states()
     return nfa
 
@@ -280,10 +281,11 @@ class Pattern:
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
     set = ("[" + Word(alphas, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
     nset = ("[^" + Word(alphas, min=1) + "]").setParseAction(lambda t: MatchNotIn(t[1]))
+    words = Literal(r"\w").setParseAction(lambda t: DICTIONARY_FILE)
 
     expr = Forward()
     group = ("(" + expr + ")").setParseAction(lambda t: t[1])
-    atom = literal | dot | set | nset | group
+    atom = literal | dot | set | nset | words | group
     item = (
         (atom + "+").setParseAction(lambda t: MatchRepeated(t[0], repeat=True,)) |
         (atom + "*").setParseAction(lambda t: MatchRepeated(t[0], repeat=True, optional=True)) |
@@ -327,11 +329,18 @@ def main():
     parser = argparse.ArgumentParser(description = 'NFA-based pattern matcher')
     parser.add_argument("pattern", type=str, help="pattern to match against")
     parser.add_argument("file", type=str, help="filename to search")
-    parser.add_argument("-n", "--nfa", action="store_true", help="generate nfa diagram")
+    parser.add_argument("-d", "--dict", type=str, help="dictionary file to use for \\w", default=None)
+    parser.add_argument("-s", "--svg", action="store_true", help="generate nfa diagram")
     args = parser.parse_args()
+    global DICTIONARY_FILE
     
+    if args.dict:
+        logger.debug(f"Generating wordlist from '{args.dict}'")
+        DICTIONARY_FILE = MatchDictionary(Path(args.dict))
+    logger.debug(f"Compiling pattern '{args.pattern}'")
+        
     pattern = Pattern(args.pattern)
-    if args.nfa: pattern.nfa.render("nfa")
+    if args.svg: pattern.nfa.render("nfa")
     with open(args.file, "r", encoding="utf-8") as f:
         for w in f:
             word = w.rstrip("\n")

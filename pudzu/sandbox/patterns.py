@@ -33,9 +33,9 @@ class NFA:
 
     def render(self, name: str, path: str = './') -> None:
         def label(s): 
-            # TODO: enumerate states by depth
-            if isinstance(s, str): return "".join(reversed(s))
-            else: return "("+ "|".join(label(t) for t in s) + ")"
+            # TODO: enumerate states by depth?
+            if isinstance(s, str): return "".join(s)
+            else: return "\u200B"+ "".join(label(t) for t in s) + "\u200D"
         states = {s : label(s) for s in self.states}
         def move(i): return {Move.ALL: '*', Move.EMPTY: 'ε'}.get(i, i)
         alphabet = {move(i) for (_,i),_ in self.transitions.items()}
@@ -96,24 +96,24 @@ def MatchNotIn(characters: str) -> NFA:
 
 def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: AB"""
-    t1 = {(s+"1",i): {t+"1" for t in ts} for (s,i),ts in nfa1.transitions.items()}
-    t2 = {(nfa1.end+"1" if s == nfa2.start else s+"2",i): {nfa1.end+"1" if t == nfa2.start else t+"2" for t in ts} for (s,i),ts in nfa2.transitions.items()}
-    return NFA(nfa1.start+"1", nfa2.end+"2", merge_trans(t1, t2))
+    t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
+    t2 = {(("1",nfa1.end) if s == nfa2.start else ("2",s),i): {("1",nfa1.end) if t == nfa2.start else ("2",t) for t in ts} for (s,i),ts in nfa2.transitions.items()}
+    return NFA(("1",nfa1.start), ("2",nfa2.end), merge_trans(t1, t2))
 
 def MatchEither(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: A|B"""
-    t1 = {(s+"1",i): {t+"1" for t in ts} for (s,i),ts in nfa1.transitions.items()}
-    t2 = {(s+"2",i): {t+"2" for t in ts} for (s,i),ts in nfa2.transitions.items()}
-    t12 = {("1", Move.EMPTY): {nfa1.start+"1", nfa2.start+"2"}, (nfa1.end+"1", Move.EMPTY): {"2"}, (nfa2.end+"2", Move.EMPTY): {"2"}}
+    t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
+    t2 = {(("2",s),i): {("2",t) for t in ts} for (s,i),ts in nfa2.transitions.items()}
+    t12 = {("1", Move.EMPTY): {("1",nfa1.start), ("2",nfa2.start)}, (("1",nfa1.end), Move.EMPTY): {"2"}, (("2",nfa2.end), Move.EMPTY): {"2"}}
     return NFA("1", "2", merge_trans(t1, t2, t12))
 
 def MatchRepeated(nfa: NFA, repeat: bool = False, optional: bool = False) -> NFA:
     """Handles: A*, A+, A?"""
-    transitions = {(s+"0",i): {t+"0" for t in ts} for (s,i),ts in nfa.transitions.items()}
-    transitions[("1", Move.EMPTY)] = {nfa.start+"0"}
+    transitions = {(("0",s),i): {("0",t) for t in ts} for (s,i),ts in nfa.transitions.items()}
+    transitions[("1", Move.EMPTY)] = {("0",nfa.start)}
     if optional: transitions[("1", Move.EMPTY)].add("2")
-    transitions[(nfa.end+"0", Move.EMPTY)] = {"2"}
-    if repeat: transitions[(nfa.end+"0", Move.EMPTY)].add(nfa.start+"0")
+    transitions[(("0",nfa.end), Move.EMPTY)] = {"2"}
+    if repeat: transitions[(("0",nfa.end), Move.EMPTY)].add(("0",nfa.start))
     return NFA("1", "2", transitions)
 
 def MatchRepeatedN(nfa: NFA, minimum: int, maximum: int) -> NFA:
@@ -191,23 +191,23 @@ def MatchContains(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     t1, t1e, t4, t4e = {}, {}, {}, {}
 
     if proper:
-        t1 = {(s+"1",i): {t+"1" for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
-        t1e = {(s+"1",i): {t+"2" for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
+        t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t1e = {(("1",s),i): {("2",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
 
-    t2 = {(s+"2",i): {t+"2" for t in ts} for (s,i),ts in nfa1.transitions.items()}
-    t2e = {(s+"2", Move.EMPTY): {(s+"3",nfa2.start)} for s in nfa1.states}
+    t2 = {(("2",s),i): {("2",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
+    t2e = {(("2",s), Move.EMPTY): {("3",s,nfa2.start)} for s in nfa1.states}
 
-    t3 = {((s+"3",q), i): {(s+"3",t) for t in ts} for (q,i),ts in nfa2.transitions.items() for s in nfa1.states}
-    t3e = {((s+"3",nfa2.end), Move.EMPTY): {(s+"4" if proper else s+"5")} for s in nfa1.states}
+    t3 = {(("3",s,q), i): {("3",s,t) for t in ts} for (q,i),ts in nfa2.transitions.items() for s in nfa1.states}
+    t3e = {(("3",s,nfa2.end), Move.EMPTY): {(("4",s) if proper else ("5",s))} for s in nfa1.states}
 
     if proper:
-        t4 = {(s+"4",i): {t+"4" for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
-        t4e = {(s+"4",i): {t+"5" for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
+        t4 = {(("4",s),i): {("4",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t4e = {(("4",s),i): {("5",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
 
-    t5 = {(s+"5",i): {t+"5" for t in ts} for (s,i),ts in nfa1.transitions.items()}
+    t5 = {(("5",s),i): {("5",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
 
     transitions = merge_trans(t1, t1e, t2, t2e, t3, t3e, t4, t4e, t5)
-    nfa = NFA(nfa1.start+"1" if proper else nfa1.start+"2", nfa1.end+"5", transitions)
+    nfa = NFA(("1",nfa1.start) if proper else ("2",nfa1.start), ("5",nfa1.end), transitions)
     nfa.remove_redundant_states()
     return nfa
 
@@ -218,22 +218,22 @@ def MatchInterleaved(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     t1, t1e, t4, t4e = {}, {}, {}, {}
 
     if proper:
-        t1 = {(s+"1",i): {t+"1" for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
-        t1e = {(s+"1",i): {(t+"2",nfa2.start) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
+        t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t1e = {(("1",s),i): {("2",t,nfa2.start) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
 
-    t2 = {((s+"2",q), i): {(t+"2",q) for t in ts} for (s,i),ts in nfa1.transitions.items() for q in nfa2.states}
-    t2e = {((q+"2",s), Move.EMPTY): {(q+"3",s)} for q in nfa1.states for s in nfa2.states}
+    t2 = {(("2",s,q), i): {("2",t,q) for t in ts} for (s,i),ts in nfa1.transitions.items() for q in nfa2.states}
+    t2e = {(("2",q,s), Move.EMPTY): {("3",q,s)} for q in nfa1.states for s in nfa2.states}
     
-    t3 = {((q+"3",s), i): {(q+"3",t) for t in ts} for (s,i),ts in nfa2.transitions.items() for q in nfa1.states}
-    t3e = {((q+"3",s), Move.EMPTY): {(q+"2",s)} for q in nfa1.states for s in nfa2.states}
+    t3 = {(("3",q,s), i): {("3",q,t) for t in ts} for (s,i),ts in nfa2.transitions.items() for q in nfa1.states}
+    t3e = {(("3",q,s), Move.EMPTY): {("2",q,s)} for q in nfa1.states for s in nfa2.states}
     
     if proper:
-        t4 = {((s+"2",nfa2.end),i): {t+"4" for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
-        t4e = {(s+"4",i): {t+"4" for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t4 = {(("2",s,nfa2.end),i): {("4",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
+        t4e = {(("4",s),i): {("4",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
     
     transitions = merge_trans(t1, t1e, t2, t2e, t3, t3e, t4, t4e)
-    nfa = NFA(nfa1.start+"1" if proper else (nfa1.start+"2", nfa2.start), 
-              nfa1.end+"4" if proper else (nfa1.end+"3", nfa2.end), transitions)
+    nfa = NFA(("1",nfa1.start) if proper else ("2",nfa1.start, nfa2.start), 
+              ("4",nfa1.end) if proper else ("3",nfa1.end, nfa2.end), transitions)
     nfa.remove_redundant_states()
     return nfa
 
@@ -241,18 +241,31 @@ def MatchAlternating(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     """Handles: A#B, A##B"""
     # transition between (1) AxB and (2) AxB states
     # for improper, also use (0) start state
-    t0 = {("0",Move.EMPTY): {(nfa1.start+"1",nfa2.start), (nfa1.start+"2",nfa2.start)}} if not proper else {}
-    t1 = {((s+"1",q),i): {(t+"1" if i == Move.EMPTY else t+"2",q) for t in ts} for (s,i),ts in nfa1.transitions.items() for q in nfa2.states}
-    t2 = {((q+"2",s),i): {(q+"2" if i == Move.EMPTY else q+"1",t) for t in ts} for (s,i),ts in nfa2.transitions.items() for q in nfa1.states}
+    t0 = {("0",Move.EMPTY): {("1",nfa1.start,nfa2.start), ("2",nfa1.start,nfa2.start)}} if not proper else {}
+    t1 = {(("1",s,q),i): {("1" if i == Move.EMPTY else "2",t,q) for t in ts} for (s,i),ts in nfa1.transitions.items() for q in nfa2.states}
+    t2 = {(("2",q,s),i): {("2" if i == Move.EMPTY else "1",q,t) for t in ts} for (s,i),ts in nfa2.transitions.items() for q in nfa1.states}
     # handle final transitions
-    t1e = {((nfa1.end+"1",s),i): {(nfa1.end+"1",t) for t in ts} for (s,i),ts in nfa2.transitions.items() if i==Move.EMPTY}
-    t2e = {((s+"2",nfa2.end),i): {(t+"2",nfa2.end) for t in ts} for (s,i),ts in nfa1.transitions.items() if i==Move.EMPTY}
-    t21 = {((nfa1.end+"2",nfa2.end),Move.EMPTY): {(nfa1.end+"1",nfa2.end)}}
+    t1e = {(("1",nfa1.end,s),i): {("1",nfa1.end,t) for t in ts} for (s,i),ts in nfa2.transitions.items() if i==Move.EMPTY}
+    t2e = {(("2",s,nfa2.end),i): {("2",t,nfa2.end) for t in ts} for (s,i),ts in nfa1.transitions.items() if i==Move.EMPTY}
+    t21 = {(("2",nfa1.end,nfa2.end),Move.EMPTY): {("1",nfa1.end,nfa2.end)}}
     transitions = merge_trans(t0, t1, t1e, t2, t2e, t21)
-    nfa = NFA("0" if not proper else (nfa1.start+"1",nfa2.start), (nfa1.end+"1",nfa2.end), transitions)
+    nfa = NFA("0" if not proper else ("1",nfa1.start,nfa2.start), ("1",nfa1.end,nfa2.end), transitions)
     nfa.remove_redundant_states()
     return nfa
 
+def MatchWords(words: Iterable[str]) -> NFA:
+    start, end = ("0",), ("1",)
+    transitions = {}
+    for word in words:
+        for i in range(len(word)):
+            transitions.setdefault((word[:i] or start, word[i]), set()).add(word[:i+1])
+        transitions[(word, Move.EMPTY)] = {end}
+    return NFA(start, end, transitions)
+    
+def MatchDictionary(path: Path) -> NFA:
+    with open(path, "r", encoding="utf-8") as f:
+        return MatchWords(w.rstrip("\n") for w in f)
+        
 # Parser
 class Pattern:
     from pyparsing import (

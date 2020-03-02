@@ -329,8 +329,8 @@ def main():
     parser = argparse.ArgumentParser(description = 'NFA-based pattern matcher')
     parser.add_argument("pattern", type=str, help="pattern to match against")
     parser.add_argument("file", type=str, help="filename to search")
-    parser.add_argument("-d", "--dict", type=str, help="dictionary file to use for \\w", default=None)
-    parser.add_argument("-s", "--svg", action="store_true", help="generate nfa diagram")
+    parser.add_argument("-s", dest="svg", action="store_true", help="generate nfa diagram")
+    parser.add_argument("-w", dest="dict", metavar="PATH", type=str, help="dictionary file to use for \\w", default=None)
     args = parser.parse_args()
     global DICTIONARY_FILE
     

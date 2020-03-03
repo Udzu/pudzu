@@ -16,6 +16,7 @@ Transitions = Dict[Tuple[State, Input], AbstractSet[State]]
 
 renderer = optional_import("PySimpleAutomata.automata_IO")
 logger = logging.getLogger('patterns')
+
 class NFA:
     """Nondeterministic Finite Automata with
     - single start state (with no inbounds) and end state (with no outbounds)
@@ -34,7 +35,6 @@ class NFA:
 
     def render(self, name: str, path: str = './') -> None:
         def label(s): 
-            # TODO: enumerate states by depth?
             if isinstance(s, str): return "".join(s)
             else: return "\u200B"+ "".join(label(t) for t in s) + "\u200D"
         states = {s : label(s) for s in self.states}
@@ -95,6 +95,19 @@ def MatchNotIn(characters: str) -> NFA:
     """Handles: [^abc], ."""
     return NFA("1", "2", merge_trans({("1", Move.ALL): {"2"}}, {("1", c): set() for c in characters}))
 
+def MatchWords(words: Iterable[str]) -> NFA:
+    start, end = ("0",), ("1",)
+    transitions = {}
+    for word in words:
+        for i in range(len(word)):
+            transitions.setdefault((word[:i] or start, word[i]), set()).add(word[:i+1])
+        transitions[(word, Move.EMPTY)] = {end}
+    return NFA(start, end, transitions)
+    
+def MatchDictionary(path: Path) -> NFA:
+    with open(path, "r", encoding="utf-8") as f:
+        return MatchWords(w.rstrip("\n") for w in f)
+    
 def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: AB"""
     t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
@@ -143,24 +156,6 @@ def MatchNot(nfa: NFA) -> NFA:
     """Handles: !A"""
     raise NotImplementedError
 
-def MatchReversed(nfa: NFA) -> NFA:
-    """Handles: @r(A)"""
-    # just reverse the edges
-    transitions = {}
-    for (s,i),ts in nfa.transitions.items():
-        for t in ts:
-            transitions.setdefault((t,i),set()).add(s)
-            if i == Move.ALL:
-                # handle *-transitions (if it's not too difficult)
-                if any(u==t and vs-{s} for (u,j),vs in transitions.items()):
-                    raise NotImplementedError  # TODO?
-                for (r,j),_ in nfa.transitions.items():
-                    if r == s and not isinstance(j, Move):
-                        transitions.setdefault((t,j),set())
-    nfa = NFA(nfa.end, nfa.start, transitions)
-    nfa.remove_redundant_states()
-    return nfa
-    
 def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: A&B"""
     # generate transitions on cartesian product (with special handling for *-transitions)
@@ -254,19 +249,35 @@ def MatchAlternating(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     nfa.remove_redundant_states()
     return nfa
 
-def MatchWords(words: Iterable[str]) -> NFA:
-    start, end = ("0",), ("1",)
+def MatchReversed(nfa: NFA) -> NFA:
+    """Handles: (?r:A)"""
+    # just reverse the edges
     transitions = {}
-    for word in words:
-        for i in range(len(word)):
-            transitions.setdefault((word[:i] or start, word[i]), set()).add(word[:i+1])
-        transitions[(word, Move.EMPTY)] = {end}
-    return NFA(start, end, transitions)
+    for (s,i),ts in nfa.transitions.items():
+        for t in ts:
+            transitions.setdefault((t,i),set()).add(s)
+            if i == Move.ALL:
+                # handle *-transitions (if it's not too difficult)
+                if any(u==t and vs-{s} for (u,j),vs in transitions.items()):
+                    raise NotImplementedError  # TODO?
+                for (r,j),_ in nfa.transitions.items():
+                    if r == s and not isinstance(j, Move):
+                        transitions.setdefault((t,j),set())
+    nfa = NFA(nfa.end, nfa.start, transitions)
+    nfa.remove_redundant_states()
+    return nfa
     
-def MatchDictionary(path: Path) -> NFA:
-    with open(path, "r", encoding="utf-8") as f:
-        return MatchWords(w.rstrip("\n") for w in f)
-        
+def MatchInsensitively(nfa: NFA) -> NFA:
+    """Handles: (?i:A)"""
+    transitions = {}
+    for (s,i),ts in nfa.transitions.items():
+        if isinstance(i, str):
+            transitions.setdefault((s,i.lower()),set()).update(ts)
+            transitions.setdefault((s,i.upper()),set()).update(ts)
+        else:
+            transitions[(s,i)] = ts
+    return NFA(nfa.start, nfa.end, transitions)
+
 # Parser
 class Pattern:
     from pyparsing import (
@@ -274,8 +285,9 @@ class Pattern:
         ParserElement, nums
     )
     ParserElement.setDefaultWhitespaceChars('')
+    ParserElement.enablePackrat()
 
-    # TODO: escaping, unicode
+    # TODO: character escaping, supported scripts?
     _0_to_19 = Group(Optional("1") + Word(nums, exact=1)).setParseAction(lambda t: ''.join(t[0]))
     literal = Word(alphas + " '-", exact=1).setParseAction(lambda t: MatchIn(t[0]))
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
@@ -294,7 +306,8 @@ class Pattern:
         (atom + "{" + _0_to_19 + ",}").setParseAction(lambda t: MatchRepeatedNplus(t[0], int(t[2]))) |
         (atom + "{" + _0_to_19 + "," + _0_to_19 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], int(t[2]), int(t[4]))) |
         # TODO: not
-        ("@r" + atom).setParseAction(lambda t: MatchReversed(t[1])) |
+        ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1])) |
+        ("(?i:" + expr + ")").setParseAction(lambda t: MatchInsensitively(t[1])) |
         atom
     )
     items = OneOrMore(item).setParseAction(lambda t: reduce(MatchAfter, t))
@@ -325,22 +338,57 @@ class Pattern:
         return self.nfa.match(string)
 
 def main():
-    # TODO: case-insensitive, predefined character ranges (in cfg)?
-    parser = argparse.ArgumentParser(description = 'NFA-based pattern matcher')
+    parser = argparse.ArgumentParser(description = """NFA-based pattern matcher supporting novel spatial conjunction and modifiers.
+Supported syntax:
+
+- a      character literal
+- .      wildcard character
+- [abc]  character class
+- [^abc] negated character class
+- \w     word from dictionary file
+- PQ     concatenation
+- P?     0 or 1 occurences
+- P*     0 or more occurences
+- P+     1 or more occurences
+- P{n}   n occurences
+- P{n,}  n or more occurences
+- P{m,n} m to n occurences
+- P|Q    P or Q
+- P&Q    P and Q
+- P<Q    P inside Q
+- P<<Q   P strictly inside Q
+- P>Q    P outside Q
+- P>>Q   P strictly outside Q
+- P^Q    P interleaved with Q
+- P^^Q   P interleaved inside Q
+- P#Q    P alternating with Q
+- P##Q   P alternating before Q
+- (P)    parentheses
+- (?r:P) reversed match
+- (?i:P) case-insensitive match
+""", formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("pattern", type=str, help="pattern to match against")
     parser.add_argument("file", type=str, help="filename to search")
-    parser.add_argument("-s", dest="svg", action="store_true", help="generate nfa diagram")
-    parser.add_argument("-w", dest="dict", metavar="PATH", type=str, help="dictionary file to use for \\w", default=None)
+    parser.add_argument("-d", dest="dict", metavar="PATH", type=str, help="dictionary file to use for \\w", default=None)
+    parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
+    parser.add_argument("-s", dest="svg", action="store_true", help="save NFA diagram")
     args = parser.parse_args()
     global DICTIONARY_FILE
     
     if args.dict:
-        logger.debug(f"Generating wordlist from '{args.dict}'")
+        logger.info(f"Compiling dictionary from '{args.dict}'")
         DICTIONARY_FILE = MatchDictionary(Path(args.dict))
-    logger.debug(f"Compiling pattern '{args.pattern}'")
         
-    pattern = Pattern(args.pattern)
-    if args.svg: pattern.nfa.render("nfa")
+    pattern = args.pattern
+    if args.case_insensitive: pattern = f"(?i:{pattern})"
+    
+    logger.info(f"Compiling pattern '{pattern}'")
+    pattern = Pattern(pattern)
+    
+    if args.svg:
+        logger.info(f"Saving NFA diagram to 'nfa.dot.svg'")
+        pattern.nfa.render("nfa")
+        
     with open(args.file, "r", encoding="utf-8") as f:
         for w in f:
             word = w.rstrip("\n")

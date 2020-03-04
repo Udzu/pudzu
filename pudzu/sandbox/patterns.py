@@ -2,6 +2,7 @@ import argparse
 import copy
 import json
 import logging
+import string
 from functools import reduce
 from itertools import product
 from pathlib import Path
@@ -105,7 +106,7 @@ def MatchWords(words: Iterable[str]) -> NFA:
     return NFA(start, end, transitions)
     
 def MatchDictionary(path: Path) -> NFA:
-    with open(path, "r", encoding="utf-8") as f:
+    with open(str(path), "r", encoding="utf-8") as f:
         return MatchWords(w.rstrip("\n") for w in f)
     
 def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
@@ -114,12 +115,14 @@ def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
     t2 = {(("1",nfa1.end) if s == nfa2.start else ("2",s),i): {("1",nfa1.end) if t == nfa2.start else ("2",t) for t in ts} for (s,i),ts in nfa2.transitions.items()}
     return NFA(("1",nfa1.start), ("2",nfa2.end), merge_trans(t1, t2))
 
-def MatchEither(nfa1: NFA, nfa2: NFA) -> NFA:
-    """Handles: A|B"""
-    t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
-    t2 = {(("2",s),i): {("2",t) for t in ts} for (s,i),ts in nfa2.transitions.items()}
-    t12 = {("1", Move.EMPTY): {("1",nfa1.start), ("2",nfa2.start)}, (("1",nfa1.end), Move.EMPTY): {"2"}, (("2",nfa2.end), Move.EMPTY): {"2"}}
-    return NFA("1", "2", merge_trans(t1, t2, t12))
+def MatchEither(*nfas: NFA) -> NFA:
+    """Handles: A|B (and arbitrary alternation too)"""
+    tis = []
+    for n,nfa in enumerate(nfas, 1):
+        tis.append({((str(n),s),i): {(str(n),t) for t in ts} for (s,i),ts in nfa.transitions.items()})
+    tstart = {("1", Move.EMPTY): {(str(n), nfa.start) for n,nfa in enumerate(nfas, 1)}}
+    tend = {((str(n), nfa.end), Move.EMPTY): {"2"} for n,nfa in enumerate(nfas, 1)}
+    return NFA("1", "2", merge_trans(tstart, tend, *tis))
 
 def MatchRepeated(nfa: NFA, repeat: bool = False, optional: bool = False) -> NFA:
     """Handles: A*, A+, A?"""
@@ -278,6 +281,17 @@ def MatchInsensitively(nfa: NFA) -> NFA:
             transitions[(s,i)] = ts
     return NFA(nfa.start, nfa.end, transitions)
 
+def MatchShifted(nfa: NFA, shift: int) -> NFA:
+    """Handles: (?s1:A)"""
+    transitions = {}
+    for (s,i),ts in nfa.transitions.items():
+        for alphabet in (string.ascii_lowercase, string.ascii_uppercase):
+            if isinstance(i, str) and i in alphabet:
+                i = alphabet[(alphabet.index(i) + shift) % 26]
+                break
+        transitions[(s,i)] = ts
+    return NFA(nfa.start, nfa.end, transitions)
+
 # Parser
 class Pattern:
     from pyparsing import (
@@ -288,7 +302,9 @@ class Pattern:
     ParserElement.enablePackrat()
 
     # TODO: character escaping, supported scripts?
-    _0_to_19 = Group(Optional("1") + Word(nums, exact=1)).setParseAction(lambda t: ''.join(t[0]))
+    _0_to_99 = Word(nums, min=1, max=2).setParseAction(lambda t: int(''.join(t[0])))
+    _m99_to_99 = (Optional("-") + _0_to_99).setParseAction(lambda t: t[-1] * (-1 if len(t) == 2 else 1))
+
     literal = Word(alphas + " '-", exact=1).setParseAction(lambda t: MatchIn(t[0]))
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
     set = ("[" + Word(alphas, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
@@ -302,12 +318,14 @@ class Pattern:
         (atom + "+").setParseAction(lambda t: MatchRepeated(t[0], repeat=True,)) |
         (atom + "*").setParseAction(lambda t: MatchRepeated(t[0], repeat=True, optional=True)) |
         (atom + "?").setParseAction(lambda t: MatchRepeated(t[0], optional=True)) |
-        (atom + "{" + _0_to_19 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], int(t[2]), int(t[2]))) |
-        (atom + "{" + _0_to_19 + ",}").setParseAction(lambda t: MatchRepeatedNplus(t[0], int(t[2]))) |
-        (atom + "{" + _0_to_19 + "," + _0_to_19 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], int(t[2]), int(t[4]))) |
+        (atom + "{" + _0_to_99 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], t[2], int(t[2]))) |
+        (atom + "{" + _0_to_99 + ",}").setParseAction(lambda t: MatchRepeatedNplus(t[0], t[2])) |
+        (atom + "{" + _0_to_99 + "," + _0_to_99 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], t[2], t[4])) |
         # TODO: not
         ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1])) |
         ("(?i:" + expr + ")").setParseAction(lambda t: MatchInsensitively(t[1])) |
+        ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1])) |
+        ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)])) |
         atom
     )
     items = OneOrMore(item).setParseAction(lambda t: reduce(MatchAfter, t))
@@ -341,31 +359,33 @@ def main():
     parser = argparse.ArgumentParser(description = """NFA-based pattern matcher supporting novel spatial conjunction and modifiers.
 Supported syntax:
 
-- a      character literal
-- .      wildcard character
-- [abc]  character class
-- [^abc] negated character class
-- \w     word from dictionary file
-- PQ     concatenation
-- P?     0 or 1 occurences
-- P*     0 or more occurences
-- P+     1 or more occurences
-- P{n}   n occurences
-- P{n,}  n or more occurences
-- P{m,n} m to n occurences
-- P|Q    P or Q
-- P&Q    P and Q
-- P<Q    P inside Q
-- P<<Q   P strictly inside Q
-- P>Q    P outside Q
-- P>>Q   P strictly outside Q
-- P^Q    P interleaved with Q
-- P^^Q   P interleaved inside Q
-- P#Q    P alternating with Q
-- P##Q   P alternating before Q
-- (P)    parentheses
-- (?r:P) reversed match
-- (?i:P) case-insensitive match
+- a       character literal
+- .       wildcard character
+- [abc]   character class
+- [^abc]  negated character class
+- \w      word from dictionary file
+- PQ      concatenation
+- P?      0 or 1 occurences
+- P*      0 or more occurences
+- P+      1 or more occurences
+- P{n}    n occurences
+- P{n,}   n or more occurences
+- P{m,n}  m to n occurences
+- P|Q     P or Q
+- P&Q     P and Q
+- P<Q     P inside Q
+- P<<Q    P strictly inside Q
+- P>Q     P outside Q
+- P>>Q    P strictly outside Q
+- P^Q     P interleaved with Q
+- P^^Q    P interleaved inside Q
+- P#Q     P alternating with Q
+- P##Q    P alternating before Q
+- (P)     parentheses
+- (?r:P)  reversed match
+- (?i:P)  case-insensitive match
+- (?sn:P) shifted by n characters
+- (?s:P)  shifted by 1 to 25 characters
 """, formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("pattern", type=str, help="pattern to match against")
     parser.add_argument("file", type=str, help="filename to search")

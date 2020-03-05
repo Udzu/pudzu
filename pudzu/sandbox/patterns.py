@@ -36,7 +36,7 @@ class NFA:
 
     def render(self, name: str, path: str = './') -> None:
         def label(s): 
-            if isinstance(s, str): return "".join(s)
+            if isinstance(s, str): return s
             else: return "\u200B"+ "".join(label(t) for t in s) + "\u200D"
         states = {s : label(s) for s in self.states}
         def move(i): return {Move.ALL: '*', Move.EMPTY: 'ε'}.get(i, i)
@@ -51,13 +51,13 @@ class NFA:
         renderer.nfa_to_dot(nfa_json, name, path)
 
     def match(self, string: str) -> bool:
-        states = self._expand_epsilons({ self.start })
+        states = self.expand_epsilons({ self.start })
         for c in string:
             states = {t for s in states for t in self.transitions.get((s, c), self.transitions.get((s, Move.ALL), set()))}
-            states = self._expand_epsilons(states)
+            states = self.expand_epsilons(states)
         return self.end in states
 
-    def _expand_epsilons(self, states: AbstractSet[State]) -> AbstractSet[State]:
+    def expand_epsilons(self, states: Iterable[State]) -> AbstractSet[State]:
         old, new = set(), states
         while new:
             old.update(new)
@@ -161,7 +161,32 @@ def MatchRepeatedNplus(nfa: NFA, minimum: int) -> NFA:
     
 def MatchNot(nfa: NFA) -> NFA:
     """Handles: !A"""
-    raise NotImplementedError
+    # convert to DFA and invert accepted/rejected states
+    start_state = tuple(sorted(nfa.expand_epsilons({nfa.start}), key=str))
+    to_process = [start_state]
+    processed_states = set()
+    failing_states = set()
+    transitions = {}
+    while to_process:
+        current_state = to_process.pop()
+        processed_states.add(current_state)
+        if not any(s == nfa.end for s in current_state): failing_states.add(current_state)
+        moves = {i for (s,i) in nfa.transitions if s in current_state and i != Move.EMPTY}
+        for i in moves:
+            next_state = {t for s in current_state for t in nfa.transitions.get((s,i), nfa.transitions.get((s,Move.ALL), set()))}
+            next_state = tuple(sorted(nfa.expand_epsilons(next_state), key=str))
+            transitions[(current_state, i)] = {next_state}
+            if next_state not in processed_states: to_process.append(next_state)
+    # transition failing states to success
+    for failing_state in failing_states:
+        transitions.setdefault((failing_state, Move.EMPTY), set()).add("2")
+    # transition non-moves to a new failing state (and from there to success)
+    for state in processed_states:
+        if (state, Move.ALL) not in transitions:
+            transitions[(state, Move.ALL)] = {"1"}
+            transitions.setdefault(("1", Move.ALL), {"1"})
+            transitions.setdefault(("1", Move.EMPTY), {"2"})
+    return NFA(start_state, "2", transitions)
 
 def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: A&B"""
@@ -335,7 +360,7 @@ class Pattern:
         (atom + "{" + _0_to_99 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], t[2], int(t[2]))) |
         (atom + "{" + _0_to_99 + ",}").setParseAction(lambda t: MatchRepeatedNplus(t[0], t[2])) |
         (atom + "{" + _0_to_99 + "," + _0_to_99 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], t[2], t[4])) |
-        # TODO: not
+        ("!" + atom).setParseAction(lambda t: MatchNot(t[1])) |
         atom
     )
     items = OneOrMore(item).setParseAction(lambda t: reduce(MatchAfter, t))
@@ -382,6 +407,7 @@ Supported syntax:
 - P{n,}    n or more occurences
 - P{m,n}   m to n occurences
 - P|Q      P or Q
+- !P       not P
 - P&Q      P and Q
 - P<Q      P inside Q
 - P<<Q     P strictly inside Q

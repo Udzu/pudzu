@@ -88,6 +88,10 @@ def merge_trans(*args):
     """Merge multiple transitions, unioning target states."""
     return merge_with(lambda x: set.union(*x), *args)
 
+def MatchEmpty() -> NFA:
+    """Empty match"""
+    return NFA("1", "2", {("1", Move.EMPTY): {"2"}})
+
 def MatchIn(characters: str) -> NFA:
     """Handles: a, [abc]"""
     return NFA("1", "2", {("1", c): {"2"} for c in characters})
@@ -136,7 +140,7 @@ def MatchRepeated(nfa: NFA, repeat: bool = False, optional: bool = False) -> NFA
 def MatchRepeatedN(nfa: NFA, minimum: int, maximum: int) -> NFA:
     """Handles: A{2,5}"""
     if minimum == maximum == 0:
-        return NFA("1", "2", {("1", Move.EMPTY): {"2"}})
+        return MatchEmpty()
     elif minimum == maximum == 1:
         return nfa
     elif minimum > 0:
@@ -296,7 +300,7 @@ def MatchShifted(nfa: NFA, shift: int) -> NFA:
 class Pattern:
     from pyparsing import (
         Word, Optional, oneOf, Forward, OneOrMore, alphas, Group, Literal, infixNotation, opAssoc,
-        ParserElement, nums
+        ParserElement, nums, alphanums
     )
     ParserElement.setDefaultWhitespaceChars('')
     ParserElement.enablePackrat()
@@ -304,15 +308,25 @@ class Pattern:
     # TODO: character escaping, supported scripts?
     _0_to_99 = Word(nums, min=1, max=2).setParseAction(lambda t: int(''.join(t[0])))
     _m99_to_99 = (Optional("-") + _0_to_99).setParseAction(lambda t: t[-1] * (-1 if len(t) == 2 else 1))
+    _id = Word(alphas+"_", alphanums+"_")
 
-    literal = Word(alphas + " '-", exact=1).setParseAction(lambda t: MatchIn(t[0]))
+    characters = alphanums + " '-"
+    literal = Word(characters, exact=1).setParseAction(lambda t: MatchIn(t[0]))
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
-    set = ("[" + Word(alphas, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
-    nset = ("[^" + Word(alphas, min=1) + "]").setParseAction(lambda t: MatchNotIn(t[1]))
+    set = ("[" + Word(characters, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
+    nset = ("[^" + Word(characters, min=1) + "]").setParseAction(lambda t: MatchNotIn(t[1]))
     words = Literal(r"\w").setParseAction(lambda t: DICTIONARY_FILE)
 
     expr = Forward()
-    group = ("(" + expr + ")").setParseAction(lambda t: t[1])
+    group = (
+        ("(" + expr + ")").setParseAction(lambda t: t[1]) |
+        ("(?i:" + expr + ")").setParseAction(lambda t: MatchInsensitively(t[1])) |
+        ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1])) |
+        ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1])) |
+        ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)])) |
+        ("(?&" + _id + "=" + expr + ")").setParseAction(lambda t: SUBPATTERNS.update({t[1]: t[3]}) or MatchEmpty()) |
+        ("(?&" + _id + ")").setParseAction(lambda t: SUBPATTERNS[t[1]])
+    )
     atom = literal | dot | set | nset | words | group
     item = (
         (atom + "+").setParseAction(lambda t: MatchRepeated(t[0], repeat=True,)) |
@@ -322,10 +336,6 @@ class Pattern:
         (atom + "{" + _0_to_99 + ",}").setParseAction(lambda t: MatchRepeatedNplus(t[0], t[2])) |
         (atom + "{" + _0_to_99 + "," + _0_to_99 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], t[2], t[4])) |
         # TODO: not
-        ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1])) |
-        ("(?i:" + expr + ")").setParseAction(lambda t: MatchInsensitively(t[1])) |
-        ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1])) |
-        ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)])) |
         atom
     )
     items = OneOrMore(item).setParseAction(lambda t: reduce(MatchAfter, t))
@@ -359,33 +369,35 @@ def main():
     parser = argparse.ArgumentParser(description = """NFA-based pattern matcher supporting novel spatial conjunction and modifiers.
 Supported syntax:
 
-- a       character literal
-- .       wildcard character
-- [abc]   character class
-- [^abc]  negated character class
-- \w      word from dictionary file
-- PQ      concatenation
-- P?      0 or 1 occurences
-- P*      0 or more occurences
-- P+      1 or more occurences
-- P{n}    n occurences
-- P{n,}   n or more occurences
-- P{m,n}  m to n occurences
-- P|Q     P or Q
-- P&Q     P and Q
-- P<Q     P inside Q
-- P<<Q    P strictly inside Q
-- P>Q     P outside Q
-- P>>Q    P strictly outside Q
-- P^Q     P interleaved with Q
-- P^^Q    P interleaved inside Q
-- P#Q     P alternating with Q
-- P##Q    P alternating before Q
-- (P)     parentheses
-- (?r:P)  reversed match
-- (?i:P)  case-insensitive match
-- (?sn:P) shifted by n characters
-- (?s:P)  shifted by 1 to 25 characters
+- a        character literal
+- .        wildcard character
+- [abc]    character class
+- [^abc]   negated character class
+- \w       word from dictionary file
+- PQ       concatenation
+- P?       0 or 1 occurences
+- P*       0 or more occurences
+- P+       1 or more occurences
+- P{n}     n occurences
+- P{n,}    n or more occurences
+- P{m,n}   m to n occurences
+- P|Q      P or Q
+- P&Q      P and Q
+- P<Q      P inside Q
+- P<<Q     P strictly inside Q
+- P>Q      P outside Q
+- P>>Q     P strictly outside Q
+- P^Q      P interleaved with Q
+- P^^Q     P interleaved inside Q
+- P#Q      P alternating with Q
+- P##Q     P alternating before Q
+- (P)      parentheses
+- (?i:P)   case-insensitive match
+- (?r:P)   reversed match
+- (?sn:P)  shifted by n characters
+- (?s:P)   shifted by 1 to 25 characters
+- (?&ID=P) define subpattern for subsequent use
+- (?&ID)   use subpattern
 """, formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("pattern", type=str, help="pattern to match against")
     parser.add_argument("file", type=str, help="filename to search")
@@ -393,12 +405,15 @@ Supported syntax:
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
     parser.add_argument("-s", dest="svg", action="store_true", help="save NFA diagram")
     args = parser.parse_args()
-    global DICTIONARY_FILE
+    global DICTIONARY_FILE, SUBPATTERNS
     
     if args.dict:
         logger.info(f"Compiling dictionary from '{args.dict}'")
         DICTIONARY_FILE = MatchDictionary(Path(args.dict))
-        
+
+    # TODO: support config-based subpatterns?
+    SUBPATTERNS = {}
+
     pattern = args.pattern
     if args.case_insensitive: pattern = f"(?i:{pattern})"
     

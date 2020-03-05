@@ -159,34 +159,41 @@ def MatchRepeatedNplus(nfa: NFA, minimum: int) -> NFA:
     else:
         return MatchAfter(nfa, MatchRepeatedNplus(nfa, minimum-1))
     
-def MatchNot(nfa: NFA) -> NFA:
+def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     """Handles: !A"""
-    # convert to DFA and invert accepted/rejected states
+    # convert to DFA (and optionally invert accepted/rejected states)
     start_state = tuple(sorted(nfa.expand_epsilons({nfa.start}), key=str))
     to_process = [start_state]
     processed_states = set()
-    failing_states = set()
+    accepting_states = set()
     transitions = {}
     while to_process:
         current_state = to_process.pop()
         processed_states.add(current_state)
-        if not any(s == nfa.end for s in current_state): failing_states.add(current_state)
+        if any(s == nfa.end for s in current_state): accepting_states.add(current_state)
         moves = {i for (s,i) in nfa.transitions if s in current_state and i != Move.EMPTY}
         for i in moves:
             next_state = {t for s in current_state for t in nfa.transitions.get((s,i), nfa.transitions.get((s,Move.ALL), set()))}
             next_state = tuple(sorted(nfa.expand_epsilons(next_state), key=str))
             transitions[(current_state, i)] = {next_state}
             if next_state not in processed_states: to_process.append(next_state)
-    # transition failing states to success
-    for failing_state in failing_states:
-        transitions.setdefault((failing_state, Move.EMPTY), set()).add("2")
-    # transition non-moves to a new failing state (and from there to success)
-    for state in processed_states:
-        if (state, Move.ALL) not in transitions:
-            transitions[(state, Move.ALL)] = {"1"}
-            transitions.setdefault(("1", Move.ALL), {"1"})
-            transitions.setdefault(("1", Move.EMPTY), {"2"})
-    return NFA(start_state, "2", transitions)
+    
+    # transition accepting/non-accepting states to a single final state
+    for final_state in (processed_states - accepting_states) if negate else accepting_states:
+        transitions.setdefault((final_state, Move.EMPTY), set()).add("2")
+        
+    # if negating, transition non-moves to a new accepting, consuming state
+    if negate:
+        for state in processed_states:
+            if (state, Move.ALL) not in transitions:
+                transitions[(state, Move.ALL)] = {"1"}
+                transitions.setdefault(("1", Move.ALL), {"1"})
+                transitions.setdefault(("1", Move.EMPTY), {"2"})
+            
+    nfa = NFA(start_state, "2", transitions)
+    nfa.remove_redundant_states()
+    return nfa
+    
 
 def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: A&B"""
@@ -345,6 +352,7 @@ class Pattern:
     expr = Forward()
     group = (
         ("(" + expr + ")").setParseAction(lambda t: t[1]) |
+        ("(?d:" + expr + ")").setParseAction(lambda t: MatchDFA(t[1], negate=False)) |
         ("(?i:" + expr + ")").setParseAction(lambda t: MatchInsensitively(t[1])) |
         ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1])) |
         ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1])) |
@@ -360,14 +368,15 @@ class Pattern:
         (atom + "{" + _0_to_99 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], t[2], int(t[2]))) |
         (atom + "{" + _0_to_99 + ",}").setParseAction(lambda t: MatchRepeatedNplus(t[0], t[2])) |
         (atom + "{" + _0_to_99 + "," + _0_to_99 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], t[2], t[4])) |
-        ("!" + atom).setParseAction(lambda t: MatchNot(t[1])) |
+        ("!" + atom).setParseAction(lambda t: MatchDFA(t[1], negate=True)) |
         atom
     )
     items = OneOrMore(item).setParseAction(lambda t: reduce(MatchAfter, t))
     
     expr <<= infixNotation(items, [
-        ('&', 2, opAssoc.LEFT, lambda t: MatchBoth(t[0][0], t[0][2])),
+        ('&', 2, opAssoc.LEFT, lambda t: reduce(MatchBoth, t[0][::2])),
         (oneOf(('>', '<', '>>', '<<', '^', '^^', '#', '##')), 2, opAssoc.LEFT, lambda t:
+            # TODO: handle chained operators!
             MatchContains(t[0][0], t[0][2], proper=True) if t[0][1] == '>>' else
             MatchContains(t[0][2], t[0][0], proper=True) if t[0][1] == '<<' else
             MatchContains(t[0][0], t[0][2], proper=False) if t[0][1] == '>' else
@@ -377,7 +386,7 @@ class Pattern:
             MatchAlternating(t[0][0], t[0][2], proper=True) if t[0][1] == '##' else
             MatchAlternating(t[0][0], t[0][2], proper=False) # if t[0][1] == '#'
          ),
-        ('|', 2, opAssoc.LEFT, lambda t: MatchEither(t[0][0], t[0][2])),
+        ('|', 2, opAssoc.LEFT, lambda t: MatchEither(*t[0][::2])),
     ])
 
     def __init__(self, pattern: str):
@@ -418,6 +427,7 @@ Supported syntax:
 - P#Q      P alternating with Q
 - P##Q     P alternating before Q
 - (P)      parentheses
+- (?d:P)   convert to DFA
 - (?i:P)   case-insensitive match
 - (?r:P)   reversed match
 - (?sn:P)  shifted by n characters

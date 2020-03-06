@@ -356,7 +356,7 @@ class Pattern:
     expr = Forward()
     group = (
         ("(" + expr + ")").setParseAction(lambda t: t[1]) |
-        ("(?d:" + expr + ")").setParseAction(lambda t: MatchDFA(t[1], negate=False)) |
+        ("(?D:" + expr + ")").setParseAction(lambda t: MatchDFA(t[1], negate=False)) |
         ("(?i:" + expr + ")").setParseAction(lambda t: MatchInsensitively(t[1])) |
         ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1])) |
         ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1])) |
@@ -432,11 +432,11 @@ Supported syntax:
 - P#Q      P alternating with Q
 - P##Q     P alternating before Q
 - (P)      parentheses
-- (?d:P)   convert to DFA
 - (?i:P)   case-insensitive match
 - (?r:P)   reversed match
 - (?sn:P)  shifted by n characters
 - (?s:P)   shifted by 1 to 25 characters
+- (?D:P)   convert NFA to DFA
 - (?&ID=P) define subpattern for subsequent use
 - (?&ID)   use subpattern
 """, formatter_class=argparse.RawTextHelpFormatter)
@@ -458,7 +458,7 @@ Supported syntax:
 
     pattern = args.pattern
     if args.case_insensitive: pattern = f"(?i:{pattern})"
-    if args.DFA: pattern = f"(?d:{pattern})"
+    if args.DFA: pattern = f"(?D:{pattern})"
 
     logger.info(f"Compiling pattern '{pattern}'")
     pattern = Pattern(pattern)

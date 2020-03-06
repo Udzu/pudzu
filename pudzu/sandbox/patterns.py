@@ -329,6 +329,10 @@ def MatchShifted(nfa: NFA, shift: int) -> NFA:
     return NFA(nfa.start, nfa.end, transitions)
 
 # Parser
+def op_reduce(l):
+    if len(l) == 1: return l[0]
+    else: return op_reduce([l[1](l[0], l[2]), *l[3:]])
+
 class Pattern:
     from pyparsing import (
         Word, Optional, oneOf, Forward, OneOrMore, alphas, Group, Literal, infixNotation, opAssoc,
@@ -372,20 +376,20 @@ class Pattern:
         atom
     )
     items = OneOrMore(item).setParseAction(lambda t: reduce(MatchAfter, t))
-    
+
+    spatial_ops = (
+        Literal(">>").setParseAction(lambda _: lambda x, y: MatchContains(x, y, proper=True)) |
+        Literal(">").setParseAction(lambda _: lambda x, y: MatchContains(x, y, proper=False)) |
+        Literal("<<").setParseAction(lambda _: lambda x, y: MatchContains(y, x, proper=True)) |
+        Literal("<").setParseAction(lambda _: lambda x, y: MatchContains(y, x, proper=False)) |
+        Literal("^^").setParseAction(lambda _: lambda x, y: MatchInterleaved(x, y, proper=True)) |
+        Literal("^").setParseAction(lambda _: lambda x, y: MatchInterleaved(x, y, proper=False)) |
+        Literal("##").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, proper=True)) |
+        Literal("#").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, proper=False))
+    )
     expr <<= infixNotation(items, [
         ('&', 2, opAssoc.LEFT, lambda t: reduce(MatchBoth, t[0][::2])),
-        (oneOf(('>', '<', '>>', '<<', '^', '^^', '#', '##')), 2, opAssoc.LEFT, lambda t:
-            # TODO: handle chained operators!
-            MatchContains(t[0][0], t[0][2], proper=True) if t[0][1] == '>>' else
-            MatchContains(t[0][2], t[0][0], proper=True) if t[0][1] == '<<' else
-            MatchContains(t[0][0], t[0][2], proper=False) if t[0][1] == '>' else
-            MatchContains(t[0][2], t[0][0], proper=False) if t[0][1] == '<' else
-            MatchInterleaved(t[0][0], t[0][2], proper=True) if t[0][1] == '^^' else
-            MatchInterleaved(t[0][0], t[0][2], proper=False) if t[0][1] == '^' else
-            MatchAlternating(t[0][0], t[0][2], proper=True) if t[0][1] == '##' else
-            MatchAlternating(t[0][0], t[0][2], proper=False) # if t[0][1] == '#'
-         ),
+        (spatial_ops, 2, opAssoc.LEFT, lambda t: op_reduce(t[0])),
         ('|', 2, opAssoc.LEFT, lambda t: MatchEither(*t[0][::2])),
     ])
 
@@ -398,6 +402,7 @@ class Pattern:
         
     def match(self, string: str) -> bool:
         return self.nfa.match(string)
+
 
 def main():
     parser = argparse.ArgumentParser(description = """NFA-based pattern matcher supporting novel spatial conjunction and modifiers.
@@ -438,8 +443,9 @@ Supported syntax:
     parser.add_argument("pattern", type=str, help="pattern to match against")
     parser.add_argument("file", type=str, help="filename to search")
     parser.add_argument("-d", dest="dict", metavar="PATH", type=str, help="dictionary file to use for \\w", default=None)
+    parser.add_argument("-D", dest="DFA", action="store_true", help="convert NFA to DFA", default=None)
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
-    parser.add_argument("-s", dest="svg", action="store_true", help="save NFA diagram")
+    parser.add_argument("-s", dest="svg", action="store_true", help="save FSM diagram")
     args = parser.parse_args()
     global DICTIONARY_FILE, SUBPATTERNS
     
@@ -452,13 +458,14 @@ Supported syntax:
 
     pattern = args.pattern
     if args.case_insensitive: pattern = f"(?i:{pattern})"
-    
+    if args.DFA: pattern = f"(?d:{pattern})"
+
     logger.info(f"Compiling pattern '{pattern}'")
     pattern = Pattern(pattern)
     
     if args.svg:
-        logger.info(f"Saving NFA diagram to 'nfa.dot.svg'")
-        pattern.nfa.render("nfa")
+        logger.info(f"Saving NFA diagram to 'fsm.dot.svg'")
+        pattern.nfa.render("fsm")
         
     with open(args.file, "r", encoding="utf-8") as f:
         for w in f:

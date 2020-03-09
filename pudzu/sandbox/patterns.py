@@ -3,6 +3,7 @@ import copy
 import json
 import logging
 import string
+from dataclasses import dataclass
 from functools import reduce
 from itertools import product
 from pathlib import Path
@@ -23,6 +24,7 @@ class CaptureOptions:
 
 CaptureGroup = str
 CaptureId = int
+CaptureType = Enum('CaptureType', 'START END CAPTURE')
 CaptureStarts = CaptureEnds = Dict[State, AbstractSet[Tuple[CaptureGroup, CaptureId]]]
 Captures = Dict[State, Dict[Tuple[CaptureGroup, CaptureId], CaptureOptions]]
 
@@ -45,10 +47,9 @@ class NFA:
         self.end = end
         self.transitions = transitions
         self.states = {self.start, self.end} | {s for s,_ in self.transitions.keys()} | {t for ts in self.transitions.values() for t in ts}
-        # TODO: filter the following?
-        self.capture_starts = capture_starts or {}
-        self.capture_ends = capture_ends or {}
-        self.captures = captures or {}
+        self.capture_starts = {s:v for s in (capture_starts or {}).items() if s in self.states}
+        self.capture_ends = {s:v for s in (capture_ends or {}).items() if s in self.states}
+        self.captures = {s:v for s in (captures or {}).items() if s in self.states}
 
     def __repr__(self) -> str:
         return f"NFA(start={self.start}, end={self.end}, transitions={self.transitions})"
@@ -79,6 +80,7 @@ class NFA:
             states = self.expand_epsilons(states)
         return self.end in states
 
+    # TODO: handle captures!
     def expand_epsilons(self, states: Iterable[State]) -> AbstractSet[State]:
         old, new = set(), states
         while new:
@@ -92,24 +94,38 @@ class NFA:
         while new:
             reachable.update(new)
             new = {t for (s,i),ts in self.transitions.items() if s in new for t in ts if t not in reachable}
-        self.states = reachable | { self.start, self.end }
         self.transitions = {(s,i): ts for (s,i),ts in self.transitions.items() if s in reachable}
+        
         # remove states that can't reach the end (and any transitions to those states)
         acceptable, new = set(), {self.end}
         while new:
             acceptable.update(new)
             new = {s for (s,i),ts in self.transitions.items() if any(t in new for t in ts) and s not in acceptable}
-        self.states = acceptable | { self.start, self.end }
         self.transitions = {(s,i): {t for t in ts if t in acceptable} for (s,i),ts in self.transitions.items()
                             if s in acceptable and (any(t in acceptable for t in ts) or (s,Move.ALL) in self.transitions)}
+
+        # update states and capture info
+        self.states = acceptable | { self.start, self.end }
+        self.capture_starts = {s:v for s in self.capture_starts.items() if s in self.states}
+        self.capture_ends = {s:v for s in self.capture_ends.items() if s in self.states}
+        self.captures = {s:v for s in self.captures.items() if s in self.states}
+                            
         # TODO: remove redundant ε states?
 
-
-# NFA constructors
+# Helper functions
 def merge_trans(*args):
     """Merge multiple transitions, unioning target states."""
     return merge_with(lambda x: set.union(*x), *args)
 
+def make_captures(capture_fn):
+    """Hacky helper for generating capture mappings."""
+    capture_fn = ignoring_extra_args(capture_fn)
+    start = capture_fn(lambda nfa: nfa.capture_start, merge_trans, CaptureType.START)
+    end = capture_fn(lambda nfa: nfa.capture_start, merge_trans, CaptureType.END)
+    capture = capture_fn(lambda nfa: nfa.capture_start, merge, CaptureType.CAPTURE)
+    return start, end, capture
+    
+# NFA constructors
 def MatchEmpty() -> NFA:
     """Empty match"""
     return NFA("1", "2", {("1", Move.EMPTY): {"2"}})
@@ -139,11 +155,11 @@ def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: AB"""
     t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
     t2 = {(("1",nfa1.end) if s == nfa2.start else ("2",s),i): {("1",nfa1.end) if t == nfa2.start else ("2",t) for t in ts} for (s,i),ts in nfa2.transitions.items()}
-    capture_starts = {(i,s):v for i,nfa in zip("12", (nfa1, nfa2)) for s,v in nfa.capture_starts.items()}
-    capture_ends = {(i,s):v for i,nfa in zip("12", (nfa1, nfa2)) for s,v in nfa.capture_ends.items()}
-    captures = {(i,s):v for i,nfa in zip("12", (nfa1, nfa2)) for s,v in nfa.captures.items()}
-    # TODO
-    return NFA(("1",nfa1.start), ("2",nfa2.end), merge_trans(t1, t2))
+    def capture_fn(getter, merger):
+        c1 = {("1",s):v for s,v in getter(nfa1).items()}
+        c2 = {("1",nfa.end) if s == nfa2.start else ("2",s):v for s,v in getter(nfa2).items()}
+        return merger(c1, c2)
+    return NFA(("1",nfa1.start), ("2",nfa2.end), merge_trans(t1, t2), *make_captures(capture_fn))
 
 def MatchEither(*nfas: NFA) -> NFA:
     """Handles: A|B (and arbitrary alternation too)"""
@@ -152,8 +168,9 @@ def MatchEither(*nfas: NFA) -> NFA:
         tis.append({((str(n),s),i): {(str(n),t) for t in ts} for (s,i),ts in nfa.transitions.items()})
     tstart = {("1", Move.EMPTY): {(str(n), nfa.start) for n,nfa in enumerate(nfas, 1)}}
     tend = {((str(n), nfa.end), Move.EMPTY): {"2"} for n,nfa in enumerate(nfas, 1)}
-    # TODO
-    return NFA("1", "2", merge_trans(tstart, tend, *tis))
+    def capture_fn(getter, merger):
+        return {(str(n),s):v for n,nfa in enumerate(nfas, 1) for s,v in getter(nfa).items()}
+    return NFA("1", "2", merge_trans(tstart, tend, *tis), *make_captures(capture_fn))
 
 def MatchRepeated(nfa: NFA, repeat: bool = False, optional: bool = False) -> NFA:
     """Handles: A*, A+, A?"""
@@ -162,10 +179,8 @@ def MatchRepeated(nfa: NFA, repeat: bool = False, optional: bool = False) -> NFA
     if optional: transitions[("1", Move.EMPTY)].add("2")
     transitions[(("0",nfa.end), Move.EMPTY)] = {"2"}
     if repeat: transitions[(("0",nfa.end), Move.EMPTY)].add(("0",nfa.start))
-    capture_starts = {("0",s):v for s,v in nfa.capture_starts.items()}
-    capture_ends = {("0",s):v for s,v in nfa.capture_ends.items()}
-    captures = {("0",s):v for s,v in nfa.captures.items()}
-    return NFA("1", "2", transitions, capture_starts, capture_ends, captures)
+    def capture_fn(getter): return {("0",s):v for s,v in getter(nfa).items()}
+    return NFA("1", "2", transitions, *make_captures(capture_fn))
 
 def MatchRepeatedN(nfa: NFA, minimum: int, maximum: int) -> NFA:
     """Handles: A{2,5}"""
@@ -191,6 +206,10 @@ def MatchRepeatedNplus(nfa: NFA, minimum: int) -> NFA:
     
 def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     """Handles: !A"""
+    # no support for DFAs and captures
+    if nfa.capture_starts or nfa.capture_ends or nfa.captures:
+        raise NotImplementedError(f"No support for {'negation' if negate else 'DFAs'} and captures")
+    
     # convert to DFA (and optionally invert accepted/rejected states)
     start_state = tuple(sorted(nfa.expand_epsilons({nfa.start}), key=str))
     to_process = [start_state]
@@ -224,6 +243,7 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     nfa.remove_redundant_states()
     return nfa
 
+# TODO: handle captures!
 def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: A&B"""
     # generate transitions on cartesian product (with special handling for *-transitions)
@@ -357,6 +377,10 @@ def MatchShifted(nfa: NFA, shift: int) -> NFA:
         transitions[(s,i)] = ts
     return NFA(nfa.start, nfa.end, transitions)
 
+def MatchCapture(id: CaptureId, nfa: NFA) -> NFA:
+    """Handles: (?1), (?1:P), (?<ID), (?<ID:P)"""
+    ...
+    
 # Parser
 def op_reduce(l):
     if len(l) == 1: return l[0]
@@ -391,7 +415,9 @@ class Pattern:
         ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1])) |
         ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)])) |
         ("(?&" + _id + "=" + expr + ")").setParseAction(lambda t: SUBPATTERNS.update({t[1]: t[3]}) or MatchEmpty()) |
-        ("(?&" + _id + ")").setParseAction(lambda t: SUBPATTERNS[t[1]])
+        ("(?&" + _id + ")").setParseAction(lambda t: SUBPATTERNS[t[1]]) |
+        ("(?<" + _id + ":" + expr + ")").setParseAction(lambda t: MatchCapture(t[1], t[3]))
+        ("(?<" + _id + ")").setParseAction(lambda t: MatchCapture(t[1])) # TODO
     )
     atom = literal | dot | set | nset | words | group
     item = (

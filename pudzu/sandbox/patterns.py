@@ -10,10 +10,21 @@ from tempfile import TemporaryDirectory
 from typing import *
 from pudzu.utils import *
 
-State =  Union[str, Collection['State']]
+State = Union[str, Collection['State']]
 Move = Enum('Move', 'EMPTY ALL')
 Input = Union[str, Move]
 Transitions = Dict[Tuple[State, Input], AbstractSet[State]]
+
+@dataclass
+class CaptureOptions:
+    reverse: bool = False
+    case_insensitive: bool = False
+    shift: int = 0
+
+CaptureGroup = str
+CaptureId = int
+CaptureStarts = CaptureEnds = Dict[State, AbstractSet[Tuple[CaptureGroup, CaptureId]]]
+Captures = Dict[State, Dict[Tuple[CaptureGroup, CaptureId], CaptureOptions]]
 
 renderer = optional_import("PySimpleAutomata.automata_IO")
 logger = logging.getLogger('patterns')
@@ -23,21 +34,31 @@ class NFA:
     - single start state (with no inbounds) and end state (with no outbounds)
     - ε-moves (including potential ε loops)
     - *-moves (only used if there is no other matching move)
+    - optional capture annotations on states
     """
 
-    def __init__(self, start: State, end: State, transitions: Transitions):
+    def __init__(self, start: State, end: State, transitions: Transitions,
+                 capture_starts: Optional[CaptureStarts] = None,
+                 capture_ends: Optional[CaptureEnds] = None,
+                 captures: Optional[Captures] = None):
         self.start = start
         self.end = end
         self.transitions = transitions
         self.states = {self.start, self.end} | {s for s,_ in self.transitions.keys()} | {t for ts in self.transitions.values() for t in ts}
+        # TODO: filter the following?
+        self.capture_starts = capture_starts or {}
+        self.capture_ends = capture_ends or {}
+        self.captures = captures or {}
 
     def __repr__(self) -> str:
         return f"NFA(start={self.start}, end={self.end}, transitions={self.transitions})"
 
     def render(self, name: str, path: str = './') -> None:
-        def label(s): 
+        def label_state(s):
             if isinstance(s, str): return s
-            else: return "\u200B"+ "".join(label(t) for t in s) + "\u200D"
+            else: return "\u200B"+ "".join(label_state(t) for t in s) + "\u200D"
+        def label(s):
+            return label_state(s)  # TODO: include capture information
         states = {s : label(s) for s in self.states}
         def move(i): return {Move.ALL: '*', Move.EMPTY: 'ε'}.get(i, i)
         alphabet = {move(i) for (_,i),_ in self.transitions.items()}
@@ -50,6 +71,7 @@ class NFA:
         }
         renderer.nfa_to_dot(nfa_json, name, path)
 
+    # TODO: handle captures!
     def match(self, string: str) -> bool:
         states = self.expand_epsilons({ self.start })
         for c in string:
@@ -117,6 +139,10 @@ def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: AB"""
     t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
     t2 = {(("1",nfa1.end) if s == nfa2.start else ("2",s),i): {("1",nfa1.end) if t == nfa2.start else ("2",t) for t in ts} for (s,i),ts in nfa2.transitions.items()}
+    capture_starts = {(i,s):v for i,nfa in zip("12", (nfa1, nfa2)) for s,v in nfa.capture_starts.items()}
+    capture_ends = {(i,s):v for i,nfa in zip("12", (nfa1, nfa2)) for s,v in nfa.capture_ends.items()}
+    captures = {(i,s):v for i,nfa in zip("12", (nfa1, nfa2)) for s,v in nfa.captures.items()}
+    # TODO
     return NFA(("1",nfa1.start), ("2",nfa2.end), merge_trans(t1, t2))
 
 def MatchEither(*nfas: NFA) -> NFA:
@@ -126,6 +152,7 @@ def MatchEither(*nfas: NFA) -> NFA:
         tis.append({((str(n),s),i): {(str(n),t) for t in ts} for (s,i),ts in nfa.transitions.items()})
     tstart = {("1", Move.EMPTY): {(str(n), nfa.start) for n,nfa in enumerate(nfas, 1)}}
     tend = {((str(n), nfa.end), Move.EMPTY): {"2"} for n,nfa in enumerate(nfas, 1)}
+    # TODO
     return NFA("1", "2", merge_trans(tstart, tend, *tis))
 
 def MatchRepeated(nfa: NFA, repeat: bool = False, optional: bool = False) -> NFA:
@@ -135,7 +162,10 @@ def MatchRepeated(nfa: NFA, repeat: bool = False, optional: bool = False) -> NFA
     if optional: transitions[("1", Move.EMPTY)].add("2")
     transitions[(("0",nfa.end), Move.EMPTY)] = {"2"}
     if repeat: transitions[(("0",nfa.end), Move.EMPTY)].add(("0",nfa.start))
-    return NFA("1", "2", transitions)
+    capture_starts = {("0",s):v for s,v in nfa.capture_starts.items()}
+    capture_ends = {("0",s):v for s,v in nfa.capture_ends.items()}
+    captures = {("0",s):v for s,v in nfa.captures.items()}
+    return NFA("1", "2", transitions, capture_starts, capture_ends, captures)
 
 def MatchRepeatedN(nfa: NFA, minimum: int, maximum: int) -> NFA:
     """Handles: A{2,5}"""
@@ -193,7 +223,6 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     nfa = NFA(start_state, "2", transitions)
     nfa.remove_redundant_states()
     return nfa
-    
 
 def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: A&B"""

@@ -60,10 +60,10 @@ class NFA:
             else: return "\u200B"+ "".join(label_state(t) for t in s) + "\u200D"
         def label(s):
             l = label_state(s)
-            if self.capture_starts.get(s): l += "\n>" + ", ".join(f"{g}/{i}" for (g,i) in self.capture_starts[s])
-            if self.capture_ends.get(s): l += "\n<" + ", ".join(f"{g}/{i}" for (g,i) in self.capture_ends[s])
+            if self.capture_starts.get(s): l += "\n(" + ", ".join(f"{g}.{i}" for (g,i) in self.capture_starts[s])
+            if self.capture_ends.get(s): l += "\n)" + ", ".join(f"{g}.{i}" for (g,i) in self.capture_ends[s])
             # TODO: mark options
-            if self.captures.get(s): l += "\n+" + ", ".join(f"{g}/{i}" for (g,i),v in self.captures[s].items())
+            if self.captures.get(s): l += "\n+" + ", ".join(f"{g}.{i}" for (g,i),v in self.captures[s].items())
             return l
         states = {s : label(s) for s in self.states}
         def move(i): return {Move.ALL: '*', Move.EMPTY: 'ε'}.get(i, i)
@@ -166,7 +166,7 @@ def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
     t2 = {(("1",nfa1.end) if s == nfa2.start else ("2",s),i): {("1",nfa1.end) if t == nfa2.start else ("2",t) for t in ts} for (s,i),ts in nfa2.transitions.items()}
     def capture_fn(getter, merger):
         c1 = {("1",s):v for s,v in getter(nfa1).items()}
-        c2 = {("1",nfa.end) if s == nfa2.start else ("2",s):v for s,v in getter(nfa2).items()}
+        c2 = {("1",nfa1.end) if s == nfa2.start else ("2",s):v for s,v in getter(nfa2).items()}
         return merger(c1, c2)
     return NFA(("1",nfa1.start), ("2",nfa2.end), merge_trans(t1, t2), *make_captures(capture_fn))
 
@@ -392,8 +392,8 @@ def MatchCapture(group: CaptureGroup, id: CaptureId, nfa: Optional[NFA] = None) 
     transitions = {(("0",s),i): {("0",t) for t in ts} for (s,i),ts in nfa.transitions.items()}
     transitions[("1", Move.EMPTY)] = {("0",nfa.start)}
     transitions[(("0",nfa.end), Move.EMPTY)] = {"2"}
-    capture_starts = {"1": {(group, id)}}
-    capture_ends = {"2": {(group, id)}}
+    capture_starts = merge({"1": {(group, id)}}, {("0",s):v for s,v in nfa.capture_starts.items()})
+    capture_ends = merge({"2": {(group, id)}}, {("0",s):v for s,v in nfa.capture_ends.items()})
     captures = {("0",s): {(group, id): CaptureOptions(), **nfa.captures.get(s, {})} for s in nfa.states}
     return NFA("1", "2", transitions, capture_starts, capture_ends, captures)
 

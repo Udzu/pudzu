@@ -47,9 +47,9 @@ class NFA:
         self.end = end
         self.transitions = transitions
         self.states = {self.start, self.end} | {s for s,_ in self.transitions.keys()} | {t for ts in self.transitions.values() for t in ts}
-        self.capture_starts = {s:v for s in (capture_starts or {}).items() if s in self.states}
-        self.capture_ends = {s:v for s in (capture_ends or {}).items() if s in self.states}
-        self.captures = {s:v for s in (captures or {}).items() if s in self.states}
+        self.capture_starts = {s:v for s,v in (capture_starts or {}).items() if s in self.states}
+        self.capture_ends = {s:v for s,v in (capture_ends or {}).items() if s in self.states}
+        self.captures = {s:v for s,v in (captures or {}).items() if s in self.states}
 
     def __repr__(self) -> str:
         return f"NFA(start={self.start}, end={self.end}, transitions={self.transitions})"
@@ -59,7 +59,12 @@ class NFA:
             if isinstance(s, str): return s
             else: return "\u200B"+ "".join(label_state(t) for t in s) + "\u200D"
         def label(s):
-            return label_state(s)  # TODO: include capture information
+            l = label_state(s)
+            if self.capture_starts.get(s): l += "\n>" + ", ".join(f"{g}/{i}" for (g,i) in self.capture_starts[s])
+            if self.capture_ends.get(s): l += "\n<" + ", ".join(f"{g}/{i}" for (g,i) in self.capture_ends[s])
+            # TODO: mark options
+            if self.captures.get(s): l += "\n+" + ", ".join(f"{g}/{i}" for (g,i),v in self.captures[s].items())
+            return l
         states = {s : label(s) for s in self.states}
         def move(i): return {Move.ALL: '*', Move.EMPTY: 'ε'}.get(i, i)
         alphabet = {move(i) for (_,i),_ in self.transitions.items()}
@@ -117,12 +122,16 @@ def merge_trans(*args):
     """Merge multiple transitions, unioning target states."""
     return merge_with(lambda x: set.union(*x), *args)
 
+def merge_captures(*args):
+    """Merge multiple captures mappings, merging the target mappings"""
+    return merge_with(lambda x: merge(*x), *args)
+
 def make_captures(capture_fn):
     """Hacky helper for generating capture mappings."""
     capture_fn = ignoring_extra_args(capture_fn)
-    start = capture_fn(lambda nfa: nfa.capture_start, merge_trans, CaptureType.START)
-    end = capture_fn(lambda nfa: nfa.capture_start, merge_trans, CaptureType.END)
-    capture = capture_fn(lambda nfa: nfa.capture_start, merge, CaptureType.CAPTURE)
+    start = capture_fn(lambda nfa: nfa.capture_starts, merge_trans, CaptureType.START)
+    end = capture_fn(lambda nfa: nfa.capture_ends, merge_trans, CaptureType.END)
+    capture = capture_fn(lambda nfa: nfa.captures, merge_captures, CaptureType.CAPTURE)
     return start, end, capture
     
 # NFA constructors
@@ -377,10 +386,17 @@ def MatchShifted(nfa: NFA, shift: int) -> NFA:
         transitions[(s,i)] = ts
     return NFA(nfa.start, nfa.end, transitions)
 
-def MatchCapture(id: CaptureId, nfa: NFA) -> NFA:
+def MatchCapture(group: CaptureGroup, id: CaptureId, nfa: Optional[NFA] = None) -> NFA:
     """Handles: (?1), (?1:P), (?<ID), (?<ID:P)"""
-    ...
-    
+    if nfa is None: nfa = MatchRepeated(MatchNotIn(""), repeat=True, optional=True)
+    transitions = {(("0",s),i): {("0",t) for t in ts} for (s,i),ts in nfa.transitions.items()}
+    transitions[("1", Move.EMPTY)] = {("0",nfa.start)}
+    transitions[(("0",nfa.end), Move.EMPTY)] = {"2"}
+    capture_starts = {"1": {(group, id)}}
+    capture_ends = {"2": {(group, id)}}
+    captures = {("0",s): {(group, id): CaptureOptions(), **nfa.captures.get(s, {})} for s in nfa.states}
+    return NFA("1", "2", transitions, capture_starts, capture_ends, captures)
+
 # Parser
 def op_reduce(l):
     if len(l) == 1: return l[0]
@@ -397,7 +413,7 @@ class Pattern:
     # TODO: character escaping, supported scripts?
     _0_to_99 = Word(nums, min=1, max=2).setParseAction(lambda t: int(''.join(t[0])))
     _m99_to_99 = (Optional("-") + _0_to_99).setParseAction(lambda t: t[-1] * (-1 if len(t) == 2 else 1))
-    _id = Word(alphas+"_", alphanums+"_")
+    _id = Word(alphanums+"_")
 
     characters = alphanums + " '-"
     literal = Word(characters, exact=1).setParseAction(lambda t: MatchIn(t[0]))
@@ -416,8 +432,8 @@ class Pattern:
         ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)])) |
         ("(?&" + _id + "=" + expr + ")").setParseAction(lambda t: SUBPATTERNS.update({t[1]: t[3]}) or MatchEmpty()) |
         ("(?&" + _id + ")").setParseAction(lambda t: SUBPATTERNS[t[1]]) |
-        ("(?<" + _id + ":" + expr + ")").setParseAction(lambda t: MatchCapture(t[1], t[3]))
-        ("(?<" + _id + ")").setParseAction(lambda t: MatchCapture(t[1])) # TODO
+        ("(?<" + _id + ":" + expr + ")").setParseAction(lambda t: MatchCapture(t[1], Pattern.get_capture_id(), t[3])) |
+        ("(?<" + _id + ")").setParseAction(lambda t: MatchCapture(t[1], Pattern.get_capture_id()))
     )
     atom = literal | dot | set | nset | words | group
     item = (
@@ -449,6 +465,7 @@ class Pattern:
     ])
 
     def __init__(self, pattern: str):
+        self.reset_capture_id()
         self.pattern = pattern
         self.nfa = self.expr.parseString(pattern, parseAll=True)[0]
 
@@ -457,6 +474,17 @@ class Pattern:
         
     def match(self, string: str) -> bool:
         return self.nfa.match(string)
+
+    capture_id = 0
+
+    @classmethod
+    def get_capture_id(cls) -> int:
+        cls.capture_id += 1
+        return cls.capture_id
+
+    @classmethod
+    def reset_capture_id(cls) -> None:
+        cls.capture_id = 0
 
 
 def main():
@@ -502,13 +530,14 @@ Supported syntax:
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
     parser.add_argument("-s", dest="svg", action="store_true", help="save FSM diagram")
     args = parser.parse_args()
+
+    # TODO: clean up code and remove globals
     global DICTIONARY_FILE, SUBPATTERNS
     
     if args.dict:
         logger.info(f"Compiling dictionary from '{args.dict}'")
         DICTIONARY_FILE = MatchDictionary(Path(args.dict))
 
-    # TODO: support config-based subpatterns?
     SUBPATTERNS = {}
 
     pattern = args.pattern

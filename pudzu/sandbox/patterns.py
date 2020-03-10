@@ -3,7 +3,6 @@ import copy
 import json
 import logging
 import string
-from dataclasses import dataclass
 from functools import reduce
 from itertools import product
 from pathlib import Path
@@ -16,8 +15,7 @@ Move = Enum('Move', 'EMPTY ALL')
 Input = Union[str, Move]
 Transitions = Dict[Tuple[State, Input], AbstractSet[State]]
 
-@dataclass
-class CaptureOptions:
+class CaptureOptions(NamedTuple):
     reverse: bool = False
     case_insensitive: bool = False
     shift: int = 0
@@ -58,12 +56,13 @@ class NFA:
         def label_state(s):
             if isinstance(s, str): return s
             else: return "\u200B"+ "".join(label_state(t) for t in s) + "\u200D"
+        def label_copt(o):
+            return "r" * o.reverse + "i" * o.case_insensitive + f"s{o.shift}" * (o.shift != 0)
         def label(s):
             l = label_state(s)
-            if self.capture_starts.get(s): l += "\n(" + ", ".join(f"{g}.{i}" for (g,i) in self.capture_starts[s])
-            if self.capture_ends.get(s): l += "\n)" + ", ".join(f"{g}.{i}" for (g,i) in self.capture_ends[s])
-            # TODO: mark options
-            if self.captures.get(s): l += "\n+" + ", ".join(f"{g}.{i}" for (g,i),v in self.captures[s].items())
+            if self.capture_starts.get(s): l += "\n{" + ", ".join(f"{g}.{i}" for (g,i) in self.capture_starts[s])
+            if self.capture_ends.get(s): l += "\n}" + ", ".join(f"{g}.{i}" for (g,i) in self.capture_ends[s])
+            if self.captures.get(s): l += "\n→" + ", ".join(f"{g}.{i}{label_copt(v)}" for (g,i),v in self.captures[s].items())
             return l
         states = {s : label(s) for s in self.states}
         def move(i): return {Move.ALL: '*', Move.EMPTY: 'ε'}.get(i, i)
@@ -111,9 +110,9 @@ class NFA:
 
         # update states and capture info
         self.states = acceptable | { self.start, self.end }
-        self.capture_starts = {s:v for s in self.capture_starts.items() if s in self.states}
-        self.capture_ends = {s:v for s in self.capture_ends.items() if s in self.states}
-        self.captures = {s:v for s in self.captures.items() if s in self.states}
+        self.capture_starts = {s:v for s,v in self.capture_starts.items() if s in self.states}
+        self.capture_ends = {s:v for s,v in self.capture_ends.items() if s in self.states}
+        self.captures = {s:v for s,v in self.captures.items() if s in self.states}
                             
         # TODO: remove redundant ε states?
 
@@ -217,7 +216,7 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     """Handles: !A"""
     # no support for DFAs and captures
     if nfa.capture_starts or nfa.capture_ends or nfa.captures:
-        raise NotImplementedError(f"No support for {'negation' if negate else 'DFAs'} and captures")
+        raise NotImplementedError(f"Combination of {'negation' if negate else 'DFAs'} and capture groups is unsupported")
     
     # convert to DFA (and optionally invert accepted/rejected states)
     start_state = tuple(sorted(nfa.expand_epsilons({nfa.start}), key=str))
@@ -252,7 +251,6 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     nfa.remove_redundant_states()
     return nfa
 
-# TODO: handle captures!
 def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: A&B"""
     # generate transitions on cartesian product (with special handling for *-transitions)
@@ -273,7 +271,11 @@ def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
                 ts1 = nfa1.transitions.get((s1, Move.ALL))
                 if ts1 is not None:
                     transitions = merge_trans(transitions, {((s1, s2), i): set(product(ts1, ts2))})
-    nfa = NFA((nfa1.start, nfa2.start), (nfa1.end, nfa2.end), transitions)
+    def capture_fn(getter, merge): 
+        c1 = {(s1,s2):v for s1,v in getter(nfa1).items() for s2 in nfa2.states}
+        c2 = {(s1,s2):v for s2,v in getter(nfa2).items() for s1 in nfa1.states}
+        return merge(c1, c2)
+    nfa = NFA((nfa1.start, nfa2.start), (nfa1.end, nfa2.end), transitions, *make_captures(capture_fn))
     nfa.remove_redundant_states()
     return nfa
 
@@ -282,25 +284,23 @@ def MatchContains(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     # transition between (2) A, (3) AxB, and (5) A states
     # for proper, also use (1) A and (4) A states
     t1, t1e, t4, t4e = {}, {}, {}, {}
-
     if proper:
         t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
         t1e = {(("1",s),i): {("2",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
-
     t2 = {(("2",s),i): {("2",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
     t2e = {(("2",s), Move.EMPTY): {("3",s,nfa2.start)} for s in nfa1.states}
-
     t3 = {(("3",s,q), i): {("3",s,t) for t in ts} for (q,i),ts in nfa2.transitions.items() for s in nfa1.states}
     t3e = {(("3",s,nfa2.end), Move.EMPTY): {(("4",s) if proper else ("5",s))} for s in nfa1.states}
-
     if proper:
         t4 = {(("4",s),i): {("4",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
         t4e = {(("4",s),i): {("5",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
-
     t5 = {(("5",s),i): {("5",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
-
     transitions = merge_trans(t1, t1e, t2, t2e, t3, t3e, t4, t4e, t5)
-    nfa = NFA(("1",nfa1.start) if proper else ("2",nfa1.start), ("5",nfa1.end), transitions)
+    def capture_fn(getter, merge): 
+        c1 = {(i,s):v for i in "25" + "12"*proper for s,v in getter(nfa1).items()}
+        c2 = {("3",s,q):v for s in nfa1.states for q,v in getter(nfa2).items()}
+        return merge(c1, c2)
+    nfa = NFA(("1",nfa1.start) if proper else ("2",nfa1.start), ("5",nfa1.end), transitions, *make_captures(capture_fn))
     nfa.remove_redundant_states()
     return nfa
 
@@ -309,24 +309,23 @@ def MatchInterleaved(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     # transition between (2) AxB and (3) AxB states
     # for proper, also use (1) A and (4) A states
     t1, t1e, t4, t4e = {}, {}, {}, {}
-
     if proper:
         t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
         t1e = {(("1",s),i): {("2",t,nfa2.start) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
-
     t2 = {(("2",s,q), i): {("2",t,q) for t in ts} for (s,i),ts in nfa1.transitions.items() for q in nfa2.states}
     t2e = {(("2",q,s), Move.EMPTY): {("3",q,s)} for q in nfa1.states for s in nfa2.states}
-    
     t3 = {(("3",q,s), i): {("3",q,t) for t in ts} for (s,i),ts in nfa2.transitions.items() for q in nfa1.states}
     t3e = {(("3",q,s), Move.EMPTY): {("2",q,s)} for q in nfa1.states for s in nfa2.states}
-    
     if proper:
         t4 = {(("2",s,nfa2.end),i): {("4",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
         t4e = {(("4",s),i): {("4",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
-    
     transitions = merge_trans(t1, t1e, t2, t2e, t3, t3e, t4, t4e)
+    def capture_fn(getter, merge): 
+        c1 = {(i,s):v for i in "2"+"14"*proper for s,v in getter(nfa1).items()}
+        c2 = {("3",s,q):v for s in nfa1.states for q,v in getter(nfa2).items()}
+        return merge(c1, c2)
     nfa = NFA(("1",nfa1.start) if proper else ("2",nfa1.start, nfa2.start), 
-              ("4",nfa1.end) if proper else ("3",nfa1.end, nfa2.end), transitions)
+              ("4",nfa1.end) if proper else ("3",nfa1.end, nfa2.end), transitions, *make_captures(capture_fn))
     nfa.remove_redundant_states()
     return nfa
 
@@ -342,7 +341,11 @@ def MatchAlternating(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     t2e = {(("2",s,nfa2.end),i): {("2",t,nfa2.end) for t in ts} for (s,i),ts in nfa1.transitions.items() if i==Move.EMPTY}
     t21 = {(("2",nfa1.end,nfa2.end),Move.EMPTY): {("1",nfa1.end,nfa2.end)}}
     transitions = merge_trans(t0, t1, t1e, t2, t2e, t21)
-    nfa = NFA("0" if not proper else ("1",nfa1.start,nfa2.start), ("1",nfa1.end,nfa2.end), transitions)
+    def capture_fn(getter, merge): 
+        c1 = {("1",s,q):v for s,v in getter(nfa1).items() for q in nfa2.states}
+        c2 = {("2",q,s):v for s,v in getter(nfa2).items() for q in nfa1.states}
+        return merge(c1, c2)
+    nfa = NFA("0" if not proper else ("1",nfa1.start,nfa2.start), ("1",nfa1.end,nfa2.end), transitions, *make_captures(capture_fn))
     nfa.remove_redundant_states()
     return nfa
 
@@ -360,7 +363,8 @@ def MatchReversed(nfa: NFA) -> NFA:
                 for (r,j),_ in nfa.transitions.items():
                     if r == s and not isinstance(j, Move):
                         transitions.setdefault((t,j),set())
-    nfa = NFA(nfa.end, nfa.start, transitions)
+    captures = {s:{c:o._replace(reverse=not o.reverse) for c,o in v.items()} for s,v in nfa.captures.items()}
+    nfa = NFA(nfa.end, nfa.start, transitions, nfa.capture_ends, nfa.capture_starts, captures)
     nfa.remove_redundant_states()
     return nfa
     
@@ -373,7 +377,8 @@ def MatchInsensitively(nfa: NFA) -> NFA:
             transitions.setdefault((s,i.upper()),set()).update(ts)
         else:
             transitions[(s,i)] = ts
-    return NFA(nfa.start, nfa.end, transitions)
+    captures = {s:{c:o._replace(case_insensitive=True) for c,o in v.items()} for s,v in nfa.captures.items()}
+    return NFA(nfa.start, nfa.end, transitions, nfa.capture_ends, nfa.capture_starts, captures)
 
 def MatchShifted(nfa: NFA, shift: int) -> NFA:
     """Handles: (?s1:A)"""
@@ -384,7 +389,8 @@ def MatchShifted(nfa: NFA, shift: int) -> NFA:
                 i = alphabet[(alphabet.index(i) + shift) % 26]
                 break
         transitions[(s,i)] = ts
-    return NFA(nfa.start, nfa.end, transitions)
+    captures = {s:{c:o._replace(shift=(o.shift + shift) % 26) for c,o in v.items()} for s,v in nfa.captures.items()}
+    return NFA(nfa.start, nfa.end, transitions, nfa.capture_ends, nfa.capture_starts, captures)
 
 def MatchCapture(group: CaptureGroup, id: CaptureId, nfa: Optional[NFA] = None) -> NFA:
     """Handles: (?1), (?1:P), (?<ID), (?<ID:P)"""
@@ -432,6 +438,8 @@ class Pattern:
         ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)])) |
         ("(?&" + _id + "=" + expr + ")").setParseAction(lambda t: SUBPATTERNS.update({t[1]: t[3]}) or MatchEmpty()) |
         ("(?&" + _id + ")").setParseAction(lambda t: SUBPATTERNS[t[1]]) |
+        ("(?" + _0_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchCapture(str(t[1]), Pattern.get_capture_id(), t[3])) |
+        ("(?" + _0_to_99 + ")").setParseAction(lambda t: MatchCapture(str(t[1]), Pattern.get_capture_id())) |
         ("(?<" + _id + ":" + expr + ")").setParseAction(lambda t: MatchCapture(t[1], Pattern.get_capture_id(), t[3])) |
         ("(?<" + _id + ")").setParseAction(lambda t: MatchCapture(t[1], Pattern.get_capture_id()))
     )
@@ -522,16 +530,19 @@ Supported syntax:
 - (?D:P)   convert NFA to DFA
 - (?&ID=P) define subpattern for subsequent use
 - (?&ID)   use subpattern
+- (?n)     capture group #n
+- (?n:P)   capture group #n satisfying P
+- (?<ID)   capture group ID
+- (?<ID:P) capture group ID satisfying P
 """, formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument("pattern", type=str, help="pattern to match against")
-    parser.add_argument("file", type=str, help="filename to search")
+    parser.add_argument("pattern", type=str, help="pattern to compile")
+    parser.add_argument("file", nargs='?', help="filename to search", default=None)
     parser.add_argument("-d", dest="dict", metavar="PATH", type=str, help="dictionary file to use for \\w", default=None)
     parser.add_argument("-D", dest="DFA", action="store_true", help="convert NFA to DFA", default=None)
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
     parser.add_argument("-s", dest="svg", action="store_true", help="save FSM diagram")
     args = parser.parse_args()
 
-    # TODO: clean up code and remove globals
     global DICTIONARY_FILE, SUBPATTERNS
     
     if args.dict:
@@ -550,12 +561,13 @@ Supported syntax:
     if args.svg:
         logger.info(f"Saving NFA diagram to 'fsm.dot.svg'")
         pattern.nfa.render("fsm")
-        
-    with open(args.file, "r", encoding="utf-8") as f:
-        for w in f:
-            word = w.rstrip("\n")
-            if pattern.match(word):
-                print(word, flush=True)
+      
+    if args.file:
+        with open(args.file, "r", encoding="utf-8") as f:
+            for w in f:
+                word = w.rstrip("\n")
+                if pattern.match(word):
+                    print(word, flush=True)
 
 if __name__ == '__main__':
     main()

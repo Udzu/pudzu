@@ -26,6 +26,16 @@ CaptureType = Enum('CaptureType', 'START END CAPTURE')
 CaptureStarts = CaptureEnds = Dict[State, AbstractSet[Tuple[CaptureGroup, CaptureId]]]
 Captures = Dict[State, Dict[Tuple[CaptureGroup, CaptureId], CaptureOptions]]
 
+class CaptureState(NamedTuple):
+    prefix: List[str] = []
+    prefix_case_insensitive: List[bool] = []
+    suffix: List[str] = []
+    suffix_case_insensitive: List[bool] = []
+    length: Optional[int] = None
+    offsets: Dict[CaptureId, int] = {}
+
+CapturesState = Dict[CaptureGroup, CaptureState]
+
 renderer = optional_import("PySimpleAutomata.automata_IO")
 logger = logging.getLogger('patterns')
 
@@ -53,6 +63,7 @@ class NFA:
         return f"NFA(start={self.start}, end={self.end}, transitions={self.transitions})"
 
     def render(self, name: str, path: str = './') -> None:
+        """Render NFA to SVG using PySimpleAutomata"""
         def label_state(s):
             if isinstance(s, str): return s
             else: return "\u200B"+ "".join(label_state(t) for t in s) + "\u200D"
@@ -77,15 +88,29 @@ class NFA:
         renderer.nfa_to_dot(nfa_json, name, path)
 
     # TODO: handle captures!
+    def capture_epsilon(self, state: State, captures_state: CapturesState) -> AbstractSet[CapturesState]:
+        return { capture_state }
+        
+    def capture_input(self, state: State, captures_state: CapturesState, i: str) -> AbstractSet[CapturesState]:
+        return { capture_state }
+    
+    # TODO: return capture information
     def match(self, string: str) -> bool:
-        states = self.expand_epsilons({ self.start })
+        """Match NFA against a string"""
+        states = self.expand_epsilons({(self.start, {})})
         for c in string:
-            states = {t for s in states for t in self.transitions.get((s, c), self.transitions.get((s, Move.ALL), set()))}
+            states = {(t,tc) for (s,sc) in states for t in self.transitions.get((s, c), self.transitions.get((s, Move.ALL), set())) for tc in self.capture_input(s, sc, i)}
             states = self.expand_epsilons(states)
-        return self.end in states
+        return any(s == self.end for s,_ in states)
 
-    # TODO: handle captures!
-    def expand_epsilons(self, states: Iterable[State]) -> AbstractSet[State]:
+    def expand_epsilons(self, states: Iterable[Tuple[State, CapturesState]]) -> AbstractSet[Tuple[State, CapturesState]]:
+        old, new = set(), states
+        while new:
+            old.update(new)
+            new = {(t,tc) for (s,sc) in new for t in self.transitions.get((s, Move.EMPTY), set()) for tc in self.capture_epsilon(s,sc) if (t,tc) not in old}
+        return old
+        
+    def expand_epsilons_no_captures(self, states: Iterable[State]) -> AbstractSet[State]:  # (capture-unaware expansion used by DFA generation)
         old, new = set(), states
         while new:
             old.update(new)
@@ -219,7 +244,7 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
         raise NotImplementedError(f"Combination of {'negation' if negate else 'DFAs'} and capture groups is unsupported")
     
     # convert to DFA (and optionally invert accepted/rejected states)
-    start_state = tuple(sorted(nfa.expand_epsilons({nfa.start}), key=str))
+    start_state = tuple(sorted(nfa.expand_epsilons_no_captures({nfa.start}), key=str))
     to_process = [start_state]
     processed_states = set()
     accepting_states = set()
@@ -231,7 +256,7 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
         moves = {i for (s,i) in nfa.transitions if s in current_state and i != Move.EMPTY}
         for i in moves:
             next_state = {t for s in current_state for t in nfa.transitions.get((s,i), nfa.transitions.get((s,Move.ALL), set()))}
-            next_state = tuple(sorted(nfa.expand_epsilons(next_state), key=str))
+            next_state = tuple(sorted(nfa.expand_epsilons_no_captures(next_state), key=str))
             transitions[(current_state, i)] = {next_state}
             if next_state not in processed_states: to_process.append(next_state)
     

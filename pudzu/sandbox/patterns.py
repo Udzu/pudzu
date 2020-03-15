@@ -11,6 +11,7 @@ from tempfile import TemporaryDirectory
 from typing import *
 from pudzu.utils import *
 
+# Types
 State = Union[str, Collection['State']]
 Move = Enum('Move', 'EMPTY ALL')
 Input = Union[str, Move]
@@ -27,7 +28,7 @@ CaptureType = Enum('CaptureType', 'START END CAPTURE')
 CaptureStarts = CaptureEnds = Dict[State, AbstractSet[Tuple[CaptureGroup, CaptureId]]]
 Captures = Dict[State, Dict[Tuple[CaptureGroup, CaptureId], CaptureOptions]]
 
-# TODO: deepfreeze this before putting it in a set
+# TODO: sort out capture state types and destupidify!
 @dataclass(frozen=True)
 class CaptureState:
     prefix: List[str] = field(default_factory=list)
@@ -36,9 +37,17 @@ class CaptureState:
     suffix_case_insensitive: List[bool] = field(default_factory=list)
     length: Optional[int] = None
     offsets: Dict[CaptureId, int] = field(default_factory=dict)
-
+    
+CapturesStateDict = Dict[CaptureGroup, CaptureState]
 CapturesState = FrozenSet[Tuple[CaptureGroup, CaptureState]]
 
+def freeze(cstate: CapturesStateDict) -> CapturesState:
+    return frozenset((g, CaptureState(tuple(s.prefix), tuple(s.prefix_case_insensitive), tuple(s.suffix), tuple(s.suffix_case_insensitive), s.length, frozenset(s.offsets.items()))) for g,s in cstate.items())
+
+def unfreeze(cstate: CapturesState) -> CapturesStateDict:
+    return dict((g, CaptureState(list(s.prefix), list(s.prefix_case_insensitive), list(s.suffix), list(s.suffix_case_insensitive), s.length, dict(s.offsets))) for g,s in cstate)
+
+# NFAs
 renderer = optional_import("PySimpleAutomata.automata_IO")
 logger = logging.getLogger('patterns')
 
@@ -91,7 +100,7 @@ class NFA:
         renderer.nfa_to_dot(nfa_json, name, path)
 
     def capture_epsilon(self, state: State, captures_state: CapturesState) -> AbstractSet[CapturesState]:
-        cstate = dict(captures_state)
+        cstate = unfreeze(captures_state)
         
         # first handle capture closures
         for group, id in self.capture_ends.get(state, set()):
@@ -139,16 +148,17 @@ class NFA:
             # set the offset and that's it for now
             cstate.offsets.setdefault(group, {})[id] = 0
         
-        return { frozenset(cstate.items()) }
+        return { freeze(cstate.items()) }
         
     def capture_input(self, state: State, captures_state: CapturesState, i: str) -> AbstractSet[CapturesState]:
     
         # TODO: handle captures!
-        cstate = dict(capture_state)
+        cstate = unfreeze(capture_state)
         for (group, id), options in self.capture_ends.get(state, {}).items():
+        
             ...
     
-        return { frozenset(cstate.items()) }
+        return { freeze(cstate.items()) }
     
     # TODO: return capture information
     def match(self, string: str) -> bool:

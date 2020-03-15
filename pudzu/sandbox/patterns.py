@@ -3,6 +3,7 @@ import copy
 import json
 import logging
 import string
+from dataclasses import dataclass, field
 from functools import reduce
 from itertools import product
 from pathlib import Path
@@ -26,15 +27,17 @@ CaptureType = Enum('CaptureType', 'START END CAPTURE')
 CaptureStarts = CaptureEnds = Dict[State, AbstractSet[Tuple[CaptureGroup, CaptureId]]]
 Captures = Dict[State, Dict[Tuple[CaptureGroup, CaptureId], CaptureOptions]]
 
-class CaptureState(NamedTuple):
-    prefix: List[str] = []
-    prefix_case_insensitive: List[bool] = []
-    suffix: List[str] = []
-    suffix_case_insensitive: List[bool] = []
+# TODO: deepfreeze this before putting it in a set
+@dataclass(frozen=True)
+class CaptureState:
+    prefix: List[str] = field(default_factory=list)
+    prefix_case_insensitive: List[bool] = field(default_factory=list)
+    suffix: List[str] = field(default_factory=list)
+    suffix_case_insensitive: List[bool] = field(default_factory=list)
     length: Optional[int] = None
-    offsets: Dict[CaptureId, int] = {}
+    offsets: Dict[CaptureId, int] = field(default_factory=dict)
 
-CapturesState = Dict[CaptureGroup, CaptureState]
+CapturesState = FrozenSet[Tuple[CaptureGroup, CaptureState]]
 
 renderer = optional_import("PySimpleAutomata.automata_IO")
 logger = logging.getLogger('patterns')
@@ -87,12 +90,65 @@ class NFA:
         }
         renderer.nfa_to_dot(nfa_json, name, path)
 
-    # TODO: handle captures!
     def capture_epsilon(self, state: State, captures_state: CapturesState) -> AbstractSet[CapturesState]:
-        return { capture_state }
+        cstate = dict(captures_state)
+        
+        # first handle capture closures
+        for group, id in self.capture_ends.get(state, set()):
+            # check we're actually capturing
+            assert id in cstate.offsets.get(group, {}), f"Unexpected capture close for ({group}, {id})"
+            if cstate.length is not None:
+                # if we've already captured this group, just check the length is ok
+                if cstate.offsets[id] != cstate.length: return set()
+            else:
+                # otherwise, check we've captured enough
+                if cstate.offsets[id] < max(len(cstate.prefix), len(cstate.suffix)): return set()
+                # set the length
+                cstate.length = cstate.offsets[id]
+                # check that the prefix and suffix are compatible (updating them to be more precise if necessary)
+                if len(cstate.suffix) <= len(cstate.prefix):
+                    shorter, shorter_ci = cstate.suffix, cstate.suffix_case_insensitive
+                    longer, longer_ci = cstate.prefix, cstate.prefix_case_insensitive
+                else:
+                    shorter, shorter_ci = cstate.prefix, cstate.prefix_case_insensitive
+                    longer, longer_ci = cstate.suffix, cstate.suffix_case_insensitive
+                # (loop over the shorter *fix...)
+                for i in range(cstate.length):
+                    if i >= len(cstate.shorter):
+                        cstate.shorter.append(cstate.longer[-i])
+                        cstate.shorter_ci.append(cstate.longer_ci[-i])
+                    else:
+                        if cstate.shorter_ci[i]:
+                            if cstate.shorter[i].lower() != cstate.longer[-i].lower(): return set()
+                            cstate.shorter_ci[i] = cstate.longer_ci[-i]
+                            cstate_shorter[i] = cstate.longer[-i]
+                        elif cstate.longer_ci[-i]:
+                            if cstate.shorter[i].lower() != cstate.longer[-i].lower(): return set()
+                            cstate.longer_ci[-i] = cstate.shorter_ci[i]
+                            cstate_longer[-i] = cstate.shorter[i]
+                        else:
+                            if cstate.shorter[i] != cstate.longer[-i]: return set()
+                    
+            # and we're done with this capture (though it may be repeated later)
+            del cstate.offsets[id]
+                
+        # now handle capture openings
+        for group, id in self.capture_starts.get(state):
+            # check we're not already capturing (though we may call this repeatedly before any input)
+            assert cstate.offsets.get(group, {}).get(id, 0) == 0, f"Unexpected capture open for ({group}, {id})"
+            # set the offset and that's it for now
+            cstate.offsets.setdefault(group, {})[id] = 0
+        
+        return { frozenset(cstate.items()) }
         
     def capture_input(self, state: State, captures_state: CapturesState, i: str) -> AbstractSet[CapturesState]:
-        return { capture_state }
+    
+        # TODO: handle captures!
+        cstate = dict(capture_state)
+        for (group, id), options in self.capture_ends.get(state, {}).items():
+            ...
+    
+        return { frozenset(cstate.items()) }
     
     # TODO: return capture information
     def match(self, string: str) -> bool:

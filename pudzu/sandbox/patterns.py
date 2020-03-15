@@ -100,12 +100,14 @@ class NFA:
         renderer.nfa_to_dot(nfa_json, name, path)
 
     def capture_epsilon(self, state: State, captures_state: CapturesState) -> AbstractSet[CapturesState]:
-        cstate = unfreeze(captures_state)
+        cstates = unfreeze(captures_state)
         
         # first handle capture closures
         for group, id in self.capture_ends.get(state, set()):
             # check we're actually capturing
-            assert id in cstate.offsets.get(group, {}), f"Unexpected capture close for ({group}, {id})"
+            assert group in cstates, f"Unexpected capture close for {group}"
+            cstate = cstates[group]
+            assert id in cstate.offsets, f"Unexpected capture close for ({group}, {id})"
             if cstate.length is not None:
                 # if we've already captured this group, just check the length is ok
                 if cstate.offsets[id] != cstate.length: return set()
@@ -144,21 +146,28 @@ class NFA:
         # now handle capture openings
         for group, id in self.capture_starts.get(state):
             # check we're not already capturing (though we may call this repeatedly before any input)
-            assert cstate.offsets.get(group, {}).get(id, 0) == 0, f"Unexpected capture open for ({group}, {id})"
+            if group in cstates:
+                assert cstates[group].offsets.get(id, 0) == 0, f"Unexpected capture open for ({group}, {id})"
+                
             # set the offset and that's it for now
-            cstate.offsets.setdefault(group, {})[id] = 0
+            cstates.setdefault(group, CaptureState()).offsets[id] = 0
         
-        return { freeze(cstate.items()) }
+        return { freeze(cstates.items()) }
         
     def capture_input(self, state: State, captures_state: CapturesState, i: str) -> AbstractSet[CapturesState]:
     
-        # TODO: handle captures!
-        cstate = unfreeze(capture_state)
-        for (group, id), options in self.capture_ends.get(state, {}).items():
+        cstates = unfreeze(captures_state)
         
-            ...
+        for (group, id), options in self.capture_ends.get(state, {}).items():
+            # check we're actually capturing
+            assert group in cstates, f"Unexpected capture input for {group}"
+            cstate = cstates[group]
+            assert id in cstate.offsets, f"Unexpected capture input for ({group}, {id})"
+            # check if we've already captured enough
+            if cstate.length is not None and cstate.offsets[id] >= cstate.length: return set()
+            # TODO: ...
     
-        return { freeze(cstate.items()) }
+        return { freeze(cstates.items()) }
     
     # TODO: return capture information
     def match(self, string: str) -> bool:

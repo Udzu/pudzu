@@ -144,7 +144,7 @@ class NFA:
             del cstate.offsets[id]
                 
         # now handle capture openings
-        for group, id in self.capture_starts.get(state):
+        for group, id in self.capture_starts.get(state, set()):
             # check we're not already capturing (though we may call this repeatedly before any input)
             if group in cstates:
                 assert cstates[group].offsets.get(id, 0) == 0, f"Unexpected capture open for ({group}, {id})"
@@ -152,7 +152,7 @@ class NFA:
             # set the offset and that's it for now
             cstates.setdefault(group, CaptureState()).offsets[id] = 0
         
-        return { freeze(cstates.items()) }
+        return { freeze(cstates) }
         
     def capture_input(self, state: State, captures_state: CapturesState, i: str) -> AbstractSet[CapturesState]:
     
@@ -165,14 +165,38 @@ class NFA:
             assert id in cstate.offsets, f"Unexpected capture input for ({group}, {id})"
             # check if we've already captured enough
             if cstate.length is not None and cstate.offsets[id] >= cstate.length: return set()
-            # TODO: ...
+            # shift the input if necessary
+            j = i
+            if options.shift != 0:
+                for alphabet in (string.ascii_lowercase, string.ascii_uppercase):
+                    if j in alphabet:
+                        j = alphabet[(alphabet.index(j) + shift) % 26]
+            # check the input against what we've got so far
+            affix = cstate.suffix if options.reverse else cstate.prefix
+            affix_ci = cstate.suffix_case_insensitive if options.reverse else cstate.prefix_case_insensitive
+            if cstate.offsets[id] < len(affix):
+                # compare to existing value
+                if options.case_insensitive:
+                    if j.lower() != affix[cstate.offsets[id]].lower(): return set()
+                elif affix_ci[cstate.offsets[id]]:
+                    # replace case-insensitive match by a case sensitive one
+                    if j.lower() != affix[cstate.offsets[id]].lower(): return set()
+                    affix[cstate.offsets[id]] = j
+                    affix_ci[cstate.offsets[id]] = False
+                else:
+                    if j != affix[cstate.offsets[id]]: return set()
+            else:
+                # first input, so just append it
+                affix.append(j)
+                affix_ci.append(options.case_insensitive)
+            cstate.offsets[id] += 1
     
-        return { freeze(cstates.items()) }
+        return { freeze(cstates) }
     
     # TODO: return capture information
     def match(self, string: str) -> bool:
         """Match NFA against a string"""
-        states = self.expand_epsilons({(self.start, {})})
+        states = self.expand_epsilons({(self.start, frozenset())})
         for c in string:
             states = {(t,tc) for (s,sc) in states for t in self.transitions.get((s, c), self.transitions.get((s, Move.ALL), set())) for tc in self.capture_input(s, sc, i)}
             states = self.expand_epsilons(states)

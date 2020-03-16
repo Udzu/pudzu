@@ -35,17 +35,17 @@ class CaptureState:
     prefix_case_insensitive: List[bool] = field(default_factory=list)
     suffix: List[str] = field(default_factory=list)
     suffix_case_insensitive: List[bool] = field(default_factory=list)
-    length: Optional[int] = None
+    length: List[int] = field(default_factory=list)
     offsets: Dict[CaptureId, int] = field(default_factory=dict)
     
 CapturesStateDict = Dict[CaptureGroup, CaptureState]
 CapturesState = FrozenSet[Tuple[CaptureGroup, CaptureState]]
 
 def freeze(cstate: CapturesStateDict) -> CapturesState:
-    return frozenset((g, CaptureState(tuple(s.prefix), tuple(s.prefix_case_insensitive), tuple(s.suffix), tuple(s.suffix_case_insensitive), s.length, frozenset(s.offsets.items()))) for g,s in cstate.items())
+    return frozenset((g, CaptureState(tuple(s.prefix), tuple(s.prefix_case_insensitive), tuple(s.suffix), tuple(s.suffix_case_insensitive), tuple(s.length), frozenset(s.offsets.items()))) for g,s in cstate.items())
 
 def unfreeze(cstate: CapturesState) -> CapturesStateDict:
-    return dict((g, CaptureState(list(s.prefix), list(s.prefix_case_insensitive), list(s.suffix), list(s.suffix_case_insensitive), s.length, dict(s.offsets))) for g,s in cstate)
+    return dict((g, CaptureState(list(s.prefix), list(s.prefix_case_insensitive), list(s.suffix), list(s.suffix_case_insensitive), list(s.length), dict(s.offsets))) for g,s in cstate)
 
 # NFAs
 renderer = optional_import("PySimpleAutomata.automata_IO")
@@ -108,14 +108,14 @@ class NFA:
             assert group in cstates, f"Unexpected capture close for {group}"
             cstate = cstates[group]
             assert id in cstate.offsets, f"Unexpected capture close for ({group}, {id})"
-            if cstate.length is not None:
+            if cstate.length:
                 # if we've already captured this group, just check the length is ok
-                if cstate.offsets[id] != cstate.length: return set()
+                if cstate.offsets[id] != cstate.length[0]: return set()
             else:
                 # otherwise, check we've captured enough
                 if cstate.offsets[id] < max(len(cstate.prefix), len(cstate.suffix)): return set()
                 # set the length
-                cstate.length = cstate.offsets[id]
+                cstate.length.append(cstate.offsets[id])
                 # check that the prefix and suffix are compatible (updating them to be more precise if necessary)
                 if len(cstate.suffix) <= len(cstate.prefix):
                     shorter, shorter_ci = cstate.suffix, cstate.suffix_case_insensitive
@@ -124,7 +124,7 @@ class NFA:
                     shorter, shorter_ci = cstate.prefix, cstate.prefix_case_insensitive
                     longer, longer_ci = cstate.suffix, cstate.suffix_case_insensitive
                 # (loop over the shorter *fix...)
-                for i in range(cstate.length):
+                for i in range(cstate.length[0]):
                     if i >= len(cstate.shorter):
                         cstate.shorter.append(cstate.longer[-i])
                         cstate.shorter_ci.append(cstate.longer_ci[-i])
@@ -164,7 +164,7 @@ class NFA:
             cstate = cstates[group]
             assert id in cstate.offsets, f"Unexpected capture input for ({group}, {id})"
             # check if we've already captured enough
-            if cstate.length is not None and cstate.offsets[id] >= cstate.length: return set()
+            if cstate.length and cstate.offsets[id] >= cstate.length[0]: return set()
             # shift the input if necessary
             j = i
             if options.shift != 0:
@@ -198,7 +198,7 @@ class NFA:
         """Match NFA against a string"""
         states = self.expand_epsilons({(self.start, frozenset())})
         for c in string:
-            states = {(t,tc) for (s,sc) in states for t in self.transitions.get((s, c), self.transitions.get((s, Move.ALL), set())) for tc in self.capture_input(s, sc, i)}
+            states = {(t,tc) for (s,sc) in states for t in self.transitions.get((s, c), self.transitions.get((s, Move.ALL), set())) for tc in self.capture_input(s, sc, c)}
             states = self.expand_epsilons(states)
         return any(s == self.end for s,_ in states)
 

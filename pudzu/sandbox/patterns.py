@@ -125,20 +125,20 @@ class NFA:
                     longer, longer_ci = cstate.suffix, cstate.suffix_case_insensitive
                 # (loop over the shorter *fix...)
                 for i in range(cstate.length[0]):
-                    if i >= len(cstate.shorter):
-                        cstate.shorter.append(cstate.longer[-i])
-                        cstate.shorter_ci.append(cstate.longer_ci[-i])
+                    if i >= len(shorter):
+                        shorter.append(longer[-i])
+                        shorter_ci.append(longer_ci[-i])
                     else:
-                        if cstate.shorter_ci[i]:
-                            if cstate.shorter[i].lower() != cstate.longer[-i].lower(): return set()
-                            cstate.shorter_ci[i] = cstate.longer_ci[-i]
-                            cstate_shorter[i] = cstate.longer[-i]
-                        elif cstate.longer_ci[-i]:
-                            if cstate.shorter[i].lower() != cstate.longer[-i].lower(): return set()
-                            cstate.longer_ci[-i] = cstate.shorter_ci[i]
-                            cstate_longer[-i] = cstate.shorter[i]
+                        if shorter_ci[i]:
+                            if shorter[i].lower() != longer[-i].lower(): return set()
+                            shorter_ci[i] = longer_ci[-i]
+                            shorter[i] = longer[-i]
+                        elif longer_ci[-i]:
+                            if shorter[i].lower() != longer[-i].lower(): return set()
+                            longer_ci[-i] = shorter_ci[i]
+                            longer[-i] = shorter[i]
                         else:
-                            if cstate.shorter[i] != cstate.longer[-i]: return set()
+                            if shorter[i] != longer[-i]: return set()
                     
             # and we're done with this capture (though it may be repeated later)
             del cstate.offsets[id]
@@ -158,7 +158,7 @@ class NFA:
     
         cstates = unfreeze(captures_state)
         
-        for (group, id), options in self.capture_ends.get(state, {}).items():
+        for (group, id), options in self.captures.get(state, {}).items():
             # check we're actually capturing
             assert group in cstates, f"Unexpected capture input for {group}"
             cstate = cstates[group]

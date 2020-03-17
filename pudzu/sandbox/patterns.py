@@ -104,11 +104,13 @@ class NFA:
         
         # first handle capture closures
         for group, id in self.capture_ends.get(state, set()):
-            # check we're actually capturing
-            assert group in cstates, f"Unexpected capture close for {group}"
+            # check we're actually capturing (though we may call this repeatedly in succession)
+            assert group in cstates, f"Unexpected capture close for {group}\n{cstates}"
             cstate = cstates[group]
-            assert id in cstate.offsets, f"Unexpected capture close for ({group}, {id})"
-            if cstate.length:
+            if id not in cstate.offsets:
+                # we've already closed this capture
+                continue
+            elif cstate.length:
                 # if we've already captured this group, just check the length is ok
                 if cstate.offsets[id] != cstate.length[0]: return set()
             else:
@@ -147,7 +149,7 @@ class NFA:
         for group, id in self.capture_starts.get(state, set()):
             # check we're not already capturing (though we may call this repeatedly before any input)
             if group in cstates:
-                assert cstates[group].offsets.get(id, 0) == 0, f"Unexpected capture open for ({group}, {id})"
+                assert cstates[group].offsets.get(id, 0) == 0, f"Unexpected capture open for ({group}, {id})\n{cstates}"
                 
             # set the offset and that's it for now
             cstates.setdefault(group, CaptureState()).offsets[id] = 0
@@ -160,9 +162,9 @@ class NFA:
         
         for (group, id), options in self.captures.get(state, {}).items():
             # check we're actually capturing
-            assert group in cstates, f"Unexpected capture input for {group}"
+            assert group in cstates, f"Unexpected capture input for {group}\n{cstates}"
             cstate = cstates[group]
-            assert id in cstate.offsets, f"Unexpected capture input for ({group}, {id})"
+            assert id in cstate.offsets, f"Unexpected capture input for ({group}, {id})\n{cstates}"
             # check if we've already captured enough
             if cstate.length and cstate.offsets[id] >= cstate.length[0]: return set()
             # shift the input if necessary
@@ -523,8 +525,8 @@ def MatchCapture(group: CaptureGroup, id: CaptureId, nfa: Optional[NFA] = None) 
     transitions[("1", Move.EMPTY)] = {("0",nfa.start)}
     transitions[(("0",nfa.end), Move.EMPTY)] = {"2"}
     capture_starts = merge({"1": {(group, id)}}, {("0",s):v for s,v in nfa.capture_starts.items()})
-    capture_ends = merge({"2": {(group, id)}}, {("0",s):v for s,v in nfa.capture_ends.items()})
-    captures = {("0",s): {(group, id): CaptureOptions(), **nfa.captures.get(s, {})} for s in nfa.states}
+    capture_ends = merge({("0",nfa.end): {(group, id)}}, {("0",s):v for s,v in nfa.capture_ends.items()})
+    captures = {("0",s): {(group, id): CaptureOptions(), **nfa.captures.get(s, {})} for s in nfa.states if s != nfa.end}
     return NFA("1", "2", transitions, capture_starts, capture_ends, captures)
 
 # Parser

@@ -172,7 +172,7 @@ class NFA:
             if options.shift != 0:
                 for alphabet in (string.ascii_lowercase, string.ascii_uppercase):
                     if j in alphabet:
-                        j = alphabet[(alphabet.index(j) + shift) % 26]
+                        j = alphabet[(alphabet.index(j) - options.shift) % 26]
             # check the input against what we've got so far
             affix = cstate.suffix if options.reverse else cstate.prefix
             affix_ci = cstate.suffix_case_insensitive if options.reverse else cstate.prefix_case_insensitive
@@ -516,7 +516,7 @@ def MatchShifted(nfa: NFA, shift: int) -> NFA:
                 break
         transitions[(s,i)] = ts
     captures = {s:{c:o._replace(shift=(o.shift + shift) % 26) for c,o in v.items()} for s,v in nfa.captures.items()}
-    return NFA(nfa.start, nfa.end, transitions, nfa.capture_ends, nfa.capture_starts, captures)
+    return NFA(nfa.start, nfa.end, transitions, nfa.capture_starts, nfa.capture_ends, captures)
 
 def MatchCapture(group: CaptureGroup, id: CaptureId, nfa: Optional[NFA] = None) -> NFA:
     """Handles: (?1), (?1:P), (?<ID), (?<ID:P)"""

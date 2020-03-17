@@ -128,19 +128,19 @@ class NFA:
                 # (loop over the shorter *fix...)
                 for i in range(cstate.length[0]):
                     if i >= len(shorter):
-                        shorter.append(longer[-i])
-                        shorter_ci.append(longer_ci[-i])
+                        shorter.append(longer[-i-1])
+                        shorter_ci.append(longer_ci[-i-1])
                     else:
                         if shorter_ci[i]:
-                            if shorter[i].lower() != longer[-i].lower(): return set()
-                            shorter_ci[i] = longer_ci[-i]
-                            shorter[i] = longer[-i]
-                        elif longer_ci[-i]:
-                            if shorter[i].lower() != longer[-i].lower(): return set()
-                            longer_ci[-i] = shorter_ci[i]
-                            longer[-i] = shorter[i]
+                            if shorter[i].lower() != longer[-i-1].lower(): return set()
+                            shorter_ci[i] = longer_ci[-i-1]
+                            shorter[i] = longer[-i-1]
+                        elif longer_ci[-i-1]:
+                            if shorter[i].lower() != longer[-i-1].lower(): return set()
+                            longer_ci[-i-1] = shorter_ci[i]
+                            longer[-i-1] = shorter[i]
                         else:
-                            if shorter[i] != longer[-i]: return set()
+                            if shorter[i] != longer[-i-1]: return set()
                     
             # and we're done with this capture (though it may be repeated later)
             del cstate.offsets[id]
@@ -492,7 +492,7 @@ def MatchReversed(nfa: NFA) -> NFA:
     captures = {s:{c:o._replace(reverse=not o.reverse) for c,o in v.items()} for s,v in nfa.captures.items()}
     nfa = NFA(nfa.end, nfa.start, transitions, nfa.capture_ends, nfa.capture_starts, captures)
     nfa.remove_redundant_states()
-    return nfa
+    return MatchAfter(nfa, MatchEmpty()) if nfa.end in nfa.capture_ends else nfa
     
 def MatchInsensitively(nfa: NFA) -> NFA:
     """Handles: (?i:A)"""

@@ -35,7 +35,7 @@ def extract_people(title, section=None):
     return pd.DataFrame([{ "title": title, "link": WikiPage.title_from_url(a['href'])} for a in links])
     
 harmonic_mean = optional_import_from('statistics', 'harmonic_mean', lambda data: len(data) / sum(1/x for x in data))
-LIMITS = { 'length': 1500000, 'pageviews': 1000000 } # 'revisions': 25000, 
+LIMITS = { 'length': 1500000, 'pageviews': 1000000, 'revisions': 25000 }
 
 def score_people(df, lang="en", translate_from=None):
     df = df.assign_rows(progressbar = True,
@@ -43,8 +43,8 @@ def score_people(df, lang="en", translate_from=None):
     df = df.assign_rows(progressbar = True,
                         title=lambda d: '?' if d['wp'] is None else d['wp'].title,
                         length=lambda d: 1 if d['wp'] is None else len(d['wp'].response.content),
-                        pageviews=lambda d: 1 if d['wp'] is None else int(median(([pv['views'] for pv in d['wp'].pageviews("20160101", "20170101")]+[0]*12)[:12])),
-                        # revisions=lambda d: 1 if d['wp'] is None else d['wp'].revision_count(),
+                        pageviews=lambda d: 1 if d['wp'] is None else int(median(([pv['views'] for pv in d['wp'].pageviews("20190101", "20200101")]+[0]*12)[:12])),
+                        revisions=lambda d: 1 if d['wp'] is None else d['wp'].revision_count(),
                         disambiguation=lambda d: d['wp'] and bool(d['wp'].bs4.find(alt="Disambiguation icon")))
     df = df.assign_rows(score=lambda d: harmonic_mean([log(max(d[k], 2)) / log(max_value) for k,max_value in LIMITS.items()]))
     return df.loc[:,df.columns != 'wp'].sort_values("score", ascending=False)

@@ -16,7 +16,7 @@ AUS,Oceania,Australia,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/
 AUT,Europe,Austria,https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Austria.svg/1024px-Flag_of_Austria.svg.png,Austrian,8611088,.at,eu|un,+43
 AZE,Asia,Azerbaijan,https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Azerbaijan.svg/1024px-Flag_of_Azerbaijan.svg.png,Azerbaijani|Azeri,9651349,.az,un,+994
 BDI,Africa,Burundi,https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Flag_of_Burundi.svg/1024px-Flag_of_Burundi.svg.png,Burundian,11178921,.bi,un,+257
-BEL,Europe,Belgium,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_Belgium_%28civil%29.svg/1024px-Flag_of_Belgium_%28civil%29.svg.png,Belgian,11285721,.be,eu|un,+32
+BEL,Europe,Belgium,https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Belgium.svg/886px-Flag_of_Belgium.svg.png,Belgian,11285721,.be,eu|un,+32
 BEN,Africa,Benin,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Flag_of_Benin.svg/1024px-Flag_of_Benin.svg.png,Beninese|Beninois,10879829,.bj,un,+229
 BFA,Africa,Burkina Faso,https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Burkina_Faso.svg/1024px-Flag_of_Burkina_Faso.svg.png,Burkinabé,18105570,.bf,un,+226
 BGD,Asia,Bangladesh,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flag_of_Bangladesh.svg/1024px-Flag_of_Bangladesh.svg.png,Bangladeshi,160995642,.bd,un,+880
@@ -141,7 +141,7 @@ MDG,Africa,Madagascar,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/
 MDV,Asia,Maldives,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_Maldives.svg/1024px-Flag_of_Maldives.svg.png,Maldivian,409163,.mv,un,+960
 MEX,North America,Mexico,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1024px-Flag_of_Mexico.svg.png,Mexican,127017224,.mx,un,+52
 MHL,Oceania,Marshall Islands,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_the_Marshall_Islands.svg/1024px-Flag_of_the_Marshall_Islands.svg.png,Marshallese,52993,.mh,un,+692
-MKD,Europe,North Macedonia|N. Macedonia|Macedonia|Republic of Macedonia|FYROM,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Flag_of_Macedonia.svg/1024px-Flag_of_Macedonia.svg.png,Macedonian,2078453,.mk,un,+389
+MKD,Europe,North Macedonia|N. Macedonia|Macedonia|Republic of Macedonia|FYROM,https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_North_Macedonia.svg/1024px-Flag_of_North_Macedonia.svg.png,Macedonian,2078453,.mk,un,+389
 MLI,Africa,Mali,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_Mali.svg/1024px-Flag_of_Mali.svg.png,Malian|Malinese,17599694,.ml,un,+223
 MLT,Europe,Malta,https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Malta.svg/1024px-Flag_of_Malta.svg.png,Maltese,431333,.mt,eu|un,+356
 MMR,Asia,Myanmar|Burma,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_of_Myanmar.svg/1024px-Flag_of_Myanmar.svg.png,Burmese,53897154,.mm,un,+95
@@ -208,7 +208,7 @@ SUR,South America,Suriname|Surinam,https://upload.wikimedia.org/wikipedia/common
 SVK,Europe,Slovakia,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Flag_of_Slovakia.svg/1024px-Flag_of_Slovakia.svg.png,Slovak,5424050,.sk,eu|un,+421
 SVN,Europe,Slovenia,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Flag_of_Slovenia.svg/1024px-Flag_of_Slovenia.svg.png,Slovenian|Slovene,2063768,.si,eu|un,+386
 SWE,Europe,Sweden,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Sweden.svg/1024px-Flag_of_Sweden.svg.png,Swedish,9798871,.se,eu|un,+46
-SWZ,Africa,Swaziland,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Flag_of_Swaziland.svg/1024px-Flag_of_Swaziland.svg.png,Swazi,1286970,.sz,un,+268
+SWZ,Africa,Swaziland|Eswatini,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Flag_of_Eswatini.svg/1024px-Flag_of_Eswatini.svg.png,Swazi,1286970,.sz,un,+268
 SXM,North America,Sint Maarten,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Sint_Maarten.svg/1024px-Flag_of_Sint_Maarten.svg.png,Sint Maarten,38817,.sx|.an,,+1721
 SYC,Africa,Seychelles,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Seychelles.svg/1024px-Flag_of_Seychelles.svg.png,Seychellois,92900,.sc,un,+248
 SYR,Asia,Syria|Syrian Arab Republic,https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Flag_of_Syria.svg/1024px-Flag_of_Syria.svg.png,Syrian,18502413,.sy,un,+963

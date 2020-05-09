@@ -1,0 +1,88 @@
+type,country,name,role,city,place,image,align
+g,UK,Boris Johnson,PM (2019-),New York,USA,https://i2-prod.walesonline.co.uk/news/uk-news/article18054041.ece/ALTERNATES/s1200/3_Boris_Johnson_official_portrait.jpg
+s,UK,George II,King (1727-60),Hanover,Brunswick-Lüneburg (now Germany),"https://www.westminster-abbey.org/media/9782/george-ii-gwd-271472.jpg?center=0.31584362139917693,0.48166666666666669&mode=crop&width=1024&height=512&rnd=132089734770000000"
+g,Ireland,Éamon de Valera,Taoiseach (1937-[...]-59),New York,USA,https://cdn.britannica.com/31/79431-050-3B6BD40B/Eamon-de-Valera-republicans-civil-war-Irish.jpg
+s,Ireland,Erskine Childers⁵,President (1973-74),London,UK,https://img.rasset.ie/00108c1f-642.jpg,0.2
+g,France,Manuel Valls,PM (2014-16),Barcelona,Spain,https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fcom.ft.imagepublish.prod.s3.amazonaws.com%2F72981880-d7fb-11e6-944b-e7eb37a6aa8e?fit=scale-down&source=next&width=700
+s,France,Valéry d'Estaing,President (1974-81),Koblenz,French-Occupied Germany,https://upload.wikimedia.org/wikipedia/commons/0/0a/Val%C3%A9ry_Giscard_d%E2%80%99Estaing_1978.jpg
+g,Lithuania,Aleksandras Abišala,PM (1992),Inta,Soviet Russia,https://s1.15min.lt/images/photos/2012/11/29/original/aabisala-mano-kad-vyriausybe-formuojancios-partijos-atejo-dirbti-sau-o-ne-rinkejams-50b78ff9addbc.jpg,0.7
+s,Lithuania,August III Wettin⁷,Grand Duke (1734-63),Dresden,Electorate of Saxony (now Germany),https://upload.wikimedia.org/wikipedia/commons/b/b6/August_III_the_Saxon.PNG
+g,Germany,Adolf Hitler¹¹,Chancellor (1933-45),Braunau am Inn,Austria,https://www.biography.com/.image/t_share/MTE4MDAzNDEwNTU1MDc4MTU4/adolf-hitler-9340144-1-402.jpg,0
+s,Germany,Horst Köhler,President (2004-10),Heidenstein,Occupied Poland,https://www.dzbreaking.com/wp-content/uploads/2017/05/d9c3e3131f35587def7ca93a1b9376bd_M.jpg
+g,Latvia,Arturs Kariņš,PM (2019-),Wilmington,USA,https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Kri%C5%A1j%C4%81nis_Kari%C5%86%C5%A1_2019_%28cropped%29.jpg/433px-Kri%C5%A1j%C4%81nis_Kari%C5%86%C5%A1_2019_%28cropped%29.jpg
+s,Latvia,Raimonds Vējonis,President (2015-19),Nikonovo,Soviet Russia,https://upload.wikimedia.org/wikipedia/commons/2/21/Raimonds_Vejonis_2019.jpg
+g,Netherlands,Julius van Zuylen van Nijevelt¹⁰,PM (1866-68),Dommeldange,Luxembourg,https://upload.wikimedia.org/wikipedia/commons/4/4a/Julius_van_Zuylen_van_Nijevelt_%28cropped%29.jpg
+s,Netherlands,Louis II,King (1810),Paris,France,https://upload.wikimedia.org/wikipedia/commons/0/05/Cottrau_-_Napol%C3%A9on-Louis_Bonaparte_%281804-1831%29.jpg
+g,Portugal,José Pinheiro de Azevedo,PM (1975-76),Luanda,Portuguese Angola,https://www.defesa.gov.pt/pt/defesa/historia/galeriaministros/PublishingImages/ALM%20Pinheiro%20Azevedo%2026abr74%20a%2028nov75.jpg
+s,Portugal,Bernardino Machado,President (1915-17/25-26),Rio de Janeiro,Brazil,https://upload.wikimedia.org/wikipedia/commons/1/1c/Bernardino_Machado%2C_Hist%C3%B3ria_de_Portugal_%28CC%29.png
+g,Italy,(Alcide De Gasperi¹³),PM (1945-53),Pieve Tesino,Austria-Hungary (now Italy),https://upload.wikimedia.org/wikipedia/commons/b/b7/Alcide_de_Gasperi_2.jpg
+s,Italy,Napoleon Bonaparte,King (1805-14),Ajaccio,France,https://www.historyhit.com/wp-content/uploads/2018/05/portrait-of-napoleon-3.jpg
+g,Poland,Jerzy Buzek¹²,PM (1997-01),Smilowitz,Germany (now Czech Republic),https://thefutureofchristiansinthemiddleeast.files.wordpress.com/2013/10/jerzy_buzek.jpg,0.5
+s,Poland,Gabriel Narutowicz,President (1922),Telšiai,Russian Empire (now Lithuania),https://upload.wikimedia.org/wikipedia/commons/c/c3/Portret_Narutowicz_%28cropped%29.jpg
+g,Spain,José Giral,PM (1936),Santiago de Cuba,Spanish Cuba,https://www.ucm.es/data/cont/media/www/pag-26875/giral.JPG,0
+s,Spain,Juan Carlos I,King (1974-01),Rome,Italy,https://www.onthisday.com/images/people/juan-carlos-i-medium.jpg,0
+g,Belgium,Jean-Luc Dehaene,PM (1992-99),Montpellier,France,https://upload.wikimedia.org/wikipedia/commons/2/2f/Jean-Luc_Dehaene_675_%28cropped%29.jpg
+s,Belgium,Leopold I,King (1831-65),Coburg,Saxe-Coburg-Saalfeld (now Germany),https://upload.wikimedia.org/wikipedia/commons/f/f4/Leopold_I_of_Belgium_%282%29.jpg,0
+g,Greece,George Papandreou,PM (2009-11),Saint Paul,USA,https://upload.wikimedia.org/wikipedia/commons/b/b2/Papandreou_handover_cropped.jpg
+s,Greece,George I³,King (1863-13),Copenhagen,Denmark,https://media.gettyimages.com/photos/george-i-king-of-greece-late-19thearly-20th-century-portrait-of-i-picture-id463955015?s=612x612
+g,Turkey,Suat Hayri Ürgüplü,PM (1965),Damascus,Ottoman Empire (now Syria),https://upload.wikimedia.org/wikipedia/commons/b/b8/Suat_%C3%9Crg%C3%BCpl%C3%BC.jpg
+s,Turkey,(Mustafa Kemal Atatürk¹⁶),President (1923-38),Salonica,Ottoman Empire (now Greece),https://libnews.binghamton.edu/news/specialcollections/files/2017/05/1310812-Mustafa_Kemal_Pasa1.jpg
+g,Denmark,Ludvig Holstein-Ledreborg,Council President (1909),Hochberg,Württemberg (now Germany),https://upload.wikimedia.org/wikipedia/commons/a/a8/HolsteinLedreborg.jpg
+s,Denmark,Christian I,King (1448-81),Oldenburg,Holy Roman Empire (now Germany),https://upload.wikimedia.org/wikipedia/commons/b/b3/Christian_I_of_Denmark%2C_Norway_%26_Sweden_1440s.jpg
+s,Sweden,Oscar I,King (1844-59),Paris,France,https://upload.wikimedia.org/wikipedia/commons/c/c0/Crownprince_Oscar_of_Sweden_painted_by_Joseph_Karl_Stieler.jpg
+g,Austria,Walter Breisky¹,Chancellor (1922),Bern,Switzerland,https://media.gettyimages.com/photos/walter-breisky-austrian-official-and-politician-from-26th-to-27th-picture-id551765643
+s,Austria,Theodor Körner¹,President (1951-57),Újszőny,Austria-Hungary (now Hungary),https://upload.wikimedia.org/wikipedia/en/f/fe/Theodor_K%C3%B6rner.jpg
+g,Norway,Mathias Sommerhielm¹⁰,PM (1822-27),Kolding,Denmark,https://upload.wikimedia.org/wikipedia/commons/e/e0/Sommerhielm1_%28cropped%29.jpg
+s,Norway,Olav V,King (1957-91),Sandringham,UK,https://d2kdkfqxnvpuu9.cloudfront.net/images/big/75689.jpg?1496676017
+g,Finland,(Teuvo Aura¹⁴),PM (1970/71-72),Ruskeala,Finland (now Russia),https://alchetron.com/cdn/teuvo-aura-996cc7c7-aca9-4342-9f60-4bcd56b3e79-resize-750.jpeg
+s,Finland,Nicholas II²,Grand Duke (1894-17),Saint Petersburg,Russia,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/%D0%98%D0%BC%D0%BF%D0%B5%D1%80%D0%B0%D1%82%D0%BE%D1%80_%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B9_II.jpg/538px-%D0%98%D0%BC%D0%BF%D0%B5%D1%80%D0%B0%D1%82%D0%BE%D1%80_%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B9_II.jpg
+g,Romania,(Nicolae Văcăroiu¹⁵)⁸,PM (1992-96),Cetatea Albă,Romania (now Ukraine),https://alchetron.com/cdn/nicolae-vcroiu-5af61825-48e3-4c80-8b2e-185df4d10fd-resize-750.jpeg
+s,Romania,Ferdinand I,King (1914-27),Sigmaringen,German Confederation,https://upload.wikimedia.org/wikipedia/commons/7/7d/King_Ferdinand_of_Romania.jpg
+g,Belarus,Andrei Kobyakov,PM (2014-18),Moscow,Soviet Russia,https://alchetron.com/cdn/andrei-kobyakov-8340b1a0-32be-4961-8fe8-026623b9e18-resize-750.jpeg
+s,Belarus,Vilhelm Knorin,First Secretary (1920-23),Līgatne,Latvia,https://lh3.googleusercontent.com/proxy/vRVaOTl2FsjjOSStSzgPhF1-nABVGVLrNMjaOBkzIg1NOcgzUL8oetGpgJ0bPEk2X-6byxYIx9E7TjrPQR8fxRondm5KbQa9k-IaD_2HIGOjc4_SLbTYNwn7wG-pPFBP4zsba9fcgQ
+s,Iceland,Sveinn Björnsson,President (1944-52),Copenhagen,Denmark,https://www.althingi.is/myndir/mynd/thingmenn/566/org/mynd.jpg
+g,Vatican City,Giuseppe Bertello,Commission head (2011-),Foglizzo,Italy,https://lh3.googleusercontent.com/proxy/_pEVz8tSP4VFEyaQpY2AVOu6vp2SpSzyk90HsaRtcVKrF-jesSoTxt0angHe7gI1juWVe5YdHP19a8_ZnPoxJ3sUw6sYaH5Osh4DsEQtPxZVHySmUQ23YzCE1Q
+s,Vatican City,Francis,Pope (2013-),Buenos Aires,Argentina,https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Pope_Francis_Korea_Haemi_Castle_19.jpg/773px-Pope_Francis_Korea_Haemi_Castle_19.jpg
+g,Bulgaria,Sergei Stanishev,PM (2005-09),Kherson,Soviet Ukraine,http://stanishev.eu/en/wp-content/uploads/sites/2/2015/09/1.jpg
+s,Bulgaria,Georgi Traykov,Presidium Chair (1964-71),Varbeni,Ottoman Empire (now Greece),https://upload.wikimedia.org/wikipedia/commons/d/d3/Georgi_Traykov.jpg
+g,Ukraine,Mykola Azarov,PM (2010-14),Kaluga,Soviet Russia,https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2010/3/24/1269460153075/Mykola-Azarov-Kiev-Ukrain-001.jpg?width=620&quality=85&auto=format&fit=max&s=b86f9a97deadf23719cb15b7c8fee9cc
+s,Ukraine,Pavlo Skoropadskyi⁹,Hetman (1918),Wiesbaden,Germany,http://www.encyclopediaofukraine.com/pic%5CP%5CA%5CPavlo%20Skoropadsky%20(1918).jpg,0
+g,Hungary,Károly Huszár⁴,PM (1919-20),Nussdorf,Austria-Hungary (now Austria),https://upload.wikimedia.org/wikipedia/commons/d/d7/Huszar_Karoly.jpg
+s,Hungary,Charles IV,King (1916-18),Persenbeug-Gottsdorf,Austria-Hungary (now Austria),https://upload.wikimedia.org/wikipedia/commons/0/08/CarlosIDeAustriaHungr%C3%ADaB5103637T5103641.jpg
+g,Liechtenstein,Mario Frick⁶,PM (1993-01),Chur,Switzerland,https://www.bankfrick.li/portals/0/bank-frick_mario-frick-vr.jpg
+s,Liechtenstein,Hans-Adam II,Prince (1989-),Zürich,Switzerland,https://www.fuerstenhaus.li/export/sites/inta_fuerstenhausli_v2/.content/images/teaser/100_Imageteaser-Fuerst_726x454.jpg_411299134.jpg
+s,Andorra,Emmanuel Macron,Co-Prince (2017-),Amiens,France,https://upload.wikimedia.org/wikipedia/commons/c/c3/Emmanuel_Macron_%28cropped%29.jpg
+s,Cyprus,Catherine Cornaro,Queen (1474-89),Venice,Republic of Venice (now Italy),https://upload.wikimedia.org/wikipedia/commons/4/46/Portrait_of_Caterina_Coronaro_1542_uffizi_florence_Titian.jpg
+g,Russia,Sergei Stepashin,PM (1999),Port-Arthur,Kwantung Leased Territory (now China),https://roscongress.org/upload/resize_cache/iblock/7f7/289_289_2/stepashin.jpg
+s,Russia,Georgy Lvov,Minister-Chairman (1917),Dresden,German Confederation,https://upload.wikimedia.org/wikipedia/commons/3/34/Georgy_Lvov%2C_1918.jpg
+g,Monaco,Serge Telle,Minister of State (2016-),Nantes,France,https://www.club-residents-etrangers-monaco.com/medias_upload/moxie/Conf-de-presse-Serge-Telle-09-septembre-2016-_-Manuel-Vitali-Direction-de-la-Communication-MAN_6150-694x405.jpg
+s,Monaco,Louis II,Prine (1922-49),Baden,Grand Duchy of Baden (now Germany),https://upload.wikimedia.org/wikipedia/commons/b/ba/Prince_Louis_II_of_Monaco_05670r.jpg
+s,Estonia,Toomas Hendrik Ilves,President (2006-16),Stockholm,Sweden,https://upload.wikimedia.org/wikipedia/commons/4/45/Toomas_Hendrik_Ilves_2011-12-19.jpg
+s,Montenegro,Filip Vujanović,President (2003-18),Belgrade,Yugoslavia (now Serbia),https://europeanwesternbalkans.com/wp-content/uploads/2016/07/b061214ag.jpg
+g,Serbia,Zoran Đinđić,PM (2001-03),Bosanski Šamac,Yugoslavia (now Bosnia-Herzegovina),https://upload.wikimedia.org/wikipedia/commons/0/01/Zoran_%C4%90in%C4%91i%C4%87%2C_Davos.jpg
+s,Serbia,Boris Tadić,President (2004-12),Sarajevo,Yugoslavia (now Bosnia-Herzegovina),https://upload.wikimedia.org/wikipedia/commons/b/b1/Boris_Tadic%2C_President_of_Serbia_2.jpg
+s,Slovakia,
+g,Slovenia,Boris Kidrič,PM (1945-46),Vienna,Austria-Hungary,https://upload.wikimedia.org/wikipedia/commons/a/a0/Boris_Kidri%C4%8D_%281%29.jpg
+s,North Macedonia,Branko Crvenkovski,President (2004-09),Sarajevo,Yugoslavia (now Bosnia-Herzegovina),https://upload.wikimedia.org/wikipedia/commons/c/c3/Branko-Crvenkovski.JPG
+g,North Macedonia,Branko Crvenkovski,PM (2002-04),Sarajevo,Yugoslavia (now Bosnia-Herzegovina),https://upload.wikimedia.org/wikipedia/commons/c/c3/Branko-Crvenkovski.JPG
+s,Malta,Elizabeth II,Queen (1964-74),London,UK,https://upload.wikimedia.org/wikipedia/commons/c/c5/Queen_Elizabeth_II_1959_%28cropped%29.jpg
+s,Luxembourg,William IV,Grand Duke (1905-12),Wiesbaden,Duchy of Nassau (now Germany),https://upload.wikimedia.org/wikipedia/commons/a/ae/Guillaume_IV_of_Luxembourg.png
+g,Luxembourg,Pierre Werner,PM (1959-74/79-84),Saint-André-lez-Lille,France,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Pierre_Werner_204g.jpg/800px-Pierre_Werner_204g.jpg
+s,Czech Republic,Charles III,King (1916-18),Persenbeug-Gottsdorf,Austria-Hungary (now Austria),https://upload.wikimedia.org/wikipedia/commons/0/08/CarlosIDeAustriaHungr%C3%ADaB5103637T5103641.jpg
+g,Czech Republic,Andrej Babiš,PM (2017-),Bratislava,Czechoslovakia (now Slovakia),https://www.theparliamentmagazine.eu/sites/www.theparliamentmagazine.eu/files/styles/original_-_local_copy/entityshare/28794%3Fitok%3DADzpxTm3,0.35
+s,Croatia,Ante Marković,President (1986-88),Konjic,"Kingdom of Serbs, Croats and Slovenes (now Bosnia-Herzegovina)",https://static01.nyt.com/images/2011/12/13/world/europe/MARKOVIC-obit/MARKOVIC-obit-jumbo.jpg?quality=75&auto=webp&disable=upscale
+g,Croatia,Ivica Račan,PM (2000-03),Ebersbach,Germany,https://www.enciklopedija.hr/Ilustracije/HOL_4282.jpg
+s,Bosnia,Ante Jelavić,Presidency Chair (1999-00),Vrgorac,Yugoslavia (now Croatia),https://alchetron.com/cdn/ante-jelavi-7071a85b-e32c-4877-a2bb-09d8dcea09c-resize-750.jpeg
+g,Bosnia,Adnan Terzić,Council Chair (2002-07),Zagreb,Yugoslavia (now Croatia),http://imovinapoliticara.cin.ba/images/Adnan%20Terzi%C4%87%201.jpg
+s,Switzerland,Eduard Müller,President (1899/1907/1913),Dresden,Germany,https://upload.wikimedia.org/wikipedia/commons/0/0f/Eduard_Mueller_1913.jpg
+g,Moldova,Zinaida Greceanîi,PM (2008-09),Tomsk Oblast,Soviet Russia,https://upload.wikimedia.org/wikipedia/commons/7/77/Zinaida_Grecean%C3%AEi%2C_2014_%28cropped%29.jpg
+g,Kosovo,Jusuf Zejnullahu,PM (1991),Svirce,Serbia,https://upload.wikimedia.org/wikipedia/sq/e/ed/Jusuf_Zejnullahu.jpg
+s,Albania,Victor Emmanuel III,King (1939-43),Naples,Italy,https://upload.wikimedia.org/wikipedia/en/b/bc/Vitorioemanuel.jpg,0
+g,Albania,Fiqri Dine,PM (1944),Debre,Ottoman Empire (now North Macedonia),https://upload.wikimedia.org/wikipedia/commons/2/23/Fiqiri_Dine.jpg
+s,San Marino,Luca Boschi,Captain Regent (2019-20),Piacenza,Italy,https://www.consigliograndeegenerale.sm/contents/instance18/files/photo/17023567_17000062_1-S.E.BoschiLuca.jpg,0
+g,Kazakhstan,Sergey Tereshchenko,PM (1991-94),Lesozavodsk,Soviet Russia,https://alchetron.com/cdn/sergey-tereshchenko-0c811b1b-fbf2-4307-ae21-8461f361f87-resize-750.jpeg
+s,Armenia,Serzh Sargsyan,President (2008-18),Stepanakert,Soviet Azerbaijan,https://upload.wikimedia.org/wikipedia/commons/a/a4/Serj1.jpg
+g,Armenia,Serzh Sargsyan,PM (2007-08/18),Stepanakert,Soviet Azerbaijan,https://upload.wikimedia.org/wikipedia/commons/a/a4/Serj1.jpg
+g,Azerbaijan,Hasan Hasanov,PM (1991-92),Tbilisi,Soviet Georgia,https://upload.wikimedia.org/wikipedia/commons/4/4a/Z%C5%82o%C5%BCenie_list%C3%B3w_uwierzytelniaj%C4%85cych_przez_ambasadora_Azerbejd%C5%BCanu_%281%29.jpg,0.65
+s,Georgia,Salome Zourabichvili,President (2018-),Paris,France,https://upload.wikimedia.org/wikipedia/commons/8/82/Salome_Zourabichvili_and_Antonio_Tajani_%28cropped%29.jpg,0.5
+

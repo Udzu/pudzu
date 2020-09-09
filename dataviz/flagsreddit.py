@@ -4,7 +4,10 @@ FILES = {
  "israstine": "Some flags for a united Israel-Palestine",
  "saudi": "Some flags in the style of Saudi Arabia",
  "canada": "Some flags in the style of Canada",
+ "california": "Some flags in the style of California",
 }
+
+def columns(file): return 5 if file == "california" else 4
 
 for file, label in FILES.items():
 
@@ -31,11 +34,11 @@ for file, label in FILES.items():
 
     title = Image.from_text(label.upper(), FONT(68, bold=True), fg=fg, bg=bg, align="center").pad(30, bg).pad((0,0,0,10), bg)
 
-    array = list(generate_batches([dict(r) for _,r in df.iterrows()], 4))
+    array = list(generate_batches([dict(r) for _,r in df.iterrows()], columns(file)))
     data = pd.DataFrame(array)
     grid = grid_chart(data, process, padding=(10,20), fg=fg, bg=bg, yalign=0).pad((10,0),bg)
 
-    print("Credits: {}".format(", ".join(f"/u/{a}" for a in df.author)))
+    print("Credits: {}".format(", ".join(remove_duplicates(f"/u/{a}" for a in df.author))))
 
     img = Image.from_column([title, grid], bg=bg)
     img.save(f"output/flags{file}.png")

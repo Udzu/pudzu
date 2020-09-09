@@ -441,7 +441,7 @@ Supported syntax:
 - (?&ID)   use subpattern
 """, formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("pattern", type=str, help="pattern to match against")
-    parser.add_argument("file", type=str, help="filename to search")
+    parser.add_argument("files", type=str, nargs="*", help="filenames to search")
     parser.add_argument("-d", dest="dict", metavar="PATH", type=str, help="dictionary file to use for \\w", default=None)
     parser.add_argument("-D", dest="DFA", action="store_true", help="convert NFA to DFA", default=None)
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
@@ -467,11 +467,12 @@ Supported syntax:
         logger.info(f"Saving NFA diagram to 'fsm.dot.svg'")
         pattern.nfa.render("fsm")
         
-    with open(args.file, "r", encoding="utf-8") as f:
-        for w in f:
-            word = w.rstrip("\n")
-            if pattern.match(word):
-                print(word, flush=True)
+    for file in args.files:
+        with open(file, "r", encoding="utf-8") as f:
+            for w in f:
+                word = w.rstrip("\n")
+                if pattern.match(word):
+                    print(word, flush=True)
 
 if __name__ == '__main__':
     main()

@@ -224,23 +224,17 @@ def MatchContains(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     # transition between (2) A, (3) AxB, and (5) A states
     # for proper, also use (1) A and (4) A states
     t1, t1e, t4, t4e = {}, {}, {}, {}
-
     if proper:
         t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
         t1e = {(("1",s),i): {("2",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
-
     t2 = {(("2",s),i): {("2",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
     t2e = {(("2",s), Move.EMPTY): {("3",s,nfa2.start)} for s in nfa1.states}
-
     t3 = {(("3",s,q), i): {("3",s,t) for t in ts} for (q,i),ts in nfa2.transitions.items() for s in nfa1.states}
     t3e = {(("3",s,nfa2.end), Move.EMPTY): {(("4",s) if proper else ("5",s))} for s in nfa1.states}
-
     if proper:
         t4 = {(("4",s),i): {("4",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
         t4e = {(("4",s),i): {("5",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
-
     t5 = {(("5",s),i): {("5",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
-
     transitions = merge_trans(t1, t1e, t2, t2e, t3, t3e, t4, t4e, t5)
     nfa = NFA(("1",nfa1.start) if proper else ("2",nfa1.start), ("5",nfa1.end), transitions)
     nfa.remove_redundant_states()
@@ -251,21 +245,16 @@ def MatchInterleaved(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     # transition between (2) AxB and (3) AxB states
     # for proper, also use (1) A and (4) A states
     t1, t1e, t4, t4e = {}, {}, {}, {}
-
     if proper:
         t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
         t1e = {(("1",s),i): {("2",t,nfa2.start) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
-
     t2 = {(("2",s,q), i): {("2",t,q) for t in ts} for (s,i),ts in nfa1.transitions.items() for q in nfa2.states}
     t2e = {(("2",q,s), Move.EMPTY): {("3",q,s)} for q in nfa1.states for s in nfa2.states}
-    
     t3 = {(("3",q,s), i): {("3",q,t) for t in ts} for (s,i),ts in nfa2.transitions.items() for q in nfa1.states}
     t3e = {(("3",q,s), Move.EMPTY): {("2",q,s)} for q in nfa1.states for s in nfa2.states}
-    
     if proper:
         t4 = {(("2",s,nfa2.end),i): {("4",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
         t4e = {(("4",s),i): {("4",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
-    
     transitions = merge_trans(t1, t1e, t2, t2e, t3, t3e, t4, t4e)
     nfa = NFA(("1",nfa1.start) if proper else ("2",nfa1.start, nfa2.start), 
               ("4",nfa1.end) if proper else ("3",nfa1.end, nfa2.end), transitions)
@@ -408,21 +397,21 @@ def main():
     parser = argparse.ArgumentParser(description = """NFA-based pattern matcher supporting novel spatial conjunction and modifiers.
 Supported syntax:
 
+CHARACTERS
 - a        character literal
 - .        wildcard character
 - [abc]    character class
 - [^abc]   negated character class
 - \w       word from dictionary file
-- PQ       concatenation
-- P?       0 or 1 occurences
-- P*       0 or more occurences
-- P+       1 or more occurences
-- P{n}     n occurences
-- P{n,}    n or more occurences
-- P{m,n}   m to n occurences
+
+LOGICAL OPERATORS
 - P|Q      P or Q
 - !P       not P
 - P&Q      P and Q
+- (P)      scope and precedence
+
+SPATIAL CONJUNCTION
+- PQ       concatenation
 - P<Q      P inside Q
 - P<<Q     P strictly inside Q
 - P>Q      P outside Q
@@ -431,12 +420,31 @@ Supported syntax:
 - P^^Q     P interleaved inside Q
 - P#Q      P alternating with Q
 - P##Q     P alternating before Q
-- (P)      parentheses
+
+[TODO] SPATIAL SUBTRACTION
+- P-Q      subtraction on right
+- P_-Q     subtraction on left
+- P->Q     subtraction inside (equivalent to P_-<Q)
+- P->>Q    subtraction strictly inside
+- etc for the other spatial conjunctions
+
+QUANTIFIERS
+- P?       0 or 1 occurences
+- P*       0 or more occurences
+- P+       1 or more occurences
+- P{n}     n occurences
+- P{n,}    n or more occurences
+- P{m,n}   m to n occurences
+- P@[m:n:s] slice notation [TODO]
+
+MODIFIERS
 - (?i:P)   case-insensitive match
 - (?r:P)   reversed match
-- (?sn:P)  shifted by n characters
-- (?s:P)   shifted by 1 to 25 characters
+- (?sn:P)  cipher-shifted by n characters
+- (?s:P)   cipher-shifted by 1 to 25 characters
 - (?D:P)   convert NFA to DFA
+
+REFERENCES
 - (?&ID=P) define subpattern for subsequent use
 - (?&ID)   use subpattern
 """, formatter_class=argparse.RawTextHelpFormatter)

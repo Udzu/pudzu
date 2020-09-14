@@ -195,7 +195,7 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     return nfa
     
 
-def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
+def MatchBoth(nfa1: NFA, nfa2: NFA, stop_at: Optional[AbstractSet[State]] = None) -> NFA:
     """Handles: A&B"""
     # generate transitions on cartesian product (with special handling for *-transitions)
     transitions = {}
@@ -215,7 +215,9 @@ def MatchBoth(nfa1: NFA, nfa2: NFA) -> NFA:
                 ts1 = nfa1.transitions.get((s1, Move.ALL))
                 if ts1 is not None:
                     transitions = merge_trans(transitions, {((s1, s2), i): set(product(ts1, ts2))})
-    nfa = NFA((nfa1.start, nfa2.start), (nfa1.end, nfa2.end), transitions)
+    if stop_at:
+        transitions = merge_trans(transitions, {(s, Move.EMPTY): {"2"} for s in stop_at})
+    nfa = NFA((nfa1.start, nfa2.start), "2" if stop_at else (nfa1.end, nfa2.end), transitions)
     nfa.remove_redundant_states()
     return nfa
 
@@ -277,6 +279,18 @@ def MatchAlternating(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     nfa.remove_redundant_states()
     return nfa
 
+def MatchSubtract(nfa1: NFA, nfa2: NFA, right: bool) -> NFA:
+    """Handles: A-B, A_-B"""
+    assert not right # TODO
+    # rewire start state based on reachable A&B end states
+    both = MatchBoth(nfa1, nfa2, stop_at={(a,nfa2.end) for a in nfa1.states})
+    new_start = { a for ((a,b),i),c in both.transitions.items() if i == Move.EMPTY and c == { "2" }}
+    transitions = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
+    transitions[("0",Move.EMPTY)] = {("1",s) for s in new_start}
+    nfa = NFA("0", ("1", nfa1.end), transitions)
+    nfa.remove_redundant_states()
+    return nfa
+
 def MatchReversed(nfa: NFA) -> NFA:
     """Handles: (?r:A)"""
     # just reverse the edges
@@ -335,7 +349,7 @@ class Pattern:
     _m99_to_99 = (Optional("-") + _0_to_99).setParseAction(lambda t: t[-1] * (-1 if len(t) == 2 else 1))
     _id = Word(alphas+"_", alphanums+"_")
 
-    characters = alphanums + " '-"
+    characters = alphanums + " '"
     literal = Word(characters, exact=1).setParseAction(lambda t: MatchIn(t[0]))
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
     set = ("[" + Word(characters, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
@@ -374,7 +388,8 @@ class Pattern:
         Literal("^^").setParseAction(lambda _: lambda x, y: MatchInterleaved(x, y, proper=True)) |
         Literal("^").setParseAction(lambda _: lambda x, y: MatchInterleaved(x, y, proper=False)) |
         Literal("##").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, proper=True)) |
-        Literal("#").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, proper=False))
+        Literal("#").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, proper=False)) |
+        Literal("_-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, right=False))
     )
     expr <<= infixNotation(items, [
         ('&', 2, opAssoc.LEFT, lambda t: reduce(MatchBoth, t[0][::2])),

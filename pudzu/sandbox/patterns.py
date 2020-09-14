@@ -195,7 +195,7 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     return nfa
     
 
-def MatchBoth(nfa1: NFA, nfa2: NFA, stop_at: Optional[AbstractSet[State]] = None) -> NFA:
+def MatchBoth(nfa1: NFA, nfa2: NFA, start_from: Optional[AbstractSet[State]] = None, stop_at: Optional[AbstractSet[State]] = None) -> NFA:
     """Handles: A&B"""
     # generate transitions on cartesian product (with special handling for *-transitions)
     transitions = {}
@@ -215,9 +215,11 @@ def MatchBoth(nfa1: NFA, nfa2: NFA, stop_at: Optional[AbstractSet[State]] = None
                 ts1 = nfa1.transitions.get((s1, Move.ALL))
                 if ts1 is not None:
                     transitions = merge_trans(transitions, {((s1, s2), i): set(product(ts1, ts2))})
+    if start_from:
+        transitions[("1", Move.EMPTY)] = start_from
     if stop_at:
         transitions = merge_trans(transitions, {(s, Move.EMPTY): {"2"} for s in stop_at})
-    nfa = NFA((nfa1.start, nfa2.start), "2" if stop_at else (nfa1.end, nfa2.end), transitions)
+    nfa = NFA("1" if start_from else (nfa1.start, nfa2.start), "2" if stop_at else (nfa1.end, nfa2.end), transitions)
     nfa.remove_redundant_states()
     return nfa
 
@@ -279,15 +281,22 @@ def MatchAlternating(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     nfa.remove_redundant_states()
     return nfa
 
-def MatchSubtract(nfa1: NFA, nfa2: NFA, right: bool) -> NFA:
+def MatchSubtract(nfa1: NFA, nfa2: NFA, from_right: bool) -> NFA:
     """Handles: A-B, A_-B"""
-    assert not right # TODO
-    # rewire start state based on reachable A&B end states
-    both = MatchBoth(nfa1, nfa2, stop_at={(a,nfa2.end) for a in nfa1.states})
-    new_start = { a for ((a,b),i),c in both.transitions.items() if i == Move.EMPTY and c == { "2" }}
-    transitions = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
-    transitions[("0",Move.EMPTY)] = {("1",s) for s in new_start}
-    nfa = NFA("0", ("1", nfa1.end), transitions)
+    if from_right:
+        # rewire end states based on reachable A&B start states
+        both = MatchBoth(nfa1, nfa2, start_from={(a,nfa2.start) for a in nfa1.states})
+        new_end = {a for a,_ in both.transitions.get(("1", Move.EMPTY), set())}
+        transitions = {(("0",s),i): {("0",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
+        transitions = merge_trans(transitions, {(("0", s), Move.EMPTY): {"1"} for s in new_end})
+        nfa = NFA(("0", nfa1.start), "1", transitions)
+    else:
+        # rewire start states based on reachable A&B end states
+        both = MatchBoth(nfa1, nfa2, stop_at={(a,nfa2.end) for a in nfa1.states})
+        new_start = { a for ((a,b),i),c in both.transitions.items() if i == Move.EMPTY and c == { "2" }}
+        transitions = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
+        transitions[("0",Move.EMPTY)] = {("1",s) for s in new_start}
+        nfa = NFA("0", ("1", nfa1.end), transitions)
     nfa.remove_redundant_states()
     return nfa
 
@@ -389,7 +398,8 @@ class Pattern:
         Literal("^").setParseAction(lambda _: lambda x, y: MatchInterleaved(x, y, proper=False)) |
         Literal("##").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, proper=True)) |
         Literal("#").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, proper=False)) |
-        Literal("_-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, right=False))
+        Literal("-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=True)) |
+        Literal("_-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=False))
     )
     expr <<= infixNotation(items, [
         ('&', 2, opAssoc.LEFT, lambda t: reduce(MatchBoth, t[0][::2])),
@@ -436,12 +446,12 @@ SPATIAL CONJUNCTION
 - P#Q      P alternating with Q
 - P##Q     P alternating before Q
 
-[TODO] SPATIAL SUBTRACTION
+SPATIAL SUBTRACTION
 - P-Q      subtraction on right
 - P_-Q     subtraction on left
-- P->Q     subtraction inside (equivalent to P_-<Q)
-- P->>Q    subtraction strictly inside
-- etc for the other spatial conjunctions
+X P->Q     subtraction inside (equivalent to P_-<Q)
+X P->>Q    subtraction strictly inside
+X etc for the other spatial conjunctions
 
 QUANTIFIERS
 - P?       0 or 1 occurences
@@ -450,7 +460,7 @@ QUANTIFIERS
 - P{n}     n occurences
 - P{n,}    n or more occurences
 - P{m,n}   m to n occurences
-- P@[m:n:s] slice notation [TODO]
+X P@[m:n:s] slice notation [TODO]
 
 MODIFIERS
 - (?i:P)   case-insensitive match

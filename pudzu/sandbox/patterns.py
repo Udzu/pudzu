@@ -83,6 +83,13 @@ class NFA:
         self.states = acceptable | { self.start, self.end }
         self.transitions = {(s,i): {t for t in ts if t in acceptable} for (s,i),ts in self.transitions.items()
                             if s in acceptable and (any(t in acceptable for t in ts) or (s,Move.ALL) in self.transitions)}
+        # remove transitions that are equivalent to *
+        unnecessary = []
+        for (s,i),t in self.transitions.items():
+            if not isinstance(i, Move) and t == self.transitions.get((s, Move.ALL), set()):
+                unnecessary.append((s,i))
+        for k in unnecessary:
+            del self.transitions[k]
         # TODO: remove redundant ε states?
 
 
@@ -332,14 +339,16 @@ def MatchReversed(nfa: NFA) -> NFA:
     transitions = {}
     for (s,i),ts in nfa.transitions.items():
         for t in ts:
-            transitions.setdefault((t,i),set()).add(s)
             if i == Move.ALL:
-                # handle *-transitions (if it's not too difficult)
-                if any(u==t and s in vs for (u,j),vs in transitions.items()):
-                    raise NotImplementedError  # TODO?
+                # special handling for *-transitions
+                if any(r != s and t in vs for (r,j),vs in nfa.transitions.items()):
+                    extra_state = ("r",s,t)
+                    transitions.setdefault((t,Move.EMPTY),set()).add(extra_state)
+                    t = extra_state
                 for (r,j),_ in nfa.transitions.items():
                     if r == s and not isinstance(j, Move):
                         transitions.setdefault((t,j),set())
+            transitions.setdefault((t,i),set()).add(s)
     nfa = NFA(nfa.end, nfa.start, transitions)
     nfa.remove_redundant_states()
     return nfa
@@ -395,6 +404,7 @@ class Pattern:
     group = (
         ("(" + expr + ")").setParseAction(lambda t: t[1]) |
         ("(?D:" + expr + ")").setParseAction(lambda t: MatchDFA(t[1], negate=False)) |
+        ("(?M:" + expr + ")").setParseAction(lambda t: MatchDFA(MatchReversed(MatchDFA(MatchReversed(t[1]), negate=False)), negate=False)) |
         ("(?i:" + expr + ")").setParseAction(lambda t: MatchInsensitively(t[1])) |
         ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1])) |
         ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1])) |
@@ -496,6 +506,7 @@ MODIFIERS
 - (?sn:P)  cipher-shifted by n characters
 - (?s:P)   cipher-shifted by 1 to 25 characters
 - (?D:P)   convert NFA to DFA
+- (?M:P)   convert NFA to minimal DFA
 
 REFERENCES
 - (?&ID=P) define subpattern for subsequent use
@@ -505,8 +516,9 @@ REFERENCES
     parser.add_argument("files", type=str, nargs="*", help="filenames to search")
     parser.add_argument("-d", dest="dict", metavar="PATH", type=str, help="dictionary file to use for \\w", default=None)
     parser.add_argument("-D", dest="DFA", action="store_true", help="convert NFA to DFA", default=None)
+    parser.add_argument("-M", dest="min", action="store_true", help="convert NFA to minimal DFA ", default=None)
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
-    parser.add_argument("-s", dest="svg", nargs='?', const='fsm', default=None, help="save FSM diagram")
+    parser.add_argument("-s", dest="svg", metavar="NAME", nargs='?', const='fsm', default=None, help="save FSM diagram")
     args = parser.parse_args()
     global DICTIONARY_FILE, SUBPATTERNS, DEBUG
     
@@ -521,6 +533,7 @@ REFERENCES
     pattern = args.pattern
     if args.case_insensitive: pattern = f"(?i:{pattern})"
     if args.DFA: pattern = f"(?D:{pattern})"
+    if args.min: pattern = f"(?M:{pattern}))))"
 
     logger.info(f"Compiling pattern '{pattern}'")
     pattern = Pattern(pattern)

@@ -37,7 +37,7 @@ class NFA:
     def render(self, name: str, path: str = './') -> None:
         def label(s): 
             if isinstance(s, str): return s
-            else: return "\u200B"+ "".join(label(t) for t in s) + "\u200D"
+            else: return "".join(label(t) for t in s)
         states = {s : label(s) for s in self.states}
         def move(i): return {Move.ALL: '*', Move.EMPTY: 'ε'}.get(i, i)
         alphabet = {move(i) for (_,i),_ in self.transitions.items()}
@@ -300,6 +300,29 @@ def MatchSubtract(nfa1: NFA, nfa2: NFA, from_right: bool) -> NFA:
     nfa.remove_redundant_states()
     return nfa
 
+def MatchSubtractInside(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
+    """Handles: A->B, A-<<B"""
+    # like contains, but rewire using A&B
+    t1, t1e, t4, t4e = {}, {}, {}, {}
+    if proper:
+        t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t1e = {(("1",s),i): {("2",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
+    t2 = {(("2",s),i): {("2",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
+    t2es = []
+    for s in nfa1.states:
+        both = MatchBoth(nfa1, nfa2, start_from={(s,nfa2.start)}, stop_at={(a,nfa2.end) for a in nfa1.states})
+        new_end = {a for a,_ in both.transitions.get(("1", Move.EMPTY), set())}
+        new_start = { a[0] for (a,i),c in both.transitions.items() if i == Move.EMPTY and c == { "2" }}
+        t2es.append({(("2",e), Move.EMPTY): {(("4",s) if proper else ("5",s)) for s in new_start} for e in new_end})
+    if proper:
+        t4 = {(("4",s),i): {("4",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t4e = {(("4",s),i): {("5",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i != Move.EMPTY}
+    t5 = {(("5",s),i): {("5",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
+    transitions = merge_trans(t1, t1e, t2, *t2es, t4, t4e, t5)
+    nfa = NFA(("1",nfa1.start) if proper else ("2",nfa1.start), ("5",nfa1.end), transitions)
+    nfa.remove_redundant_states()
+    return nfa
+
 def MatchReversed(nfa: NFA) -> NFA:
     """Handles: (?r:A)"""
     # just reverse the edges
@@ -390,6 +413,7 @@ class Pattern:
     items = OneOrMore(item).setParseAction(lambda t: reduce(MatchAfter, t))
 
     spatial_ops = (
+        # conjunction
         Literal(">>").setParseAction(lambda _: lambda x, y: MatchContains(x, y, proper=True)) |
         Literal(">").setParseAction(lambda _: lambda x, y: MatchContains(x, y, proper=False)) |
         Literal("<<").setParseAction(lambda _: lambda x, y: MatchContains(y, x, proper=True)) |
@@ -398,6 +422,9 @@ class Pattern:
         Literal("^").setParseAction(lambda _: lambda x, y: MatchInterleaved(x, y, proper=False)) |
         Literal("##").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, proper=True)) |
         Literal("#").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, proper=False)) |
+        # subtraction
+        Literal("->>").setParseAction(lambda _: lambda x, y: MatchSubtractInside(x, y, proper=True)) |
+        Literal("->").setParseAction(lambda _: lambda x, y: MatchSubtractInside(x, y, proper=False)) |
         Literal("-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=True)) |
         Literal("_-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=False))
     )
@@ -449,9 +476,8 @@ SPATIAL CONJUNCTION
 SPATIAL SUBTRACTION
 - P-Q      subtraction on right
 - P_-Q     subtraction on left
-X P->Q     subtraction inside (equivalent to P_-<Q)
-X P->>Q    subtraction strictly inside
-X etc for the other spatial conjunctions
+- P->Q     subtraction inside
+- P->>Q    subtraction strictly inside
 
 QUANTIFIERS
 - P?       0 or 1 occurences
@@ -460,7 +486,6 @@ QUANTIFIERS
 - P{n}     n occurences
 - P{n,}    n or more occurences
 - P{m,n}   m to n occurences
-X P@[m:n:s] slice notation [TODO]
 
 MODIFIERS
 - (?i:P)   case-insensitive match

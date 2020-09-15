@@ -335,7 +335,7 @@ def MatchReversed(nfa: NFA) -> NFA:
             transitions.setdefault((t,i),set()).add(s)
             if i == Move.ALL:
                 # handle *-transitions (if it's not too difficult)
-                if any(u==t and vs-{s} for (u,j),vs in transitions.items()):
+                if any(u==t and s in vs for (u,j),vs in transitions.items()):
                     raise NotImplementedError  # TODO?
                 for (r,j),_ in nfa.transitions.items():
                     if r == s and not isinstance(j, Move):
@@ -506,7 +506,7 @@ REFERENCES
     parser.add_argument("-d", dest="dict", metavar="PATH", type=str, help="dictionary file to use for \\w", default=None)
     parser.add_argument("-D", dest="DFA", action="store_true", help="convert NFA to DFA", default=None)
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
-    parser.add_argument("-s", dest="svg", action="store_true", help="save FSM diagram")
+    parser.add_argument("-s", dest="svg", nargs='?', const='fsm', default=None, help="save FSM diagram")
     args = parser.parse_args()
     global DICTIONARY_FILE, SUBPATTERNS, DEBUG
     
@@ -526,8 +526,8 @@ REFERENCES
     pattern = Pattern(pattern)
     
     if args.svg:
-        logger.info(f"Saving NFA diagram to 'fsm.dot.svg'")
-        pattern.nfa.render("fsm")
+        logger.info(f"Saving NFA diagram to f'{args.svg}.dot.svg'")
+        pattern.nfa.render(args.svg)
         
     for file in args.files:
         with open(file, "r", encoding="utf-8") as f:

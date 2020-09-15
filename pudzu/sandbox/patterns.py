@@ -35,10 +35,13 @@ class NFA:
         return f"NFA(start={self.start}, end={self.end}, transitions={self.transitions})"
 
     def render(self, name: str, path: str = './') -> None:
-        def label(s): 
+        def label(s):
             if isinstance(s, str): return s
-            else: return "".join(label(t) for t in s)
+            else: return "\u200B"+ "".join(label(t) for t in s) + "\u200D"
         states = {s : label(s) for s in self.states}
+        if not DEBUG: 
+            sorted_states = [s for s,_ in sorted(states.items(), key=lambda kv: kv[1])]
+            states = { s : str(sorted_states.index(s)) for s in self.states }
         def move(i): return {Move.ALL: '*', Move.EMPTY: 'ε'}.get(i, i)
         alphabet = {move(i) for (_,i),_ in self.transitions.items()}
         nfa_json = {
@@ -505,7 +508,7 @@ REFERENCES
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
     parser.add_argument("-s", dest="svg", action="store_true", help="save FSM diagram")
     args = parser.parse_args()
-    global DICTIONARY_FILE, SUBPATTERNS
+    global DICTIONARY_FILE, SUBPATTERNS, DEBUG
     
     if args.dict:
         logger.info(f"Compiling dictionary from '{args.dict}'")
@@ -513,6 +516,7 @@ REFERENCES
 
     # TODO: support config-based subpatterns?
     SUBPATTERNS = {}
+    DEBUG = False
 
     pattern = args.pattern
     if args.case_insensitive: pattern = f"(?i:{pattern})"

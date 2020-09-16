@@ -170,7 +170,7 @@ def MatchRepeatedNplus(nfa: NFA, minimum: int) -> NFA:
         return MatchAfter(nfa, MatchRepeatedNplus(nfa, minimum-1))
     
 def MatchDFA(nfa: NFA, negate: bool) -> NFA:
-    """Handles: !A"""
+    """Handles: ¬A"""
     # convert to DFA (and optionally invert accepted/rejected states)
     start_state = tuple(sorted(nfa.expand_epsilons({nfa.start}), key=str))
     to_process = [start_state]
@@ -291,21 +291,23 @@ def MatchAlternating(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     nfa.remove_redundant_states()
     return nfa
 
-def MatchSubtract(nfa1: NFA, nfa2: NFA, from_right: bool) -> NFA:
+def MatchSubtract(nfa1: NFA, nfa2: NFA, from_right: bool, negate: bool) -> NFA:
     """Handles: A-B, A_-B"""
+     # rewire end/start state of nfa1 based on intersection with nfa2
     if from_right:
-        # rewire end states based on reachable A&B start states
         both = MatchBoth(nfa1, nfa2, start_from={(a,nfa2.start) for a in nfa1.states})
-        new_end = {a for a,_ in both.transitions.get(("1", Move.EMPTY), set())}
-        transitions = {(("0",s),i): {("0",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
-        transitions = merge_trans(transitions, {(("0", s), Move.EMPTY): {"1"} for s in new_end})
-        nfa = NFA(("0", nfa1.start), "1", transitions)
+        midpoints = {a for a,_ in both.transitions.get(("1", Move.EMPTY), set())}
     else:
-        # rewire start states based on reachable A&B end states
         both = MatchBoth(nfa1, nfa2, stop_at={(a,nfa2.end) for a in nfa1.states})
-        new_start = { a for ((a,b),i),c in both.transitions.items() if i == Move.EMPTY and c == { "2" }}
-        transitions = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
-        transitions[("0",Move.EMPTY)] = {("1",s) for s in new_start}
+        midpoints = {a for ((a,b),i),c in both.transitions.items() if i == Move.EMPTY and c == { "2" }}
+    if negate:
+        return both
+    transitions = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
+    if from_right:
+        transitions = merge_trans(transitions, {(("1", s), Move.EMPTY): {"1"} for s in midpoints})
+        nfa = NFA(("1", nfa1.start), "1", transitions)
+    else:
+        transitions[("0",Move.EMPTY)] = {("1", s) for s in midpoints}
         nfa = NFA("0", ("1", nfa1.end), transitions)
     nfa.remove_redundant_states()
     return nfa
@@ -375,6 +377,30 @@ def MatchShifted(nfa: NFA, shift: int) -> NFA:
         transitions[(s,i)] = ts
     return NFA(nfa.start, nfa.end, transitions)
 
+def MatchSlice(nfa: NFA, start: Optional[int], end: Optional[int], step: int) -> NFA:
+    # reverse slice is slice of reverse
+    if step < 0:
+        return MatchSlice(MatchReversed(nfa), None if end is None else end+1, None if start is None else start+1, -step)
+    assert step != 0
+    # slice off start
+    start = start or 0
+    if start > 0:
+        nfa = MatchSubtract(nfa, MatchRepeatedN(MatchNotIn(""), start, start), from_right=False, negate=False)
+    elif start < 0:
+        nfa = MatchSubtract(nfa, MatchRepeatedN(MatchNotIn(""), -start, -start), from_right=True, negate=True)
+    # slice off end
+    if end is not None:
+        if end >= 0:
+            assert end >= start >= 0
+            nfa = MatchSubtract(nfa,  MatchRepeatedN(MatchNotIn(""), end-start, end-start), from_right=False, negate=True)
+        else:
+            assert start >= 0 or end >= start
+            nfa = MatchSubtract(nfa,  MatchRepeatedN(MatchNotIn(""), -end, -end), from_right=True, negate=False)
+    # step
+    if step != 1:
+        raise NotImplementedError  # TODO
+    return nfa
+
 # Parser
 def op_reduce(l):
     if len(l) == 1: return l[0]
@@ -409,6 +435,7 @@ class Pattern:
         ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1])) |
         ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1])) |
         ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)])) |
+        ("(?S:" + expr + ")[" + Optional(_m99_to_99, None) + ":" + Optional(_m99_to_99, None) + Optional(":" + Optional(_m99_to_99, 1), 1) + "]").setParseAction(lambda t: MatchSlice(t[1], t[3], t[5], t[-2])) |
         ("(?&" + _id + "=" + expr + ")").setParseAction(lambda t: SUBPATTERNS.update({t[1]: t[3]}) or MatchEmpty()) |
         ("(?&" + _id + ")").setParseAction(lambda t: SUBPATTERNS[t[1]])
     )
@@ -420,7 +447,7 @@ class Pattern:
         (atom + "{" + _0_to_99 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], t[2], int(t[2]))) |
         (atom + "{" + _0_to_99 + ",}").setParseAction(lambda t: MatchRepeatedNplus(t[0], t[2])) |
         (atom + "{" + _0_to_99 + "," + _0_to_99 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], t[2], t[4])) |
-        ("!" + atom).setParseAction(lambda t: MatchDFA(t[1], negate=True)) |
+        ("¬" + atom).setParseAction(lambda t: MatchDFA(t[1], negate=True)) |
         atom
     )
     items = OneOrMore(item).setParseAction(lambda t: reduce(MatchAfter, t))
@@ -438,8 +465,8 @@ class Pattern:
         # subtraction
         Literal("->>").setParseAction(lambda _: lambda x, y: MatchSubtractInside(x, y, proper=True)) |
         Literal("->").setParseAction(lambda _: lambda x, y: MatchSubtractInside(x, y, proper=False)) |
-        Literal("-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=True)) |
-        Literal("_-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=False))
+        Literal("-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=True, negate=False)) |
+        Literal("_-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=False, negate=False))
     )
     expr <<= infixNotation(items, [
         ('&', 2, opAssoc.LEFT, lambda t: reduce(MatchBoth, t[0][::2])),
@@ -471,7 +498,7 @@ CHARACTERS
 
 LOGICAL OPERATORS
 - P|Q      P or Q
-- !P       not P
+- ¬P       not P
 - P&Q      P and Q
 - (P)      scope and precedence
 
@@ -501,8 +528,10 @@ QUANTIFIERS
 - P{m,n}   m to n occurences
 
 MODIFIERS
-- (?i:P)   case-insensitive match
 - (?r:P)   reversed match
+- (?S:P)[m:n]    sliced match
+- (?S:P)[m:n:s]  sliced match with step
+- (?i:P)   case-insensitive match
 - (?sn:P)  cipher-shifted by n characters
 - (?s:P)   cipher-shifted by 1 to 25 characters
 - (?D:P)   convert NFA to DFA
@@ -533,7 +562,7 @@ REFERENCES
     pattern = args.pattern
     if args.case_insensitive: pattern = f"(?i:{pattern})"
     if args.DFA: pattern = f"(?D:{pattern})"
-    if args.min: pattern = f"(?M:{pattern}))))"
+    if args.min: pattern = f"(?M:{pattern})"
 
     logger.info(f"Compiling pattern '{pattern}'")
     pattern = Pattern(pattern)

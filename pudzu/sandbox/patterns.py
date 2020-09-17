@@ -404,9 +404,26 @@ def MatchSlice(nfa: NFA, start: Optional[int], end: Optional[int], step: int) ->
         else:
             assert start >= 0 or end >= start
             nfa = MatchSubtract(nfa,  MatchRepeatedN(MatchNotIn(""), -end, -end), from_right=True, negate=False)
-    # step
-    if step != 1:
-        raise NotImplementedError  # TODO
+    # expand transitions by step-count-minus-one
+    if step > 1:
+        def expand_steps(nfa: NFA, states: AbstractSet[State], n: int) -> Tuple[AbstractSet[State], bool]:
+            hit_end = False
+            for _ in range(n):
+                states = nfa.expand_epsilons(states)
+                hit_end |= nfa.end in states
+                states = {t for s in states for (r,i),ts in nfa.transitions.items() if r == s and i != Move.EMPTY for t in ts}
+            return states, hit_end
+        transitions = {}
+        for (s,i),ts in nfa.transitions.items():
+            if i == Move.EMPTY:
+                transitions[(s,i)] = ts
+            else:
+                next_states, hit_end = expand_steps(nfa, ts, step-1)
+                transitions[(s,i)] = next_states
+                if hit_end:
+                    transitions[(s,i)].add(nfa.end)
+        nfa = NFA(nfa.start, nfa.end, transitions)
+        nfa.remove_redundant_states()
     return nfa
 
 # Parser
@@ -511,6 +528,14 @@ LOGICAL OPERATORS
 - P&Q      P and Q
 - (P)      scope and precedence
 
+QUANTIFIERS
+- P?       0 or 1 occurences
+- P*       0 or more occurences
+- P+       1 or more occurences
+- P{n}     n occurences
+- P{n,}    n or more occurences
+- P{m,n}   m to n occurences
+
 SPATIAL CONJUNCTION
 - PQ       concatenation
 - P<Q      P inside Q
@@ -527,14 +552,6 @@ SPATIAL SUBTRACTION
 - P_-Q     subtraction on left
 - P->Q     subtraction inside
 - P->>Q    subtraction strictly inside
-
-QUANTIFIERS
-- P?       0 or 1 occurences
-- P*       0 or more occurences
-- P+       1 or more occurences
-- P{n}     n occurences
-- P{n,}    n or more occurences
-- P{m,n}   m to n occurences
 
 MODIFIERS
 - (?r:P)   reversed match
@@ -566,6 +583,7 @@ REFERENCES
 
     # TODO: support config-based subpatterns?
     SUBPATTERNS = {}
+    DEBUG = False
 
     pattern = args.pattern
     if args.case_insensitive: pattern = f"(?i:{pattern})"
@@ -577,7 +595,7 @@ REFERENCES
     
     if args.svg:
         logger.info(f"Saving NFA diagram to '{args.svg}.dot.svg'")
-        pattern.nfa.render(args.svg, renumber=True)
+        pattern.nfa.render(args.svg, renumber=not DEBUG)
         
     for file in args.files:
         logger.info(f"Matching pattern against '{file}'")

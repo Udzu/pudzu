@@ -8,6 +8,7 @@ from itertools import product
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import *
+
 from pudzu.utils import *
 
 State =  Union[str, Collection['State']]
@@ -34,26 +35,8 @@ class NFA:
     def __repr__(self) -> str:
         return f"NFA(start={self.start}, end={self.end}, transitions={self.transitions})"
 
-    def render(self, name: str, path: str = './') -> None:
-        def label(s):
-            if isinstance(s, str): return s
-            else: return "\u200B"+ "".join(label(t) for t in s) + "\u200D"
-        states = {s : label(s) for s in self.states}
-        if not DEBUG: 
-            sorted_states = [s for s,_ in sorted(states.items(), key=lambda kv: kv[1])]
-            states = { s : str(sorted_states.index(s)) for s in self.states }
-        def move(i): return {Move.ALL: '*', Move.EMPTY: 'ε'}.get(i, i)
-        alphabet = {move(i) for (_,i),_ in self.transitions.items()}
-        nfa_json = {
-            "alphabet": set(sorted(alphabet)),
-            "states": set(sorted(states.values())),
-            "initial_states": {states[self.start]},
-            "accepting_states": {states[self.end]},
-            "transitions": {(states[s],move(i)): {states[t] for t in ts} or {states[s]+"'"} for (s,i),ts in self.transitions.items()}
-        }
-        renderer.nfa_to_dot(nfa_json, name, path)
-
     def match(self, string: str) -> bool:
+        """Match the NFA against a string input."""
         states = self.expand_epsilons({ self.start })
         for c in string:
             states = {t for s in states for t in self.transitions.get((s, c), self.transitions.get((s, Move.ALL), set()))}
@@ -61,6 +44,7 @@ class NFA:
         return self.end in states
 
     def expand_epsilons(self, states: Iterable[State]) -> AbstractSet[State]:
+        """Expand a collection of states along all ε-moves"""
         old, new = set(), states
         while new:
             old.update(new)
@@ -68,6 +52,7 @@ class NFA:
         return old
         
     def remove_redundant_states(self) -> None:
+        """Trim the NFA, removing unnecessary states and transitions."""
         # remove states not reachable from the start
         reachable, new = set(), {self.start}
         while new:
@@ -91,6 +76,27 @@ class NFA:
         for k in unnecessary:
             del self.transitions[k]
         # TODO: remove redundant ε states?
+    
+    def render(self, name: str, path: str = './', renumber: bool = True) -> None:
+        """Render the NFA as an dot.svg file."""
+        def label(s):
+            if isinstance(s, str): return s
+            else: return "\u200B"+ "".join(label(t) for t in s) + "\u200D"
+        states = {s : label(s) for s in self.states}
+        if renumber: 
+            sorted_states = [s for s,_ in sorted(states.items(), key=lambda kv: kv[1])]
+            states = { s : str(sorted_states.index(s)) for s in self.states }
+        def move(i): return {Move.ALL: '*', Move.EMPTY: 'ε'}.get(i, i)
+        alphabet = {move(i) for (_,i),_ in self.transitions.items()}
+        nfa_json = {
+            "alphabet": set(sorted(alphabet)),
+            "states": set(sorted(states.values())),
+            "initial_states": {states[self.start]},
+            "accepting_states": {states[self.end]},
+            "transitions": {(states[s],move(i)): {states[t] for t in ts} or {states[s]+"'"} for (s,i),ts in self.transitions.items()}
+        }
+        renderer.nfa_to_dot(nfa_json, name, path)
+
 
 
 # NFA constructors
@@ -111,6 +117,7 @@ def MatchNotIn(characters: str) -> NFA:
     return NFA("1", "2", merge_trans({("1", Move.ALL): {"2"}}, {("1", c): set() for c in characters}))
 
 def MatchWords(words: Iterable[str]) -> NFA:
+    # generate a prefix tree
     start, end = ("0",), ("1",)
     transitions = {}
     for word in words:
@@ -120,6 +127,7 @@ def MatchWords(words: Iterable[str]) -> NFA:
     return NFA(start, end, transitions)
     
 def MatchDictionary(path: Path) -> NFA:
+    """Handles: \w"""
     with open(str(path), "r", encoding="utf-8") as f:
         return MatchWords(w.rstrip("\n") for w in f)
     
@@ -170,8 +178,8 @@ def MatchRepeatedNplus(nfa: NFA, minimum: int) -> NFA:
         return MatchAfter(nfa, MatchRepeatedNplus(nfa, minimum-1))
     
 def MatchDFA(nfa: NFA, negate: bool) -> NFA:
-    """Handles: ¬A"""
-    # convert to DFA (and optionally invert accepted/rejected states)
+    """Handles: (?D:A), ¬A"""
+    # convert to DFA via powerset construction (and optionally invert accepted/rejected states)
     start_state = tuple(sorted(nfa.expand_epsilons({nfa.start}), key=str))
     to_process = [start_state]
     processed_states = set()
@@ -235,8 +243,8 @@ def MatchBoth(nfa1: NFA, nfa2: NFA, start_from: Optional[AbstractSet[State]] = N
 
 def MatchContains(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     """Handles: A<B, A<<B, A>B, A>>B"""
-    # transition between (2) A, (3) AxB, and (5) A states
-    # for proper, also use (1) A and (4) A states
+    # transition from (2) A to (3) AxB to (5) A states
+    # for proper containment, also use (1) A and (4) A states
     t1, t1e, t4, t4e = {}, {}, {}, {}
     if proper:
         t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
@@ -257,7 +265,7 @@ def MatchContains(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
 def MatchInterleaved(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     """Handles: A^B, A^^B"""
     # transition between (2) AxB and (3) AxB states
-    # for proper, also use (1) A and (4) A states
+    # for proper interleaving, also use (1) A and (4) A states
     t1, t1e, t4, t4e = {}, {}, {}, {}
     if proper:
         t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
@@ -278,7 +286,7 @@ def MatchInterleaved(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
 def MatchAlternating(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     """Handles: A#B, A##B"""
     # transition between (1) AxB and (2) AxB states
-    # for improper, also use (0) start state
+    # for order agnostic alternation, also use an additional (0) start state
     t0 = {("0",Move.EMPTY): {("1",nfa1.start,nfa2.start), ("2",nfa1.start,nfa2.start)}} if not proper else {}
     t1 = {(("1",s,q),i): {("1" if i == Move.EMPTY else "2",t,q) for t in ts} for (s,i),ts in nfa1.transitions.items() for q in nfa2.states}
     t2 = {(("2",q,s),i): {("2" if i == Move.EMPTY else "1",q,t) for t in ts} for (s,i),ts in nfa2.transitions.items() for q in nfa1.states}
@@ -292,29 +300,29 @@ def MatchAlternating(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     return nfa
 
 def MatchSubtract(nfa1: NFA, nfa2: NFA, from_right: bool, negate: bool) -> NFA:
-    """Handles: A-B, A_-B"""
-     # rewire end/start state of nfa1 based on intersection with nfa2
+    """Handles: A-B, A_-B (and used in slicing)"""
+    # rewire end/start state of nfa1 based on partial intersection with nfa2
     if from_right:
         both = MatchBoth(nfa1, nfa2, start_from={(a,nfa2.start) for a in nfa1.states})
-        midpoints = {a for a,_ in both.transitions.get(("1", Move.EMPTY), set())}
     else:
         both = MatchBoth(nfa1, nfa2, stop_at={(a,nfa2.end) for a in nfa1.states})
-        midpoints = {a for ((a,b),i),c in both.transitions.items() if i == Move.EMPTY and c == { "2" }}
     if negate:
         return both
     transitions = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
     if from_right:
+        midpoints = {a for a,_ in both.transitions.get(("1", Move.EMPTY), set())}
         transitions = merge_trans(transitions, {(("1", s), Move.EMPTY): {"1"} for s in midpoints})
         nfa = NFA(("1", nfa1.start), "1", transitions)
     else:
+        midpoints = {a for ((a,b),i),c in both.transitions.items() if i == Move.EMPTY and c == { "2" }}
         transitions[("0",Move.EMPTY)] = {("1", s) for s in midpoints}
         nfa = NFA("0", ("1", nfa1.end), transitions)
     nfa.remove_redundant_states()
     return nfa
 
 def MatchSubtractInside(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
-    """Handles: A->B, A-<<B"""
-    # like contains, but rewire using A&B
+    """Handles: A->B, A->>B"""
+    # like MatchContains, but link (2) and (4)/(5) using partial intersection
     t1, t1e, t4, t4e = {}, {}, {}, {}
     if proper:
         t1 = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items() if i == Move.EMPTY}
@@ -337,12 +345,11 @@ def MatchSubtractInside(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
 
 def MatchReversed(nfa: NFA) -> NFA:
     """Handles: (?r:A)"""
-    # just reverse the edges
+    # just reverse the edges (with special handling for *-transitions)
     transitions = {}
     for (s,i),ts in nfa.transitions.items():
         for t in ts:
             if i == Move.ALL:
-                # special handling for *-transitions
                 if any(r != s and t in vs for (r,j),vs in nfa.transitions.items()):
                     extra_state = ("r",s,t)
                     transitions.setdefault((t,Move.EMPTY),set()).add(extra_state)
@@ -367,7 +374,7 @@ def MatchInsensitively(nfa: NFA) -> NFA:
     return NFA(nfa.start, nfa.end, transitions)
 
 def MatchShifted(nfa: NFA, shift: int) -> NFA:
-    """Handles: (?s1:A)"""
+    """Handles: (?sn:A)"""
     transitions = {}
     for (s,i),ts in nfa.transitions.items():
         for alphabet in (string.ascii_lowercase, string.ascii_uppercase):
@@ -378,7 +385,8 @@ def MatchShifted(nfa: NFA, shift: int) -> NFA:
     return NFA(nfa.start, nfa.end, transitions)
 
 def MatchSlice(nfa: NFA, start: Optional[int], end: Optional[int], step: int) -> NFA:
-    # reverse slice is slice of reverse
+    """Handles: (?S:A)[3:5], (?S:A)[-1::-2]"""
+    # reverse slice is equivalent to slice of reverse
     if step < 0:
         return MatchSlice(MatchReversed(nfa), None if end is None else end+1, None if start is None else start+1, -step)
     assert step != 0
@@ -407,10 +415,11 @@ def op_reduce(l):
     else: return op_reduce([l[1](l[0], l[2]), *l[3:]])
 
 class Pattern:
-    from pyparsing import (
-        Word, Optional, oneOf, Forward, OneOrMore, alphas, Group, Literal, infixNotation, opAssoc,
-        ParserElement, nums, alphanums
-    )
+    """Regex-style pattern supporting novel spatial operators and modifiers."""
+
+    from pyparsing import (Forward, Group, Literal, OneOrMore, Optional,
+                           ParserElement, Word, alphanums, alphas,
+                           infixNotation, nums, oneOf, opAssoc)
     ParserElement.setDefaultWhitespaceChars('')
     ParserElement.enablePackrat()
 
@@ -485,7 +494,7 @@ class Pattern:
         return self.nfa.match(string)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description = """NFA-based pattern matcher supporting novel spatial conjunction and modifiers.
 Supported syntax:
 
@@ -549,7 +558,7 @@ REFERENCES
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
     parser.add_argument("-s", dest="svg", metavar="NAME", nargs='?', const='fsm', default=None, help="save FSM diagram")
     args = parser.parse_args()
-    global DICTIONARY_FILE, SUBPATTERNS, DEBUG
+    global DICTIONARY_FILE, SUBPATTERNS
     
     if args.dict:
         logger.info(f"Compiling dictionary from '{args.dict}'")
@@ -557,7 +566,6 @@ REFERENCES
 
     # TODO: support config-based subpatterns?
     SUBPATTERNS = {}
-    DEBUG = False
 
     pattern = args.pattern
     if args.case_insensitive: pattern = f"(?i:{pattern})"
@@ -568,10 +576,11 @@ REFERENCES
     pattern = Pattern(pattern)
     
     if args.svg:
-        logger.info(f"Saving NFA diagram to f'{args.svg}.dot.svg'")
-        pattern.nfa.render(args.svg)
+        logger.info(f"Saving NFA diagram to '{args.svg}.dot.svg'")
+        pattern.nfa.render(args.svg, renumber=True)
         
     for file in args.files:
+        logger.info(f"Matching pattern against '{file}'")
         with open(file, "r", encoding="utf-8") as f:
             for w in f:
                 word = w.rstrip("\n")

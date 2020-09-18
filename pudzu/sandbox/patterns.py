@@ -2,6 +2,7 @@ import argparse
 import copy
 import json
 import logging
+import random
 import string
 from functools import reduce
 from itertools import product
@@ -97,7 +98,22 @@ class NFA:
         }
         renderer.nfa_to_dot(nfa_json, name, path)
 
-
+    def example(self, min_length: int = 0, max_length: Optional[int] = None) -> str:
+        """Generate a random matching string."""
+        nfa = MatchBoth(self, MatchLength(min_length, max_length)) if min_length or max_length is not None else self
+        output = ""
+        state = nfa.start
+        while state != nfa.end:
+            choices = [i for (s,i) in nfa.transitions if s == state]
+            i = random.choice(choices)
+            if i == Move.ALL:
+                # TODO: match with supported scripts
+                choices = set(string.ascii_letters + string.digits + " '") - set(choices)
+                output += random.choice(list(choices))
+            elif isinstance(i, str):
+                output += i
+            state = random.choice(list(nfa.transitions[(state, i)]))
+        return output
 
 # NFA constructors
 def merge_trans(*args):
@@ -177,6 +193,12 @@ def MatchRepeatedNplus(nfa: NFA, minimum: int) -> NFA:
     else:
         return MatchAfter(nfa, MatchRepeatedNplus(nfa, minimum-1))
     
+def MatchLength(minimum: int = 0, maximum: Optional[int] = None) -> NFA:
+    if maximum is None:
+        return MatchRepeatedNplus(MatchNotIn(""), minimum)
+    else:
+        return MatchRepeatedN(MatchNotIn(""), minimum, maximum)
+
 def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     """Handles: (?D:A), ¬A"""
     # convert to DFA via powerset construction (and optionally invert accepted/rejected states)
@@ -393,17 +415,17 @@ def MatchSlice(nfa: NFA, start: Optional[int], end: Optional[int], step: int) ->
     # slice off start
     start = start or 0
     if start > 0:
-        nfa = MatchSubtract(nfa, MatchRepeatedN(MatchNotIn(""), start, start), from_right=False, negate=False)
+        nfa = MatchSubtract(nfa, MatchLength(start, start), from_right=False, negate=False)
     elif start < 0:
-        nfa = MatchSubtract(nfa, MatchRepeatedN(MatchNotIn(""), -start, -start), from_right=True, negate=True)
+        nfa = MatchSubtract(nfa, MatchLength(-start, -start), from_right=True, negate=True)
     # slice off end
     if end is not None:
         if end >= 0:
             assert end >= start >= 0
-            nfa = MatchSubtract(nfa,  MatchRepeatedN(MatchNotIn(""), end-start, end-start), from_right=False, negate=True)
+            nfa = MatchSubtract(nfa,  MatchLength(end-start, end-start), from_right=False, negate=True)
         else:
             assert start >= 0 or end >= start
-            nfa = MatchSubtract(nfa,  MatchRepeatedN(MatchNotIn(""), -end, -end), from_right=True, negate=False)
+            nfa = MatchSubtract(nfa,  MatchLength(-end, -end), from_right=True, negate=False)
     # expand transitions by step-count-minus-one
     if step > 1:
         def expand_steps(nfa: NFA, states: AbstractSet[State], n: int) -> Tuple[AbstractSet[State], bool]:
@@ -426,7 +448,7 @@ def MatchSlice(nfa: NFA, start: Optional[int], end: Optional[int], step: int) ->
         nfa.remove_redundant_states()
     return nfa
 
-# Parser
+# Patterns
 def op_reduce(l):
     if len(l) == 1: return l[0]
     else: return op_reduce([l[1](l[0], l[2]), *l[3:]])
@@ -434,6 +456,20 @@ def op_reduce(l):
 class Pattern:
     """Regex-style pattern supporting novel spatial operators and modifiers."""
 
+    def __init__(self, pattern: str):
+        self.pattern = pattern
+        self.nfa = self.expr.parseString(pattern, parseAll=True)[0]
+
+    def __repr__(self):
+        return f"Pattern({self.pattern!r})"
+        
+    def match(self, string: str) -> bool:
+        return self.nfa.match(string)
+    
+    def example(self, min_length: int = 0, max_length: Optional[int] = None) -> str:
+        return self.nfa.example(min_length, max_length)
+
+    # parsing
     from pyparsing import (Forward, Group, Literal, OneOrMore, Optional,
                            ParserElement, Word, alphanums, alphas,
                            infixNotation, nums, oneOf, opAssoc)
@@ -500,15 +536,6 @@ class Pattern:
         ('|', 2, opAssoc.LEFT, lambda t: MatchEither(*t[0][::2])),
     ])
 
-    def __init__(self, pattern: str):
-        self.pattern = pattern
-        self.nfa = self.expr.parseString(pattern, parseAll=True)[0]
-
-    def __repr__(self):
-        return f"Pattern({self.pattern!r})"
-        
-    def match(self, string: str) -> bool:
-        return self.nfa.match(string)
 
 
 def main() -> None:
@@ -573,7 +600,7 @@ REFERENCES
     parser.add_argument("-D", dest="DFA", action="store_true", help="convert NFA to DFA", default=None)
     parser.add_argument("-M", dest="min", action="store_true", help="convert NFA to minimal DFA ", default=None)
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
-    parser.add_argument("-s", dest="svg", metavar="NAME", nargs='?', const='fsm', default=None, help="save FSM diagram")
+    parser.add_argument("-s", dest="svg", metavar="NAME", default=None, help="save FSM diagram")
     args = parser.parse_args()
     global DICTIONARY_FILE, SUBPATTERNS
     

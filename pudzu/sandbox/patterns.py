@@ -4,6 +4,7 @@ import json
 import logging
 import random
 import string
+from abc import ABC, abstractmethod
 from functools import reduce
 from itertools import product
 from pathlib import Path
@@ -114,6 +115,29 @@ class NFA:
                 output += i
             state = random.choice(list(nfa.transitions[(state, i)]))
         return output
+
+    def regex(self) -> str:
+        """Generate a regex corresponding to the NFA."""
+        L = { (i,j) : Empty() if i == j else Union() for i in self.states for j in self.states }
+        for (i,a),js in self.transitions.items():
+            for j in js:
+                if a == Move.ALL:
+                    L[i,j] += NegatedCharClass("".join(b for k,b in self.transitions if i == k and isinstance(b, str)))
+                elif a == Move.EMPTY:
+                    L[i,j] += Empty()
+                else:
+                    L[i,j] += CharClass(a)
+        remaining = set(self.states)
+        for k in self.states:
+            if k == self.start or k == self.end: continue
+            remaining.remove(k)
+            for i in remaining:
+                for j in remaining:
+                    L[i,i] += Concat(L[i,k], Star(L[k,k]), L[k,i])
+                    L[j,j] += Concat(L[j,k], Star(L[k,k]), L[k,j])
+                    L[i,j] += Concat(L[i,k], Star(L[k,k]), L[k,j])
+                    L[j,i] += Concat(L[j,k], Star(L[k,k]), L[k,i])
+        return L[self.start, self.end]
 
 # NFA constructors
 def merge_trans(*args):
@@ -469,7 +493,7 @@ class Pattern:
     def example(self, min_length: int = 0, max_length: Optional[int] = None) -> str:
         return self.nfa.example(min_length, max_length)
 
-    # parsing
+    # parsing (TODO: should really go via an AST here)
     from pyparsing import (Forward, Group, Literal, OneOrMore, Optional,
                            ParserElement, Word, alphanums, alphas,
                            infixNotation, nums, oneOf, opAssoc)
@@ -537,6 +561,129 @@ class Pattern:
     ])
 
 
+# Regex reconstructions (extra hacky)
+
+# TODO: simplification, repetition
+
+class Regex(ABC):
+
+    @abstractmethod
+    def members(self):
+        """Members, used for equality testing."""
+
+    @abstractmethod
+    def to_string(self):
+        """Regex string representation."""
+
+    def __repr__(self):
+        return f"{self.to_string()}"
+
+    def __eq__(self, other):
+        if type(other) is type(self):
+            return self.members() == other.members()
+        elif isinstance(other, Regex):
+            return False
+        else:
+            return NotImplemented
+    
+    def __hash__(self):
+        return hash((type(self), self.members()))
+
+    def __add__(self, other):
+        if isinstance(other, Regex):
+            return Union(self, other)
+        else:
+            raise NotImplemented
+
+class Empty(Regex):
+    def members(self):
+        return ()
+    def to_string(self):
+        return "ε"
+
+class CharClass(Regex):
+    def __init__(self, chars):
+        self.chars = ''.join(sorted(set(chars)))
+    def members(self):
+        return self.chars
+    def to_string(self):
+        return "∅" if not self.chars else self.chars if len(self.chars) == 1 else f"[{self.chars}]"  # TODO: escape when needed
+
+class NegatedCharClass(Regex):
+    def __init__(self, chars):
+        self.chars = ''.join(sorted(set(chars)))
+    def members(self):
+        return self.chars
+    def to_string(self, brackets=False):
+        return "." if not self.chars else f"[^{self.chars}]"  # TODO: escape when needed
+
+class Star(Regex):
+    def __new__(cls, regex: Regex):
+        if isinstance(regex, Empty) or isinstance(regex, Star):
+            return regex
+        elif isinstance(regex, Union) and len(regex.regexes) == 2 and Empty() in regex.regexes:
+            regex = next(r for r in regex.regexes if r != Empty())
+        obj = super().__new__(cls)
+        obj.regex = regex
+        return obj
+    def members(self):
+        return self.regex
+    def to_string(self):
+        return f"{self.regex}*"
+
+class Union(Regex):
+    def __new__(cls, *regexes):
+        all_ = {r for x in (r.regexes if isinstance(r, Union) else [r] for r in regexes) for r in x}
+        regexes = set()
+        # Merge character classes
+        if any(isinstance(r, NegatedCharClass) for r in all_):
+            regexes.add(NegatedCharClass(
+                set.intersection(*[set(r.chars) for r in all_ if isinstance(r, NegatedCharClass)])
+                - {c for r in all_ if isinstance(r, CharClass) for c in r.chars}
+            ))
+        elif any(isinstance(r, CharClass) for r in all_):
+            chars = {c for r in all_ if isinstance(r, CharClass) for c in r.chars}
+            if chars: regexes.add(CharClass(chars))
+        # Drop epsilon if there's a star already (TODO: formalise implication?)
+        if Empty() in all_ and not(any(isinstance(r, Star) for r in all_)):
+            regexes.add(Empty())
+        # Add the rest...
+        regexes |= {r for r in all_ if all(not(isinstance(r, c)) for c in (NegatedCharClass, CharClass, Empty))}
+        if len(regexes) == 1:
+            return first(regexes)
+        obj = super().__new__(cls)
+        obj.regexes = tuple(regexes)
+        return obj
+    def members(self):
+        return self.regexes
+    def to_string(self):
+        if not self.regexes:
+            return "∅"
+        elif len(self.regexes) == 2 and Empty() in self.regexes:
+            return f"{next(r for r in self.regexes if r != Empty())}?"
+        def debracket(r):
+            s = str(r)
+            return s[1:-1] if s.startswith("(") else s
+        return "({})".format("|".join(map(debracket, self.regexes)))
+
+class Concat(Regex):
+    def __new__(cls, *regexes):
+        if any(r == Union() or r == NegatedCharClass("") for r in regexes):
+            return Union()
+        regexes = tuple(r for x in (r.regexes if isinstance(r, Concat) else [r] for r in regexes) for r in x if not isinstance(r, Empty))
+        if len(regexes) == 1:
+            return first(regexes)
+        elif len(regexes) == 0:
+            return Empty()
+        obj = super().__new__(cls)
+        obj.regexes = regexes
+        return obj
+    def members(self):
+        return self.regexes
+    def to_string(self):
+        return "({})".format("".join(map(str, self.regexes)))
+        
+                
 
 def main() -> None:
     parser = argparse.ArgumentParser(description = """NFA-based pattern matcher supporting novel spatial conjunction and modifiers.

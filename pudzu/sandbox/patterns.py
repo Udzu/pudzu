@@ -5,21 +5,27 @@ import logging
 import random
 import string
 from abc import ABC, abstractmethod
+from enum import Enum
 from functools import reduce
 from itertools import product
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import *
+from typing import Any, Dict, Iterable, Optional, Set, Tuple, Union
 
-from pudzu.utils import *
+from pudzu.utils import optional_import  # type: ignore  # (for now)
 
-State =  Union[str, Collection['State']]
+State = Any  # Union[str, Collection['State']]
 Move = Enum('Move', 'EMPTY ALL')
 Input = Union[str, Move]
-Transitions = Dict[Tuple[State, Input], AbstractSet[State]]
+Transitions = Dict[Tuple[State, Input], Set[State]]
 
 renderer = optional_import("PySimpleAutomata.automata_IO")
 logger = logging.getLogger('patterns')
+
+DEBUG = False
+DICTIONARY_FILE = None
+SUBPATTERNS = {}
+
 
 class NFA:
     """Nondeterministic Finite Automata with
@@ -45,9 +51,10 @@ class NFA:
             states = self.expand_epsilons(states)
         return self.end in states
 
-    def expand_epsilons(self, states: Iterable[State]) -> AbstractSet[State]:
+    def expand_epsilons(self, states: Iterable[State]) -> Set[State]:
         """Expand a collection of states along all ε-moves"""
-        old, new = set(), states
+        old: Set[State] = set()
+        new = states
         while new:
             old.update(new)
             new = {t for s in new for t in self.transitions.get((s, Move.EMPTY), set()) if t not in old}
@@ -109,8 +116,8 @@ class NFA:
             i = random.choice(choices)
             if i == Move.ALL:
                 # TODO: match with supported scripts
-                choices = set(string.ascii_letters + string.digits + " '") - set(choices)
-                output += random.choice(list(choices))
+                options = list(set(string.ascii_letters + string.digits + " '") - set(choices))
+                output += random.choice(options)
             elif isinstance(i, str):
                 output += i
             state = random.choice(list(nfa.transitions[(state, i)]))
@@ -118,26 +125,26 @@ class NFA:
 
     def regex(self) -> str:
         """Generate a regex corresponding to the NFA."""
-        L = { (i,j) : Empty() if i == j else Union() for i in self.states for j in self.states }
+        L = { (i,j) : RegexEmpty() if i == j else RegexUnion() for i in self.states for j in self.states }
         for (i,a),js in self.transitions.items():
             for j in js:
                 if a == Move.ALL:
-                    L[i,j] += NegatedCharClass("".join(b for k,b in self.transitions if i == k and isinstance(b, str)))
+                    L[i,j] += RegexNegatedChars("".join(b for k,b in self.transitions if i == k and isinstance(b, str)))
                 elif a == Move.EMPTY:
-                    L[i,j] += Empty()
+                    L[i,j] += RegexEmpty()
                 else:
-                    L[i,j] += CharClass(a)
+                    L[i,j] += RegexChars(a)
         remaining = set(self.states)
         for k in self.states:
             if k == self.start or k == self.end: continue
             remaining.remove(k)
             for i in remaining:
                 for j in remaining:
-                    L[i,i] += Concat(L[i,k], Star(L[k,k]), L[k,i])
-                    L[j,j] += Concat(L[j,k], Star(L[k,k]), L[k,j])
-                    L[i,j] += Concat(L[i,k], Star(L[k,k]), L[k,j])
-                    L[j,i] += Concat(L[j,k], Star(L[k,k]), L[k,i])
-        return L[self.start, self.end]
+                    L[i,i] += RegexConcat(L[i,k], RegexStar(L[k,k]), L[k,i])
+                    L[j,j] += RegexConcat(L[j,k], RegexStar(L[k,k]), L[k,j])
+                    L[i,j] += RegexConcat(L[i,k], RegexStar(L[k,k]), L[k,j])
+                    L[j,i] += RegexConcat(L[j,k], RegexStar(L[k,k]), L[k,i])
+        return str(L[self.start, self.end])
 
 # NFA constructors
 def merge_trans(*args):
@@ -145,7 +152,7 @@ def merge_trans(*args):
     return merge_with(lambda x: set.union(*x), *args)
 
 def MatchEmpty() -> NFA:
-    """Empty match"""
+    """RegexEmpty match"""
     return NFA("1", "2", {("1", Move.EMPTY): {"2"}})
 
 def MatchIn(characters: str) -> NFA:
@@ -159,7 +166,7 @@ def MatchNotIn(characters: str) -> NFA:
 def MatchWords(words: Iterable[str]) -> NFA:
     # generate a prefix tree
     start, end = ("0",), ("1",)
-    transitions = {}
+    transitions: Transitions = {}
     for word in words:
         for i in range(len(word)):
             transitions.setdefault((word[:i] or start, word[i]), set()).add(word[:i+1])
@@ -188,7 +195,7 @@ def MatchEither(*nfas: NFA) -> NFA:
 
 def MatchRepeated(nfa: NFA, repeat: bool = False, optional: bool = False) -> NFA:
     """Handles: A*, A+, A?"""
-    transitions = {(("0",s),i): {("0",t) for t in ts} for (s,i),ts in nfa.transitions.items()}
+    transitions: Transitions = {(("0",s),i): {("0",t) for t in ts} for (s,i),ts in nfa.transitions.items()}
     transitions[("1", Move.EMPTY)] = {("0",nfa.start)}
     if optional: transitions[("1", Move.EMPTY)].add("2")
     transitions[(("0",nfa.end), Move.EMPTY)] = {"2"}
@@ -230,7 +237,7 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     to_process = [start_state]
     processed_states = set()
     accepting_states = set()
-    transitions = {}
+    transitions: Transitions = {}
     while to_process:
         current_state = to_process.pop()
         processed_states.add(current_state)
@@ -238,9 +245,9 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
         moves = {i for (s,i) in nfa.transitions if s in current_state and i != Move.EMPTY}
         for i in moves:
             next_state = {t for s in current_state for t in nfa.transitions.get((s,i), nfa.transitions.get((s,Move.ALL), set()))}
-            next_state = tuple(sorted(nfa.expand_epsilons(next_state), key=str))
-            transitions[(current_state, i)] = {next_state}
-            if next_state not in processed_states: to_process.append(next_state)
+            next_state_sorted = tuple(sorted(nfa.expand_epsilons(next_state), key=str))
+            transitions[(current_state, i)] = {next_state_sorted}
+            if next_state_sorted not in processed_states: to_process.append(next_state_sorted)
     
     # transition accepting/non-accepting states to a single final state
     for final_state in (processed_states - accepting_states) if negate else accepting_states:
@@ -257,12 +264,11 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     nfa = NFA(start_state, "2", transitions)
     nfa.remove_redundant_states()
     return nfa
-    
 
-def MatchBoth(nfa1: NFA, nfa2: NFA, start_from: Optional[AbstractSet[State]] = None, stop_at: Optional[AbstractSet[State]] = None) -> NFA:
+def MatchBoth(nfa1: NFA, nfa2: NFA, start_from: Optional[Set[State]] = None, stop_at: Optional[Set[State]] = None) -> NFA:
     """Handles: A&B"""
     # generate transitions on cartesian product (with special handling for *-transitions)
-    transitions = {}
+    transitions: Transitions = {}
     for (s1, i), ts1 in nfa1.transitions.items():
         for s2 in nfa2.states:
             if i == Move.EMPTY:
@@ -276,9 +282,9 @@ def MatchBoth(nfa1: NFA, nfa2: NFA, start_from: Optional[AbstractSet[State]] = N
             if i == Move.EMPTY:
                 transitions = merge_trans(transitions, {((s1, s2), i): set(product({s1}, ts2))})
             elif (s1, i) not in nfa1.transitions:  # (we've done those already!)
-                ts1 = nfa1.transitions.get((s1, Move.ALL))
-                if ts1 is not None:
-                    transitions = merge_trans(transitions, {((s1, s2), i): set(product(ts1, ts2))})
+                ts1o = nfa1.transitions.get((s1, Move.ALL))
+                if ts1o is not None:
+                    transitions = merge_trans(transitions, {((s1, s2), i): set(product(ts1o, ts2))})
     if start_from:
         transitions[("1", Move.EMPTY)] = start_from
     if stop_at:
@@ -354,7 +360,7 @@ def MatchSubtract(nfa1: NFA, nfa2: NFA, from_right: bool, negate: bool) -> NFA:
         both = MatchBoth(nfa1, nfa2, stop_at={(a,nfa2.end) for a in nfa1.states})
     if negate:
         return both
-    transitions = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
+    transitions: Transitions = {(("1",s),i): {("1",t) for t in ts} for (s,i),ts in nfa1.transitions.items()}
     if from_right:
         midpoints = {a for a,_ in both.transitions.get(("1", Move.EMPTY), set())}
         transitions = merge_trans(transitions, {(("1", s), Move.EMPTY): {"1"} for s in midpoints})
@@ -392,7 +398,7 @@ def MatchSubtractInside(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
 def MatchReversed(nfa: NFA) -> NFA:
     """Handles: (?r:A)"""
     # just reverse the edges (with special handling for *-transitions)
-    transitions = {}
+    transitions: Transitions = {}
     for (s,i),ts in nfa.transitions.items():
         for t in ts:
             if i == Move.ALL:
@@ -410,7 +416,7 @@ def MatchReversed(nfa: NFA) -> NFA:
     
 def MatchInsensitively(nfa: NFA) -> NFA:
     """Handles: (?i:A)"""
-    transitions = {}
+    transitions: Transitions = {}
     for (s,i),ts in nfa.transitions.items():
         if isinstance(i, str):
             transitions.setdefault((s,i.lower()),set()).update(ts)
@@ -421,7 +427,7 @@ def MatchInsensitively(nfa: NFA) -> NFA:
 
 def MatchShifted(nfa: NFA, shift: int) -> NFA:
     """Handles: (?sn:A)"""
-    transitions = {}
+    transitions: Transitions = {}
     for (s,i),ts in nfa.transitions.items():
         for alphabet in (string.ascii_lowercase, string.ascii_uppercase):
             if isinstance(i, str) and i in alphabet:
@@ -452,14 +458,14 @@ def MatchSlice(nfa: NFA, start: Optional[int], end: Optional[int], step: int) ->
             nfa = MatchSubtract(nfa,  MatchLength(-end, -end), from_right=True, negate=False)
     # expand transitions by step-count-minus-one
     if step > 1:
-        def expand_steps(nfa: NFA, states: AbstractSet[State], n: int) -> Tuple[AbstractSet[State], bool]:
+        def expand_steps(nfa: NFA, states: Set[State], n: int) -> Tuple[Set[State], bool]:
             hit_end = False
             for _ in range(n):
                 states = nfa.expand_epsilons(states)
                 hit_end |= nfa.end in states
                 states = {t for s in states for (r,i),ts in nfa.transitions.items() if r == s and i != Move.EMPTY for t in ts}
             return states, hit_end
-        transitions = {}
+        transitions: Transitions = {}
         for (s,i),ts in nfa.transitions.items():
             if i == Move.EMPTY:
                 transitions[(s,i)] = ts
@@ -494,8 +500,8 @@ class Pattern:
         return self.nfa.example(min_length, max_length)
 
     # parsing (TODO: should really go via an AST here)
-    from pyparsing import (Forward, Group, Literal, OneOrMore, Optional,
-                           ParserElement, Word, alphanums, alphas,
+    from pyparsing import (Forward, Group, Literal, OneOrMore,  # type: ignore
+                           Optional, ParserElement, Word, alphanums, alphas,
                            infixNotation, nums, oneOf, opAssoc)
     ParserElement.setDefaultWhitespaceChars('')
     ParserElement.enablePackrat()
@@ -591,17 +597,17 @@ class Regex(ABC):
 
     def __add__(self, other):
         if isinstance(other, Regex):
-            return Union(self, other)
+            return RegexUnion(self, other)
         else:
             raise NotImplemented
 
-class Empty(Regex):
+class RegexEmpty(Regex):
     def members(self):
         return ()
     def to_string(self):
         return "ε"
 
-class CharClass(Regex):
+class RegexChars(Regex):
     def __init__(self, chars):
         self.chars = ''.join(sorted(set(chars)))
     def members(self):
@@ -609,7 +615,7 @@ class CharClass(Regex):
     def to_string(self):
         return "∅" if not self.chars else self.chars if len(self.chars) == 1 else f"[{self.chars}]"  # TODO: escape when needed
 
-class NegatedCharClass(Regex):
+class RegexNegatedChars(Regex):
     def __init__(self, chars):
         self.chars = ''.join(sorted(set(chars)))
     def members(self):
@@ -617,12 +623,12 @@ class NegatedCharClass(Regex):
     def to_string(self, brackets=False):
         return "." if not self.chars else f"[^{self.chars}]"  # TODO: escape when needed
 
-class Star(Regex):
+class RegexStar(Regex):
     def __new__(cls, regex: Regex):
-        if isinstance(regex, Empty) or isinstance(regex, Star):
+        if isinstance(regex, RegexEmpty) or isinstance(regex, RegexStar):
             return regex
-        elif isinstance(regex, Union) and len(regex.regexes) == 2 and Empty() in regex.regexes:
-            regex = next(r for r in regex.regexes if r != Empty())
+        elif isinstance(regex, RegexUnion) and len(regex.regexes) == 2 and RegexEmpty() in regex.regexes:
+            regex = next(r for r in regex.regexes if r != RegexEmpty())
         obj = super().__new__(cls)
         obj.regex = regex
         return obj
@@ -631,24 +637,25 @@ class Star(Regex):
     def to_string(self):
         return f"{self.regex}*"
 
-class Union(Regex):
+class RegexUnion(Regex):
+    regexes: Tuple[Regex]
     def __new__(cls, *regexes):
-        all_ = {r for x in (r.regexes if isinstance(r, Union) else [r] for r in regexes) for r in x}
+        all_ = {r for x in (r.regexes if isinstance(r, RegexUnion) else [r] for r in regexes) for r in x}
         regexes = set()
         # Merge character classes
-        if any(isinstance(r, NegatedCharClass) for r in all_):
-            regexes.add(NegatedCharClass(
-                set.intersection(*[set(r.chars) for r in all_ if isinstance(r, NegatedCharClass)])
-                - {c for r in all_ if isinstance(r, CharClass) for c in r.chars}
+        if any(isinstance(r, RegexNegatedChars) for r in all_):
+            regexes.add(RegexNegatedChars(
+                set.intersection(*[set(r.chars) for r in all_ if isinstance(r, RegexNegatedChars)])
+                - {c for r in all_ if isinstance(r, RegexChars) for c in r.chars}
             ))
-        elif any(isinstance(r, CharClass) for r in all_):
-            chars = {c for r in all_ if isinstance(r, CharClass) for c in r.chars}
-            if chars: regexes.add(CharClass(chars))
+        elif any(isinstance(r, RegexChars) for r in all_):
+            chars = {c for r in all_ if isinstance(r, RegexChars) for c in r.chars}
+            if chars: regexes.add(RegexChars(chars))
         # Drop epsilon if there's a star already (TODO: formalise implication?)
-        if Empty() in all_ and not(any(isinstance(r, Star) for r in all_)):
-            regexes.add(Empty())
+        if RegexEmpty() in all_ and not(any(isinstance(r, RegexStar) for r in all_)):
+            regexes.add(RegexEmpty())
         # Add the rest...
-        regexes |= {r for r in all_ if all(not(isinstance(r, c)) for c in (NegatedCharClass, CharClass, Empty))}
+        regexes |= {r for r in all_ if all(not(isinstance(r, c)) for c in (RegexNegatedChars, RegexChars, RegexEmpty))}
         if len(regexes) == 1:
             return first(regexes)
         obj = super().__new__(cls)
@@ -659,22 +666,22 @@ class Union(Regex):
     def to_string(self):
         if not self.regexes:
             return "∅"
-        elif len(self.regexes) == 2 and Empty() in self.regexes:
-            return f"{next(r for r in self.regexes if r != Empty())}?"
+        elif len(self.regexes) == 2 and RegexEmpty() in self.regexes:
+            return f"{next(r for r in self.regexes if r != RegexEmpty())}?"
         def debracket(r):
             s = str(r)
             return s[1:-1] if s.startswith("(") else s
         return "({})".format("|".join(map(debracket, self.regexes)))
 
-class Concat(Regex):
+class RegexConcat(Regex):
     def __new__(cls, *regexes):
-        if any(r == Union() or r == NegatedCharClass("") for r in regexes):
-            return Union()
-        regexes = tuple(r for x in (r.regexes if isinstance(r, Concat) else [r] for r in regexes) for r in x if not isinstance(r, Empty))
+        if any(r == RegexUnion() or r == RegexNegatedChars("") for r in regexes):
+            return RegexUnion()
+        regexes = tuple(r for x in (r.regexes if isinstance(r, RegexConcat) else [r] for r in regexes) for r in x if not isinstance(r, RegexEmpty))
         if len(regexes) == 1:
             return first(regexes)
         elif len(regexes) == 0:
-            return Empty()
+            return RegexEmpty()
         obj = super().__new__(cls)
         obj.regexes = regexes
         return obj
@@ -752,15 +759,11 @@ REFERENCES
     parser.add_argument("-x", dest="example", action="store_true", help="generate an example matching string")
     parser.add_argument("-r", dest="regex", action="store_true", help="generate an standard equivalent regex")
     args = parser.parse_args()
-    global DICTIONARY_FILE, SUBPATTERNS
-    
+    global DICTIONARY_FILE
+
     if args.dict:
         logger.info(f"Compiling dictionary from '{args.dict}'")
         DICTIONARY_FILE = MatchDictionary(Path(args.dict))
-
-    # TODO: support config-based subpatterns?
-    SUBPATTERNS = {}
-    DEBUG = False
 
     pattern = args.pattern
     if args.case_insensitive: pattern = f"(?i:{pattern})"

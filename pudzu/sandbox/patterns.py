@@ -10,9 +10,9 @@ from functools import reduce
 from itertools import product
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, Dict, Iterable, Optional, Set, Tuple, Union
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union
 
-from pudzu.utils import optional_import  # type: ignore  # (for now)
+from pudzu.utils import optional_import, merge_with, first  # type: ignore  # (for now)
 
 State = Any  # Union[str, Tuple['State']]
 Move = Enum("Move", "EMPTY ALL")
@@ -116,21 +116,24 @@ class NFA:
         }
         renderer.nfa_to_dot(nfa_json, name, path)
 
-    def example(self, min_length: int = 0, max_length: Optional[int] = None) -> str:
+    def example(self, min_length: int = 0, max_length: Optional[int] = None) -> Optional[str]:
         """Generate a random matching string."""
         nfa = MatchBoth(self, MatchLength(min_length, max_length)) if min_length or max_length is not None else self
         output = ""
         state = nfa.start
-        while state != nfa.end:
-            choices = [i for (s, i) in nfa.transitions if s == state]
-            i = random.choice(choices)
-            if i == Move.ALL:
-                # TODO: match with supported scripts
-                options = list(set(string.ascii_letters + string.digits + " '") - set(choices))
-                output += random.choice(options)
-            elif isinstance(i, str):
-                output += i
-            state = random.choice(list(nfa.transitions[(state, i)]))
+        try:
+            while state != nfa.end:
+                choices = [i for (s, i) in nfa.transitions if s == state]
+                i = random.choice(choices)
+                if i == Move.ALL:
+                    # TODO: match with supported scripts
+                    options = list(set(string.ascii_letters + string.digits + " '") - set(choices))
+                    output += random.choice(options)
+                elif isinstance(i, str):
+                    output += i
+                state = random.choice(list(nfa.transitions[(state, i)]))
+        except IndexError:
+            return None
         return output
 
     def regex(self) -> str:
@@ -432,6 +435,26 @@ def MatchSubtractInside(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     return nfa
 
 
+def MatchSubtractOutside(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
+    """Handles: A-<B, A-<<B"""
+    # Use partial intersections to generate collections of alternatives.
+    both_start = MatchBoth(nfa1, nfa2, stop_at={(a, b) for a in nfa1.states for b in nfa2.states})
+    both_end = MatchBoth(nfa1, nfa2, start_from={(a, b) for a in nfa1.states for b in nfa2.states})
+    both_start_end = {s for (s, i), cs in both_start.transitions.items() if i == Move.EMPTY and "2" in cs}
+    both_end_start = both_end.transitions.get(("1", Move.EMPTY), set())
+
+    # TODO: proper
+    nfas : List[NFA] = []
+    midpoints = {b for a, b in both_start_end if any(b == b2 for a2, b2 in both_end_start)}
+    for m in midpoints:
+        transitions: Transitions = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
+        transitions["0", Move.EMPTY] = { ("1", a) for a,b in both_start_end if b == m }
+        for a in { a for a,b in both_end_start if b == m }:
+            transitions[("1", a), Move.EMPTY] = {"1"}
+        nfas.append(NFA("0", "1", transitions))
+    return MatchEither(*nfas)
+
+
 def MatchReversed(nfa: NFA) -> NFA:
     """Handles: (?r:A)"""
     # just reverse the edges (with special handling for *-transitions)
@@ -610,6 +633,7 @@ class Pattern:
         # subtraction
         Literal("->>").setParseAction(lambda _: lambda x, y: MatchSubtractInside(x, y, proper=True))
         | Literal("->").setParseAction(lambda _: lambda x, y: MatchSubtractInside(x, y, proper=False))
+        | Literal("-<").setParseAction(lambda _: lambda x, y: MatchSubtractOutside(x, y, proper=False))
         | Literal("-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=True, negate=False))
         | Literal("_-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=False, negate=False))
     )
@@ -624,7 +648,6 @@ class Pattern:
 
 
 # Regex reconstructions (extra hacky)
-
 # TODO: simplification, repetition
 
 
@@ -812,6 +835,7 @@ SPATIAL SUBTRACTION
 - P_-Q     subtraction on left
 - P->Q     subtraction inside
 - P->>Q    subtraction strictly inside
+- P-<Q     subtraction outside
 
 MODIFIERS
 - (?r:P)   reversed match
@@ -864,10 +888,10 @@ REFERENCES
         pattern.nfa.render(args.svg, renumber=not DEBUG)
 
     if args.example:
-        logger.info(f"Example match: '{pattern.example()}'")
+        logger.info(f"Example match: {pattern.example()!r}")
 
     if args.regex:
-        logger.info(f"Equivalent regex: '{pattern.nfa.regex()}'")
+        logger.info(f"Equivalent regex: {pattern.nfa.regex()!r}")
 
     for file in args.files:
         logger.info(f"Matching pattern against '{file}'")

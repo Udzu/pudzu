@@ -747,7 +747,10 @@ REFERENCES
     parser.add_argument("-D", dest="DFA", action="store_true", help="convert NFA to DFA", default=None)
     parser.add_argument("-M", dest="min", action="store_true", help="convert NFA to minimal DFA ", default=None)
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
+    parser.add_argument("-v", dest="invert", action="store_true", help="invert match")
     parser.add_argument("-s", dest="svg", metavar="NAME", default=None, help="save FSM diagram")
+    parser.add_argument("-x", dest="example", action="store_true", help="generate an example matching string")
+    parser.add_argument("-r", dest="regex", action="store_true", help="generate an standard equivalent regex")
     args = parser.parse_args()
     global DICTIONARY_FILE, SUBPATTERNS
     
@@ -761,8 +764,9 @@ REFERENCES
 
     pattern = args.pattern
     if args.case_insensitive: pattern = f"(?i:{pattern})"
-    if args.DFA: pattern = f"(?D:{pattern})"
+    if args.invert: pattern = f"!({pattern})"
     if args.min: pattern = f"(?M:{pattern})"
+    elif args.DFA: pattern = f"(?D:{pattern})"
 
     logger.info(f"Compiling pattern '{pattern}'")
     pattern = Pattern(pattern)
@@ -771,6 +775,12 @@ REFERENCES
         logger.info(f"Saving NFA diagram to '{args.svg}.dot.svg'")
         pattern.nfa.render(args.svg, renumber=not DEBUG)
         
+    if args.example:
+        logger.info(f"Example match: '{pattern.example()}'")
+
+    if args.regex:
+        logger.info(f"Equivalent regex: '{pattern.nfa.regex()}'")
+
     for file in args.files:
         logger.info(f"Matching pattern against '{file}'")
         with open(file, "r", encoding="utf-8") as f:

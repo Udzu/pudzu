@@ -400,11 +400,11 @@ def MatchSubtract(nfa1: NFA, nfa2: NFA, from_right: bool, negate: bool) -> NFA:
         return both
     transitions: Transitions = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
     if from_right:
-        midpoints = {a for a, _ in both.transitions.get(("1", Move.EMPTY), set())}
+        midpoints = {a for a, _ in both.transitions.get((both.start, Move.EMPTY), set())}
         transitions = merge_trans(transitions, {(("1", s), Move.EMPTY): {"1"} for s in midpoints})
         nfa = NFA(("1", nfa1.start), "1", transitions)
     else:
-        midpoints = {a for ((a, b), i), c in both.transitions.items() if i == Move.EMPTY and c == {"2"}}
+        midpoints = {a for ((a, b), i), cs in both.transitions.items() if i == Move.EMPTY and both.end in cs}
         transitions[("0", Move.EMPTY)] = {("1", s) for s in midpoints}
         nfa = NFA("0", ("1", nfa1.end), transitions)
     nfa.remove_redundant_states()
@@ -422,8 +422,8 @@ def MatchSubtractInside(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     t2es = []
     for s in nfa1.states:
         both = MatchBoth(nfa1, nfa2, start_from={(s, nfa2.start)}, stop_at={(a, nfa2.end) for a in nfa1.states})
-        new_end = {a for a, _ in both.transitions.get(("1", Move.EMPTY), set())}
-        new_start = {a[0] for (a, i), c in both.transitions.items() if i == Move.EMPTY and c == {"2"}}
+        new_end = {a for a, _ in both.transitions.get((both.start, Move.EMPTY), set())}
+        new_start = {a[0] for (a, i), cs in both.transitions.items() if i == Move.EMPTY and both.end in cs}
         t2es.append({(("2", e), Move.EMPTY): {(("4", s) if proper else ("5", s)) for s in new_start} for e in new_end})
     if proper:
         t4 = {(("4", s), i): {("4", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
@@ -440,18 +440,28 @@ def MatchSubtractOutside(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     # Use partial intersections to generate collections of alternatives.
     both_start = MatchBoth(nfa1, nfa2, stop_at={(a, b) for a in nfa1.states for b in nfa2.states})
     both_end = MatchBoth(nfa1, nfa2, start_from={(a, b) for a in nfa1.states for b in nfa2.states})
-    both_start_end = {s for (s, i), cs in both_start.transitions.items() if i == Move.EMPTY and "2" in cs}
-    both_end_start = both_end.transitions.get(("1", Move.EMPTY), set())
+    both_start_end = {s for (s, i), cs in both_start.transitions.items() if i == Move.EMPTY and both_start.end in cs}
+    both_end_start = both_end.transitions.get((both_end.start, Move.EMPTY), set())
 
-    # TODO: proper
-    nfas : List[NFA] = []
+    if proper:
+        # ensure partial intersections are (potentially) non-empty
+        both_start_proper = MatchBoth(both_start, MatchLength(1))
+        both_start_end = {
+            s[0] for (s, i), cs in both_start_proper.transitions.items() if i == Move.EMPTY and both_start_proper.end in cs and s[0] != both_start.end
+        }
+        both_end_proper = MatchBoth(both_end, MatchLength(1))
+        both_end_start = {s[0] for s in both_end_proper.transitions.get((both_end_proper.start, Move.EMPTY), set()) if s[0] != both_end.start}
+
+    nfas: List[NFA] = []
     midpoints = {b for a, b in both_start_end if any(b == b2 for a2, b2 in both_end_start)}
     for m in midpoints:
         transitions: Transitions = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
-        transitions["0", Move.EMPTY] = { ("1", a) for a,b in both_start_end if b == m }
-        for a in { a for a,b in both_end_start if b == m }:
-            transitions[("1", a), Move.EMPTY] = {"1"}
-        nfas.append(NFA("0", "1", transitions))
+        transitions["0", Move.EMPTY] = {("1", a) for a, b in both_start_end if b == m}
+        for a in {a for a, b in both_end_start if b == m}:
+            transitions.setdefault((("1", a), Move.EMPTY), set()).add("1")
+        nfa = NFA("0", "1", transitions)
+        nfa.remove_redundant_states()
+        nfas.append(nfa)
     return MatchEither(*nfas)
 
 
@@ -633,6 +643,7 @@ class Pattern:
         # subtraction
         Literal("->>").setParseAction(lambda _: lambda x, y: MatchSubtractInside(x, y, proper=True))
         | Literal("->").setParseAction(lambda _: lambda x, y: MatchSubtractInside(x, y, proper=False))
+        | Literal("-<<").setParseAction(lambda _: lambda x, y: MatchSubtractOutside(x, y, proper=True))
         | Literal("-<").setParseAction(lambda _: lambda x, y: MatchSubtractOutside(x, y, proper=False))
         | Literal("-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=True, negate=False))
         | Literal("_-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=False, negate=False))
@@ -836,6 +847,7 @@ SPATIAL SUBTRACTION
 - P->Q     subtraction inside
 - P->>Q    subtraction strictly inside
 - P-<Q     subtraction outside
+- P-<<Q    subtraction strictly outside
 
 MODIFIERS
 - (?r:P)   reversed match

@@ -12,7 +12,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union
 
-from pudzu.utils import optional_import, merge_with, first  # type: ignore  # (for now)
+from pudzu.utils import optional_import, merge_with, first  # type: ignore
 
 State = Any  # Union[str, Tuple['State']]
 Move = Enum("Move", "EMPTY ALL")
@@ -90,7 +90,7 @@ class NFA:
         # TODO: remove redundant ε states?
 
     def render(self, name: str, path: str = "./", renumber: bool = True) -> None:
-        """Render the NFA as an dot.svg file."""
+        """Render the NFA as a dot.svg file."""
 
         def label(s):
             if isinstance(s, str):
@@ -372,11 +372,11 @@ def MatchInterleaved(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     return nfa
 
 
-def MatchAlternating(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
+def MatchAlternating(nfa1: NFA, nfa2: NFA, ordered: bool) -> NFA:
     """Handles: A#B, A##B"""
     # transition between (1) AxB and (2) AxB states
     # for order agnostic alternation, also use an additional (0) start state
-    t0 = {("0", Move.EMPTY): {("1", nfa1.start, nfa2.start), ("2", nfa1.start, nfa2.start)}} if not proper else {}
+    t0 = {("0", Move.EMPTY): {("1", nfa1.start, nfa2.start), ("2", nfa1.start, nfa2.start)}} if not ordered else {}
     t1 = {(("1", s, q), i): {("1" if i == Move.EMPTY else "2", t, q) for t in ts} for (s, i), ts in nfa1.transitions.items() for q in nfa2.states}
     t2 = {(("2", q, s), i): {("2" if i == Move.EMPTY else "1", q, t) for t in ts} for (s, i), ts in nfa2.transitions.items() for q in nfa1.states}
     # handle final transitions
@@ -384,7 +384,7 @@ def MatchAlternating(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     t2e = {(("2", s, nfa2.end), i): {("2", t, nfa2.end) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
     t21 = {(("2", nfa1.end, nfa2.end), Move.EMPTY): {("1", nfa1.end, nfa2.end)}}
     transitions = merge_trans(t0, t1, t1e, t2, t2e, t21)
-    nfa = NFA("0" if not proper else ("1", nfa1.start, nfa2.start), ("1", nfa1.end, nfa2.end), transitions)
+    nfa = NFA("0" if not ordered else ("1", nfa1.start, nfa2.start), ("1", nfa1.end, nfa2.end), transitions)
     nfa.remove_redundant_states()
     return nfa
 
@@ -463,6 +463,41 @@ def MatchSubtractOutside(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
         nfa.remove_redundant_states()
         nfas.append(nfa)
     return MatchEither(*nfas)
+
+
+def MatchSubtractAlternating(nfa1: NFA, nfa2: NFA, ordered: bool, from_right: bool = True) -> NFA:
+    """Handles: A-#B, A_-#B, A-##B"""
+    # Expand transitions in A with one from A&B (tracking both A and B states)
+    both = MatchBoth(nfa1, nfa2, stop_at={(a, b) for a in nfa1.states for b in nfa2.states}, start_from={(a, b) for a in nfa1.states for b in nfa2.states})
+    transitions: Transitions = {}
+    for (s, i), ts in nfa1.transitions.items():
+        for b in nfa2.states:
+            if i == Move.EMPTY:
+                states = {(t, b) for t in ts}
+            else:
+                ts = nfa1.expand_epsilons(ts)
+                states = {u for (r, i), us in both.transitions.items() for t in ts if r == (t, b) and i != Move.EMPTY for u in us}
+            transitions[((s, b), i)] = states
+            if b == nfa2.end and nfa1.end in ts:
+                transitions.setdefault(((s, b), i), set()).add((nfa1.end, nfa2.end))
+    for (b, i), cs in nfa2.transitions.items():
+        for s in nfa1.states:
+            if i == Move.EMPTY:
+                transitions[((s, b), i)] = {(s, c) for c in cs}
+    start_state = set()
+    if not ordered or not from_right:
+        ts = {(nfa1.start, nfa2.start)}
+        ts = both.expand_epsilons(ts)
+        start_state |= {u for (s, i), us in both.transitions.items() if s in ts and i != Move.EMPTY for u in us}
+    if not ordered or from_right:
+        start_state |= {(nfa1.start, nfa2.start)}
+    if len(start_state) == 1:
+        nfa = NFA(first(start_state), (nfa1.end, nfa2.end), transitions)
+    else:
+        transitions[("0", Move.EMPTY)] = start_state
+        nfa = NFA("0", (nfa1.end, nfa2.end), transitions)
+    nfa.remove_redundant_states()
+    return nfa
 
 
 def MatchReversed(nfa: NFA) -> NFA:
@@ -637,14 +672,17 @@ class Pattern:
         | Literal("<").setParseAction(lambda _: lambda x, y: MatchContains(y, x, proper=False))
         | Literal("^^").setParseAction(lambda _: lambda x, y: MatchInterleaved(x, y, proper=True))
         | Literal("^").setParseAction(lambda _: lambda x, y: MatchInterleaved(x, y, proper=False))
-        | Literal("##").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, proper=True))
-        | Literal("#").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, proper=False))
+        | Literal("##").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, ordered=True))
+        | Literal("#").setParseAction(lambda _: lambda x, y: MatchAlternating(x, y, ordered=False))
         |
         # subtraction
         Literal("->>").setParseAction(lambda _: lambda x, y: MatchSubtractInside(x, y, proper=True))
         | Literal("->").setParseAction(lambda _: lambda x, y: MatchSubtractInside(x, y, proper=False))
         | Literal("-<<").setParseAction(lambda _: lambda x, y: MatchSubtractOutside(x, y, proper=True))
         | Literal("-<").setParseAction(lambda _: lambda x, y: MatchSubtractOutside(x, y, proper=False))
+        | Literal("-##").setParseAction(lambda _: lambda x, y: MatchSubtractAlternating(x, y, ordered=True, from_right=True))
+        | Literal("_-##").setParseAction(lambda _: lambda x, y: MatchSubtractAlternating(x, y, ordered=True, from_right=False))
+        | Literal("-#").setParseAction(lambda _: lambda x, y: MatchSubtractAlternating(x, y, ordered=False))
         | Literal("-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=True, negate=False))
         | Literal("_-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=False, negate=False))
     )
@@ -848,6 +886,9 @@ SPATIAL SUBTRACTION
 - P->>Q    subtraction strictly inside
 - P-<Q     subtraction outside
 - P-<<Q    subtraction strictly outside
+- P-#Q     subtraction alternating
+- P-##Q    subtraction alternating after
+- P_-##Q   subtraction alternating before
 
 MODIFIERS
 - (?r:P)   reversed match

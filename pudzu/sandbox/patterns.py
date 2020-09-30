@@ -1,5 +1,6 @@
 import argparse
 import copy
+import graphviz
 import json
 import logging
 import math
@@ -20,7 +21,6 @@ Move = Enum("Move", "EMPTY ALL")
 Input = Union[str, Move]
 Transitions = Dict[Tuple[State, Input], Set[State]]
 
-renderer = optional_import("PySimpleAutomata.automata_IO")
 logger = logging.getLogger("patterns")
 
 DEBUG = False
@@ -90,32 +90,25 @@ class NFA:
             del self.transitions[k]
         # TODO: remove redundant ε states?
 
-    def render(self, name: str, path: str = "./", renumber: bool = True) -> None:
+    def render(self, name: str) -> None:
         """Render the NFA as a dot.svg file."""
-
-        def label(s):
-            if isinstance(s, str):
-                return s
+        g = graphviz.Digraph(format='svg')
+        g.attr(rankdir='LR', bgcolor="transparent")
+        for s in self.states:
+            if s == self.start:
+                g.node(str(s), root='true', label="", color="white")
+                g.node('prestart', style='invisible')
+                g.edge('prestart', str(s), style='bold', color="white")
+            elif s == self.end:
+                g.node(str(s), shape='doublecircle', label="", color="white")
             else:
-                return "\u200B" + "".join(label(t) for t in s) + "\u200D"
+                g.node(str(s), label="", color="white")
+        for (s,i),ts in self.transitions.items():
+            for t in (ts or ('nothing', s)):
+                g.edge(str(s), str(t), label={Move.ALL: "*", Move.EMPTY: "ε"}.get(i, i), color="white", fontcolor="white")
 
-        states = {s: label(s) for s in self.states}
-        if renumber:
-            sorted_states = [s for s, _ in sorted(states.items(), key=lambda kv: kv[1])]
-            states = {s: str(sorted_states.index(s)) for s in self.states}
+        g.render(filename=name + '.dot')
 
-        def move(i):
-            return {Move.ALL: "*", Move.EMPTY: "ε"}.get(i, i)
-
-        alphabet = {move(i) for (_, i), _ in self.transitions.items()}
-        nfa_json = {
-            "alphabet": set(sorted(alphabet)),
-            "states": set(sorted(states.values())),
-            "initial_states": {states[self.start]},
-            "accepting_states": {states[self.end]},
-            "transitions": {(states[s], move(i)): {states[t] for t in ts} or {states[s] + "'"} for (s, i), ts in self.transitions.items()},
-        }
-        renderer.nfa_to_dot(nfa_json, name, path)
 
     def example(self, min_length: int = 0, max_length: Optional[int] = None) -> Optional[str]:
         """Generate a random matching string."""
@@ -528,6 +521,21 @@ def MatchSubtractAlternating(nfa1: NFA, nfa2: NFA, ordered: bool, from_right: bo
     return nfa
 
 
+def MatchSubtractInterleaved(nfa1: NFA, nfa2: NFA, proper: bool, from_right: bool = True) -> NFA:
+    """Handles: A-^B, A-^^B, A_-^^B"""
+    # TODO: handle proper
+    both = MatchBoth(nfa1, nfa2, stop_at={(a, b) for a in nfa1.states for b in nfa2.states}, start_from={(a, b) for a in nfa1.states for b in nfa2.states})
+    transitions: Transitions = {}
+    for (a, i), ts in nfa1.transitions.items():
+        for b in nfa2.states:
+            transitions[(a,b),i] = {(t,b) for t in ts}
+    for (ab, i), tus in both.transitions.items():
+        transitions.setdefault((ab,Move.EMPTY), set()).update(tus)
+    nfa = NFA((nfa1.start, nfa2.start), (nfa1.end, nfa2.end), transitions)
+    nfa.remove_redundant_states()
+    return nfa
+
+
 def MatchReversed(nfa: NFA) -> NFA:
     """Handles: (?r:A)"""
     # just reverse the edges (with special handling for *-transitions)
@@ -711,6 +719,9 @@ class Pattern:
         | Literal("-##").setParseAction(lambda _: lambda x, y: MatchSubtractAlternating(x, y, ordered=True, from_right=True))
         | Literal("_-##").setParseAction(lambda _: lambda x, y: MatchSubtractAlternating(x, y, ordered=True, from_right=False))
         | Literal("-#").setParseAction(lambda _: lambda x, y: MatchSubtractAlternating(x, y, ordered=False))
+        # | Literal("-^^").setParseAction(lambda _: lambda x, y: MatchSubtractInterleaved(x, y, proper=True, from_right=True))
+        # | Literal("_-^^").setParseAction(lambda _: lambda x, y: MatchSubtractInterleaved(x, y, proper=True, from_right=False))
+        | Literal("-^").setParseAction(lambda _: lambda x, y: MatchSubtractInterleaved(x, y, proper=False))
         | Literal("-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=True, negate=False))
         | Literal("_-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=False, negate=False))
     )
@@ -966,6 +977,7 @@ SPATIAL SUBTRACTION
 - P-#Q     subtraction alternating
 - P-##Q    subtraction alternating after
 - P_-##Q   subtraction alternating before
+- P-^Q     subtraction interleaved
 
 MODIFIERS
 - (?r:P)   reversed match
@@ -1014,8 +1026,8 @@ REFERENCES
     pattern = Pattern(pattern)
 
     if args.svg:
-        logger.info(f"Saving NFA diagram to '{args.svg}.dot.svg'")
-        pattern.nfa.render(args.svg, renumber=not DEBUG)
+        logger.info(f"Rendering NFA diagram to '{args.svg}.dot.svg'")
+        pattern.nfa.render(args.svg)
 
     if args.example:
         logger.info(f"Example match: {pattern.example()!r}")

@@ -2,6 +2,7 @@ import argparse
 import copy
 import json
 import logging
+import math
 import random
 import string
 from abc import ABC, abstractmethod
@@ -136,7 +137,7 @@ class NFA:
             return None
         return output
 
-    def regex(self) -> str:
+    def regex(self) -> "Regex":
         """Generate a regex corresponding to the NFA."""
         L = {(i, j): RegexEmpty() if i == j else RegexUnion() for i in self.states for j in self.states}
         for (i, a), js in self.transitions.items():
@@ -158,7 +159,34 @@ class NFA:
                     L[j, j] += RegexConcat(L[j, k], RegexStar(L[k, k]), L[k, j])
                     L[i, j] += RegexConcat(L[i, k], RegexStar(L[k, k]), L[k, j])
                     L[j, i] += RegexConcat(L[j, k], RegexStar(L[k, k]), L[k, i])
-        return str(L[self.start, self.end])
+        return L[self.start, self.end]
+
+    def min_length(self) -> Optional[int]:
+        """ The minimum possible length match. """
+        # use Dijkstra to find shortest path
+        unvisited = set(self.states)
+        distances = {s: 0 if s == self.start else math.inf for s in self.states}
+        current = self.start
+        while True:
+            base = distances[current]
+            for (r, i), ss in self.transitions.items():
+                if r == current:
+                    weight = base + (i != Move.EMPTY)
+                    for s in ss:
+                        if s in unvisited:
+                            distances[s] = min(distances[s], weight)
+            unvisited.remove(current)
+            if current == self.end:
+                return int(distances[self.end])
+            current, distance = min(distances.items(), key=lambda x: math.inf if x[0] not in unvisited else x[1])
+            if distance == math.inf:
+                return None
+
+    def max_length(self) -> Optional[int]:
+        """ The maximum possible length match. """
+        # converts to a regex, though there's probably a more efficient way
+        max_length = self.regex().max_length()
+        return int(max_length) if math.isfinite(max_length) else None
 
 
 # NFA constructors
@@ -702,12 +730,20 @@ class Pattern:
 
 class Regex(ABC):
     @abstractmethod
-    def members(self):
+    def members(self) -> Any:
         """Members, used for equality testing."""
 
     @abstractmethod
-    def to_string(self):
+    def to_string(self) -> str:
         """Regex string representation."""
+
+    @abstractmethod
+    def min_length(self) -> float:
+        """Minimum match length (-inf for no match)."""
+
+    @abstractmethod
+    def max_length(self) -> float:
+        """Maximum match length (-inf for no match, inf for infinite)."""
 
     def __repr__(self):
         return f"{self.to_string()}"
@@ -737,8 +773,19 @@ class RegexEmpty(Regex):
     def to_string(self):
         return "ε"
 
+    def min_length(self):
+        return 0
+
+    def max_length(self):
+        return 0
+
 
 class RegexChars(Regex):
+    def __new__(cls, chars):
+        if not chars:
+            return RegexUnion()
+        return super().__new__(cls)
+
     def __init__(self, chars):
         self.chars = "".join(sorted(set(chars)))
 
@@ -746,7 +793,13 @@ class RegexChars(Regex):
         return self.chars
 
     def to_string(self):
-        return "∅" if not self.chars else self.chars if len(self.chars) == 1 else f"[{self.chars}]"  # TODO: escape when needed
+        return self.chars if len(self.chars) == 1 else f"[{self.chars}]"  # TODO: escape when needed
+
+    def min_length(self):
+        return 1
+
+    def max_length(self):
+        return 1
 
 
 class RegexNegatedChars(Regex):
@@ -759,10 +812,16 @@ class RegexNegatedChars(Regex):
     def to_string(self, brackets=False):
         return "." if not self.chars else f"[^{self.chars}]"  # TODO: escape when needed
 
+    def min_length(self):
+        return 1
+
+    def max_length(self):
+        return 1
+
 
 class RegexStar(Regex):
     def __new__(cls, regex: Regex):
-        if isinstance(regex, RegexEmpty) or isinstance(regex, RegexStar):
+        if isinstance(regex, RegexEmpty) or isinstance(regex, RegexStar) or regex == RegexUnion():
             return regex
         elif isinstance(regex, RegexUnion) and len(regex.regexes) == 2 and RegexEmpty() in regex.regexes:
             regex = next(r for r in regex.regexes if r != RegexEmpty())
@@ -775,6 +834,12 @@ class RegexStar(Regex):
 
     def to_string(self):
         return f"{self.regex}*"
+
+    def min_length(self):
+        return 0
+
+    def max_length(self):
+        return 0 if self.regex.max_length() == 0 else math.inf
 
 
 class RegexUnion(Regex):
@@ -821,10 +886,16 @@ class RegexUnion(Regex):
 
         return "({})".format("|".join(map(debracket, self.regexes)))
 
+    def min_length(self):
+        return -math.inf if not self.regexes else min(*[r.min_length() for r in self.regexes])
+
+    def max_length(self):
+        return -math.inf if not self.regexes else max(*[r.max_length() for r in self.regexes])
+
 
 class RegexConcat(Regex):
     def __new__(cls, *regexes):
-        if any(r == RegexUnion() or r == RegexNegatedChars("") for r in regexes):
+        if any(r == RegexUnion() for r in regexes):
             return RegexUnion()
         regexes = tuple(r for x in (r.regexes if isinstance(r, RegexConcat) else [r] for r in regexes) for r in x if not isinstance(r, RegexEmpty))
         if len(regexes) == 1:
@@ -840,6 +911,12 @@ class RegexConcat(Regex):
 
     def to_string(self):
         return "({})".format("".join(map(str, self.regexes)))
+
+    def min_length(self):
+        return sum(r.min_length() for r in self.regexes)
+
+    def max_length(self):
+        return sum(r.max_length() for r in self.regexes)
 
 
 def main() -> None:
@@ -944,7 +1021,19 @@ REFERENCES
         logger.info(f"Example match: {pattern.example()!r}")
 
     if args.regex:
-        logger.info(f"Equivalent regex: {pattern.nfa.regex()!r}")
+        regex = pattern.nfa.regex()
+        logger.info(f"Equivalent regex: {str(regex) if regex!=RegexUnion() else None!r}")
+        min_length = regex.min_length()
+        max_length = regex.max_length()
+        if min_length == -math.inf:
+            lengths = None
+        elif min_length == max_length:
+            lengths = min_length
+        elif max_length == math.inf:
+            lengths = f"{min_length}+"
+        else:
+            lengths = f"{min_length}-{max_length}"
+        logger.info(f"Match lengths: {lengths}")
 
     for file in args.files:
         logger.info(f"Matching pattern against '{file}'")

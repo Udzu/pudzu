@@ -104,8 +104,11 @@ class NFA:
             else:
                 g.node(str(s), label="", color="white")
         for (s,i),ts in self.transitions.items():
-            for t in (ts or ('nothing', s)):
+            if not ts:
+                g.node(str(('fail', s)), label="", color="white")
+            for t in (ts or {('fail', s)}):
                 g.edge(str(s), str(t), label={Move.ALL: "*", Move.EMPTY: "ε"}.get(i, i), color="white", fontcolor="white")
+
 
         g.render(filename=name + '.dot')
 

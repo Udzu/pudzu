@@ -346,6 +346,7 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
 def MatchBoth(nfa1: NFA, nfa2: NFA, start_from: Optional[Set[State]] = None, stop_at: Optional[Set[State]] = None) -> NFA:
     """Handles: A&B"""
     # generate transitions on cartesian product (with special handling for *-transitions)
+    # warning: some of the other methods currently depend on the implementation of this (which is naughty)
     transitions: Transitions = {}
     for (s1, i), ts1 in nfa1.transitions.items():
         for s2 in nfa2.states:
@@ -552,10 +553,12 @@ def MatchSubtractInterleaved(nfa1: NFA, nfa2: NFA, proper: bool, from_right: boo
         for b in nfa2.states:
             transitions[(a, b), i] = {(t, b) for t in ts}
     for (ab, i), tus in both.transitions.items():
-        transitions.setdefault((ab, Move.EMPTY), set()).update(tus)
+        if ab != "1":
+            transitions.setdefault((ab, Move.EMPTY), set()).update(tus - {"2"})
 
     if not proper:
-        nfa = NFA((nfa1.start, nfa2.start), (nfa1.end, nfa2.end), transitions)
+        transitions[((nfa1.end, nfa2.end), Move.EMPTY)] = {"1"}
+        nfa = NFA((nfa1.start, nfa2.start), "1", transitions)
     elif from_right:
         t1 = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
         t1e = {(("1", s), i): {("2", (t, nfa2.start)) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
@@ -566,9 +569,17 @@ def MatchSubtractInterleaved(nfa1: NFA, nfa2: NFA, proper: bool, from_right: boo
         nfa = NFA(("1", nfa1.start), ("3", nfa1.end), transitions)
     else:
         ts = both.expand_epsilons({(nfa1.start, nfa2.start)})
-        start_state = {u for (s, i), us in both.transitions.items() if s in ts and i != Move.EMPTY for u in us}
-        # TODO: how to get end states?
-        raise NotImplementedError
+        start_states = {u for (s, i), us in both.transitions.items() if s in ts and i != Move.EMPTY for u in us}
+        ts = set()
+        for t in both.states:
+            if (nfa1.end, nfa2.end) in both.expand_epsilons({t}):
+                ts.add(t)
+        end_states = {s for (s, i), us in both.transitions.items() if any(u in ts for u in us) and i != Move.EMPTY}
+
+        transitions[("0", Move.EMPTY)] = start_states
+        for s in end_states:
+           transitions[(s, Move.EMPTY)] = { "1" }
+        nfa = NFA("0", "1", transitions)
     nfa.remove_redundant_states()
     return nfa
 
@@ -1016,6 +1027,7 @@ SPATIAL SUBTRACTION
 - P_-##Q   subtraction alternating before
 - P-^Q     subtraction interleaved
 - P-^^Q    subtraction interleaved inside
+- P_-^^Q   subtraction interleaved outside
 
 MODIFIERS
 - (?r:P)   reversed match

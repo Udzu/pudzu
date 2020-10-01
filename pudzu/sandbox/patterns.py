@@ -1,6 +1,6 @@
 import argparse
 import copy
-import graphviz
+import graphviz  # type: ignore
 import json
 import logging
 import math
@@ -61,7 +61,7 @@ class NFA:
             new = {t for s in new for t in self.transitions.get((s, Move.EMPTY), set()) if t not in old}
         return old
 
-    def remove_redundant_states(self) -> None:
+    def remove_redundant_states(self, aggressive: bool = False) -> None:
         """Trim the NFA, removing unnecessary states and transitions."""
         # remove states not reachable from the start
         reachable, new = set(), {self.start}
@@ -82,36 +82,55 @@ class NFA:
             if s in acceptable and (any(t in acceptable for t in ts) or (s, Move.ALL) in self.transitions)
         }
         # remove transitions that are equivalent to *
-        unnecessary = []
+        unnecessary: List[Tuple[State, Input]] = []
         for (s, i), t in self.transitions.items():
             if not isinstance(i, Move) and t == self.transitions.get((s, Move.ALL), set()):
                 unnecessary.append((s, i))
         for k in unnecessary:
             del self.transitions[k]
-        # TODO: remove redundant ε states?
+
+        if aggressive:
+            # remove states that only go to self.end
+            # (don't call this from MatchBoth as it would break assumptions of some calling functions)
+            removable = set()
+            not_removable = set()
+            for (s, i), t in self.transitions.items():
+                if s != self.start and i == Move.EMPTY and t == {self.end}:
+                    removable.add(s)
+                else:
+                    not_removable.add(s)
+            removable = removable - not_removable
+            if removable:
+                unnecessary = []
+                for (s, i), ts in self.transitions.items():
+                    if s in removable:
+                        unnecessary.append((s, i))
+                    elif any(t in removable for t in ts):
+                        self.transitions[(s, i)] = {t for t in ts if t not in removable} | {self.end}
+                for k in unnecessary:
+                    del self.transitions[k]
+                self.states -= removable
 
     def render(self, name: str) -> None:
         """Render the NFA as a dot.svg file."""
-        g = graphviz.Digraph(format='svg')
-        g.attr(rankdir='LR', bgcolor="transparent")
+        g = graphviz.Digraph(format="svg")
+        g.attr(rankdir="LR", bgcolor="transparent")
         for s in self.states:
             if s == self.start:
-                g.node(str(s), root='true', label="", color="white")
-                g.node('prestart', style='invisible')
-                g.edge('prestart', str(s), style='bold', color="white")
+                g.node(str(s), root="true", label="", color="white")
+                g.node("prestart", style="invisible")
+                g.edge("prestart", str(s), style="bold", color="white")
             elif s == self.end:
-                g.node(str(s), shape='doublecircle', label="", color="white")
+                g.node(str(s), shape="doublecircle", label="", color="white")
             else:
                 g.node(str(s), label="", color="white")
-        for (s,i),ts in self.transitions.items():
+        for (s, i), ts in self.transitions.items():
             if not ts:
-                g.node(str(('fail', s)), label="", color="white")
-            for t in (ts or {('fail', s)}):
-                g.edge(str(s), str(t), label={Move.ALL: "*", Move.EMPTY: "ε"}.get(i, i), color="white", fontcolor="white")
+                g.node(str(("fail", s)), label="", color="white")
+            for t in ts or {("fail", s)}:
+                g.edge(str(s), str(t), label={Move.ALL: "*", Move.EMPTY: "ε", "": ""}.get(i, i), color="white", fontcolor="white")
 
-
-        g.render(filename=name + '.dot')
-
+        g.render(filename=name + ".dot")
 
     def example(self, min_length: int = 0, max_length: Optional[int] = None) -> Optional[str]:
         """Generate a random matching string."""
@@ -320,7 +339,7 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
                 transitions.setdefault(("1", Move.EMPTY), {"2"})
 
     nfa = NFA(start_state, "2", transitions)
-    nfa.remove_redundant_states()
+    nfa.remove_redundant_states(aggressive=True)
     return nfa
 
 
@@ -526,15 +545,30 @@ def MatchSubtractAlternating(nfa1: NFA, nfa2: NFA, ordered: bool, from_right: bo
 
 def MatchSubtractInterleaved(nfa1: NFA, nfa2: NFA, proper: bool, from_right: bool = True) -> NFA:
     """Handles: A-^B, A-^^B, A_-^^B"""
-    # TODO: handle proper
+    # Combine transitions from A with empty transitions from A&B (tracking both A and B states)
     both = MatchBoth(nfa1, nfa2, stop_at={(a, b) for a in nfa1.states for b in nfa2.states}, start_from={(a, b) for a in nfa1.states for b in nfa2.states})
     transitions: Transitions = {}
     for (a, i), ts in nfa1.transitions.items():
         for b in nfa2.states:
-            transitions[(a,b),i] = {(t,b) for t in ts}
+            transitions[(a, b), i] = {(t, b) for t in ts}
     for (ab, i), tus in both.transitions.items():
-        transitions.setdefault((ab,Move.EMPTY), set()).update(tus)
-    nfa = NFA((nfa1.start, nfa2.start), (nfa1.end, nfa2.end), transitions)
+        transitions.setdefault((ab, Move.EMPTY), set()).update(tus)
+
+    if not proper:
+        nfa = NFA((nfa1.start, nfa2.start), (nfa1.end, nfa2.end), transitions)
+    elif from_right:
+        t1 = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t1e = {(("1", s), i): {("2", (t, nfa2.start)) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
+        t2 = {(("2", s), i): {("2", t) for t in ts} for (s, i), ts in transitions.items()}
+        t2e = {(("2", (s, nfa2.end)), i): {("3", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
+        t3 = {(("3", s), i): {("3", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
+        transitions = merge_trans(t1, t1e, t2, t2e, t3)
+        nfa = NFA(("1", nfa1.start), ("3", nfa1.end), transitions)
+    else:
+        ts = both.expand_epsilons({(nfa1.start, nfa2.start)})
+        start_state = {u for (s, i), us in both.transitions.items() if s in ts and i != Move.EMPTY for u in us}
+        # TODO: how to get end states?
+        raise NotImplementedError
     nfa.remove_redundant_states()
     return nfa
 
@@ -722,8 +756,8 @@ class Pattern:
         | Literal("-##").setParseAction(lambda _: lambda x, y: MatchSubtractAlternating(x, y, ordered=True, from_right=True))
         | Literal("_-##").setParseAction(lambda _: lambda x, y: MatchSubtractAlternating(x, y, ordered=True, from_right=False))
         | Literal("-#").setParseAction(lambda _: lambda x, y: MatchSubtractAlternating(x, y, ordered=False))
-        # | Literal("-^^").setParseAction(lambda _: lambda x, y: MatchSubtractInterleaved(x, y, proper=True, from_right=True))
-        # | Literal("_-^^").setParseAction(lambda _: lambda x, y: MatchSubtractInterleaved(x, y, proper=True, from_right=False))
+        | Literal("-^^").setParseAction(lambda _: lambda x, y: MatchSubtractInterleaved(x, y, proper=True, from_right=True))
+        | Literal("_-^^").setParseAction(lambda _: lambda x, y: MatchSubtractInterleaved(x, y, proper=True, from_right=False))
         | Literal("-^").setParseAction(lambda _: lambda x, y: MatchSubtractInterleaved(x, y, proper=False))
         | Literal("-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=True, negate=False))
         | Literal("_-").setParseAction(lambda _: lambda x, y: MatchSubtract(x, y, from_right=False, negate=False))
@@ -981,6 +1015,7 @@ SPATIAL SUBTRACTION
 - P-##Q    subtraction alternating after
 - P_-##Q   subtraction alternating before
 - P-^Q     subtraction interleaved
+- P-^^Q    subtraction interleaved inside
 
 MODIFIERS
 - (?r:P)   reversed match

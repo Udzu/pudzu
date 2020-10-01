@@ -819,7 +819,7 @@ class RegexEmpty(Regex):
         return ()
 
     def to_string(self):
-        return "ε"
+        return ".{0}"
 
     def min_length(self):
         return 0
@@ -1072,7 +1072,7 @@ REFERENCES
 
     if args.regex:
         regex = pattern.nfa.regex()
-        logger.info(f"Equivalent regex: {str(regex) if regex!=RegexUnion() else None!r}")
+        logger.info(f"Equivalent regex: {'^'+str(regex)+'$' if regex!=RegexUnion() else None!r}")
         min_length = regex.min_length()
         max_length = regex.max_length()
         if min_length == -math.inf:

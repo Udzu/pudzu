@@ -111,24 +111,26 @@ class NFA:
                     del self.transitions[k]
                 self.states -= removable
 
-    def render(self, name: str) -> None:
+    def render(self, name: str, console: bool = False) -> None:
         """Render the NFA as a dot.svg file."""
+        bg = "transparent" if console else "white"
+        fg = "white" if console else "black"
         g = graphviz.Digraph(format="svg")
-        g.attr(rankdir="LR", bgcolor="transparent")
+        g.attr(rankdir="LR", bgcolor=bg)
         for s in self.states:
             if s == self.start:
-                g.node(str(s), root="true", label="", color="white")
+                g.node(str(s), root="true", label="", color=fg)
                 g.node("prestart", style="invisible")
-                g.edge("prestart", str(s), style="bold", color="white")
+                g.edge("prestart", str(s), style="bold", color=fg)
             elif s == self.end:
-                g.node(str(s), shape="doublecircle", label="", color="white")
+                g.node(str(s), shape="doublecircle", label="", color=fg)
             else:
-                g.node(str(s), label="", color="white")
+                g.node(str(s), label="", color=fg)
         for (s, i), ts in self.transitions.items():
             if not ts:
-                g.node(str(("fail", s)), label="", color="white")
+                g.node(str(("fail", s)), label="", color=fg)
             for t in ts or {("fail", s)}:
-                g.edge(str(s), str(t), label={Move.ALL: "*", Move.EMPTY: "ε", "": ""}.get(i, i), color="white", fontcolor="white")
+                g.edge(str(s), str(t), label={Move.ALL: "*", Move.EMPTY: "ε", "": ""}.get(i, i), color=fg, fontcolor=fg)
 
         g.render(filename=name + ".dot")
 
@@ -578,7 +580,7 @@ def MatchSubtractInterleaved(nfa1: NFA, nfa2: NFA, proper: bool, from_right: boo
 
         transitions[("0", Move.EMPTY)] = start_states
         for s in end_states:
-           transitions[(s, Move.EMPTY)] = { "1" }
+            transitions[(s, Move.EMPTY)] = {"1"}
         nfa = NFA("0", "1", transitions)
     nfa.remove_redundant_states()
     return nfa
@@ -1053,6 +1055,7 @@ REFERENCES
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
     parser.add_argument("-v", dest="invert", action="store_true", help="invert match")
     parser.add_argument("-s", dest="svg", metavar="NAME", default=None, help="save FSM diagram")
+    parser.add_argument("-c", dest="console", action="store_true", help="generate FSM image for console")
     parser.add_argument("-x", dest="example", action="store_true", help="generate an example matching string")
     parser.add_argument("-r", dest="regex", action="store_true", help="generate an standard equivalent regex")
     args = parser.parse_args()
@@ -1078,6 +1081,10 @@ REFERENCES
     if args.svg:
         logger.info(f"Rendering NFA diagram to '{args.svg}.dot.svg'")
         pattern.nfa.render(args.svg)
+
+    if args.console:
+        logger.info(f"Rendering NFA console diagram to 'console.dot.svg'")
+        pattern.nfa.render("fsm_console", console=True)
 
     if args.example:
         logger.info(f"Example match: {pattern.example()!r}")

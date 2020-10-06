@@ -832,7 +832,7 @@ class RegexEmpty(Regex):
         return ()
 
     def to_string(self):
-        return ".{0}"
+        return "" # should only appear by itself
 
     def min_length(self):
         return 0
@@ -882,10 +882,14 @@ class RegexNegatedChars(Regex):
 
 class RegexStar(Regex):
     def __new__(cls, regex: Regex):
-        if isinstance(regex, RegexEmpty) or isinstance(regex, RegexStar) or regex == RegexUnion():
+        if isinstance(regex, RegexEmpty) or isinstance(regex, RegexStar):
             return regex
-        elif isinstance(regex, RegexUnion) and len(regex.regexes) == 2 and RegexEmpty() in regex.regexes:
-            regex = next(r for r in regex.regexes if r != RegexEmpty())
+        elif  regex == RegexUnion():
+            return RegexEmpty()
+        elif isinstance(regex, RegexUnion) and RegexEmpty() in regex.regexes:
+            regex = RegexUnion(*[r for r in regex.regexes if r != RegexEmpty()])
+        elif isinstance(regex, RegexConcat) and all(isinstance(r, RegexStar) for r in regex.regexes):
+            regex = RegexUnion(r.regex for r in regex.regexes)
         obj = super().__new__(cls)
         obj.regex = regex
         return obj
@@ -921,11 +925,16 @@ class RegexUnion(Regex):
             chars = {c for r in all_ if isinstance(r, RegexChars) for c in r.chars}
             if chars:
                 regexes.add(RegexChars(chars))
-        # Drop epsilon if there's a star already (TODO: formalise implication?)
+        # Don't include epsilon if there's a star already
         if RegexEmpty() in all_ and not (any(isinstance(r, RegexStar) for r in all_)):
             regexes.add(RegexEmpty())
         # Add the rest...
         regexes |= {r for r in all_ if all(not (isinstance(r, c)) for c in (RegexNegatedChars, RegexChars, RegexEmpty))}
+
+        # TODO: apply distributivity
+        # AB + AC + AD = A(B+C+D) and ditto for rhs
+        # AB + AC + A = A(B+C)? and ditto for rhs
+
         if len(regexes) == 1:
             return first(regexes)
         obj = super().__new__(cls)
@@ -938,14 +947,15 @@ class RegexUnion(Regex):
     def to_string(self):
         if not self.regexes:
             return "∅"
-        elif len(self.regexes) == 2 and RegexEmpty() in self.regexes:
-            return f"{next(r for r in self.regexes if r != RegexEmpty())}?"
 
-        def debracket(r):
+        def debracket(r, optional=False):
             s = str(r)
+            if optional: return s+"?"
             return s[1:-1] if s.startswith("(") else s
 
-        return "({})".format("|".join(map(debracket, self.regexes)))
+        has_empty = RegexEmpty() in self.regexes
+        regexes = [debracket(r,i == 0 and has_empty) for i,r in enumerate(r for r in self.regexes if r != RegexEmpty())]
+        return "({})".format("|".join(regexes))
 
     def min_length(self):
         return -math.inf if not self.regexes else min(*[r.min_length() for r in self.regexes])
@@ -959,6 +969,7 @@ class RegexConcat(Regex):
         if any(r == RegexUnion() for r in regexes):
             return RegexUnion()
         regexes = tuple(r for x in (r.regexes if isinstance(r, RegexConcat) else [r] for r in regexes) for r in x if not isinstance(r, RegexEmpty))
+
         if len(regexes) == 1:
             return first(regexes)
         elif len(regexes) == 0:
@@ -971,6 +982,7 @@ class RegexConcat(Regex):
         return self.regexes
 
     def to_string(self):
+        # TODO: replace AA* or A*A by A+ (but what about A B (AB)* ?)
         return "({})".format("".join(map(str, self.regexes)))
 
     def min_length(self):

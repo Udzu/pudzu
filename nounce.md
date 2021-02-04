@@ -4,7 +4,7 @@
 Simple IPA-based pronouncing and rhyming dictionary. 
 
 ## Dependencies
-*Required*: [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
+*Required*: [pudzu-utils](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-utils).
 
 ## Documentation
 

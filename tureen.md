@@ -4,7 +4,7 @@
 A handful of utilities for BeautifulSoup.
 
 ## Dependencies
-*Required*: [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
+*Required*: [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/), [pudzu-utils](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-utils).
 
 ## Documentation
 

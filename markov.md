@@ -10,7 +10,7 @@ None.
 
 ### MarkovGenerator
 
-A simple Markov Chain n-gram based generator. 
+A simple (and very inefficient) Markov Chain n-gram based generator. 
 
 ```python
 >> mk = MarkovGenerator(order=1) # use 1-grams (i.e. single elements)

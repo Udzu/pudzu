@@ -4,7 +4,7 @@
 Unicode data and manipulation.
 
 ## Dependencies
-*Required*: [pandas](http://pandas.pydata.org/), [utils](utils.md).
+*Required*: [pandas](http://pandas.pydata.org/), [pudzu-utils](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-utils).
 
 ## Documentation
 

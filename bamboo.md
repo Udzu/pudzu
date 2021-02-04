@@ -5,7 +5,7 @@
 A handful of utilities monkey-patched onto the pandas DataFrame class. Some were written before I properly understood pandas, and should be obsoleted.
 
 ## Dependencies
-*Required*: [pandas](http://pandas.pydata.org/), [toolz](http://toolz.readthedocs.io/en/latest/index.html), [utils](utils.md).
+*Required*: [pandas](http://pandas.pydata.org/), [pudzu-utils](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-utils).
 
 *Optional*: [pyparsing](http://pyparsing.wikispaces.com/) (for filter expressions), [tqdm](https://pypi.org/project/tqdm/) (for progress bars).
  

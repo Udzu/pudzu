@@ -33,7 +33,9 @@ def extract_people(title, section=None):
                                   all_("a", href=re.compile(r"^/wiki"), title=re_exclude("(List|American)"), limit=1))
     links = remove_duplicate_tags(links)
     return pd.DataFrame([{ "title": title, "link": WikiPage.title_from_url(a['href'])} for a in links])
-    
+
+
+
 harmonic_mean = optional_import_from('statistics', 'harmonic_mean', lambda data: len(data) / sum(1/x for x in data))
 LIMITS = { 'length': 1500000, 'pageviews': 1000000, 'revisions': 25000 }
 
@@ -150,3 +152,45 @@ def write_states(df, file, append=False, **kwargs):
                 print("{},{},{}".format(df.iloc[i]['title'].replace(',',''),df.iloc[i]['score'],state), file=f)
                 f.flush()
                 
+# some more messing about
+
+def extract_wikimarkup(markup, section=None):
+    if section:
+        r = re.compile(f"=+{re.escape(section)}=+")
+        m = r.search(markup)
+        r2 = re.compile("[^=]"+m.group(0).replace(section, "[^=]+") + "[^=]")
+        m2 = r2.search(markup, m.end())
+        markup = markup[m.start():m2 and m2.start()]
+    links = re.findall("\[\[[^\]]*\]\]", markup) 
+    def delink(s):
+        s = s.strip("[]")
+        if "|" in s:
+            link, name = s.split("|")
+            if name == "":
+                name = re.sub(" \([^)]+\)", "", link)
+        else:
+            name, link = s, s
+        return {"name": name, "link": link}
+    return pd.DataFrame(tmap(delink, links))
+
+def score_wikimarkup(df):
+    df = df.assign_rows(progressbar = True,
+                        wp = ignoring_exceptions((lambda d: WikiPage(d['link'], lang="en"))))
+    df = df.assign_rows(progressbar = True,
+                        wd = ignoring_exceptions((lambda d: d['wp'].to_wikidata())))
+    df = df.assign_rows(progressbar = True,
+                        title=lambda d: '?' if d['wp'] is None else d['wp'].title,
+                        length=lambda d: 1 if d['wp'] is None else len(d['wp'].response.content),
+                        pageviews=lambda d: 1 if d['wp'] is None else int(median(([pv['views'] for pv in d['wp'].pageviews("20190101", "20200101")]+[0]*12)[:12])),
+                        disambiguation=lambda d: d['wp'] and bool(d['wp'].bs4.find(alt="Disambiguation icon")))
+    return df.sort_values("pageviews", ascending=False)
+
+def birth_state(wd):
+    american = False
+    for pob in wd.places_of_birth:
+        for cob in pob.property_values(wd.COUNTRY, lambda qs: wd.END_TIME not in qs, convert=False):
+            if cob.get('id') == 'Q30':
+                american = True
+                return state_of_place(pob)
+    return "US" if american else None
+

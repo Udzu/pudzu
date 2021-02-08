@@ -315,17 +315,21 @@ but requires concatenation on the left.
 
 **Subtraction alternating and interleaved** (written `A-#B`, `A-##B`, `A-^B`, `A-^^B` or `A_-^^B`).
 
+### Other wordplay syntax
+
 **Slicing** (written `(?S:A)[m:n]` or `(?S:A)[m:n:s]`).
 
-### Other pattern syntax
+**Rotation** (written `(?R<n>:P)` or `(?R<=<n>:P)`)
 
 **Cipher shifting** (written `(?s<n>:P)` or `(?s:P)`).
 
+### General pattern syntax
+
 **Pattern references** (written `(?&ID=P)` and `(?&ID)`)
 
-**Dictionary files** (written `\w`)
+**External world list** (written `\w`)
 
-**Explicit FSMs** (written `\f`)
+**External FSM definition** (written `\f`)
 
 ## Other NFA operations
 

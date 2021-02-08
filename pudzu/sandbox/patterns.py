@@ -649,7 +649,38 @@ def MatchShifted(nfa: NFA, shift: int) -> NFA:
 
 def MatchRotated(nfa: NFA, shift: int) -> NFA:
     """Handles (?Rn:A)"""
-    raise NotImplementedError
+    # slice off start/end and for each possibility move it to the other side
+    if shift == 0:
+        return nfa
+
+    rotations: List[NFA] = []
+    if shift < 0:
+        window = MatchLength(-shift, -shift)
+        intersection = MatchBoth(nfa, window, stop_at={(a, window.end) for a in nfa.states})
+        intersection_ends = {
+            s[0] for (s, i), cs in intersection.transitions.items() if
+            i == Move.EMPTY and intersection.end in cs and s[0] != nfa.end
+        }
+        for middle in intersection_ends:
+            move = MatchBoth(nfa, window, stop_at={(middle, window.end)})
+            keep = NFA(middle, nfa.end, nfa.transitions)
+            rotated = MatchAfter(keep, move)
+            rotated.remove_redundant_states()
+            rotations.append(rotated)
+    else:
+        window = MatchLength(shift, shift)
+        intersection = MatchBoth(nfa, window, start_from={(a, window.start) for a in nfa.states})
+        intersection_starts = { s[0] for s in intersection.transitions.get(("1", Move.EMPTY), set()) if s[0] != nfa.start }
+        for middle in intersection_starts:
+            move = MatchBoth(nfa, window, start_from={(middle, window.start)})
+            keep = NFA(nfa.start, middle, nfa.transitions)
+            rotated = MatchAfter(move, keep)
+            rotated.remove_redundant_states()
+            rotations.append(rotated)
+
+    rotation = MatchEither(*rotations)
+    rotation.remove_redundant_states()
+    return rotation
 
 
 def MatchSlice(nfa: NFA, start: Optional[int], end: Optional[int], step: int) -> NFA:
@@ -1074,16 +1105,16 @@ SUBTRACTION OPERATORS
 - P_-^^Q   subtraction interleaved outside
 
 MODIFIERS
-- (?r:P)   reversed match
-- (?S:P)[m:n]    sliced match
-- (?S:P)[m:n:s]  sliced match with step
-- (?i:P)   case-insensitive match
-- (?sn:P)  cipher-shifted by n characters
-- (?s:P)   cipher-shifted by 1 to 25 characters
-- (?Rn:P)  rotated by n characters right
-- (?R<=n:P) rotated by 1 to n characters left or right
-- (?D:P)   convert NFA to DFA
-- (?M:P)   convert NFA to minimal DFA
+- (?i:P)        case-insensitive match
+- (?r:P)        reversed match
+- (?Rn:P)       rotated by n characters right
+- (?R<=n:P)     rotated by 1 to n characters left or right
+- (?sn:P)       cipher-shifted by n characters
+- (?s:P)        cipher-shifted by 1 to 25 characters
+- (?S:P)[m:n]   sliced match
+- (?S:P)[m:n:s] sliced match with step
+- (?D:P)        convert NFA to DFA
+- (?M:P)        convert NFA to minimal DFA
 
 REFERENCES
 - (?&ID=P) define subpattern for subsequent use

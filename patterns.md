@@ -1,7 +1,7 @@
 # [patterns.py](pudzu/sandbox/patterns.py)
 
 ## Summary 
-NFA-based grep-style pattern matcher supporting some novel spatial conjunctions and modifiers.
+NFA-based grep-style pattern matcher supporting some novel operations and modifiers.
 Originally developed to analyse wordplay for setting or solving cryptic crosswords.
 
 ## Dependencies
@@ -9,7 +9,7 @@ Originally developed to analyse wordplay for setting or solving cryptic crosswor
 
 ## Documentation
 For supported syntax and arguments, see `python -m pudzu.sandbox.patterns --help`.
-For an explanation of the implementation, read on.
+For an explanation of how it's implemented, read on.
 
 ## Some background
 
@@ -47,7 +47,7 @@ each input character just once, even when the DFA corresponds to a pattern conta
 alternation. For example, the following DFA matches the possessive pronouns
 their, her, his and xyr:
 
-![literal](images/nfa.png)
+![nfa](images/nfa.png)
 
 ### Nondeterministic finite automata
 
@@ -59,7 +59,7 @@ Additionally, NFAs are often also allowed to include **empty transitions** (mark
 which the machine may choose to follow without consuming any input character. For example,
 the following NFA matches the same possessive pronouns as the DFA above:
 
-![literal](images/dfa.png)
+![dfa](images/dfa.png)
 
 Figuring out whether an NFA matches a string can be implemented with backtracking:
 whenever you reach a choice, try one transition and if that doesn't work backtrack and try
@@ -140,7 +140,7 @@ values.
 python -m pudzu.sandbox.patterns "[ae].[^y]"
 ```
 
-![concatenation](images/class.png)
+![class](images/class.png)
 
 **Repetition shortands**: the `?` (zero or one), `+` (one or more), `{m,n}` (m to n) 
 and `{m,}` (m or more) operators can be converted by a combination of
@@ -150,7 +150,7 @@ repeated concatenation and Kleene star.
 python -m pudzu.sandbox.patterns "o+h?"
 ```
 
-![concatenation](images/repetition.png)
+![repetition](images/repetition.png)
 
 **Case-insensitive matches**. The simplest way to implement case insensitivity
 is to simply expand all characters into two element character classes. To mark
@@ -163,7 +163,7 @@ i uppercases to İ not I).
 python -m pudzu.sandbox.patterns "(?i:The)"
 ```
 
-![concatenation](images/case.png)
+![case](images/case.png)
 
 
 
@@ -180,15 +180,15 @@ transitions are (a,b) → (a',b') for input q if both a→a' and b→b' for q. T
 state is (a_start, b_start) and end state is (a_end, b_end), and some additional transitions
 are necessary to handle empty transitions in A or B. This construction (like
 many of the others described later on) can produce lots of superfluous states,
-so it can be useful to remove redundant states from the result: e.g. ones not
-reachable from the start state, or ones that cannot reach the end state.
+so it can be useful to remove redundant states from the result (see NFA trimming
+section below).
 
 
 ```bash
-python -m pudzu.sandbox.patterns "(b+)&(...)"
+python -m pudzu.sandbox.patterns "(b+)&(...)" -M
 ```
 
-![concatenation](images/conjunction.png)
+![conjunction](images/conjunction.png)
 
 **Negation** (written a `¬A`). If A is a regular expression, then the language
 that rejects everything A satisfies and accepts everything it doesn't is also regular.
@@ -201,7 +201,7 @@ conjunction: `A&B` can alternatively be implemented as `¬(¬A|¬B)`.
 python -m pudzu.sandbox.patterns "¬(..)"
 ```
 
-![concatenation](images/negation.png)
+![negation](images/negation.png)
 
 **Reversal** (written as `(?r:A)`). If A is a regular expression, then the language
 that accepts the same strings but in reverse order is also regular. This time the
@@ -212,7 +212,7 @@ the start and end states.
 python -m pudzu.sandbox.patterns "(?r:o+h|no)"
 ```
 
-![concatenation](images/reversal.png)
+![reversal](images/reversal.png)
 
 ###Novel separating operators
 
@@ -237,7 +237,7 @@ starts at left(A_start) and ends at right(A_end).
 python -m pudzu.sandbox.patterns "o+<l+" -M
 ```
 
-![concatenation](images/containment.png)
+![containment](images/containment.png)
 
 **Strict containment** (written `A<<B` or `B>>A`). The containment 
 operators above include the cases where the string satisfying `A` 
@@ -252,7 +252,7 @@ left_first(A_start), and middle states transition to right_first rather than rig
 python -m pudzu.sandbox.patterns "o+<<l+" -M
 ```
 
-![concatenation](images/strict_containment.png)
+![strict_containment](images/strict_containment.png)
 
 **Alternating** (written `A#B` or `A##B`). A string satisfies `A##B` if the
 substring made up of every other character starting with the first satisfies `A`,
@@ -271,7 +271,7 @@ start state.
 python -m pudzu.sandbox.patterns "U+##w+" -M
 ```
 
-![concatenation](images/alternating.png)
+![alternating](images/alternating.png)
 
 **Interleaving** (written `A^B` or `A^^B`). A string satisfies `A^B` if it can
 be split into a string satisfying `A` interleaved into one satisfying `B`.
@@ -289,7 +289,7 @@ similarly to strict containment above.
 python -m pudzu.sandbox.patterns "the^^A+" -M
 ```
 
-![concatenation](images/interleave.png)
+![interleave](images/interleave.png)
 
 
 ### Novel subtraction operators
@@ -299,19 +299,47 @@ corresponding subtraction operators. These all describe strings that
 can be made to satisfy one regular expression by extending them
 with another string satisfying a second regular expression.
 
+**Left and right subtraction** (written `A-B` or `A_-B`). The simplest
+for of subtraction is left and right subtraction. A string satisfies `A-B` if 
+you can concatenate a string satisfying `B` to the end so that the result
+satisfies `A`. For example "th" and "" both satisfy `(the|a)-.`. `A_-B` is similar,
+but requires concatenation on the left. To implement `A-B`, we use the intersection
+construction described for conjunction to intersect A and B. However, rather
+than setting the start state to (A_start, B_start), we allow the intersection
+to start at (a, B_start) for any a in A. This therefore describes all the possible
+suffixes of A that satisfy B. We then go back to A and change the end states
+to include all the possible start states for this suffix intersection. The
+implementation of `A_-B` is similar, but uses a prefx intersection instead.
+
+```bash
+python -m pudzu.sandbox.patterns "(the|a)-." -M
+```
+
+![subtract](images/subtract.png)
+
+**Subtraction inside and outside** (written `A->B`, `A->>B`, `A-<B` or `A-<<B`).
+In the same way that left and right subtraction correspond to concatenation,
+inside and outside subtraction correspond to containment. For example, "ll" satisfies
+`lo+l->`. Like for containment, there are both strict and non-strict versions.
+Implementing subtraction inside is similar to implementing containment itself,
+except that we use a partial intersection with B to wire the left and right states
+directly to each other (thereby skipping over the middle). Implementing subtraction outside
+is possible by looking at all the possible prefixes and suffixes that A shares with B
+and seeing which ones match up in B (therefore consuming all of it). We then use 
+these points that match in B to generate a selection of possible start/end points
+in A. We generate an NFA for each, and combine them in an alternation.
+
+```bash
+python -m pudzu.sandbox.patterns "lo+l->>." -M
+```
+
+![subtract inside](images/subtract_containment.png)
+
 ---
 
 🚧🚧🚧🚧 **WIP from here...** 🚧🚧🚧🚧
 
 ---
-
-**Left and right subtraction** (written `A-B` or `A_-B`). The simplest
-for of subtraction is left and right subtraction. A string satisfies `A-B` if 
-you can concatenate a string satisfying `B` to the end so that the result
-satisfies `A`. For example "th" and "" both satisfy "(the|a)-.". `A_-B` is similar,
-but requires concatenation on the left. 
-
-**Subtraction inside and outside** (written `A->B`, `A->>B`, `A-<B` or `A-<<B`).
 
 **Subtraction alternating and interleaved** (written `A-#B`, `A-##B`, `A-^B`, `A-^^B` or `A_-^^B`).
 

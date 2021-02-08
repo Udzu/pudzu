@@ -12,11 +12,11 @@ from functools import reduce
 from itertools import product
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union
+from typing import cast, Any, Dict, Iterable, List, Optional, Set, Tuple, Union
 
 from pudzu.utils import optional_import, merge_with, first  # type: ignore
 
-State = Any  # Union[str, Tuple['State']]
+State = Any  # really it's Union[str, Tuple['State']]
 Move = Enum("Move", "EMPTY ALL")
 Input = Union[str, Move]
 Transitions = Dict[Tuple[State, Input], Set[State]]
@@ -247,11 +247,12 @@ def MatchDictionary(path: Path) -> NFA:
 
 def ExplicitFSM(path: Path) -> NFA:
     """Handles: \f"""
-    transitions = {}
+    transitions: Transitions = {}
     with open(str(path), "r", encoding="utf-8") as f:
         for line in f:
             args = line.split()
             if args:
+                x: Input
                 start, x, *end = args
                 x = {"EMPTY": Move.EMPTY, "ALL": Move.ALL}.get(x, x)
                 if isinstance(x, str) and len(x) > 1:
@@ -646,6 +647,11 @@ def MatchShifted(nfa: NFA, shift: int) -> NFA:
     return NFA(nfa.start, nfa.end, transitions)
 
 
+def MatchRotated(nfa: NFA, shift: int) -> NFA:
+    """Handles (?Rn:A)"""
+    raise NotImplementedError
+
+
 def MatchSlice(nfa: NFA, start: Optional[int], end: Optional[int], step: int) -> NFA:
     """Handles: (?S:A)[3:5], (?S:A)[-1::-2]"""
     # reverse slice is equivalent to slice of reverse
@@ -743,8 +749,8 @@ class Pattern:
         | ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1]))
         | ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1]))
         | ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)]))
-        # | ("(?R" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchRotated(t[3], t[1]))
-        # | ("(?R<=" + _0_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchRotated(t[3], i) for i in range(-t[1], t[1]+1) if i != 0]))
+        | ("(?R" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchRotated(t[3], t[1]))
+        | ("(?R<=" + _0_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchRotated(t[3], i) for i in range(-t[1], t[1] + 1) if i != 0]))
         | (
             "(?S:" + expr + ")[" + Optional(_m99_to_99, None) + ":" + Optional(_m99_to_99, None) + Optional(":" + Optional(_m99_to_99, 1), 1) + "]"
         ).setParseAction(lambda t: MatchSlice(t[1], t[3], t[5], t[-2]))
@@ -851,7 +857,7 @@ class RegexEmpty(Regex):
         return ()
 
     def to_string(self):
-        return "" # should only appear by itself
+        return ""  # should only appear by itself
 
     def min_length(self):
         return 0
@@ -900,15 +906,17 @@ class RegexNegatedChars(Regex):
 
 
 class RegexStar(Regex):
+    regex: Regex
+
     def __new__(cls, regex: Regex):
         if isinstance(regex, RegexEmpty) or isinstance(regex, RegexStar):
             return regex
-        elif  regex == RegexUnion():
+        elif regex == RegexUnion():
             return RegexEmpty()
         elif isinstance(regex, RegexUnion) and RegexEmpty() in regex.regexes:
             regex = RegexUnion(*[r for r in regex.regexes if r != RegexEmpty()])
         elif isinstance(regex, RegexConcat) and all(isinstance(r, RegexStar) for r in regex.regexes):
-            regex = RegexUnion(r.regex for r in regex.regexes)
+            regex = RegexUnion(cast(RegexStar, r).regex for r in regex.regexes)
         obj = super().__new__(cls)
         obj.regex = regex
         return obj
@@ -969,11 +977,12 @@ class RegexUnion(Regex):
 
         def debracket(r, optional=False):
             s = str(r)
-            if optional: return s+"?"
+            if optional:
+                return s + "?"
             return s[1:-1] if s.startswith("(") else s
 
         has_empty = RegexEmpty() in self.regexes
-        regexes = [debracket(r,i == 0 and has_empty) for i,r in enumerate(r for r in self.regexes if r != RegexEmpty())]
+        regexes = [debracket(r, i == 0 and has_empty) for i, r in enumerate(r for r in self.regexes if r != RegexEmpty())]
         return "({})".format("|".join(regexes))
 
     def min_length(self):
@@ -984,6 +993,8 @@ class RegexUnion(Regex):
 
 
 class RegexConcat(Regex):
+    regexes: Tuple[Regex]
+
     def __new__(cls, *regexes):
         if any(r == RegexUnion() for r in regexes):
             return RegexUnion()
@@ -1069,6 +1080,8 @@ MODIFIERS
 - (?i:P)   case-insensitive match
 - (?sn:P)  cipher-shifted by n characters
 - (?s:P)   cipher-shifted by 1 to 25 characters
+- (?Rn:P)  rotated by n characters right
+- (?R<=n:P) rotated by 1 to n characters left or right
 - (?D:P)   convert NFA to DFA
 - (?M:P)   convert NFA to minimal DFA
 

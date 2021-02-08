@@ -474,25 +474,28 @@ def MatchSubtract(nfa1: NFA, nfa2: NFA, from_right: bool, negate: bool) -> NFA:
     return nfa
 
 
-def MatchSubtractInside(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
+def MatchSubtractInside(nfa1: NFA, nfa2: NFA, proper: bool, replace: Optional[NFA] = None) -> NFA:
     """Handles: A->B, A->>B"""
     # like MatchContains, but link (2) and (4)/(5) using partial intersection
-    t1, t1e, t4, t4e = {}, {}, {}, {}
+    t1, t1e, t3, t3e, t4, t4e = {}, {}, {}, {}, {}, {}
     if proper:
         t1 = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
         t1e = {(("1", s), i): {("2", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
     t2 = {(("2", s), i): {("2", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
     t2es = []
+    if replace:
+        t3 = {(("3", s, q), i): {("3", s, t) for t in ts} for (q, i), ts in replace.transitions.items() for s in nfa1.states}
+        t3e = {(("3", s, replace.end), Move.EMPTY): {(("4", s) if proper else ("5", s))} for s in nfa1.states}
     for s in nfa1.states:
         both = MatchBoth(nfa1, nfa2, start_from={(s, nfa2.start)}, stop_at={(a, nfa2.end) for a in nfa1.states})
         new_end = {a for a, _ in both.transitions.get((both.start, Move.EMPTY), set())}
         new_start = {a[0] for (a, i), cs in both.transitions.items() if i == Move.EMPTY and both.end in cs}
-        t2es.append({(("2", e), Move.EMPTY): {(("4", s) if proper else ("5", s)) for s in new_start} for e in new_end})
+        t2es.append({(("2", e), Move.EMPTY): {(("3", s, replace.start) if replace else ("4", s) if proper else ("5", s)) for s in new_start} for e in new_end})
     if proper:
         t4 = {(("4", s), i): {("4", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
         t4e = {(("4", s), i): {("5", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
     t5 = {(("5", s), i): {("5", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
-    transitions = merge_trans(t1, t1e, t2, *t2es, t4, t4e, t5)
+    transitions = merge_trans(t1, t1e, t2, *t2es, t3, t3e, t4, t4e, t5)
     nfa = NFA(("1", nfa1.start) if proper else ("2", nfa1.start), ("5", nfa1.end), transitions)
     nfa.remove_redundant_states()
     return nfa
@@ -657,10 +660,7 @@ def MatchRotated(nfa: NFA, shift: int) -> NFA:
     if shift < 0:
         window = MatchLength(-shift, -shift)
         intersection = MatchBoth(nfa, window, stop_at={(a, window.end) for a in nfa.states})
-        intersection_ends = {
-            s[0] for (s, i), cs in intersection.transitions.items() if
-            i == Move.EMPTY and intersection.end in cs and s[0] != nfa.end
-        }
+        intersection_ends = {s[0] for (s, i), cs in intersection.transitions.items() if i == Move.EMPTY and intersection.end in cs and s[0] != nfa.end}
         for middle in intersection_ends:
             move = MatchBoth(nfa, window, stop_at={(middle, window.end)})
             keep = NFA(middle, nfa.end, nfa.transitions)
@@ -670,7 +670,7 @@ def MatchRotated(nfa: NFA, shift: int) -> NFA:
     else:
         window = MatchLength(shift, shift)
         intersection = MatchBoth(nfa, window, start_from={(a, window.start) for a in nfa.states})
-        intersection_starts = { s[0] for s in intersection.transitions.get(("1", Move.EMPTY), set()) if s[0] != nfa.start }
+        intersection_starts = {s[0] for s in intersection.transitions.get(("1", Move.EMPTY), set()) if s[0] != nfa.start}
         for middle in intersection_starts:
             move = MatchBoth(nfa, window, start_from={(middle, window.start)})
             keep = NFA(nfa.start, middle, nfa.transitions)
@@ -785,6 +785,9 @@ class Pattern:
         | (
             "(?S:" + expr + ")[" + Optional(_m99_to_99, None) + ":" + Optional(_m99_to_99, None) + Optional(":" + Optional(_m99_to_99, 1), 1) + "]"
         ).setParseAction(lambda t: MatchSlice(t[1], t[3], t[5], t[-2]))
+        | ("(?/" + expr + "/" + expr + "/" + expr + "/" + Optional("s") + ")").setParseAction(
+            lambda t: MatchSubtractInside(t[1], t[3], proper=(t[7] == "s"), replace=t[5])
+        )
         | ("(?&" + _id + "=" + expr + ")").setParseAction(lambda t: SUBPATTERNS.update({t[1]: t[3]}) or MatchEmpty())
         | ("(?&" + _id + ")").setParseAction(lambda t: SUBPATTERNS[t[1]])
     )
@@ -1055,7 +1058,7 @@ class RegexConcat(Regex):
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="""NFA-based pattern matcher supporting novel spatial conjunction and modifiers.
+        description=r"""NFA-based pattern matcher supporting novel spatial conjunction and modifiers.
 Supported syntax:
 
 CHARACTERS
@@ -1063,7 +1066,6 @@ CHARACTERS
 - .        wildcard character
 - [abc]    character class
 - [^abc]   negated character class
-- \w       word from dictionary file
 
 LOGICAL OPERATORS
 - P|Q      P or Q
@@ -1104,28 +1106,32 @@ SUBTRACTION OPERATORS
 - P-^^Q    subtraction interleaved inside
 - P_-^^Q   subtraction interleaved outside
 
-MODIFIERS
+OTHER MODIFIERS
 - (?i:P)        case-insensitive match
 - (?r:P)        reversed match
-- (?Rn:P)       rotated by n characters right
-- (?R<=n:P)     rotated by 1 to n characters left or right
 - (?sn:P)       cipher-shifted by n characters
 - (?s:P)        cipher-shifted by 1 to 25 characters
+- (?Rn:P)       rotated by n characters right
+- (?R<=n:P)     rotated by 1 to n characters left or right
 - (?S:P)[m:n]   sliced match
 - (?S:P)[m:n:s] sliced match with step
+- (?/P/Q/R/)    replace Q inside P by R
+- (?/P/Q/R/s)   replace Q strictly inside P by R
 - (?D:P)        convert NFA to DFA
 - (?M:P)        convert NFA to minimal DFA
 
 REFERENCES
 - (?&ID=P) define subpattern for subsequent use
 - (?&ID)   use subpattern
+- \w       match word from dictionary file
+- \f       match FSM from external file
 """,
         formatter_class=argparse.RawTextHelpFormatter,
     )
-    parser.add_argument("pattern", type=str, help="pattern to match against")
+    parser.add_argument("pattern", type=str, help="pattern to compile")
     parser.add_argument("files", type=str, nargs="*", help="filenames to search")
     parser.add_argument("-d", dest="dict", metavar="PATH", type=str, help="dictionary file to use for \\w", default=None)
-    parser.add_argument("-f", dest="fsm", metavar="PATH", type=str, help="fsm file to use for \\f", default=None)
+    parser.add_argument("-f", dest="fsm", metavar="PATH", type=str, help="FSM file to use for \\f", default=None)
     parser.add_argument("-D", dest="DFA", action="store_true", help="convert NFA to DFA", default=None)
     parser.add_argument("-M", dest="min", action="store_true", help="convert NFA to minimal DFA ", default=None)
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
@@ -1133,7 +1139,7 @@ REFERENCES
     parser.add_argument("-s", dest="svg", metavar="NAME", default=None, help="save FSM diagram")
     parser.add_argument("-c", dest="console", action="store_true", help="generate FSM image for console")
     parser.add_argument("-x", dest="example", action="store_true", help="generate an example matching string")
-    parser.add_argument("-r", dest="regex", action="store_true", help="generate an standard equivalent regex")
+    parser.add_argument("-r", dest="regex", action="store_true", help="generate a standard equivalent regex")
     args = parser.parse_args()
     global DICTIONARY_FSM, EXPLICIT_FSM
 

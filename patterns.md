@@ -214,7 +214,7 @@ python -m pudzu.sandbox.patterns "(?r:o+h|no)"
 
 ![reversal](images/reversal.png)
 
-###Novel separating operators
+### Novel separating operators
 
 The main novel regular operators introduced in this module are all separating
 operators: that is, they describe strings that can be separated into
@@ -322,7 +322,7 @@ In the same way that left and right subtraction correspond to concatenation,
 inside and outside subtraction correspond to containment. For example, "ll" satisfies
 `lo+l->`. Like for containment, there are both strict and non-strict versions.
 Implementing subtraction inside is similar to implementing containment itself,
-except that we use a partial intersection with B to wire the left and right states
+except that we use partial intersections with B to wire the left and right states
 directly to each other (thereby skipping over the middle). Implementing subtraction outside
 is possible by looking at all the possible prefixes and suffixes that A shares with B
 and seeing which ones match up in B (therefore consuming all of it). We then use 
@@ -341,13 +341,18 @@ python -m pudzu.sandbox.patterns "lo+l->>." -M
 
 ---
 
-**Subtraction alternating and interleaved** (written `A-#B`, `A-##B`, `A-^B`, `A-^^B` or `A_-^^B`).
+**Subtraction alternating** (written `A-#B` or `A-##B`).
+
+**Subtraction interleaved** (written `A-^B`, `A-^^B` or `A_-^^B`).
+
 
 ### Other wordplay syntax
 
 **Slicing** (written `(?S:A)[m:n]` or `(?S:A)[m:n:s]`).
 
-**Rotation** (written `(?R<n>:P)` or `(?R<=<n>:P)`)
+**Replacement** (written `(?/A/B/C/)` or `(?/A/B/C/s)`).
+
+**Rotation** (written `(?R<n>:P)` or `(?R<=<n>:P)`).
 
 **Cipher shifting** (written `(?s<n>:P)` or `(?s:P)`).
 
@@ -367,6 +372,6 @@ python -m pudzu.sandbox.patterns "lo+l->>." -M
 
 ### Generating examples
 
-### Generating an equivalent regular expression
+### Generating equivalent basic regular expressions
 
 ### Generating NFA diagrams

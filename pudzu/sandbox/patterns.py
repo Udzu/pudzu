@@ -24,7 +24,8 @@ Transitions = Dict[Tuple[State, Input], Set[State]]
 logger = logging.getLogger("patterns")
 
 DEBUG = False
-DICTIONARY_FILE = None
+DICTIONARY_FSM = None
+EXPLICIT_FSM = None
 SUBPATTERNS = {}
 
 
@@ -242,6 +243,21 @@ def MatchDictionary(path: Path) -> NFA:
     """Handles: \w"""
     with open(str(path), "r", encoding="utf-8") as f:
         return MatchWords(w.rstrip("\n") for w in f)
+
+
+def ExplicitFSM(path: Path) -> NFA:
+    """Handles: \f"""
+    transitions = {}
+    with open(str(path), "r", encoding="utf-8") as f:
+        for line in f:
+            args = line.split()
+            if args:
+                start, x, *end = args
+                x = {"EMPTY": Move.EMPTY, "ALL": Move.ALL}.get(x, x)
+                if isinstance(x, str) and len(x) > 1:
+                    raise ValueError(f"Unexpected FSM input `{x}`: should be character, ALL or EMPTY")
+                transitions.setdefault((start, x), set()).update(end)
+    return NFA("START", "END", transitions)
 
 
 def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
@@ -715,7 +731,8 @@ class Pattern:
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
     set = ("[" + Word(characters, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
     nset = ("[^" + Word(characters, min=1) + "]").setParseAction(lambda t: MatchNotIn(t[1]))
-    words = Literal(r"\w").setParseAction(lambda t: DICTIONARY_FILE)
+    words = Literal(r"\w").setParseAction(lambda t: DICTIONARY_FSM)
+    fsm = Literal(r"\f").setParseAction(lambda t: EXPLICIT_FSM)
 
     expr = Forward()
     group = (
@@ -726,13 +743,15 @@ class Pattern:
         | ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1]))
         | ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1]))
         | ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)]))
+        # | ("(?R" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchRotated(t[3], t[1]))
+        # | ("(?R<=" + _0_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchRotated(t[3], i) for i in range(-t[1], t[1]+1) if i != 0]))
         | (
             "(?S:" + expr + ")[" + Optional(_m99_to_99, None) + ":" + Optional(_m99_to_99, None) + Optional(":" + Optional(_m99_to_99, 1), 1) + "]"
         ).setParseAction(lambda t: MatchSlice(t[1], t[3], t[5], t[-2]))
         | ("(?&" + _id + "=" + expr + ")").setParseAction(lambda t: SUBPATTERNS.update({t[1]: t[3]}) or MatchEmpty())
         | ("(?&" + _id + ")").setParseAction(lambda t: SUBPATTERNS[t[1]])
     )
-    atom = literal | dot | set | nset | words | group
+    atom = literal | dot | set | nset | words | fsm | group
     item = (
         (atom + "+").setParseAction(
             lambda t: MatchRepeated(
@@ -1018,7 +1037,7 @@ QUANTIFIERS
 - P{n,}    n or more occurences
 - P{m,n}   m to n occurences
 
-SPATIAL CONJUNCTION
+SEPARATING OPERATORS
 - PQ       concatenation
 - P<Q      P inside Q
 - P<<Q     P strictly inside Q
@@ -1029,7 +1048,7 @@ SPATIAL CONJUNCTION
 - P#Q      P alternating with Q
 - P##Q     P alternating before Q
 
-SPATIAL SUBTRACTION
+SUBTRACTION OPERATORS
 - P-Q      subtraction on right
 - P_-Q     subtraction on left
 - P->Q     subtraction inside
@@ -1062,6 +1081,7 @@ REFERENCES
     parser.add_argument("pattern", type=str, help="pattern to match against")
     parser.add_argument("files", type=str, nargs="*", help="filenames to search")
     parser.add_argument("-d", dest="dict", metavar="PATH", type=str, help="dictionary file to use for \\w", default=None)
+    parser.add_argument("-f", dest="fsm", metavar="PATH", type=str, help="fsm file to use for \\f", default=None)
     parser.add_argument("-D", dest="DFA", action="store_true", help="convert NFA to DFA", default=None)
     parser.add_argument("-M", dest="min", action="store_true", help="convert NFA to minimal DFA ", default=None)
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
@@ -1071,11 +1091,14 @@ REFERENCES
     parser.add_argument("-x", dest="example", action="store_true", help="generate an example matching string")
     parser.add_argument("-r", dest="regex", action="store_true", help="generate an standard equivalent regex")
     args = parser.parse_args()
-    global DICTIONARY_FILE
+    global DICTIONARY_FSM, EXPLICIT_FSM
 
     if args.dict:
         logger.info(f"Compiling dictionary from '{args.dict}'")
-        DICTIONARY_FILE = MatchDictionary(Path(args.dict))
+        DICTIONARY_FSM = MatchDictionary(Path(args.dict))
+    if args.fsm:
+        logger.info(f"Compiling FSM from '{args.fsm}'")
+        EXPLICIT_FSM = ExplicitFSM(Path(args.fsm))
 
     pattern = args.pattern
     if args.case_insensitive:

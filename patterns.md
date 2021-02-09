@@ -365,35 +365,106 @@ python -m pudzu.sandbox.patterns "Madrid-^^.." -M
 
 ![subtract inside](images/subtract_interleaved.png)
 
+### Other wordplay syntax
+
+In addition to the separating and subtraction operators above,
+there are a number of other related operators introduced to describe wordplay.
+
+**Slicing** (written `(?S:A)[m:n]` or `(?S:A)[m:n:s]`). This is modelled on Python's
+slicing syntax and behaves similarly. E.g. `(?S:A)[1:-1]` trims the first and last
+characters, `(?S:A)[::3]` matches every third character, and `(?S:A)[::-1]` matches
+in reverse. This is implemented via a combination of subtraction on the left and
+right (for trimming off a certain length),
+intersection (for trimming *to* a certain length), alternating subtraction
+(generalised to handle steps other than 2)
+and reversal (for handling negative step values).
+
+```bash
+python -m pudzu.sandbox.patterns "(?S:(me)+)[1::2]" -M
+```
+
+![subtract inside](images/slicing.png)
+
+**Replacement** (written `(?/A/B/C/)` or `(?/A/B/C/s)`). This behaves like subtraction
+inside, except that it inserts a string matching a third expression C in place of the
+removed substring. For example, "Lundon" satisfies `(?/London/o/u/)`. The implementation
+is as for subtraction, but the left and right states are wired via a copy of C.
+Like for subtraction, there is a strict version `(?/A/B/C/s)`.
+
+```bash
+python -m pudzu.sandbox.patterns "(?/London/o/u/)" -M
+```
+
+![subtract inside](images/replacement.png)
+
+**Rotation** (written `(?R<n>:A)` or `(?R<=<n>:A)`). This rotates a string n steps
+to the right (or left, if n is negative). For example, "eth" satisfies `(R1:the)`
+and "het" satisfies `(R-1:the)`. We implement this by slicing off each possible
+prefix or suffix and moving it to the other end, creating an alternation of possibilities.
+There is an additional form `(?R<=<n>:P)` which matches any rotation of between 1
+and n characters left or right (but not 0). Note that a string is not viewed as a rotation
+of itself: e.g. "the" does not satisfy `(R3:the)`.
+
+```bash
+python -m pudzu.sandbox.patterns "(?R<=4:spam)" -M
+```
+
+![subtract inside](images/rotation.png).
+
+**Cipher shifting** (written `(?s<n>:A)` or `(?s:A)`). This applies a shift cipher
+to the FSM, replacing each Latin letter by another letter n positions down the alphabet
+(or up, if n is negative).
+Non-Latin characters are unchanged (though an extension could allow the shift to
+be locale-based or configurable). The additional form `(?s:A)` matches any shift
+of between 1 and 25 characters (but not 0).
+
+```bash
+python -m pudzu.sandbox.patterns "(?s13:PNG)" -M
+```
+
+![subtract inside](images/shift.png).
+
+One bit of wordplay that sadly can't be supported is **anagrams**. This is because
+an anagram operator would not be regular: e.g. the language that matches
+all anagrams of `(ab)+` is not a regular language, as matching against
+it would require us to keep
+track of the potentially unbounded number *a*s and *b*s.
+
+
+### General pattern syntax
+
+There are also a few bits of general syntax, not connected with manipulating
+individual strings.
+
+**Pattern references** (written `(?&<ID>=A)` and `(?&<ID>)`). This syntax
+allows you to define and later use a subpattern. For example "cat" and "dog" 
+both match `(?&v=[aeiou])(?&c=[^aeiou])(?&c)(?&v)(?&c)` but "ewe" doesn't. A
+pattern definition cannot refer to itself, though it can refer to previously 
+defined patterns.
+
+**External world list** (written `\w`). Using the `-d` parameter you can specify an external
+world list and then use `\w` to refer to any word in the list. This is implemented
+as a prefix tree rather than just an alternation.
+
+**External FSM definition** (written `\f`). Using the `-f` parameter you can specify
+an explicit NFA definition and then use `\f` to refer to it inside a pattern. The
+NFA definition file should consist of lines of the format "State Input State*",
+each defining transitions from one state and input to zero or more other states.
+Inputs should be either a single character, or the strings EMPTY or ALL.
+The start and end states should be called START and END.
+
+
 ---
 
 🚧🚧🚧🚧 **WIP from here...** 🚧🚧🚧🚧
 
 ---
 
-### Other wordplay syntax
-
-**Slicing** (written `(?S:A)[m:n]` or `(?S:A)[m:n:s]`).
-
-**Replacement** (written `(?/A/B/C/)` or `(?/A/B/C/s)`).
-
-**Rotation** (written `(?R<n>:P)` or `(?R<=<n>:P)`).
-
-**Cipher shifting** (written `(?s<n>:P)` or `(?s:P)`).
-
-### General pattern syntax
-
-**Pattern references** (written `(?&ID=P)` and `(?&ID)`)
-
-**External world list** (written `\w`)
-
-**External FSM definition** (written `\f`)
-
 ## Other NFA operations
 
 ### Trimming NFAs
 
-### Minimizing NFAs
+### Minimizing DFAs
 
 ### Generating examples
 

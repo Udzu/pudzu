@@ -335,16 +335,41 @@ python -m pudzu.sandbox.patterns "lo+l->>." -M
 
 ![subtract inside](images/subtract_containment.png)
 
+**Subtraction alternating** (written `A-#B` or `A-##B` or `A_-##B`). The subtraction
+alternating operators remove every other character. For example, "mm" satisfies `(me)+#..`
+since you can add two characterts to "mm" to get something satisfying `(me)+`.
+The order-aware alternation operator `##` has two subtractions: one on the left and
+on the right. To implement these, we define an NFA with states (a,b) and
+transitions copied from A and extended from A&B: e.g. if a1→a2 for j in A,
+a2→a3 for k in A and b1→b3 for k in B, then (a1,b1)→(a3,b2) for k.
+
+```bash
+python -m pudzu.sandbox.patterns "(me)+-#.." -M
+```
+
+![subtract inside](images/subtract_alternating.png)
+
+
+**Subtraction interleaved** (written `A-^B`, `A-^^B` or `A_-^^B`). The subtraction
+interleaved operators remove an interleaved substring. For example, "Nadd" satisfies
+`Madrid-^..` since you can interleave two characters inside to get madrid. The
+strict interleaving operator `^^` has two subtractions: one inside and one outside.
+To implement these, we define an NFA with states (a,b) and transitions
+copied from A. We then add empty transitions for the transitions in A&B: i.e.
+if a1→a2 for j in A and b1→b2 for j in B then (a1,a2)→(b1,b2) for ε.
+
+
+```bash
+python -m pudzu.sandbox.patterns "Madrid-^^.." -M
+```
+
+![subtract inside](images/subtract_interleaved.png)
+
 ---
 
 🚧🚧🚧🚧 **WIP from here...** 🚧🚧🚧🚧
 
 ---
-
-**Subtraction alternating** (written `A-#B` or `A-##B`).
-
-**Subtraction interleaved** (written `A-^B`, `A-^^B` or `A_-^^B`).
-
 
 ### Other wordplay syntax
 

@@ -257,6 +257,10 @@ def ExplicitFSM(path: Path) -> NFA:
                 x = {"EMPTY": Move.EMPTY, "ALL": Move.ALL}.get(x, x)
                 if isinstance(x, str) and len(x) > 1:
                     raise ValueError(f"Unexpected FSM input `{x}`: should be character, ALL or EMPTY")
+                elif start == "END":
+                    raise ValueError("END state should have no outbound arrows")
+                elif "START" in end:
+                    raise ValueError("START state should have no inbound arrows")
                 transitions.setdefault((start, x), set()).update(end)
     return NFA("START", "END", transitions)
 

@@ -492,6 +492,11 @@ but first intersecting the NFA with `.{min,max}` or `.{min,}`.
 To generate a shortest example, we can also use Dijkstra's algorithm to find a
 shortest accepting path. To generate an example for a given pattern, pass in the `-x` parameter.
 
+```bash
+> python -m pudzu.sandbox.patterns "the^^A+" -x
+[16:13:51] patterns:INFO - Example match: 'thAAe'
+```
+
 ### Generating equivalent basic regular expressions
 
 Since all of the constructions in this module are regular and implemented
@@ -504,6 +509,12 @@ a full description, see for example [this Stack Exchange answer](https://cs.stac
 To generate an equivalent regular expression for a given pattern, pass in the `-r` parameter.
 These regular expressions also make it easy to figure out the shortest and longest
 possible match lengths for the pattern.
+
+```bash
+> python -m pudzu.sandbox.patterns "the^^A+" -Mr
+[16:13:51] patterns:INFO - Equivalent regex: '^((thA|tAA*h)A*e)$'
+[16:13:51] patterns:INFO - Match lengths: 4+
+```
 
 ### Generating NFA diagrams
 

@@ -443,8 +443,8 @@ pattern definition cannot refer to itself, though it can refer to previously
 defined patterns.
 
 **External world list** (written `\w`). Using the `-d` parameter you can specify an external
-world list and then use `\w` to refer to any word in the list. This is implemented
-as a prefix tree rather than just an alternation.
+world list and then use `\w` to match any word in the list. For efficiency, 
+this is implemented as a prefix tree rather than just an alternation.
 
 **External FSM definition** (written `\f`). Using the `-f` parameter you can specify
 an explicit NFA definition and then use `\f` to refer to it inside a pattern. The
@@ -454,20 +454,61 @@ Inputs should be either a single character, or the strings EMPTY or ALL.
 The start and end states should be called START and END.
 
 
----
-
-🚧🚧🚧🚧 **WIP from here...** 🚧🚧🚧🚧
-
----
-
 ## Other NFA operations
+
+Apart from the search patterns and constructions described above, there
+are a number of other operations on NFAs implemented in the module.
 
 ### Trimming NFAs
 
-### Minimizing DFAs
+As mentioned before, some of the constructions above can produce lots of
+superfluous states, so it can be useful to remove redundant states from the
+resulting NFAs. Specifically, we remove states that are not reachable from the
+start, as well as ones from which it isn't possible to reach an accepting state.
+We also eliminate states that only have an empty transition to the end state,
+since they're another common by-product.
+
+### Minimal DFAs
+
+For DFAs we can do better that this. Unlike for NFAs, there exists efficient
+algorithms to transform any DFA into an equivalent DFA with a minimal number of states,
+based on the merging of equivalent states. The simplest for our purpose
+is Brzozowski's algorithm, which involves: reversing the input DFA
+as described in the reversal section, then converting the result into a
+DFA using the powerset construction, then reversing it again, and then converting
+it again. As long as we discard any unreachable states as described above, the
+resulting DFA is guaranteed to be minimal. To convert an NFA into a minimal DFA
+you can use the `(?M:A)` syntax, which is just shorthand for `(?D:(?r:(?D:(?r:A))))`.
 
 ### Generating examples
 
+Another thing we can easily do with NFAs is generate an example matching string.
+The simplest way is just to traverse the NFA graph randomly until we reach an 
+accepting state. Note that using a special * state (as described in the
+character shorthands section) actually helps here, as it
+makes it less likely that we'll get stuck for ages in a transitions like `[^a]`.
+That said, we can also generate examples with a given minimum or maximum length
+but first intersecting the NFA with `.{min,max}` or `.{min,}`. 
+To generate a shortest example, we can also use Dijkstra's algorithm to find a
+shortest accepting path. To generate an example for a given pattern, pass in the `-x` parameter.
+
 ### Generating equivalent basic regular expressions
 
+Since all of the constructions in this module are regular and implemented
+by NFAs, we can convert any of them (as well any explicitly provided FSMs)
+into a regular basic regular expression. One approach
+is based on **state elimination**: start with the original NFA
+and then eliminate intermediate states while keeping the remaining edges labelled 
+with consistent regular expressions describing those transitions. For
+a full description, see for example [this Stack Exchange answer](https://cs.stackexchange.com/questions/2016/how-to-convert-finite-automata-to-regular-expressions/2389#2389).
+To generate an equivalent regular expression for a given pattern, pass in the `-r` parameter.
+These regular expressions also make it easy to figure out the shortest and longest
+possible match lengths for the pattern.
+
 ### Generating NFA diagrams
+
+Finally, the module also lets you generate FSM diagrams in SVG format using the `-c` or `-s` parameters.
+These use the [graphviz](https://graphviz.org/) package to visualise the NFAs. The console diagrams generated
+with `-c` are inteded for use on consoles such as [kitty](https://sw.kovidgoyal.net/kitty/),
+and may using a tool such as rsvg-convert to convert the SVG into a format that can be 
+displayed inline.

@@ -57,7 +57,7 @@ When following these transitions the automaton picks one "arbitrarily".
 A string is matched if there exists a "luck run" of choices leading to an accepting state.
 Additionally, NFAs are often also allowed to include **empty transitions** (marked by an ε)
 which the machine may choose to follow without consuming any input character. 
-For convenience, such automata are restricted to having a single start state with no
+For convenience, such automata are sometimes restricted to having a single start state with no
 inbound transitions and a single end state with no outbound transitions.
 For example,
 the following NFA matches the same possessive pronouns as the DFA above:

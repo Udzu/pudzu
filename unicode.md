@@ -47,4 +47,4 @@ Unicode data and manipulation.
 
 ## Data sources
 
-Includes Unicode 12.1.0 data from https://www.unicode.org/Public/12.1.0/ucd/ and https://unicode.org/Public/emoji/12.1/. For terms of use, see http://www.unicode.org/terms_of_use.html.
+Includes Unicode 13.0.0 data from https://www.unicode.org/Public/13.0.0/ucd/. For terms of use, see http://www.unicode.org/terms_of_use.html.

@@ -136,14 +136,15 @@ class NFA:
         g.render(filename=name + ".dot")
 
     def example(self, min_length: int = 0, max_length: Optional[int] = None) -> Optional[str]:
-        """Generate a random matching string."""
+        """Generate a random matching string. Assumes NFA has been trimmed of states that can't reach the end."""
         nfa = MatchBoth(self, MatchLength(min_length, max_length)) if min_length or max_length is not None else self
         output = ""
         state = nfa.start
         try:
             while state != nfa.end:
                 choices = [i for (s, i) in nfa.transitions if s == state]
-                i = random.choice(choices)
+                non_empty = [i for i in choices if nfa.transitions[(state, i)]]
+                i = random.choice(non_empty)
                 if i == Move.ALL:
                     # TODO: match with supported scripts
                     options = list(set(string.ascii_letters + string.digits + " '") - set(choices))

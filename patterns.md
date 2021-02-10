@@ -8,7 +8,7 @@ Originally developed to analyse wordplay for setting or solving cryptic crosswor
 *Required*: [graphviz](https://graphviz.org/), [pudzu-utils](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-utils).
 
 ## Documentation
-For supported syntax and arguments, see `python -m pudzu.sandbox.patterns --help`.
+For supported syntax and arguments, run `patterns --help`.
 For an explanation of how it's implemented, read on.
 
 ## Some background
@@ -93,7 +93,7 @@ using a standard construction called **Thompson's construction**.
 **Literal characters** are converted in the obvious fashion:
 
 ```bash
-python -m pudzu.sandbox.patterns "a"
+patterns "a"
 ```
 
 ![literal](images/literal.png)
@@ -102,7 +102,7 @@ python -m pudzu.sandbox.patterns "a"
 with the start state of the second part.
 
 ```bash
-python -m pudzu.sandbox.patterns "the"
+patterns "the"
 ```
 
 ![concatenation](images/concatenation.png)
@@ -110,7 +110,7 @@ python -m pudzu.sandbox.patterns "the"
 **Alternation** is converted using empty transitions:
 
 ```bash
-python -m pudzu.sandbox.patterns "a|the"
+patterns "a|the"
 ```
 
 ![alternation](images/alternation.png)
@@ -118,7 +118,7 @@ python -m pudzu.sandbox.patterns "a|the"
 As is the **Kleene star**:
 
 ```bash
-python -m pudzu.sandbox.patterns "(he)*"
+patterns "(he)*"
 ```
 
 ![kleene](images/kleene.png)
@@ -137,7 +137,7 @@ However, for efficiency reasons it's more common to implement transitions via a 
 values.
   
 ```bash
-python -m pudzu.sandbox.patterns "[ae].[^y]"
+patterns "[ae].[^y]"
 ```
 
 ![class](images/class.png)
@@ -147,7 +147,7 @@ and `{m,}` (m or more) operators can be converted by a combination of
 repeated concatenation and Kleene star. 
 
 ```bash
-python -m pudzu.sandbox.patterns "o+h?"
+patterns "o+h?"
 ```
 
 ![repetition](images/repetition.png)
@@ -160,7 +160,7 @@ full Unicode case insensitivity, where string length may change between cases
 i uppercases to İ not I).
 
 ```bash
-python -m pudzu.sandbox.patterns "(?i:The)"
+patterns "(?i:The)"
 ```
 
 ![case](images/case.png)
@@ -185,7 +185,7 @@ section below).
 
 
 ```bash
-python -m pudzu.sandbox.patterns "(b+)&(...)" -M
+patterns "(b+)&(...)" -M
 ```
 
 ![conjunction](images/conjunction.png)
@@ -198,7 +198,7 @@ by converting it to a DFA first. Negation also suggests a different way to imple
 conjunction: `A&B` can alternatively be implemented as `¬(¬A|¬B)`.
 
 ```bash
-python -m pudzu.sandbox.patterns "¬(..)"
+patterns "¬(..)"
 ```
 
 ![negation](images/negation.png)
@@ -209,7 +209,7 @@ construction is easier for NFAs than DFAs: you just reverse the edges and swap
 the start and end states.
 
 ```bash
-python -m pudzu.sandbox.patterns "(?r:o+h|no)"
+patterns "(?r:o+h|no)"
 ```
 
 ![reversal](images/reversal.png)
@@ -234,7 +234,7 @@ middle(a, B_start), and from middle(a, B_end) to right(a) for all a. The NFA
 starts at left(A_start) and ends at right(A_end).
 
 ```bash
-python -m pudzu.sandbox.patterns "o+<l+" -M
+patterns "o+<l+" -M
 ```
 
 ![containment](images/containment.png)
@@ -249,7 +249,7 @@ and right states according to the non-empty transitions. The NFA now starts at
 left_first(A_start), and middle states transition to right_first rather than right. 
 
 ```bash
-python -m pudzu.sandbox.patterns "o+<<l+" -M
+patterns "o+<<l+" -M
 ```
 
 ![strict_containment](images/strict_containment.png)
@@ -268,7 +268,7 @@ comes first adds an additional state make right(A_start, B_start) an additional
 start state.
 
 ```bash
-python -m pudzu.sandbox.patterns "U+##w+" -M
+patterns "U+##w+" -M
 ```
 
 ![alternating](images/alternating.png)
@@ -286,7 +286,7 @@ Another version `A^^B` that insists that B is strictly inside A is implemented
 similarly to strict containment above.
 
 ```bash
-python -m pudzu.sandbox.patterns "the^^A+" -M
+patterns "the^^A+" -M
 ```
 
 ![interleave](images/interleave.png)
@@ -312,7 +312,7 @@ to include all the possible start states for this suffix intersection. The
 implementation of `A_-B` is similar, but uses a prefx intersection instead.
 
 ```bash
-python -m pudzu.sandbox.patterns "(the|a)-." -M
+patterns "(the|a)-." -M
 ```
 
 ![subtract](images/subtract.png)
@@ -330,10 +330,10 @@ these points that match in B to generate a selection of possible start/end point
 in A. We generate an NFA for each, and combine them in an alternation.
 
 ```bash
-python -m pudzu.sandbox.patterns "lo+l->>." -M
+patterns "lo+l->>." -M
 ```
 
-![subtract inside](images/subtract_containment.png)
+![subtract_containment](images/subtract_containment.png)
 
 **Subtraction alternating** (written `A-#B` or `A-##B` or `A_-##B`). The subtraction
 alternating operators remove every other character. For example, "mm" satisfies `(me)+#..`
@@ -344,10 +344,10 @@ transitions copied from A and extended from A&B: e.g. if a1→a2 for j in A,
 a2→a3 for k in A and b1→b3 for k in B, then (a1,b1)→(a3,b2) for k.
 
 ```bash
-python -m pudzu.sandbox.patterns "(me)+-#.." -M
+patterns "(me)+-#.." -M
 ```
 
-![subtract inside](images/subtract_alternating.png)
+![subtract_alternating](images/subtract_alternating.png)
 
 
 **Subtraction interleaved** (written `A-^B`, `A-^^B` or `A_-^^B`). The subtraction
@@ -360,10 +360,10 @@ if a1→a2 for j in A and b1→b2 for j in B then (a1,a2)→(b1,b2) for ε.
 
 
 ```bash
-python -m pudzu.sandbox.patterns "Madrid-^^.." -M
+patterns "Madrid-^^.." -M
 ```
 
-![subtract inside](images/subtract_interleaved.png)
+![subtract_interleaved](images/subtract_interleaved.png)
 
 ### Other wordplay syntax
 
@@ -380,10 +380,10 @@ intersection (for trimming *to* a certain length), alternating subtraction
 and reversal (for handling negative step values).
 
 ```bash
-python -m pudzu.sandbox.patterns "(?S:(me)+)[1::2]" -M
+patterns "(?S:(me)+)[1::2]" -M
 ```
 
-![subtract inside](images/slicing.png)
+![slicing](images/slicing.png)
 
 **Replacement** (written `(?/A/B/C/)` or `(?/A/B/C/s)`). This behaves like subtraction
 inside, except that it inserts a string matching a third expression C in place of the
@@ -392,10 +392,10 @@ is as for subtraction, but the left and right states are wired via a copy of C.
 Like for subtraction, there is a strict version `(?/A/B/C/s)`.
 
 ```bash
-python -m pudzu.sandbox.patterns "(?/London/o/u/)" -M
+patterns "(?/London/o/u/)" -M
 ```
 
-![subtract inside](images/replacement.png)
+![replacement](images/replacement.png)
 
 **Rotation** (written `(?R<n>:A)` or `(?R<=<n>:A)`). This rotates a string n steps
 to the right (or left, if n is negative). For example, "eth" satisfies `(R1:the)`
@@ -406,10 +406,10 @@ and n characters left or right (but not 0). Note that a string is not viewed as 
 of itself: e.g. "the" does not satisfy `(R3:the)`.
 
 ```bash
-python -m pudzu.sandbox.patterns "(?R<=4:spam)" -M
+patterns "(?R<=4:spam)" -M
 ```
 
-![subtract inside](images/rotation.png).
+![rotation](images/rotation.png).
 
 **Cipher shifting** (written `(?s<n>:A)` or `(?s:A)`). This applies a shift cipher
 to the FSM, replacing each Latin letter by another letter n positions down the alphabet
@@ -419,10 +419,10 @@ be locale-based or configurable). The additional form `(?s:A)` matches any shift
 of between 1 and 25 characters (but not 0).
 
 ```bash
-python -m pudzu.sandbox.patterns "(?s13:PNG)" -M
+patterns "(?s13:PNG)" -M
 ```
 
-![subtract inside](images/shift.png).
+![shift](images/shift.png).
 
 One bit of wordplay that sadly can't be supported is **anagrams**. This is because
 an anagram operator would not be regular: e.g. the language that matches
@@ -493,7 +493,7 @@ To generate a shortest example, we can also use Dijkstra's algorithm to find a
 shortest accepting path. To generate an example for a given pattern, pass in the `-x` parameter.
 
 ```bash
-> python -m pudzu.sandbox.patterns "the^^A+" -x
+> patterns "the^^A+" -x
 [16:13:51] patterns:INFO - Example match: 'thAAe'
 ```
 
@@ -506,12 +506,14 @@ is based on **state elimination**: start with the original NFA
 and then eliminate intermediate states while keeping the remaining edges labelled 
 with consistent regular expressions describing those transitions. For
 a full description, see for example [this Stack Exchange answer](https://cs.stackexchange.com/questions/2016/how-to-convert-finite-automata-to-regular-expressions/2389#2389).
+Since the resulting expressions are often inefficiently verbose, we apply
+a few heuristics to try to simplify them, but more work could be done here.
 To generate an equivalent regular expression for a given pattern, pass in the `-r` parameter.
 These regular expressions also make it easy to figure out the shortest and longest
 possible match lengths for the pattern.
 
 ```bash
-> python -m pudzu.sandbox.patterns "the^^A+" -Mr
+> patterns "the^^A+" -Mr
 [16:13:51] patterns:INFO - Equivalent regex: '^((thA|tAA*h)A*e)$'
 [16:13:51] patterns:INFO - Match lengths: 4+
 ```

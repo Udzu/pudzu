@@ -56,7 +56,10 @@ there may be more than one transition from a given state for a given input chara
 When following these transitions the automaton picks one "arbitrarily".
 A string is matched if there exists a "luck run" of choices leading to an accepting state.
 Additionally, NFAs are often also allowed to include **empty transitions** (marked by an ε)
-which the machine may choose to follow without consuming any input character. For example,
+which the machine may choose to follow without consuming any input character. 
+For convenience, such automata are restricted to having a single start state with no
+inbound transitions and a single end state with no outbound transitions.
+For example,
 the following NFA matches the same possessive pronouns as the DFA above:
 
 ![dfa](images/dfa.png)
@@ -522,6 +525,6 @@ possible match lengths for the pattern.
 
 Finally, the module also lets you generate FSM diagrams in SVG format using the `-c` or `-s` parameters.
 These use the [graphviz](https://graphviz.org/) package to visualise the NFAs. The console diagrams generated
-with `-c` are inteded for use on consoles such as [kitty](https://sw.kovidgoyal.net/kitty/),
-and may using a tool such as rsvg-convert to convert the SVG into a format that can be 
+with `-c` are intended for use on consoles such as [kitty](https://sw.kovidgoyal.net/kitty/),
+and may require a tool such as rsvg-convert to convert the SVG into a format that can be 
 displayed inline.

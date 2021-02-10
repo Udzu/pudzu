@@ -65,7 +65,7 @@ def extract_property(filename: str, path: Optional[Path] = None) -> pd.DataFrame
 
     # remove whitespace and set (possibly non-unique) index
     df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
-    df.index = df.Code_Point.str.replace("\.\..*", "").apply(artial(int, 16))
+    df.index = df.Code_Point.str.replace("\.\..*", "", regex=True).apply(artial(int, 16))
 
     # Filter out Surrogate and Private Use characters (though non-existent characters may remain)
     df = df.loc[(df.index < 0xD800) | ((df.index > 0xF8FF) & (df.index < 0xF0000))]

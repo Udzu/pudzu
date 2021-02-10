@@ -3,9 +3,6 @@ from turtle import *
 
 from pudzu.utils import *
 
-wn = Screen()
-
-
 class LSystem:
 
     Rule = namedtuple("Rule", "predecessor successor weight", defaults=(1.0,))
@@ -26,10 +23,10 @@ class LSystem:
             state = "".join([weighted_choice(self.rules.get(c, [c]), self.weights.get(c, [1])) for c in state])
         return state
 
-    def plot(self, iterations, size, reset=True, tracer=(0, 0)):
+    def plot(self, screen, iterations, size, reset=True, tracer=(0, 0)):
         if reset:
-            wn.clearscreen()
-        wn.tracer(*tracer)
+            screen.clearscreen()
+        screen.tracer(*tracer)
         stack = []
         for c in self.expand(iterations):
             if c == "F":
@@ -50,7 +47,7 @@ class LSystem:
                 setposition(p)
                 setheading(h)
                 pd()
-        wn.update()
+        screen.update()
 
 
 Koch = LSystem("F--F--F", [("F", "F+F--F+F")], 6)

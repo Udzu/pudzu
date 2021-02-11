@@ -268,7 +268,7 @@ transitions of A.
 The right states transition similarly using the transitions of B. The start state
 is left(A_start, B_start) and the end state is both right(A_end, B_end) and
 left(A_end, B_end). Another version `A#B` that doesn't specify which of A or B
-comes first adds an additional state make right(A_start, B_start) an additional
+comes first makes right(A_start, B_start) an additional
 start state.
 
 ```bash
@@ -341,7 +341,7 @@ patterns "lo+l->>." -M
 
 **Subtraction alternating** (written `A-#B` or `A-##B` or `A_-##B`). The subtraction
 alternating operators remove every other character. For example, "mm" satisfies `(me)+#..`
-since you can add two characterts to "mm" to get something satisfying `(me)+`.
+since you can alternate two characterts into "mm" to get something satisfying `(me)+`.
 The order-aware alternation operator `##` has two subtractions: one on the left and
 on the right. To implement these, we define an NFA with states (a,b) and
 transitions copied from A and extended from A&B: e.g. if a1→a2 for j in A,
@@ -355,7 +355,7 @@ patterns "(me)+-#.." -M
 
 
 **Subtraction interleaved** (written `A-^B`, `A-^^B` or `A_-^^B`). The subtraction
-interleaved operators remove an interleaved substring. For example, "Nadd" satisfies
+interleaved operators remove an interleaved substring. For example, "Mdrd" satisfies
 `Madrid-^..` since you can interleave two characters inside to get madrid. The
 strict interleaving operator `^^` has two subtractions: one inside and one outside.
 To implement these, we define an NFA with states (a,b) and transitions
@@ -490,7 +490,7 @@ Another thing we can easily do with NFAs is generate an example matching string.
 The simplest way is just to traverse the NFA graph randomly until we reach an 
 accepting state. Note that using a special * state (as described in the
 character shorthands section) actually helps here, as it
-makes it less likely that we'll get stuck for ages in a transitions like `[^a]`.
+makes it less likely that we'll get stuck for ages in a transitions like `[^a]*`.
 That said, we can also generate examples with a given minimum or maximum length
 but first intersecting the NFA with `.{min,max}` or `.{min,}`. 
 To generate a shortest example, we can also use Dijkstra's algorithm to find a

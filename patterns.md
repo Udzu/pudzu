@@ -137,7 +137,8 @@ with the appropriate transitions. For visualisation reasons, I decided to introd
 special * state transition that's used if there is no other match. This allows
 visualising a negated class like `[^a]` without showing every possible matching input.
 However, for efficiency reasons it's more common to implement transitions via a lookup table of character
-values.
+values (with Unicode characters compiled down to byte sequences),
+and compact notation can easily be implemented just in the visualisation stage. 
   
 ```bash
 patterns "[ae].[^y]"
@@ -303,7 +304,7 @@ can be made to satisfy one regular expression by extending them
 with another string satisfying a second regular expression.
 
 **Left and right subtraction** (written `A-B` or `A_-B`). The simplest
-for of subtraction is left and right subtraction. A string satisfies `A-B` if 
+form of subtraction is left and right subtraction. A string satisfies `A-B` if 
 you can concatenate a string satisfying `B` to the end so that the result
 satisfies `A`. For example "th" and "" both satisfy `(the|a)-.`. `A_-B` is similar,
 but requires concatenation on the left. To implement `A-B`, we use the intersection
@@ -528,3 +529,11 @@ These use the [graphviz](https://graphviz.org/) package to visualise the NFAs. T
 with `-c` are intended for use on consoles such as [kitty](https://sw.kovidgoyal.net/kitty/),
 and may require a tool such as rsvg-convert to convert the SVG into a format that can be 
 displayed inline.
+
+## Similar projects
+
+If you found this interesting, then you may also enjoy the much more professional [libfsm](https://github.com/katef/libfsm) project
+("DFA regular expression library & friends"), as well as this series of articles ([#1](https://swtch.com/~rsc/regexp/regexp1.html)
+[#2](https://swtch.com/~rsc/regexp/regexp2.html) [#3](https://swtch.com/~rsc/regexp/regexp3.html)
+[#4](https://swtch.com/~rsc/regexp/regexp4.html)) about efficient regular expression matching.
+

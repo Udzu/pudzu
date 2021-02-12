@@ -14,12 +14,15 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import cast, Any, Dict, Iterable, List, Optional, Set, Tuple, Union
 
-from pudzu.utils import optional_import, merge_with, first  # type: ignore
+from pudzu.utils import optional_import, merge, merge_with, first  # type: ignore
 
 State = Any  # really it's Union[str, Tuple['State']]
 Move = Enum("Move", "EMPTY ALL")
 Input = Union[str, Move]
 Transitions = Dict[Tuple[State, Input], Set[State]]
+CaptureGroup = str
+Captures = Dict[Tuple[State, Input], Set[CaptureGroup]]
+CaptureOutput = Dict[CaptureGroup, str]
 
 logger = logging.getLogger("patterns")
 
@@ -36,22 +39,33 @@ class NFA:
     - *-moves (only used if there is no other matching move)
     """
 
-    def __init__(self, start: State, end: State, transitions: Transitions):
+    def __init__(self, start: State, end: State, transitions: Transitions, captures: Captures = {}):
         self.start = start
         self.end = end
         self.transitions = transitions
+        self.captures = captures
         self.states = {self.start, self.end} | {s for s, _ in self.transitions.keys()} | {t for ts in self.transitions.values() for t in ts}
 
     def __repr__(self) -> str:
         return f"NFA(start={self.start}, end={self.end}, transitions={self.transitions})"
 
-    def match(self, string: str) -> bool:
-        """Match the NFA against a string input."""
-        states = self.expand_epsilons({self.start})
+    def match(self, string: str) -> Optional[CaptureOutput]:
+        """Match the NFA against a string input. Returns a CaptureOutput if found, or None otherwise."""
+        old_states : Dict[State, CaptureOutput] = { self.start: {}}
         for c in string:
-            states = {t for s in states for t in self.transitions.get((s, c), self.transitions.get((s, Move.ALL), set()))}
-            states = self.expand_epsilons(states)
-        return self.end in states
+            new_states : Dict[State, CaptureOutput] = {}
+            for s, co in old_states.items():
+                for se in self.expand_epsilons({s}):
+                    for t in self.transitions.get((se, c), self.transitions.get((se, Move.ALL), set())):
+                        if t not in new_states:
+                            cgs = self.captures.get((se, c) if (se, c) in self.transitions else (se, Move.ALL), set())
+                            tco = merge(co, { cg : co.get(cg, "") + c for cg in cgs})
+                            new_states[t] = tco
+            old_states = new_states
+        for s, co in old_states.items():
+            if self.end in self.expand_epsilons({s}):
+                return co
+        return None
 
     def expand_epsilons(self, states: Iterable[State]) -> Set[State]:
         """Expand a collection of states along all ε-moves"""
@@ -90,8 +104,11 @@ class NFA:
         for k in unnecessary:
             del self.transitions[k]
 
+        # remove capture information for trimmed transitions
+        self.captures = {(s, i): cs for (s, i), cs in self.captures.items() if (s, i) in self.transitions and i != Move.EMPTY}
+
         if aggressive:
-            # remove states that only go to self.end
+            # remove states that only go via empty to self.end
             # (don't call this from MatchBoth as it would break assumptions of some calling functions)
             removable = set()
             not_removable = set()
@@ -131,7 +148,10 @@ class NFA:
             if not ts:
                 g.node(str(("fail", s)), label="", color=fg)
             for t in ts or {("fail", s)}:
-                g.edge(str(s), str(t), label={Move.ALL: "*", Move.EMPTY: "ε", "": ""}.get(i, i), color=fg, fontcolor=fg)
+                label = {Move.ALL: "*", Move.EMPTY: "ε", "": ""}.get(i, i)
+                if self.captures.get((s, i), set()):
+                    label += f" [{','.join(self.captures[(s, i)])}]"
+                g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
 
         g.render(filename=name + ".dot")
 
@@ -266,6 +286,12 @@ def ExplicitFSM(path: Path) -> NFA:
     return NFA("START", "END", transitions)
 
 
+def MatchCapture(nfa: NFA, id: CaptureGroup) -> NFA:
+    """Handles: (?\id:A)"""
+    captures = {(s, i): {id} for (s, i) in nfa.transitions if i != Move.EMPTY}
+    return NFA(nfa.start, nfa.end, nfa.transitions, merge_trans(nfa.captures, captures))
+
+
 def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: AB"""
     t1 = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
@@ -273,29 +299,33 @@ def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
         (("1", nfa1.end) if s == nfa2.start else ("2", s), i): {("1", nfa1.end) if t == nfa2.start else ("2", t) for t in ts}
         for (s, i), ts in nfa2.transitions.items()
     }
-    return NFA(("1", nfa1.start), ("2", nfa2.end), merge_trans(t1, t2))
+    c1 = {(("1", s), i): cs for (s, i), cs in nfa1.captures.items()}
+    c2 = {(("1", nfa1.end) if s == nfa2.start else ("2", s), i): cs for (s, i), cs in nfa2.captures.items()}
+    return NFA(("1", nfa1.start), ("2", nfa2.end), merge_trans(t1, t2), merge_trans(c1, c2))
 
 
 def MatchEither(*nfas: NFA) -> NFA:
     """Handles: A|B (and arbitrary alternation too)"""
-    tis = []
+    tis, cis = [], []
     for n, nfa in enumerate(nfas, 1):
         tis.append({((str(n), s), i): {(str(n), t) for t in ts} for (s, i), ts in nfa.transitions.items()})
+        cis.append({((str(n), s), i): cs for (s, i), cs in nfa.captures.items()})
     tstart = {("1", Move.EMPTY): {(str(n), nfa.start) for n, nfa in enumerate(nfas, 1)}}
     tend = {((str(n), nfa.end), Move.EMPTY): {"2"} for n, nfa in enumerate(nfas, 1)}
-    return NFA("1", "2", merge_trans(tstart, tend, *tis))
+    return NFA("1", "2", merge_trans(tstart, tend, *tis), merge_trans(*cis))
 
 
 def MatchRepeated(nfa: NFA, repeat: bool = False, optional: bool = False) -> NFA:
     """Handles: A*, A+, A?"""
     transitions: Transitions = {(("0", s), i): {("0", t) for t in ts} for (s, i), ts in nfa.transitions.items()}
+    captures: Captures = {(("0", s), i): cs for (s, i), cs in nfa.captures.items()}
     transitions[("1", Move.EMPTY)] = {("0", nfa.start)}
     if optional:
         transitions[("1", Move.EMPTY)].add("2")
     transitions[(("0", nfa.end), Move.EMPTY)] = {"2"}
     if repeat:
         transitions[(("0", nfa.end), Move.EMPTY)].add(("0", nfa.start))
-    return NFA("1", "2", transitions)
+    return NFA("1", "2", transitions, captures)
 
 
 def MatchRepeatedN(nfa: NFA, minimum: int, maximum: int) -> NFA:
@@ -328,6 +358,7 @@ def MatchLength(minimum: int = 0, maximum: Optional[int] = None) -> NFA:
     else:
         return MatchRepeatedN(MatchNotIn(""), minimum, maximum)
 
+# XXX add capture support from here onwards
 
 def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     """Handles: (?D:A), ¬A"""
@@ -751,7 +782,7 @@ class Pattern:
     def __repr__(self):
         return f"Pattern({self.pattern!r})"
 
-    def match(self, string: str) -> bool:
+    def match(self, string: str) -> Optional[CaptureOutput]:
         return self.nfa.match(string)
 
     def example(self, min_length: int = 0, max_length: Optional[int] = None) -> str:
@@ -783,6 +814,7 @@ class Pattern:
         | ("(?M:" + expr + ")").setParseAction(lambda t: MatchDFA(MatchReversed(MatchDFA(MatchReversed(t[1]), negate=False)), negate=False))
         | ("(?i:" + expr + ")").setParseAction(lambda t: MatchInsensitively(t[1]))
         | ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1]))
+        | ("(?\\" + _id + ":" + expr +")").setParseAction(lambda t: MatchCapture(t[3], t[1]))
         | ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1]))
         | ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)]))
         | ("(?R" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchRotated(t[3], t[1]))
@@ -1199,8 +1231,12 @@ REFERENCES
         with open(file, "r", encoding="utf-8") as f:
             for w in f:
                 word = w.rstrip("\n")
-                if pattern.match(word):
-                    print(word, flush=True)
+                match = pattern.match(word)
+                if match is not None:
+                    if match:
+                        print(f"{word} [{', '.join(f'{k}={v}' for k,v in match.items())}]", flush=True)
+                    else:
+                        print(word, flush=True)
 
 
 if __name__ == "__main__":

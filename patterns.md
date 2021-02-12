@@ -5,7 +5,7 @@ NFA-based grep-style pattern matcher supporting some novel operations and modifi
 Originally developed to analyse wordplay for setting or solving cryptic crosswords.
 
 ## Dependencies
-*Required*: [graphviz](https://graphviz.org/), [pudzu-utils](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-utils).
+*Required*: [graphviz](https://graphviz.org/), [pyparsing](https://github.com/pyparsing/pyparsing), [pudzu-utils](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-utils).
 
 ## Documentation
 For supported syntax and arguments, run `patterns --help`.
@@ -47,7 +47,7 @@ each input character just once, even when the DFA corresponds to a pattern conta
 alternation. For example, the following DFA matches the possessive pronouns
 their, her, his and xyr:
 
-![nfa](images/nfa.png)
+![DFA matching their, her, his and xyr](images/nfa.png)
 
 ### Nondeterministic finite automata
 
@@ -62,7 +62,7 @@ inbound transitions and a single end state with no outbound transitions.
 For example,
 the following NFA matches the same possessive pronouns as the DFA above:
 
-![dfa](images/dfa.png)
+![NFA matching their, her, his and xyr](images/dfa.png)
 
 Figuring out whether an NFA matches a string can be implemented with backtracking:
 whenever you reach a choice, try one transition and if that doesn't work backtrack and try
@@ -93,13 +93,13 @@ is something that may be addressed later.
 Basic regular expressions are converted into NFAs
 using a standard construction called **Thompson's construction**.
 
-**Literal characters** are converted in the obvious fashion:
+**Literal characters** are converted into a two-state NFA with a single transition:
 
 ```bash
 patterns "a"
 ```
 
-![literal](images/literal.png)
+![literal NFA](images/literal.png)
 
 **Concatenation** is converted by linking the end state of the first part
 with the start state of the second part.
@@ -108,23 +108,26 @@ with the start state of the second part.
 patterns "the"
 ```
 
-![concatenation](images/concatenation.png)
+![concatenation NFA](images/concatenation.png)
   
-**Alternation** is converted using empty transitions:
+**Alternation** is converted by using empty transitions to link a new start state to
+both starts and both ends to a new end state:
 
 ```bash
 patterns "a|the"
 ```
 
-![alternation](images/alternation.png)
+![alternation NFA](images/alternation.png)
 
-As is the **Kleene star**:
+And the **Kleene star** is converted by using an empty transition back from the old
+end state to the old start state to allow repetition, and an additional empty transition
+to allow bypassing the old NFA altogether:
 
 ```bash
 patterns "(he)*"
 ```
 
-![kleene](images/kleene.png)
+![Kleene star NFA](images/kleene.png)
 
 ### Standard syntax extensions
 
@@ -144,7 +147,7 @@ and compact notation can easily be implemented just in the visualisation stage.
 patterns "[ae].[^y]"
 ```
 
-![class](images/class.png)
+![character classes NFA](images/class.png)
 
 **Repetition shortands**: the `?` (zero or one), `+` (one or more), `{m,n}` (m to n) 
 and `{m,}` (m or more) operators can be converted by a combination of
@@ -154,7 +157,7 @@ repeated concatenation and Kleene star.
 patterns "o+h?"
 ```
 
-![repetition](images/repetition.png)
+![repetition NFA](images/repetition.png)
 
 **Case-insensitive matches**. The simplest way to implement case insensitivity
 is to simply expand all characters into two element character classes. To mark
@@ -167,9 +170,7 @@ i uppercases to İ not I).
 patterns "(?i:The)"
 ```
 
-![case](images/case.png)
-
-
+![case-insensitive NFA](images/case.png)
 
 ### Less common extensions
 
@@ -192,7 +193,7 @@ section below).
 patterns "(b+)&(...)" -M
 ```
 
-![conjunction](images/conjunction.png)
+![conjunction NFA](images/conjunction.png)
 
 **Negation** (written a `¬A`). If A is a regular expression, then the language
 that rejects everything A satisfies and accepts everything it doesn't is also regular.
@@ -205,7 +206,7 @@ conjunction: `A&B` can alternatively be implemented as `¬(¬A|¬B)`.
 patterns "¬(..)"
 ```
 
-![negation](images/negation.png)
+![negation NFA](images/negation.png)
 
 **Reversal** (written as `(?r:A)`). If A is a regular expression, then the language
 that accepts the same strings but in reverse order is also regular. This time the
@@ -216,7 +217,7 @@ the start and end states.
 patterns "(?r:o+h|no)"
 ```
 
-![reversal](images/reversal.png)
+![reversal NFA](images/reversal.png)
 
 ### Novel separating operators
 
@@ -241,7 +242,7 @@ starts at left(A_start) and ends at right(A_end).
 patterns "o+<l+" -M
 ```
 
-![containment](images/containment.png)
+![containment NFA](images/containment.png)
 
 **Strict containment** (written `A<<B` or `B>>A`). The containment 
 operators above include the cases where the string satisfying `A` 
@@ -256,7 +257,7 @@ left_first(A_start), and middle states transition to right_first rather than rig
 patterns "o+<<l+" -M
 ```
 
-![strict_containment](images/strict_containment.png)
+![strict containment NFA](images/strict_containment.png)
 
 **Alternating** (written `A#B` or `A##B`). A string satisfies `A##B` if the
 substring made up of every other character starting with the first satisfies `A`,
@@ -275,7 +276,7 @@ start state.
 patterns "U+##w+" -M
 ```
 
-![alternating](images/alternating.png)
+![alternating NFA](images/alternating.png)
 
 **Interleaving** (written `A^B` or `A^^B`). A string satisfies `A^B` if it can
 be split into a string satisfying `A` interleaved into one satisfying `B`.
@@ -293,8 +294,7 @@ similarly to strict containment above.
 patterns "the^^A+" -M
 ```
 
-![interleave](images/interleave.png)
-
+![interleaving NFA](images/interleave.png)
 
 ### Novel subtraction operators
 
@@ -319,7 +319,7 @@ implementation of `A_-B` is similar, but uses a prefx intersection instead.
 patterns "(the|a)-." -M
 ```
 
-![subtract](images/subtract.png)
+![right subtraction NFA](images/subtract.png)
 
 **Subtraction inside and outside** (written `A->B`, `A->>B`, `A-<B` or `A-<<B`).
 In the same way that left and right subtraction correspond to concatenation,
@@ -337,7 +337,7 @@ in A. We generate an NFA for each, and combine them in an alternation.
 patterns "lo+l->>." -M
 ```
 
-![subtract_containment](images/subtract_containment.png)
+![subtraction inside NFA](images/subtract_containment.png)
 
 **Subtraction alternating** (written `A-#B` or `A-##B` or `A_-##B`). The subtraction
 alternating operators remove every other character. For example, "mm" satisfies `(me)+#..`
@@ -351,7 +351,7 @@ a2→a3 for k in A and b1→b3 for k in B, then (a1,b1)→(a3,b2) for k.
 patterns "(me)+-#.." -M
 ```
 
-![subtract_alternating](images/subtract_alternating.png)
+![subtraction alternating NFA](images/subtract_alternating.png)
 
 
 **Subtraction interleaved** (written `A-^B`, `A-^^B` or `A_-^^B`). The subtraction
@@ -367,7 +367,7 @@ if a1→a2 for j in A and b1→b2 for j in B then (a1,a2)→(b1,b2) for ε.
 patterns "Madrid-^^.." -M
 ```
 
-![subtract_interleaved](images/subtract_interleaved.png)
+![subtraction interleaved NFA](images/subtract_interleaved.png)
 
 ### Other wordplay syntax
 
@@ -387,7 +387,7 @@ and reversal (for handling negative step values).
 patterns "(?S:(me)+)[1::2]" -M
 ```
 
-![slicing](images/slicing.png)
+![slicing NFA](images/slicing.png)
 
 **Replacement** (written `(?/A/B/C/)` or `(?/A/B/C/s)`). This behaves like subtraction
 inside, except that it inserts a string matching a third expression C in place of the
@@ -399,7 +399,7 @@ Like for subtraction, there is a strict version `(?/A/B/C/s)`.
 patterns "(?/London/o/u/)" -M
 ```
 
-![replacement](images/replacement.png)
+![replacement NFA](images/replacement.png)
 
 **Rotation** (written `(?R<n>:A)` or `(?R<=<n>:A)`). This rotates a string n steps
 to the right (or left, if n is negative). For example, "eth" satisfies `(R1:the)`
@@ -413,7 +413,7 @@ of itself: e.g. "the" does not satisfy `(R3:the)`.
 patterns "(?R<=4:spam)" -M
 ```
 
-![rotation](images/rotation.png).
+![rotation NFA](images/rotation.png).
 
 **Cipher shifting** (written `(?s<n>:A)` or `(?s:A)`). This applies a shift cipher
 to the FSM, replacing each Latin letter by another letter n positions down the alphabet
@@ -426,14 +426,13 @@ of between 1 and 25 characters (but not 0).
 patterns "(?s13:PNG)" -M
 ```
 
-![shift](images/shift.png).
+![cipher shifted NFA](images/shift.png).
 
 One bit of wordplay that sadly can't be supported is **anagrams**. This is because
 an anagram operator would not be regular: e.g. the language that matches
 all anagrams of `(ab)+` is not a regular language, as matching against
 it would require us to keep
 track of the potentially unbounded number *a*s and *b*s.
-
 
 ### General pattern syntax
 
@@ -456,7 +455,6 @@ NFA definition file should consist of lines of the format "State Input State*",
 each defining transitions from one state and input to zero or more other states.
 Inputs should be either a single character, or the strings EMPTY or ALL.
 The start and end states should be called START and END.
-
 
 ## Other NFA operations
 

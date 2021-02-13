@@ -358,7 +358,6 @@ def MatchLength(minimum: int = 0, maximum: Optional[int] = None) -> NFA:
     else:
         return MatchRepeatedN(MatchNotIn(""), minimum, maximum)
 
-# XXX add capture support from here onwards
 
 def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     """Handles: (?D:A), ¬A"""
@@ -368,6 +367,7 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
     processed_states = set()
     accepting_states = set()
     transitions: Transitions = {}
+    captures : Captures = {}
     while to_process:
         current_state = to_process.pop()
         processed_states.add(current_state)
@@ -378,6 +378,10 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
             next_state = {t for s in current_state for t in nfa.transitions.get((s, i), nfa.transitions.get((s, Move.ALL), set()))}
             next_state_sorted = tuple(sorted(nfa.expand_epsilons(next_state), key=str))
             transitions[(current_state, i)] = {next_state_sorted}
+            # XXX no :-(
+            next_capture = first(c for s in current_state for c in (nfa.captures.get((s, i), nfa.captures.get((s, Move.ALL), None)),) if c is not None)
+            if next_capture:
+                captures[(current_state, i)] = next_capture
             if next_state_sorted not in processed_states:
                 to_process.append(next_state_sorted)
 
@@ -387,13 +391,14 @@ def MatchDFA(nfa: NFA, negate: bool) -> NFA:
 
     # if negating, transition non-moves to a new accepting, consuming state
     if negate:
+        captures = {}  # no submatching for negation
         for state in processed_states:
             if (state, Move.ALL) not in transitions:
                 transitions[(state, Move.ALL)] = {"1"}
                 transitions.setdefault(("1", Move.ALL), {"1"})
                 transitions.setdefault(("1", Move.EMPTY), {"2"})
 
-    nfa = NFA(start_state, "2", transitions)
+    nfa = NFA(start_state, "2", transitions, captures)
     nfa.remove_redundant_states(aggressive=True)
     return nfa
 
@@ -403,6 +408,7 @@ def MatchBoth(nfa1: NFA, nfa2: NFA, start_from: Optional[Set[State]] = None, sto
     # generate transitions on cartesian product (with special handling for *-transitions)
     # warning: some of the other methods currently depend on the implementation of this (which is naughty)
     transitions: Transitions = {}
+    captures: Captures = {}
     for (s1, i), ts1 in nfa1.transitions.items():
         for s2 in nfa2.states:
             if i == Move.EMPTY:
@@ -411,22 +417,30 @@ def MatchBoth(nfa1: NFA, nfa2: NFA, start_from: Optional[Set[State]] = None, sto
                 ts2 = nfa2.transitions.get((s2, i), nfa2.transitions.get((s2, Move.ALL)))
                 if ts2 is not None:
                     transitions = merge_trans(transitions, {((s1, s2), i): set(product(ts1, ts2))})
+                    cs2 = nfa1.captures.get((s1, i), set()) | nfa2.captures.get((s2, i), nfa2.captures.get((s2, Move.ALL), set()))
+                    if cs2:
+                        captures = merge_trans(captures, {((s1, s2), i): cs2})
     for (s2, i), ts2 in nfa2.transitions.items():
         for s1 in nfa1.states:
             if i == Move.EMPTY:
                 transitions = merge_trans(transitions, {((s1, s2), i): set(product({s1}, ts2))})
-            elif (s1, i) not in nfa1.transitions:  # (we've done those already!)
+            elif (s1, i) not in nfa1.transitions:  # (as we've done those already!)
                 ts1o = nfa1.transitions.get((s1, Move.ALL))
                 if ts1o is not None:
                     transitions = merge_trans(transitions, {((s1, s2), i): set(product(ts1o, ts2))})
+                    cs1o = nfa2.captures.get((s2, i), set()) | nfa1.captures.get((s1, Move.ALL), set())
+                    if cs1o:
+                        captures = merge_trans(captures, {((s1, s2), i): cs1o})
     if start_from:
         transitions[("1", Move.EMPTY)] = start_from
     if stop_at:
         transitions = merge_trans(transitions, {(s, Move.EMPTY): {"2"} for s in stop_at})
-    nfa = NFA("1" if start_from else (nfa1.start, nfa2.start), "2" if stop_at else (nfa1.end, nfa2.end), transitions)
+    nfa = NFA("1" if start_from else (nfa1.start, nfa2.start), "2" if stop_at else (nfa1.end, nfa2.end), transitions, captures)
     nfa.remove_redundant_states()
     return nfa
 
+
+# XXX add capture support from here onwards
 
 def MatchContains(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     """Handles: A<B, A<<B, A>B, A>>B"""
@@ -657,6 +671,7 @@ def MatchReversed(nfa: NFA) -> NFA:
                     if r == s and not isinstance(j, Move):
                         transitions.setdefault((t, j), set())
             transitions.setdefault((t, i), set()).add(s)
+            # XXX ???
     nfa = NFA(nfa.end, nfa.start, transitions)
     nfa.remove_redundant_states()
     return nfa
@@ -665,25 +680,32 @@ def MatchReversed(nfa: NFA) -> NFA:
 def MatchInsensitively(nfa: NFA) -> NFA:
     """Handles: (?i:A)"""
     transitions: Transitions = {}
+    captures: Captures = {}
     for (s, i), ts in nfa.transitions.items():
         if isinstance(i, str):
             transitions.setdefault((s, i.lower()), set()).update(ts)
             transitions.setdefault((s, i.upper()), set()).update(ts)
+            captures.setdefault((s, i.lower()), set()).update(nfa.captures.get((s, i), set()))
+            captures.setdefault((s, i.upper()), set()).update(nfa.captures.get((s, i), set()))
         else:
             transitions[(s, i)] = ts
-    return NFA(nfa.start, nfa.end, transitions)
+    return NFA(nfa.start, nfa.end, transitions, captures)
 
 
 def MatchShifted(nfa: NFA, shift: int) -> NFA:
     """Handles: (?sn:A)"""
     transitions: Transitions = {}
+    captures: Captures = {}
     for (s, i), ts in nfa.transitions.items():
+        c = nfa.captures.get((s, i), None)
         for alphabet in (string.ascii_lowercase, string.ascii_uppercase):
             if isinstance(i, str) and i in alphabet:
                 i = alphabet[(alphabet.index(i) + shift) % 26]
                 break
         transitions[(s, i)] = ts
-    return NFA(nfa.start, nfa.end, transitions)
+        if c is not None:
+            captures[(s, i)] = c
+    return NFA(nfa.start, nfa.end, transitions, captures)
 
 
 def MatchRotated(nfa: NFA, shift: int) -> NFA:
@@ -1234,7 +1256,7 @@ REFERENCES
                 match = pattern.match(word)
                 if match is not None:
                     if match:
-                        print(f"{word} [{', '.join(f'{k}={v}' for k,v in match.items())}]", flush=True)
+                        print(f"{word} ({', '.join(f'{k}={v}' for k,v in match.items())})", flush=True)
                     else:
                         print(word, flush=True)
 

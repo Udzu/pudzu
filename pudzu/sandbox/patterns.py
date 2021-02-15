@@ -58,7 +58,7 @@ class NFA:
                 for se in self.expand_epsilons({s}):
                     for t in self.transitions.get((se, c), self.transitions.get((se, Move.ALL), set())):
                         if t not in new_states:
-                            cgs = self.captures.get((se, c) if (se, c) in self.transitions else (se, Move.ALL), set())
+                            cgs = self.captures.get((se, c), set()) if (se, c) in self.transitions else self.captures.get((se, Move.ALL), set())
                             tco = merge(co, {cg: co.get(cg, "") + c for cg in cgs})
                             new_states[t] = tco
             old_states = new_states
@@ -148,9 +148,9 @@ class NFA:
             if not ts:
                 g.node(str(("fail", s)), label="", color=fg)
             for t in ts or {("fail", s)}:
-                label = {Move.ALL: "*", Move.EMPTY: "ε"}.get(i, i)
+                label: str = {Move.ALL: "*", Move.EMPTY: "ε"}.get(i, i)  # type: ignore
                 if self.captures.get((s, i), set()):
-                    label += f" [{','.join(self.captures[(s, i)])}]"
+                    label += f" {{{','.join(self.captures[(s, i)])}}}"
                 g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
 
         g.render(filename=name + ".dot")
@@ -561,7 +561,7 @@ def MatchSubtractInside(nfa1: NFA, nfa2: NFA, proper: bool, replace: Optional[NF
     t5 = {(("5", s), i): {("5", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
     c5 = {(("5", s), i): cs for (s, i), cs in nfa1.captures.items()}
     transitions = merge_trans(t1, t1e, t2, *t2es, t3, t3e, t4, t4e, t5)
-    captures = merge_trans(c1e, c2, c3, c4, c5)
+    captures = merge_trans(c1, c2, c3, c4, c5)
     nfa = NFA(("1", nfa1.start) if proper else ("2", nfa1.start), ("5", nfa1.end), transitions, captures)
     nfa.remove_redundant_states()
     return nfa

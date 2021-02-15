@@ -135,11 +135,14 @@ There are a number of standard regular expression syntax extensions that still
 generate regular languages:
 
 **Character shorthands**: the `.` wildcard and bracketed character classes
-  such as `[abc]` and `[^aeiou]` can easily be converted into a two state FSM
-with the appropriate transitions. For visualisation reasons, I decided to introduce a 
+such as `[abc]` and `[^aeiou]` can easily be converted into a two state FSM
+with the appropriate transitions. Ranges aren't expressed directly in 
+the FSM, though doing so would certainly be useful for large Unicode character classes.
+
+For visualisation reasons, I decided to introduce a
 special * state transition that's used if there is no other match. This allows
 visualising a negated class like `[^a]` without showing every possible matching input.
-However, for efficiency reasons it's more common to implement transitions via a lookup table of character
+However, for efficiency it's more common to implement transitions via a lookup table of character
 values (with Unicode characters compiled down to byte sequences),
 and compact notation can easily be implemented just in the visualisation stage. 
   
@@ -481,6 +484,51 @@ DFA using the powerset construction, then reversing it again, and then convertin
 it again. As long as we discard any unreachable states as described above, the
 resulting DFA is guaranteed to be minimal. To convert an NFA into a minimal DFA
 you can use the `(?M:A)` syntax, which is just shorthand for `(?D:(?r:(?D:(?r:A))))`.
+
+### Submatch extraction
+
+While backreferences in patterns cannot be implemented without backtracking (or some other sort
+of stack), it *is* possible to incorporate submatch extraction into an NFA-based matcher without
+backtracking. The approach adopted here involves tagging NFA transitions with capture information.
+Normally you'd tag empty transitions to indicate the start and end of a match group. However,
+that isn't sufficient to identify the submatches for many of the novel operators such as `A#B`.
+Instead, we tag non-empty transitions with the match group(s) that they correspond to.
+
+```bash
+patterns "(?\start:.*)(?\end:.)"
+```
+
+![tagged NFA](images/tagged.png).
+
+When evaluating the NFA, we still transition to set of all possible states for each input
+(see NFA section above). However, for each state we also keep track of capture information:
+if we reach a state via a transition tagged by a capture group, then we add the current input character
+to that group's capture value. If a state is reached via multiple transitions with different tags, we
+simply select one of them. This corresponds to an ambiguous match, and which submatch we choose to extract
+does not affect whether the match succeeds or not. We make the behaviour deterministic
+by defining an implicit ordering on states, insisting for example that the first match of
+an alternation or concatenation takes precedence over the second.
+
+A few things are worth noting about this type of submatching. The absence of start/end tags means
+that matches contain *every* character connected to a subexpression: repeated expressions will capture
+every instance rather than just the last, and it's even possible to tag two subexpressions with
+the same tag to capture both. For example `(?\tel:[0-9]+)( (?\tel:[0-9]+)*` will
+capture an entire telephone number, stripping space separators. On the other hand, it's not possible
+to distinguish empty submatches from failed submatches. This behaviour could be changed by also adding
+start/end tags, but I've chosen to keep it.
+
+Extending the various pattern operations to support submatch extraction is mostly straightfoward:
+we just keep the transition tags when constructing new NFAs (or in the case of conjunction,
+combine them). The only exception is trying to construct a DFA from the NFA: this requires
+more complex transition tagging and has not been implemented. Specifically, the
+DFA transitions have to keep track of multiple possible tag options, and the end states have to be
+annotated with the valid ones.
+
+```bash
+patterns "(?\start:.*)(?\end:.)" -D  # (NOT IMPLEMENTED)
+```
+
+![tagged NFA](images/tagged_dfa.png).
 
 ### Generating examples
 

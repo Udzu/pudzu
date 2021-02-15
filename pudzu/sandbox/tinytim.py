@@ -3,6 +3,7 @@ from turtle import *
 
 from pudzu.utils import *
 
+
 class LSystem:
 
     Rule = namedtuple("Rule", "predecessor successor weight", defaults=(1.0,))

@@ -844,21 +844,24 @@ class Pattern:
         return self.nfa.example(min_length, max_length)
 
     # parsing (TODO: should really go via an AST here)
-    from pyparsing import Forward, Group, Literal, OneOrMore, Optional, ParserElement, Word, alphanums, alphas, infixNotation, nums, oneOf, opAssoc  # type: ignore
+    from pyparsing import Forward, Group, Literal, OneOrMore, Optional, ParserElement, Word, alphanums, alphas, infixNotation, nums, oneOf, opAssoc, pyparsing_unicode as ppu  # type: ignore
 
     ParserElement.setDefaultWhitespaceChars("")
     ParserElement.enablePackrat()
 
-    # TODO: character escaping, supported scripts?
+    # TODO: character escaping, class ranges, scripts
     _0_to_99 = Word(nums, min=1, max=2).setParseAction(lambda t: int("".join(t[0])))
     _m99_to_99 = (Optional("-") + _0_to_99).setParseAction(lambda t: t[-1] * (-1 if len(t) == 2 else 1))
     _id = Word(alphas + "_", alphanums + "_")
 
-    characters = alphanums + " '"
-    literal = Word(characters, exact=1).setParseAction(lambda t: MatchIn(t[0]))
+    printables = ppu.Latin1.printables
+    literal_exclude = r"()+*.?<>#{}^_&|$\[]-"
+    set_exclude = r"\[]-"
+
+    literal = Word(printables, excludeChars=literal_exclude, exact=1).setParseAction(lambda t: MatchIn(t[0]))
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
-    set = ("[" + Word(characters, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
-    nset = ("[^" + Word(characters, min=1) + "]").setParseAction(lambda t: MatchNotIn(t[1]))
+    set = ("[" + Word(printables, excludeChars=set_exclude, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
+    nset = ("[^" + Word(printables, excludeChars=set_exclude, min=1) + "]").setParseAction(lambda t: MatchNotIn(t[1]))
     words = Literal(r"\w").setParseAction(lambda t: DICTIONARY_FSM)
     fsm = Literal(r"\f").setParseAction(lambda t: EXPLICIT_FSM)
 
@@ -883,7 +886,7 @@ class Pattern:
         | ("(?&" + _id + "=" + expr + ")").setParseAction(lambda t: SUBPATTERNS.update({t[1]: t[3]}) or MatchEmpty())
         | ("(?&" + _id + ")").setParseAction(lambda t: SUBPATTERNS[t[1]])
     )
-    atom = literal | dot | set | nset | words | fsm | group
+    atom = literal | dot | nset | set | words | fsm | group
     item = (
         (atom + "+").setParseAction(
             lambda t: MatchRepeated(

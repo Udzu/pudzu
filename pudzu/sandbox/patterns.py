@@ -5,6 +5,7 @@ import json
 import logging
 import math
 import random
+import re
 import string
 from abc import ABC, abstractmethod
 from enum import Enum
@@ -145,11 +146,12 @@ class NFA:
                 g.node(str(s), shape="doublecircle", label="", color=fg)
             else:
                 g.node(str(s), label="", color=fg)
+        # TODO: merge parallel edges into classes or ranges
         for (s, i), ts in self.transitions.items():
             if not ts:
                 g.node(str(("fail", s)), label="", color=fg)
             for t in ts or {("fail", s)}:
-                label: str = {Move.ALL: "*", Move.EMPTY: "ε"}.get(i, i)  # type: ignore
+                label: str = {Move.ALL: "*", Move.EMPTY: "ε"}.get(i, i).replace("\\", "\\\\")  # type: ignore
                 if self.captures.get((s, i), set()):
                     label += f" {{{','.join(self.captures[(s, i)])}}}"
                 g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
@@ -167,7 +169,7 @@ class NFA:
                 non_empty = [i for i in choices if nfa.transitions[(state, i)]]
                 i = random.choice(non_empty)
                 if i == Move.ALL:
-                    # TODO: match with supported scripts
+                    # TODO: match with supported scripts?
                     options = list(set(string.ascii_letters + string.digits + " '") - set(choices))
                     output += random.choice(options)
                 elif isinstance(i, str):
@@ -844,13 +846,13 @@ class Pattern:
     def example(self, min_length: int = 0, max_length: Optional[int] = None) -> str:
         return self.nfa.example(min_length, max_length)
 
-    # parsing (TODO: should really go via an AST here)
+    # parsing (should really go via an AST here)
     from pyparsing import Forward, Group, Literal, OneOrMore, Optional, ParserElement, Word, alphanums, alphas, infixNotation, nums, oneOf, opAssoc  # type: ignore
 
     ParserElement.setDefaultWhitespaceChars("")
     ParserElement.enablePackrat()
 
-    # TODO: character escaping, class ranges, scripts
+    # TODO: character escaping, supported scripts
     _0_to_99 = Word(nums, min=1, max=2).setParseAction(lambda t: int("".join(t[0])))
     _m99_to_99 = (Optional("-") + _0_to_99).setParseAction(lambda t: t[-1] * (-1 if len(t) == 2 else 1))
     _id = Word(alphas + "_", alphanums + "_")
@@ -941,7 +943,6 @@ class Pattern:
 
 
 # Regex reconstructions (extra hacky)
-# TODO: simplification, repetition
 
 
 class Regex(ABC):
@@ -1009,7 +1010,8 @@ class RegexChars(Regex):
         return self.chars
 
     def to_string(self):
-        return self.chars if len(self.chars) == 1 else f"[{self.chars}]"  # TODO: escape when needed
+        escaped = re.sub(r"([-[\]])", r"\\\1", self.chars)
+        return self.chars if len(self.chars) == 1 else f"[{escaped}]"
 
     def min_length(self):
         return 1
@@ -1026,7 +1028,8 @@ class RegexNegatedChars(Regex):
         return self.chars
 
     def to_string(self, brackets=False):
-        return "." if not self.chars else f"[^{self.chars}]"  # TODO: escape when needed
+        escaped = re.sub(r"([-[\]])", r"\\\1", self.chars)
+        return "." if not self.chars else f"[^{escaped}]"
 
     def min_length(self):
         return 1
@@ -1088,10 +1091,6 @@ class RegexUnion(Regex):
         # Add the rest...
         regexes |= {r for r in all_ if all(not (isinstance(r, c)) for c in (RegexNegatedChars, RegexChars, RegexEmpty))}
 
-        # TODO: apply distributivity
-        # AB + AC + AD = A(B+C+D) and ditto for rhs
-        # AB + AC + A = A(B+C)? and ditto for rhs
-
         if len(regexes) == 1:
             return first(regexes)
         obj = super().__new__(cls)
@@ -1142,7 +1141,6 @@ class RegexConcat(Regex):
         return self.regexes
 
     def to_string(self):
-        # TODO: replace AA* or A*A by A+ (but what about A B (AB)* ?)
         return "({})".format("".join(map(str, self.regexes)))
 
     def min_length(self):
@@ -1273,7 +1271,8 @@ REFERENCES
 
     if args.regex:
         regex = pattern.nfa.regex()
-        logger.info(f"Equivalent regex: {'^'+str(regex)+'$' if regex!=RegexUnion() else None!r}")
+        regex_repr = '"^'+str(regex)+'$"' if regex!=RegexUnion() else None
+        logger.info(f"Equivalent regex: {regex_repr}")
         min_length = regex.min_length()
         max_length = regex.max_length()
         if min_length == -math.inf:

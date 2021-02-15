@@ -11,6 +11,7 @@ from enum import Enum
 from functools import reduce
 from itertools import product
 from pathlib import Path
+from pyparsing import pyparsing_unicode as ppu, srange  # type: ignore
 from tempfile import TemporaryDirectory
 from typing import cast, Any, Dict, Iterable, List, Optional, Set, Tuple, Union
 
@@ -844,7 +845,7 @@ class Pattern:
         return self.nfa.example(min_length, max_length)
 
     # parsing (TODO: should really go via an AST here)
-    from pyparsing import Forward, Group, Literal, OneOrMore, Optional, ParserElement, Word, alphanums, alphas, infixNotation, nums, oneOf, opAssoc, pyparsing_unicode as ppu  # type: ignore
+    from pyparsing import Forward, Group, Literal, OneOrMore, Optional, ParserElement, Word, alphanums, alphas, infixNotation, nums, oneOf, opAssoc  # type: ignore
 
     ParserElement.setDefaultWhitespaceChars("")
     ParserElement.enablePackrat()
@@ -854,14 +855,14 @@ class Pattern:
     _m99_to_99 = (Optional("-") + _0_to_99).setParseAction(lambda t: t[-1] * (-1 if len(t) == 2 else 1))
     _id = Word(alphas + "_", alphanums + "_")
 
-    printables = ppu.Latin1.printables
+    printables = ppu.Latin1.printables + " "
     literal_exclude = r"()+*.?<>#{}^_&|$\[]-"
-    set_exclude = r"\[]-"
+    set_exclude = r"\[]"
 
     literal = Word(printables, excludeChars=literal_exclude, exact=1).setParseAction(lambda t: MatchIn(t[0]))
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
-    set = ("[" + Word(printables, excludeChars=set_exclude, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
-    nset = ("[^" + Word(printables, excludeChars=set_exclude, min=1) + "]").setParseAction(lambda t: MatchNotIn(t[1]))
+    nset = ("[^" + Word(printables, excludeChars=set_exclude, min=1) + "]").setParseAction(lambda t: MatchNotIn(srange(f"[{t[1]}]")))
+    set = ("[" + Word(printables, excludeChars=set_exclude, min=1) + "]").setParseAction(lambda t: MatchIn(srange(f"[{t[1]}]")))
     words = Literal(r"\w").setParseAction(lambda t: DICTIONARY_FSM)
     fsm = Literal(r"\f").setParseAction(lambda t: EXPLICIT_FSM)
 
@@ -1160,6 +1161,7 @@ CHARACTERS
 - a        character literal
 - .        wildcard character
 - [abc]    character class
+- [a-z]    character range
 - [^abc]   negated character class
 
 LOGICAL OPERATORS

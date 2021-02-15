@@ -290,7 +290,7 @@ def ExplicitFSM(path: Path) -> NFA:
 
 
 def MatchCapture(nfa: NFA, id: CaptureGroup) -> NFA:
-    """Handles: (?\id:A)"""
+    """Handles: (?<id>A)"""
     captures = {(s, i): {id} for (s, i) in nfa.transitions if i != Move.EMPTY}
     return NFA(nfa.start, nfa.end, nfa.transitions, merge_trans(nfa.captures, captures))
 
@@ -875,7 +875,7 @@ class Pattern:
         | ("(?M:" + expr + ")").setParseAction(lambda t: MatchDFA(MatchReversed(MatchDFA(MatchReversed(t[1]), negate=False)), negate=False))
         | ("(?i:" + expr + ")").setParseAction(lambda t: MatchInsensitively(t[1]))
         | ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1]))
-        | ("(?\\" + _id + ":" + expr + ")").setParseAction(lambda t: MatchCapture(t[3], t[1]))
+        | ("(?<" + _id + ">" + expr + ")").setParseAction(lambda t: MatchCapture(t[3], t[1]))
         | ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1]))
         | ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)]))
         | ("(?R" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchRotated(t[3], t[1]))
@@ -1216,6 +1216,7 @@ OTHER MODIFIERS
 - (?M:P)        convert NFA to minimal DFA
 
 REFERENCES
+- (?<ID>P) define submatch capture group 
 - (?&ID=P) define subpattern for subsequent use
 - (?&ID)   use subpattern
 - \w       match word from dictionary file
@@ -1271,7 +1272,7 @@ REFERENCES
 
     if args.regex:
         regex = pattern.nfa.regex()
-        regex_repr = '"^'+str(regex)+'$"' if regex!=RegexUnion() else None
+        regex_repr = '"^' + str(regex) + '$"' if regex != RegexUnion() else None
         logger.info(f"Equivalent regex: {regex_repr}")
         min_length = regex.min_length()
         max_length = regex.max_length()

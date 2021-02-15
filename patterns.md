@@ -135,9 +135,9 @@ There are a number of standard regular expression syntax extensions that still
 generate regular languages:
 
 **Character shorthands**: the `.` wildcard and bracketed character classes
-such as `[abc]` and `[^aeiou]` can easily be converted into a two state FSM
+such as `[a-z]` and `[^aeiou]` can easily be converted into a two state FSM
 with the appropriate transitions. Ranges aren't expressed directly in 
-the FSM, though doing so would certainly be useful for large Unicode character classes.
+the FSM, though doing so would potentially be useful for large Unicode character classes.
 
 For visualisation reasons, I decided to introduce a
 special * state transition that's used if there is no other match. This allows
@@ -495,7 +495,7 @@ that isn't sufficient to identify the submatches for many of the novel operators
 Instead, we tag non-empty transitions with the match group(s) that they correspond to.
 
 ```bash
-patterns "(?\start:.*)(?\end:.)"
+patterns "(?<start>.*)(?<end>.)"
 ```
 
 ![tagged NFA](images/tagged.png).
@@ -512,7 +512,7 @@ an alternation or concatenation takes precedence over the second.
 A few things are worth noting about this type of submatching. The absence of start/end tags means
 that matches contain *every* character connected to a subexpression: repeated expressions will capture
 every instance rather than just the last, and it's even possible to tag two subexpressions with
-the same tag to capture both. For example `(?\tel:[0-9]+)( (?\tel:[0-9]+)*` will
+the same tag to capture both. For example `(?<tel>[0-9]+)( (?<tel>[0-9]+))*` will
 capture an entire telephone number, stripping space separators. On the other hand, it's not possible
 to distinguish empty submatches from failed submatches. This behaviour could be changed by also adding
 start/end tags, but I've chosen to keep it.
@@ -525,10 +525,10 @@ DFA transitions have to keep track of multiple possible tag options, and the end
 annotated with the valid ones.
 
 ```bash
-patterns "(?\start:.*)(?\end:.)" -D  # (NOT IMPLEMENTED)
+patterns "(?<start>.*)(?<end>.)" -D  # (NOT IMPLEMENTED)
 ```
 
-![tagged NFA](images/tagged_dfa.png).
+![tagged DFA](images/tagged_dfa.png).
 
 ### Generating examples
 

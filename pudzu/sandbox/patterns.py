@@ -5,12 +5,14 @@ import json
 import logging
 import math
 import random
+import re
 import string
 from abc import ABC, abstractmethod
 from enum import Enum
 from functools import reduce
 from itertools import product
 from pathlib import Path
+from pyparsing import pyparsing_unicode as ppu, srange  # type: ignore
 from tempfile import TemporaryDirectory
 from typing import cast, Any, Dict, Iterable, List, Optional, Set, Tuple, Union
 
@@ -144,11 +146,12 @@ class NFA:
                 g.node(str(s), shape="doublecircle", label="", color=fg)
             else:
                 g.node(str(s), label="", color=fg)
+        # TODO: merge parallel edges into classes or ranges
         for (s, i), ts in self.transitions.items():
             if not ts:
                 g.node(str(("fail", s)), label="", color=fg)
             for t in ts or {("fail", s)}:
-                label: str = {Move.ALL: "*", Move.EMPTY: "ε"}.get(i, i)  # type: ignore
+                label: str = {Move.ALL: "*", Move.EMPTY: "ε"}.get(i, i).replace("\\", "\\\\")  # type: ignore
                 if self.captures.get((s, i), set()):
                     label += f" {{{','.join(self.captures[(s, i)])}}}"
                 g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
@@ -166,7 +169,7 @@ class NFA:
                 non_empty = [i for i in choices if nfa.transitions[(state, i)]]
                 i = random.choice(non_empty)
                 if i == Move.ALL:
-                    # TODO: match with supported scripts
+                    # TODO: match with supported scripts?
                     options = list(set(string.ascii_letters + string.digits + " '") - set(choices))
                     output += random.choice(options)
                 elif isinstance(i, str):
@@ -287,7 +290,7 @@ def ExplicitFSM(path: Path) -> NFA:
 
 
 def MatchCapture(nfa: NFA, id: CaptureGroup) -> NFA:
-    """Handles: (?\id:A)"""
+    """Handles: (?<id>A)"""
     captures = {(s, i): {id} for (s, i) in nfa.transitions if i != Move.EMPTY}
     return NFA(nfa.start, nfa.end, nfa.transitions, merge_trans(nfa.captures, captures))
 
@@ -843,22 +846,25 @@ class Pattern:
     def example(self, min_length: int = 0, max_length: Optional[int] = None) -> str:
         return self.nfa.example(min_length, max_length)
 
-    # parsing (TODO: should really go via an AST here)
+    # parsing (should really go via an AST here)
     from pyparsing import Forward, Group, Literal, OneOrMore, Optional, ParserElement, Word, alphanums, alphas, infixNotation, nums, oneOf, opAssoc  # type: ignore
 
     ParserElement.setDefaultWhitespaceChars("")
     ParserElement.enablePackrat()
 
-    # TODO: character escaping, supported scripts?
+    # TODO: character escaping, supported scripts
     _0_to_99 = Word(nums, min=1, max=2).setParseAction(lambda t: int("".join(t[0])))
     _m99_to_99 = (Optional("-") + _0_to_99).setParseAction(lambda t: t[-1] * (-1 if len(t) == 2 else 1))
     _id = Word(alphas + "_", alphanums + "_")
 
-    characters = alphanums + " '"
-    literal = Word(characters, exact=1).setParseAction(lambda t: MatchIn(t[0]))
+    printables = ppu.Latin1.printables + " "
+    literal_exclude = r"()+*.?<>#{}^_&|$\[]-"
+    set_exclude = r"\[]"
+
+    literal = Word(printables, excludeChars=literal_exclude, exact=1).setParseAction(lambda t: MatchIn(t[0]))
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
-    set = ("[" + Word(characters, min=1) + "]").setParseAction(lambda t: MatchIn(t[1]))
-    nset = ("[^" + Word(characters, min=1) + "]").setParseAction(lambda t: MatchNotIn(t[1]))
+    nset = ("[^" + Word(printables, excludeChars=set_exclude, min=1) + "]").setParseAction(lambda t: MatchNotIn(srange(f"[{t[1]}]")))
+    set = ("[" + Word(printables, excludeChars=set_exclude, min=1) + "]").setParseAction(lambda t: MatchIn(srange(f"[{t[1]}]")))
     words = Literal(r"\w").setParseAction(lambda t: DICTIONARY_FSM)
     fsm = Literal(r"\f").setParseAction(lambda t: EXPLICIT_FSM)
 
@@ -869,7 +875,7 @@ class Pattern:
         | ("(?M:" + expr + ")").setParseAction(lambda t: MatchDFA(MatchReversed(MatchDFA(MatchReversed(t[1]), negate=False)), negate=False))
         | ("(?i:" + expr + ")").setParseAction(lambda t: MatchInsensitively(t[1]))
         | ("(?r:" + expr + ")").setParseAction(lambda t: MatchReversed(t[1]))
-        | ("(?\\" + _id + ":" + expr + ")").setParseAction(lambda t: MatchCapture(t[3], t[1]))
+        | ("(?<" + _id + ">" + expr + ")").setParseAction(lambda t: MatchCapture(t[3], t[1]))
         | ("(?s" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchShifted(t[3], t[1]))
         | ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)]))
         | ("(?R" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchRotated(t[3], t[1]))
@@ -883,7 +889,7 @@ class Pattern:
         | ("(?&" + _id + "=" + expr + ")").setParseAction(lambda t: SUBPATTERNS.update({t[1]: t[3]}) or MatchEmpty())
         | ("(?&" + _id + ")").setParseAction(lambda t: SUBPATTERNS[t[1]])
     )
-    atom = literal | dot | set | nset | words | fsm | group
+    atom = literal | dot | nset | set | words | fsm | group
     item = (
         (atom + "+").setParseAction(
             lambda t: MatchRepeated(
@@ -937,7 +943,6 @@ class Pattern:
 
 
 # Regex reconstructions (extra hacky)
-# TODO: simplification, repetition
 
 
 class Regex(ABC):
@@ -1005,7 +1010,8 @@ class RegexChars(Regex):
         return self.chars
 
     def to_string(self):
-        return self.chars if len(self.chars) == 1 else f"[{self.chars}]"  # TODO: escape when needed
+        escaped = re.sub(r"([-[\]])", r"\\\1", self.chars)
+        return self.chars if len(self.chars) == 1 else f"[{escaped}]"
 
     def min_length(self):
         return 1
@@ -1022,7 +1028,8 @@ class RegexNegatedChars(Regex):
         return self.chars
 
     def to_string(self, brackets=False):
-        return "." if not self.chars else f"[^{self.chars}]"  # TODO: escape when needed
+        escaped = re.sub(r"([-[\]])", r"\\\1", self.chars)
+        return "." if not self.chars else f"[^{escaped}]"
 
     def min_length(self):
         return 1
@@ -1084,10 +1091,6 @@ class RegexUnion(Regex):
         # Add the rest...
         regexes |= {r for r in all_ if all(not (isinstance(r, c)) for c in (RegexNegatedChars, RegexChars, RegexEmpty))}
 
-        # TODO: apply distributivity
-        # AB + AC + AD = A(B+C+D) and ditto for rhs
-        # AB + AC + A = A(B+C)? and ditto for rhs
-
         if len(regexes) == 1:
             return first(regexes)
         obj = super().__new__(cls)
@@ -1138,7 +1141,6 @@ class RegexConcat(Regex):
         return self.regexes
 
     def to_string(self):
-        # TODO: replace AA* or A*A by A+ (but what about A B (AB)* ?)
         return "({})".format("".join(map(str, self.regexes)))
 
     def min_length(self):
@@ -1157,6 +1159,7 @@ CHARACTERS
 - a        character literal
 - .        wildcard character
 - [abc]    character class
+- [a-z]    character range
 - [^abc]   negated character class
 
 LOGICAL OPERATORS
@@ -1213,6 +1216,7 @@ OTHER MODIFIERS
 - (?M:P)        convert NFA to minimal DFA
 
 REFERENCES
+- (?<ID>P) define submatch capture group 
 - (?&ID=P) define subpattern for subsequent use
 - (?&ID)   use subpattern
 - \w       match word from dictionary file
@@ -1268,7 +1272,8 @@ REFERENCES
 
     if args.regex:
         regex = pattern.nfa.regex()
-        logger.info(f"Equivalent regex: {'^'+str(regex)+'$' if regex!=RegexUnion() else None!r}")
+        regex_repr = '"^' + str(regex) + '$"' if regex != RegexUnion() else None
+        logger.info(f"Equivalent regex: {regex_repr}")
         min_length = regex.min_length()
         max_length = regex.max_length()
         if min_length == -math.inf:

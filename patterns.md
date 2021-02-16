@@ -490,7 +490,7 @@ you can use the `(?M:A)` syntax, which is just shorthand for `(?D:(?r:(?D:(?r:A)
 While backreferences in patterns cannot be implemented without backtracking (or some other sort
 of stack), it *is* possible to incorporate submatch extraction into an NFA-based matcher without
 backtracking. The approach adopted here involves tagging NFA transitions with capture information.
-Normally you'd tag empty transitions to indicate the start and end of a match group. However,
+Normally you'd tag empty transitions or states to indicate the start and end of a match group. However,
 that isn't sufficient to identify the submatches for many of the novel operators such as `A#B`.
 Instead, we tag non-empty transitions with the match group(s) that they correspond to.
 
@@ -530,7 +530,7 @@ patterns "(?<start>.*)(?<end>.)" -D  # (NOT IMPLEMENTED)
 
 ![tagged DFA](images/tagged_dfa.png).
 
-### Generating examples
+### Generating examples and bounds
 
 Another thing we can easily do with NFAs is generate an example matching string.
 The simplest way is just to traverse the NFA graph randomly until we reach an 
@@ -545,6 +545,18 @@ shortest accepting path. To generate an example for a given pattern, pass in the
 ```bash
 > patterns "the^^A+" -x
 [16:13:51] patterns:INFO - Example match: 'thAAe'
+```
+
+NFA traversal can also be used to generate lexicographic bounds for the possible matches,
+which could be used to pre-filter a set of records before matching them against the
+pattern. For example matches for the pattern `(a|the)+` will always lie between the strings "a" and 
+"thethetheu" (where the last letter "u" is 'rounded up from "t" to ensure every possible match
+lies below it, no matter how long). To generate bounds for a given pattern (of fixed maximum length
+10), pass in the `-R` parameter.
+
+```bash
+> patterns "(a|the)+" -R
+[16:13:51] patterns:INFO - Match range: 'a' to 'thethetheu'
 ```
 
 ### Generating equivalent basic regular expressions

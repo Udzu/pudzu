@@ -12,7 +12,7 @@ from enum import Enum
 from functools import reduce
 from itertools import product
 from pathlib import Path
-from pyparsing import pyparsing_unicode as ppu, srange  # type: ignore
+from pyparsing import printables as ascii_printables, pyparsing_unicode as ppu, srange  # type: ignore
 from tempfile import TemporaryDirectory
 from typing import cast, Any, Dict, Iterable, List, Optional, Set, Tuple, Union
 
@@ -178,6 +178,34 @@ class NFA:
         except IndexError:
             return None
         return output
+
+    def bound(self, lower_bound: bool, max_length: int) -> Optional[str]:
+        """Generate a lower/upper lexicographic bound for the FSM."""
+        bound = ""
+        minmax = min if lower_bound else max
+        states = self.expand_epsilons({self.start})
+        while (not lower_bound or self.end not in states) and len(bound) < max_length:
+            least_char = None
+            next_state = None
+            for state in states:
+                least_trans = minmax([i for (s, i), ts in self.transitions.items() if s == state and ts and isinstance(i, str)], default=None)
+                if least_trans and (not least_char or least_trans == minmax((least_trans, least_char))):
+                    least_char, next_state = least_trans, first(self.transitions[(state, least_trans)])
+                if self.transitions.get((state, Move.ALL)):
+                    # TODO: match with supported scripts?
+                    least_any = minmax(set(ascii_printables + " ") - {i for (s, i) in self.transitions if s == state})
+                    x = set(ppu.Latin1.printables + " ") - {i for (s, i) in self.transitions if s == state}
+                    if not least_char or least_any == minmax((least_any, least_char)):
+                        least_char, next_state = least_any, first(self.transitions[(state, Move.ALL)])
+            if not least_char:
+                break
+            bound += least_char
+            states = self.expand_epsilons({next_state})
+        else:
+            if not lower_bound:
+                bound = bound[:-1] + chr(ord(bound[-1]) + 1)
+
+        return bound
 
     def regex(self) -> "Regex":
         """Generate a regex corresponding to the NFA."""
@@ -1236,6 +1264,8 @@ REFERENCES
     parser.add_argument("-c", dest="console", action="store_true", help="generate FSM image for console")
     parser.add_argument("-x", dest="example", action="store_true", help="generate an example matching string")
     parser.add_argument("-r", dest="regex", action="store_true", help="generate a standard equivalent regex")
+    parser.add_argument("-R", dest="range", action="store_true", help="generate a lexicographic match range")
+
     args = parser.parse_args()
     global DICTIONARY_FSM, EXPLICIT_FSM
 
@@ -1269,6 +1299,9 @@ REFERENCES
 
     if args.example:
         logger.info(f"Example match: {pattern.example()!r}")
+
+    if args.range:
+        logger.info(f"Match range: {pattern.nfa.bound(True, 10)!r} to {pattern.nfa.bound(False, 10)!r}")
 
     if args.regex:
         regex = pattern.nfa.regex()

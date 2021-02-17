@@ -541,7 +541,8 @@ makes it less likely that we'll get stuck for ages in a transitions like `[^a]*`
 That said, we can also generate examples with a given minimum or maximum length
 but first intersecting the NFA with `.{min,max}` or `.{min,}`. 
 To generate a shortest example, we can also use Dijkstra's algorithm to find a
-shortest accepting path. To generate an example for a given pattern, pass in the `-x` parameter.
+shortest accepting path. To generate an example for a given pattern, pass in the `-x` parameter;
+to generate multiple examples and quit, pass in `-X N`.
 
 ```bash
 > patterns "the^^A+" -x
@@ -553,11 +554,11 @@ which could be used to pre-filter a set of records before matching them against 
 pattern. For example matches for the pattern `(a|the)+` will always lie between the strings "a" and 
 "thethetheu" (where the last letter "u" is 'rounded up from "t" to ensure every possible match
 lies below it, no matter how long). To generate bounds for a given pattern (of fixed maximum length
-10), pass in the `-R` parameter.
+10), pass in the `-b` parameter.
 
 ```bash
-> patterns "(a|the)+" -R
-[16:13:51] patterns:INFO - Match range: 'a' to 'thethetheu'
+> patterns "(a|the)+" -b
+[16:13:51] patterns:INFO - Match bounds: 'a' to 'thethetheu'
 ```
 
 ### Generating equivalent basic regular expressions
@@ -580,6 +581,9 @@ possible match lengths for the pattern.
 [16:13:51] patterns:INFO - Equivalent regex: '^((thA|tAA*h)A*e)$'
 [16:13:51] patterns:INFO - Match lengths: 4+
 ```
+
+To output just an equivalent regex then quit (e.g. to use as an argument for grep), pass in the 
+`-R` parameter.
 
 ### Generating NFA diagrams
 

@@ -1307,14 +1307,20 @@ REFERENCES
     parser.add_argument("-M", dest="min", action="store_true", help="convert NFA to minimal DFA ", default=None)
     parser.add_argument("-i", dest="case_insensitive", action="store_true", help="case insensitive match")
     parser.add_argument("-v", dest="invert", action="store_true", help="invert match")
-    parser.add_argument("-s", dest="svg", metavar="NAME", default=None, help="save FSM diagram")
-    parser.add_argument("-c", dest="console", action="store_true", help="generate FSM image for console")
+    parser.add_argument("-s", dest="svg", metavar="NAME", default=None, help="save FSM image and description")
+    parser.add_argument("-c", dest="console", action="store_true", help="save FSM image for console")
     parser.add_argument("-x", dest="example", action="store_true", help="generate an example matching string")
     parser.add_argument("-r", dest="regex", action="store_true", help="generate a standard equivalent regex")
-    parser.add_argument("-R", dest="range", action="store_true", help="generate a lexicographic match range")
+    parser.add_argument("-b", dest="bounds", action="store_true", help="generate lexicographic match bounds")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-X", dest="examples_only", metavar='N', type=int, help="output N example matches and quit")
+    group.add_argument("-R", dest="regex_only", action="store_true", help="output a standard equivalent regex and quit")
 
     args = parser.parse_args()
     global DICTIONARY_FSM, EXPLICIT_FSM
+
+    if args.examples_only is not None or args.regex_only:
+        logger.setLevel(logging.ERROR)
 
     if args.dict:
         logger.info(f"Compiling dictionary from '{args.dict}'")
@@ -1336,6 +1342,17 @@ REFERENCES
     logger.info(f"Compiling pattern '{pattern}'")
     pattern = Pattern(pattern)
 
+    if args.examples_only is not None:
+        for _ in range(args.examples_only):
+            print(pattern.example())
+        return
+
+    if args.regex_only:
+        regex = pattern.nfa.regex()
+        regex_repr = f"^{regex}$" if regex != RegexUnion() else "$a"
+        print(regex_repr)
+        return
+
     if args.svg:
         logger.info(f"Rendering NFA diagram to '{args.svg}.dot.svg'")
         pattern.nfa.render(args.svg)
@@ -1348,8 +1365,8 @@ REFERENCES
     if args.example:
         logger.info(f"Example match: {pattern.example()!r}")
 
-    if args.range:
-        logger.info(f"Match range: {pattern.nfa.bound(True, 10)!r} to {pattern.nfa.bound(False, 10)!r}")
+    if args.bounds:
+        logger.info(f"Match bounds: {pattern.nfa.bound(True, 10)!r} to {pattern.nfa.bound(False, 10)!r}")
 
     if args.regex:
         regex = pattern.nfa.regex()

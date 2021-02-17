@@ -456,7 +456,7 @@ this is implemented as a prefix tree rather than just an alternation.
 an explicit NFA definition and then use `\f` to refer to it inside a pattern. The
 NFA definition file should consist of lines of the format "State Input State*",
 each defining transitions from one state and input to zero or more other states.
-Inputs should be either a single character, or the strings EMPTY or ALL.
+Inputs should be either a single character, a character range, or the strings EMPTY or ALL.
 The start and end states should be called START and END.
 
 ## Other NFA operations

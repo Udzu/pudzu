@@ -158,6 +158,43 @@ class NFA:
 
         g.render(filename=name + ".dot")
 
+    def save(self, name: str, renumber_states: bool = True) -> None:
+        """Save FSM as a .fsm file."""
+
+        def sort_key(s):
+            # Q: is there a better state ordering?
+            return "" if s == self.start else ")" if s == self.end else str(s)
+
+        sorted_states = sorted(self.states, key=sort_key)
+
+        def label(s):
+            return (
+                "START"
+                if s == self.start
+                else "END"
+                if s == self.end
+                else str(sorted_states.index(s))
+                if renumber_states
+                else str(s).replace("'", "").replace(" ", "")
+            )
+
+        with open(name + ".fsm", "w", encoding="utf-8") as f:
+            for state in sorted_states:
+                from_label = label(state)
+                reverse_dict = {}
+                for (s, i), ts in self.transitions.items():
+                    if state == s:
+                        reverse_dict.setdefault(frozenset(ts), set()).add(i)
+                for ts, ii in reverse_dict.items():
+                    to_labels = " ".join(label(t) for t in ts)
+                    for input in (i for i in ii if isinstance(i, Move)):
+                        print(f"{from_label} {str(input).replace('Move.','')} {to_labels}", file=f)
+                    input = "".join(sorted(i for i in ii if isinstance(i, str)))
+                    if len(input) >= 1:
+                        # TODO: combine into ranges when possible?
+                        input = input if len(input) == 1 else f"[{input}]"
+                        print(f"{from_label} {input} {to_labels}", file=f)
+
     def example(self, min_length: int = 0, max_length: Optional[int] = None) -> Optional[str]:
         """Generate a random matching string. Assumes NFA has been trimmed of states that can't reach the end."""
         nfa = MatchBoth(self, MatchLength(min_length, max_length)) if min_length or max_length is not None else self
@@ -1302,6 +1339,7 @@ REFERENCES
     if args.svg:
         logger.info(f"Rendering NFA diagram to '{args.svg}.dot.svg'")
         pattern.nfa.render(args.svg)
+        pattern.nfa.save(args.svg)
 
     if args.console:
         logger.info(f"Rendering NFA console diagram to 'console.dot.svg'")

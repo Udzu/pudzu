@@ -457,7 +457,8 @@ an explicit NFA definition and then use `\f` to refer to it inside a pattern. Th
 NFA definition file should consist of lines of the format "State Input State*",
 each defining transitions from one state and input to zero or more other states.
 Inputs should be either a single character, a character range, or the strings EMPTY or ALL.
-The start and end states should be called START and END.
+The start and end states should be called START and END. To generate an NFA definition file
+*from* a pattern, use the `-s` parameter.
 
 ## Other NFA operations
 
@@ -586,7 +587,8 @@ Finally, the module also lets you generate FSM diagrams in SVG format using the 
 These use the [graphviz](https://graphviz.org/) package to visualise the NFAs. The console diagrams generated
 with `-c` are intended for use on consoles such as [kitty](https://sw.kovidgoyal.net/kitty/),
 and may require a tool such as rsvg-convert to convert the SVG into a format that can be 
-displayed inline.
+displayed inline. The `-s` parameter also generates a text representaton of the FSM that can be passed 
+back in wtih `-f`.
 
 ## Similar projects
 

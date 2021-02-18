@@ -167,7 +167,7 @@ class NFA:
                     g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
                 input = "".join(sorted(i for i in ii if isinstance(i, str)))
                 if len(input) >= 1:
-                    label = char_class(input)
+                    label = "[ ]" if input == " " else char_class(input)
                     if c:
                         label += f" {{{','.join(c)}}}"
                     g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
@@ -207,7 +207,8 @@ class NFA:
                         print(f"{from_label} {str(move).replace('Move.','')} {to_labels}", file=f)
                     input = "".join(sorted(i for i in ii if isinstance(i, str)))
                     if len(input) >= 1:
-                        print(f"{from_label} {char_class(input)} {to_labels}", file=f)
+                        input_label = "[ ]" if input == " " else char_class(input)
+                        print(f"{from_label} {input_label} {to_labels}", file=f)
 
     def example(self, min_length: int = 0, max_length: Optional[int] = None) -> Optional[str]:
         """Generate a random matching string. Assumes NFA has been trimmed of states that can't reach the end."""
@@ -310,14 +311,19 @@ class NFA:
         return int(max_length) if math.isfinite(max_length) else None
 
 
-def char_class(chars: str) -> str:
+def char_class(chars: str, negated: bool = False) -> str:
     """Generate a character class description of the given characters"""
-    if len(chars) == 1:
-        return "[ ]" if chars == " " else chars
+    if len(chars) == 0 and negated:
+        return "."
+    elif len(chars) == 1:
+        if negated or chars in Pattern.literal_exclude:
+            return f"[{'^'*negated}{chars}]"
+        return chars
+
+    # TODO: deobfuscate this! also escape chars when needed once we can parse them
     chars = "".join(sorted(chars))
     ords = tmap(ord, chars)
     diffs = [b - a for a, b in zip(ords, ords[1:])]
-    # TODO: deobfuscate this!
     i, out = 0, ""
     for run, n in ((r, len(list(g))) for r, g in groupby(diffs, key=lambda i: i == 1)):
         if run:
@@ -332,7 +338,7 @@ def char_class(chars: str) -> str:
         else:
             out += chars[i : i + n - 1]
             i += n - 1
-    return f"[{''.join(out)}]"
+    return f"[{'^'*negated}{''.join(out)}]"
 
 
 # NFA constructors
@@ -974,7 +980,7 @@ class Pattern:
 
     printables = ppu.Latin1.printables + " "
     literal_exclude = r"()+*.?<>#{}^_&|$\[]-"
-    set_exclude = r"\[]"
+    set_exclude = r"\]"
 
     literal = Word(printables, excludeChars=literal_exclude, exact=1).setParseAction(lambda t: MatchIn(t[0]))
     dot = Literal(".").setParseAction(lambda t: MatchNotIn(""))
@@ -1125,8 +1131,7 @@ class RegexChars(Regex):
         return self.chars
 
     def to_string(self):
-        escaped = re.sub(r"([-[\]])", r"\\\1", self.chars)
-        return self.chars if len(self.chars) == 1 else f"[{escaped}]"
+        return char_class(self.chars, negated=False)
 
     def min_length(self):
         return 1
@@ -1143,8 +1148,7 @@ class RegexNegatedChars(Regex):
         return self.chars
 
     def to_string(self, brackets=False):
-        escaped = re.sub(r"([-[\]])", r"\\\1", self.chars)
-        return "." if not self.chars else f"[^{escaped}]"
+        return char_class(self.chars, negated=True)
 
     def min_length(self):
         return 1

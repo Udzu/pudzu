@@ -320,8 +320,8 @@ def char_class(chars: str, negated: bool = False) -> str:
             return f"[{'^'*negated}{chars}]"
         return chars
 
-    # TODO: deobfuscate this! also escape chars when needed once we can parse them
-    chars = "".join(sorted(chars))
+    # TODO: rewrite this! also escape -^\] once we can parse that
+    chars = "".join(sorted(chars, key=lambda s: ({"-": 0, "^": 2}.get(s, 1), s)))
     ords = tmap(ord, chars)
     diffs = [b - a for a, b in zip(ords, ords[1:])]
     i, out = 0, ""

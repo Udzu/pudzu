@@ -10,13 +10,13 @@ import string
 from abc import ABC, abstractmethod
 from enum import Enum
 from functools import reduce
-from itertools import product
+from itertools import groupby, product
 from pathlib import Path
 from pyparsing import printables as ascii_printables, pyparsing_unicode as ppu, srange  # type: ignore
 from tempfile import TemporaryDirectory
-from typing import cast, Any, Dict, Iterable, List, Optional, Set, Sequence, Tuple, Union
+from typing import cast, Any, Dict, FrozenSet, Iterable, List, Optional, Set, Sequence, Tuple, Union
 
-from pudzu.utils import optional_import, merge, merge_with, first  # type: ignore
+from pudzu.utils import optional_import, merge, merge_with, first, tmap  # type: ignore
 
 State = Any  # really it's Union[str, Tuple['State']]
 Move = Enum("Move", "EMPTY ALL")
@@ -150,7 +150,7 @@ class NFA:
                 g.node(str(s), label="", color=fg)
 
         # transitions
-        reverse_dict = {}
+        reverse_dict: Dict[State, Dict[Tuple[State, FrozenSet[CaptureGroup]], Set[Input]]] = {}
         for (s, i), ts in self.transitions.items():
             if not ts:
                 g.node(str(("fail", s)), label="", color=fg)
@@ -160,8 +160,8 @@ class NFA:
 
         for s, d in reverse_dict.items():
             for (t, c), ii in d.items():
-                for input in (i for i in ii if isinstance(i, Move)):
-                    label = {Move.ALL: "*", Move.EMPTY: "ε"}[input]
+                for move in (i for i in ii if isinstance(i, Move)):
+                    label = {Move.ALL: "*", Move.EMPTY: "ε"}[move]
                     if c:
                         label += f" {{{','.join(c)}}}"
                     g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
@@ -196,15 +196,15 @@ class NFA:
             )
 
         with open(name + ".fsm", "w", encoding="utf-8") as f:
-            reverse_dict = {}
+            reverse_dict: Dict[State, Dict[FrozenSet[State], Set[Input]]] = {}
             for (s, i), ts in self.transitions.items():
                 reverse_dict.setdefault(s, {}).setdefault(frozenset(ts), set()).add(i)
             for state in sorted_states:
                 from_label = label(state)
-                for ts, ii in reverse_dict.get(state, {}).items():
-                    to_labels = " ".join(label(t) for t in ts)
-                    for input in (i for i in ii if isinstance(i, Move)):
-                        print(f"{from_label} {str(input).replace('Move.','')} {to_labels}", file=f)
+                for fts, ii in reverse_dict.get(state, {}).items():
+                    to_labels = " ".join(label(t) for t in fts)
+                    for move in (i for i in ii if isinstance(i, Move)):
+                        print(f"{from_label} {str(move).replace('Move.','')} {to_labels}", file=f)
                     input = "".join(sorted(i for i in ii if isinstance(i, str)))
                     if len(input) >= 1:
                         print(f"{from_label} {char_class(input)} {to_labels}", file=f)
@@ -310,10 +310,29 @@ class NFA:
         return int(max_length) if math.isfinite(max_length) else None
 
 
-def char_class(chars: Sequence[str]) -> str:
+def char_class(chars: str) -> str:
     """Generate a character class description of the given characters"""
-    # TODO: handle ranges
-    return chars if len(chars) == 1 else f"[{''.join(sorted(chars))}]"
+    if len(chars) == 1:
+        return "[ ]" if chars == " " else chars
+    chars = "".join(sorted(chars))
+    ords = tmap(ord, chars)
+    diffs = [b - a for a, b in zip(ords, ords[1:])]
+    # TODO: deobfuscate this!
+    i, out = 0, ""
+    for run, n in ((r, len(list(g))) for r, g in groupby(diffs, key=lambda i: i == 1)):
+        if run:
+            out += f"{chars[i]}-{chars[i+n]}" if n >= 2 else chars[i : i + n + 1]
+            i += n + 1
+        elif i == 0 and i + n + 1 == len(chars):
+            out += chars
+            i += n + 1
+        elif i == 0 or i + n == len(chars):
+            out += chars[i : i + n]
+            i += n
+        else:
+            out += chars[i : i + n - 1]
+            i += n - 1
+    return f"[{''.join(out)}]"
 
 
 # NFA constructors
@@ -1391,7 +1410,7 @@ REFERENCES
 
     if args.regex:
         regex = pattern.nfa.regex()
-        regex_repr = '"^' + str(regex) + '$"' if regex != RegexUnion() else None
+        regex_repr = '"^' + str(regex) + '$"' if regex != RegexUnion() else "$a"
         logger.info(f"Equivalent regex: {regex_repr}")
         min_length = regex.min_length()
         max_length = regex.max_length()

@@ -163,14 +163,15 @@ patterns "o+h?"
 ![repetition NFA](images/repetition.png)
 
 **Case-insensitive matches**. The simplest way to implement case insensitivity
-is to simply expand all characters into two element character classes. To mark
-just a subexpression as case insensitive use the `(?i:P)` syntax. Note that this does not implement
+is to simply expand all characters into two element character classes. To mark the whole match
+case insensitive, use the `-i` parameter; to mark
+a subexpression, use the `(?i:P)` syntax. Note that this does not implement
 full Unicode case insensitivity, where string length may change between cases
 (e.g. fußball and FUSSBALL) and where case may depend on locale (e.g. in Turkish
 i uppercases to İ not I).
 
 ```bash
-patterns "(?i:The)"
+patterns "T(?i:he)"
 ```
 
 ![case-insensitive NFA](images/case.png)

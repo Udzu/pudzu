@@ -14,7 +14,7 @@ from itertools import product
 from pathlib import Path
 from pyparsing import printables as ascii_printables, pyparsing_unicode as ppu, srange  # type: ignore
 from tempfile import TemporaryDirectory
-from typing import cast, Any, Dict, Iterable, List, Optional, Set, Tuple, Union
+from typing import cast, Any, Dict, Iterable, List, Optional, Set, Sequence, Tuple, Union
 
 from pudzu.utils import optional_import, merge, merge_with, first  # type: ignore
 
@@ -137,6 +137,8 @@ class NFA:
         fg = "white" if console else "black"
         g = graphviz.Digraph(format="svg")
         g.attr(rankdir="LR", bgcolor=bg)
+
+        # states
         for s in self.states:
             if s == self.start:
                 g.node(str(s), root="true", label="", color=fg)
@@ -146,20 +148,35 @@ class NFA:
                 g.node(str(s), shape="doublecircle", label="", color=fg)
             else:
                 g.node(str(s), label="", color=fg)
-        # TODO: merge parallel edges into classes or ranges
+
+        # transitions
+        reverse_dict = {}
         for (s, i), ts in self.transitions.items():
             if not ts:
                 g.node(str(("fail", s)), label="", color=fg)
             for t in ts or {("fail", s)}:
-                label: str = {Move.ALL: "*", Move.EMPTY: "ε"}.get(i, i).replace("\\", "\\\\")  # type: ignore
-                if self.captures.get((s, i), set()):
-                    label += f" {{{','.join(self.captures[(s, i)])}}}"
-                g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
+                c = frozenset(self.captures.get((s, i), set()))
+                reverse_dict.setdefault(s, {}).setdefault((t, c), set()).add(i)
+
+        for s, d in reverse_dict.items():
+            for (t, c), ii in d.items():
+                for input in (i for i in ii if isinstance(i, Move)):
+                    label = {Move.ALL: "*", Move.EMPTY: "ε"}[input]
+                    if c:
+                        label += f" {{{','.join(c)}}}"
+                    g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
+                input = "".join(sorted(i for i in ii if isinstance(i, str)))
+                if len(input) >= 1:
+                    label = char_class(input)
+                    if c:
+                        label += f" {{{','.join(c)}}}"
+                    g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
 
         g.render(filename=name + ".dot")
 
     def save(self, name: str, renumber_states: bool = True) -> None:
         """Save FSM as a .fsm file."""
+        # TODO: save and load capture groups
 
         def sort_key(s):
             # Q: is there a better state ordering?
@@ -179,21 +196,18 @@ class NFA:
             )
 
         with open(name + ".fsm", "w", encoding="utf-8") as f:
+            reverse_dict = {}
+            for (s, i), ts in self.transitions.items():
+                reverse_dict.setdefault(s, {}).setdefault(frozenset(ts), set()).add(i)
             for state in sorted_states:
                 from_label = label(state)
-                reverse_dict = {}
-                for (s, i), ts in self.transitions.items():
-                    if state == s:
-                        reverse_dict.setdefault(frozenset(ts), set()).add(i)
-                for ts, ii in reverse_dict.items():
+                for ts, ii in reverse_dict.get(state, {}).items():
                     to_labels = " ".join(label(t) for t in ts)
                     for input in (i for i in ii if isinstance(i, Move)):
                         print(f"{from_label} {str(input).replace('Move.','')} {to_labels}", file=f)
                     input = "".join(sorted(i for i in ii if isinstance(i, str)))
                     if len(input) >= 1:
-                        # TODO: combine into ranges when possible?
-                        input = input if len(input) == 1 else f"[{input}]"
-                        print(f"{from_label} {input} {to_labels}", file=f)
+                        print(f"{from_label} {char_class(input)} {to_labels}", file=f)
 
     def example(self, min_length: int = 0, max_length: Optional[int] = None) -> Optional[str]:
         """Generate a random matching string. Assumes NFA has been trimmed of states that can't reach the end."""
@@ -294,6 +308,12 @@ class NFA:
         # converts to a regex, though there's probably a more efficient way
         max_length = self.regex().max_length()
         return int(max_length) if math.isfinite(max_length) else None
+
+
+def char_class(chars: Sequence[str]) -> str:
+    """Generate a character class description of the given characters"""
+    # TODO: handle ranges
+    return chars if len(chars) == 1 else f"[{''.join(sorted(chars))}]"
 
 
 # NFA constructors
@@ -792,8 +812,9 @@ def MatchInsensitively(nfa: NFA) -> NFA:
         if isinstance(i, str):
             transitions.setdefault((s, i.lower()), set()).update(ts)
             transitions.setdefault((s, i.upper()), set()).update(ts)
-            captures.setdefault((s, i.lower()), set()).update(nfa.captures.get((s, i), set()))
-            captures.setdefault((s, i.upper()), set()).update(nfa.captures.get((s, i), set()))
+            if nfa.captures.get((s, i), set()):
+                captures.setdefault((s, i.lower()), set()).update(nfa.captures.get((s, i), set()))
+                captures.setdefault((s, i.upper()), set()).update(nfa.captures.get((s, i), set()))
         else:
             transitions[(s, i)] = ts
     return NFA(nfa.start, nfa.end, transitions, captures)
@@ -1313,7 +1334,7 @@ REFERENCES
     parser.add_argument("-r", dest="regex", action="store_true", help="generate a standard equivalent regex")
     parser.add_argument("-b", dest="bounds", action="store_true", help="generate lexicographic match bounds")
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("-X", dest="examples_only", metavar='N', type=int, help="output N example matches and quit")
+    group.add_argument("-X", dest="examples_only", metavar="N", type=int, help="output N example matches and quit")
     group.add_argument("-R", dest="regex_only", action="store_true", help="output a standard equivalent regex and quit")
 
     args = parser.parse_args()

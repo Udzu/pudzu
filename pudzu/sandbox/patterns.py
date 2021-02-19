@@ -14,7 +14,7 @@ from itertools import groupby, product
 from pathlib import Path
 from pyparsing import printables as ascii_printables, pyparsing_unicode as ppu, srange  # type: ignore
 from tempfile import TemporaryDirectory
-from typing import cast, Any, Dict, FrozenSet, Iterable, List, Optional, Set, Sequence, Tuple, Union
+from typing import cast, Any, Callable, Dict, FrozenSet, Iterable, List, Optional, Set, Sequence, Tuple, Union
 
 from pudzu.utils import optional_import, merge, merge_with, first, tmap  # type: ignore
 
@@ -167,7 +167,7 @@ class NFA:
                     g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
                 input = "".join(sorted(i for i in ii if isinstance(i, str)))
                 if len(input) >= 1:
-                    label = "[ ]" if input == " " else char_class(input)
+                    label = "SPACE" if input == " " else char_class(input)
                     if c:
                         label += f" {{{','.join(c)}}}"
                     g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
@@ -207,7 +207,7 @@ class NFA:
                         print(f"{from_label} {str(move).replace('Move.','')} {to_labels}", file=f)
                     input = "".join(sorted(i for i in ii if isinstance(i, str)))
                     if len(input) >= 1:
-                        input_label = "[ ]" if input == " " else char_class(input)
+                        input_label = "SPACE" if input == " " else char_class(input)
                         print(f"{from_label} {input_label} {to_labels}", file=f)
 
     def example(self, min_length: int = 0, max_length: Optional[int] = None) -> Optional[str]:
@@ -341,6 +341,15 @@ def char_class(chars: str, negated: bool = False) -> str:
     return f"[{'^'*negated}{''.join(out)}]"
 
 
+def new_states(*names: str) -> List[Callable[..., State]]:
+    """Return functions for generating new state names using the given labels.
+    Note that names are sorted alphabetically when generating FSM descriptions."""
+    generators = []
+    for name in names:
+        generators.append((lambda name: (lambda *args: (name, *args) if args else name))(name))
+    return generators
+
+
 # NFA constructors
 def merge_trans(*args):
     """Merge multiple transitions, unioning target states."""
@@ -392,6 +401,8 @@ def ExplicitFSM(path: Path) -> NFA:
                     raise ValueError("END state should have no outbound arrows")
                 elif "START" in end:
                     raise ValueError("START state should have no inbound arrows")
+                elif x == "SPACE":
+                    x = " "
                 if re.match("^\[\^.+]$", x):
                     transitions.setdefault((start, Move.ALL), set()).update(end)
                     for x in srange(x):
@@ -417,38 +428,41 @@ def MatchCapture(nfa: NFA, id: CaptureGroup) -> NFA:
 
 def MatchAfter(nfa1: NFA, nfa2: NFA) -> NFA:
     """Handles: AB"""
-    t1 = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
+    First, Second = new_states("a", "b")
+    t1 = {(First(s), i): {First(t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
+    c1 = {(First(s), i): cs for (s, i), cs in nfa1.captures.items()}
     t2 = {
-        (("1", nfa1.end) if s == nfa2.start else ("2", s), i): {("1", nfa1.end) if t == nfa2.start else ("2", t) for t in ts}
+        (First(nfa1.end) if s == nfa2.start else Second(s), i): {First(nfa1.end) if t == nfa2.start else Second(t) for t in ts}
         for (s, i), ts in nfa2.transitions.items()
     }
-    c1 = {(("1", s), i): cs for (s, i), cs in nfa1.captures.items()}
-    c2 = {(("1", nfa1.end) if s == nfa2.start else ("2", s), i): cs for (s, i), cs in nfa2.captures.items()}
-    return NFA(("1", nfa1.start), ("2", nfa2.end), merge_trans(t1, t2), merge_trans(c1, c2))
+    c2 = {(First(nfa1.end) if s == nfa2.start else Second(s), i): cs for (s, i), cs in nfa2.captures.items()}
+    return NFA(First(nfa1.start), Second(nfa2.end), merge_trans(t1, t2), merge_trans(c1, c2))
 
 
 def MatchEither(*nfas: NFA) -> NFA:
     """Handles: A|B (and arbitrary alternation too)"""
+    Start, End, *Option = new_states("a", "z", *[str(n) for n in range(1, len(nfas) + 1)])
     tis, cis = [], []
-    for n, nfa in enumerate(nfas, 1):
-        tis.append({((str(n), s), i): {(str(n), t) for t in ts} for (s, i), ts in nfa.transitions.items()})
-        cis.append({((str(n), s), i): cs for (s, i), cs in nfa.captures.items()})
-    tstart = {("1", Move.EMPTY): {(str(n), nfa.start) for n, nfa in enumerate(nfas, 1)}}
-    tend = {((str(n), nfa.end), Move.EMPTY): {"2"} for n, nfa in enumerate(nfas, 1)}
-    return NFA("1", "2", merge_trans(tstart, tend, *tis), merge_trans(*cis))
+    for n, nfa in enumerate(nfas):
+        tis.append({(Option[n](s), i): {Option[n](t) for t in ts} for (s, i), ts in nfa.transitions.items()})
+        cis.append({(Option[n](s), i): cs for (s, i), cs in nfa.captures.items()})
+    tstart = {(Start(), Move.EMPTY): {Option[n](nfa.start) for n, nfa in enumerate(nfas)}}
+    tend = {(Option[n](nfa.end), Move.EMPTY): {End()} for n, nfa in enumerate(nfas)}
+    return NFA(Start(), End(), merge_trans(tstart, tend, *tis), merge_trans(*cis))
 
 
 def MatchRepeated(nfa: NFA, repeat: bool = False, optional: bool = False) -> NFA:
     """Handles: A*, A+, A?"""
-    transitions: Transitions = {(("0", s), i): {("0", t) for t in ts} for (s, i), ts in nfa.transitions.items()}
-    captures: Captures = {(("0", s), i): cs for (s, i), cs in nfa.captures.items()}
-    transitions[("1", Move.EMPTY)] = {("0", nfa.start)}
+    Start, End, Star = new_states("a", "z", "*")
+    transitions: Transitions = {(Star(s), i): {Star(t) for t in ts} for (s, i), ts in nfa.transitions.items()}
+    captures: Captures = {(Star(s), i): cs for (s, i), cs in nfa.captures.items()}
+    transitions[(Start(), Move.EMPTY)] = {Star(nfa.start)}
     if optional:
-        transitions[("1", Move.EMPTY)].add("2")
-    transitions[(("0", nfa.end), Move.EMPTY)] = {"2"}
+        transitions[(Start(), Move.EMPTY)].add(End())
+    transitions[(Star(nfa.end), Move.EMPTY)] = {End()}
     if repeat:
-        transitions[(("0", nfa.end), Move.EMPTY)].add(("0", nfa.start))
-    return NFA("1", "2", transitions, captures)
+        transitions[(Star(nfa.end), Move.EMPTY)].add(Star(nfa.start))
+    return NFA(Start(), End(), transitions, captures)
 
 
 def MatchRepeatedN(nfa: NFA, minimum: int, maximum: int) -> NFA:
@@ -564,26 +578,27 @@ def MatchContains(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     """Handles: A<B, A<<B, A>B, A>>B"""
     # transition from (2) A to (3) AxB to (5) A states
     # for proper containment, also use (1) A and (4) A states
+    LeftFirst, Left, Middle, RightFirst, Right = new_states("<l1", "<l2", "<m", "<r1", "<r2")
     t1, t1e, c1, t4, t4e, c4 = {}, {}, {}, {}, {}, {}
     if proper:
-        t1 = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
-        t1e = {(("1", s), i): {("2", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
-        c1 = {(("1", s), i): cs for (s, i), cs in nfa1.captures.items()}
-    t2 = {(("2", s), i): {("2", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
-    c2 = {(("2", s), i): cs for (s, i), cs in nfa1.captures.items()}
-    t2e = {(("2", s), Move.EMPTY): {("3", s, nfa2.start)} for s in nfa1.states}
-    t3 = {(("3", s, q), i): {("3", s, t) for t in ts} for (q, i), ts in nfa2.transitions.items() for s in nfa1.states}
-    c3 = {(("3", s, q), i): cs for (q, i), cs in nfa2.captures.items() for s in nfa1.states}
-    t3e = {(("3", s, nfa2.end), Move.EMPTY): {(("4", s) if proper else ("5", s))} for s in nfa1.states}
+        t1 = {(LeftFirst(s), i): {LeftFirst(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t1e = {(LeftFirst(s), i): {Left(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
+        c1 = {(LeftFirst(s), i): cs for (s, i), cs in nfa1.captures.items()}
+    t2 = {(Left(s), i): {Left(t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
+    c2 = {(Left(s), i): cs for (s, i), cs in nfa1.captures.items()}
+    t2e = {(Left(s), Move.EMPTY): {Middle(s, nfa2.start)} for s in nfa1.states}
+    t3 = {(Middle(s, q), i): {Middle(s, t) for t in ts} for (q, i), ts in nfa2.transitions.items() for s in nfa1.states}
+    c3 = {(Middle(s, q), i): cs for (q, i), cs in nfa2.captures.items() for s in nfa1.states}
+    t3e = {(Middle(s, nfa2.end), Move.EMPTY): {(RightFirst(s) if proper else Right(s))} for s in nfa1.states}
     if proper:
-        t4 = {(("4", s), i): {("4", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
-        t4e = {(("4", s), i): {("5", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
-        c4 = {(("4", s), i): cs for (s, i), cs in nfa1.captures.items()}
-    t5 = {(("5", s), i): {("5", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
-    c5 = {(("5", s), i): cs for (s, i), cs in nfa1.captures.items()}
+        t4 = {(RightFirst(s), i): {RightFirst(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t4e = {(RightFirst(s), i): {Right(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
+        c4 = {(RightFirst(s), i): cs for (s, i), cs in nfa1.captures.items()}
+    t5 = {(Right(s), i): {Right(t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
+    c5 = {(Right(s), i): cs for (s, i), cs in nfa1.captures.items()}
     transitions = merge_trans(t1, t1e, t2, t2e, t3, t3e, t4, t4e, t5)
     captures = merge_trans(c1, c2, c3, c4, c5)
-    nfa = NFA(("1", nfa1.start) if proper else ("2", nfa1.start), ("5", nfa1.end), transitions, captures)
+    nfa = NFA(LeftFirst(nfa1.start) if proper else Left(nfa1.start), Right(nfa1.end), transitions, captures)
     nfa.remove_redundant_states()
     return nfa
 
@@ -592,24 +607,25 @@ def MatchInterleaved(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     """Handles: A^B, A^^B"""
     # transition between (2) AxB and (3) AxB states
     # for proper interleaving, also use (1) A and (4) A states
+    First, Left, Right, Last = new_states("^a", "^l", "^r", "^z")
     t1, t1e, c1, t4, t4e, c4 = {}, {}, {}, {}, {}, {}
     if proper:
-        t1 = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
-        t1e = {(("1", s), i): {("2", t, nfa2.start) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
-        c1 = {(("1", s), i): cs for (s, i), cs in nfa1.captures.items()}
-    t2 = {(("2", s, q), i): {("2", t, q) for t in ts} for (s, i), ts in nfa1.transitions.items() for q in nfa2.states}
-    c2 = {(("2", s, q), i): cs for (s, i), cs in nfa1.captures.items() for q in nfa2.states}
-    t2e = {(("2", q, s), Move.EMPTY): {("3", q, s)} for q in nfa1.states for s in nfa2.states}
-    t3 = {(("3", q, s), i): {("3", q, t) for t in ts} for (s, i), ts in nfa2.transitions.items() for q in nfa1.states}
-    c3 = {(("3", q, s), i): cs for (s, i), cs in nfa2.captures.items() for q in nfa1.states}
-    t3e = {(("3", q, s), Move.EMPTY): {("2", q, s)} for q in nfa1.states for s in nfa2.states}
+        t1 = {(First(s), i): {First(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t1e = {(First(s), i): {Left(t, nfa2.start) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
+        c1 = {(First(s), i): cs for (s, i), cs in nfa1.captures.items()}
+    t2 = {(Left(s, q), i): {Left(t, q) for t in ts} for (s, i), ts in nfa1.transitions.items() for q in nfa2.states}
+    c2 = {(Left(s, q), i): cs for (s, i), cs in nfa1.captures.items() for q in nfa2.states}
+    t2e = {(Left(q, s), Move.EMPTY): {Right(q, s)} for q in nfa1.states for s in nfa2.states}
+    t3 = {(Right(q, s), i): {Right(q, t) for t in ts} for (s, i), ts in nfa2.transitions.items() for q in nfa1.states}
+    c3 = {(Right(q, s), i): cs for (s, i), cs in nfa2.captures.items() for q in nfa1.states}
+    t3e = {(Right(q, s), Move.EMPTY): {Left(q, s)} for q in nfa1.states for s in nfa2.states}
     if proper:
-        t4 = {(("2", s, nfa2.end), i): {("4", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
-        c4 = {(("2", s, nfa2.end), i): cs for (s, i), cs in nfa1.captures.items()}
-        t4e = {(("4", s), i): {("4", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t4 = {(Left(s, nfa2.end), i): {Last(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
+        c4 = {(Left(s, nfa2.end), i): cs for (s, i), cs in nfa1.captures.items()}
+        t4e = {(Last(s), i): {Last(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
     transitions = merge_trans(t1, t1e, t2, t2e, t3, t3e, t4, t4e)
     captures = merge_trans(c1, c2, c3, c4)
-    nfa = NFA(("1", nfa1.start) if proper else ("2", nfa1.start, nfa2.start), ("4", nfa1.end) if proper else ("3", nfa1.end, nfa2.end), transitions, captures)
+    nfa = NFA(First(nfa1.start) if proper else Left(nfa1.start, nfa2.start), Last(nfa1.end) if proper else Right(nfa1.end, nfa2.end), transitions, captures)
     nfa.remove_redundant_states()
     return nfa
 
@@ -618,20 +634,24 @@ def MatchAlternating(nfa1: NFA, nfa2: NFA, ordered: bool) -> NFA:
     """Handles: A#B, A##B"""
     # transition between (1) AxB and (2) AxB states
     # for order agnostic alternation, also use an additional (0) start state
-    t0 = {("0", Move.EMPTY): {("1", nfa1.start, nfa2.start), ("2", nfa1.start, nfa2.start)}} if not ordered else {}
-    t1 = {(("1", s, q), i): {("1" if i == Move.EMPTY else "2", t, q) for t in ts} for (s, i), ts in nfa1.transitions.items() for q in nfa2.states}
-    c1 = {(("1", s, q), i): cs for (s, i), cs in nfa1.captures.items() for q in nfa2.states}
-    t2 = {(("2", q, s), i): {("2" if i == Move.EMPTY else "1", q, t) for t in ts} for (s, i), ts in nfa2.transitions.items() for q in nfa1.states}
-    c2 = {(("2", q, s), i): cs for (s, i), cs in nfa2.captures.items() for q in nfa1.states}
+    Start, Left, Right = new_states("#a", "#l", "#r")
+    t0 = {(Start(), Move.EMPTY): {Left(nfa1.start, nfa2.start), Right(nfa1.start, nfa2.start)}} if not ordered else {}
+    t1 = {(Left(s, q), i): {(Left if i == Move.EMPTY else Right)(t, q) for t in ts} for (s, i), ts in nfa1.transitions.items() for q in nfa2.states}
+    c1 = {(Left(s, q), i): cs for (s, i), cs in nfa1.captures.items() for q in nfa2.states}
+    t2 = {(Right(q, s), i): {(Right if i == Move.EMPTY else Left)(q, t) for t in ts} for (s, i), ts in nfa2.transitions.items() for q in nfa1.states}
+    c2 = {(Right(q, s), i): cs for (s, i), cs in nfa2.captures.items() for q in nfa1.states}
     # handle final transitions
-    t1e = {(("1", nfa1.end, s), Move.EMPTY): {("1", nfa1.end, t) for t in ts} for (s, i), ts in nfa2.transitions.items() if i == Move.EMPTY}
-    t2e = {(("2", s, nfa2.end), Move.EMPTY): {("2", t, nfa2.end) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
-    t21 = {(("2", nfa1.end, nfa2.end), Move.EMPTY): {("1", nfa1.end, nfa2.end)}}
+    t1e = {(Left(nfa1.end, s), Move.EMPTY): {Left(nfa1.end, t) for t in ts} for (s, i), ts in nfa2.transitions.items() if i == Move.EMPTY}
+    t2e = {(Right(s, nfa2.end), Move.EMPTY): {Right(t, nfa2.end) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
+    t21 = {(Right(nfa1.end, nfa2.end), Move.EMPTY): {Left(nfa1.end, nfa2.end)}}
     transitions = merge_trans(t0, t1, t1e, t2, t2e, t21)
     captures = merge_trans(c1, c2)
-    nfa = NFA("0" if not ordered else ("1", nfa1.start, nfa2.start), ("1", nfa1.end, nfa2.end), transitions, captures)
+    nfa = NFA(Start() if not ordered else Left(nfa1.start, nfa2.start), Left(nfa1.end, nfa2.end), transitions, captures)
     nfa.remove_redundant_states()
     return nfa
+
+
+# TODO: migrate rest to using new_states (and maybe fix ugly implementation dependency on MatchBoth)
 
 
 def MatchSubtract(nfa1: NFA, nfa2: NFA, from_right: bool, negate: bool) -> NFA:
@@ -1400,7 +1420,7 @@ REFERENCES
     if args.svg:
         logger.info(f"Rendering NFA diagram to '{args.svg}.dot.svg'")
         pattern.nfa.render(args.svg)
-        pattern.nfa.save(args.svg)
+        pattern.nfa.save(args.svg, renumber_states=not DEBUG)
 
     if args.console:
         logger.info(f"Rendering NFA console diagram to 'console.dot.svg'")

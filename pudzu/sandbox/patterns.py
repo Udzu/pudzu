@@ -651,28 +651,26 @@ def MatchAlternating(nfa1: NFA, nfa2: NFA, ordered: bool) -> NFA:
     return nfa
 
 
-# TODO: migrate rest to using new_states (and maybe fix ugly implementation dependency on MatchBoth)
-
-
 def MatchSubtract(nfa1: NFA, nfa2: NFA, from_right: bool, negate: bool) -> NFA:
     """Handles: A-B, A_-B (and used in slicing)"""
     # rewire end/start state of nfa1 based on partial intersection with nfa2
+    Start, Middle, End = new_states("-a", "-m", "-e")
     if from_right:
         both = MatchBoth(nfa1, nfa2, start_from={(a, nfa2.start) for a in nfa1.states})
     else:
         both = MatchBoth(nfa1, nfa2, stop_at={(a, nfa2.end) for a in nfa1.states})
     if negate:
         return both
-    transitions: Transitions = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
-    captures: Captures = {(("1", s), i): cs for (s, i), cs in nfa1.captures.items()}
+    transitions: Transitions = {(Middle(s), i): {Middle(t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
+    captures: Captures = {(Middle(s), i): cs for (s, i), cs in nfa1.captures.items()}
     if from_right:
         midpoints = {a for a, _ in both.transitions.get((both.start, Move.EMPTY), set())}
-        transitions = merge_trans(transitions, {(("1", s), Move.EMPTY): {"1"} for s in midpoints})
-        nfa = NFA(("1", nfa1.start), "1", transitions, captures)
+        transitions = merge_trans(transitions, {(Middle(s), Move.EMPTY): {End()} for s in midpoints})
+        nfa = NFA(Middle(nfa1.start), End(), transitions, captures)
     else:
         midpoints = {a for ((a, b), i), cs in both.transitions.items() if i == Move.EMPTY and both.end in cs}
-        transitions[("0", Move.EMPTY)] = {("1", s) for s in midpoints}
-        nfa = NFA("0", ("1", nfa1.end), transitions, captures)
+        transitions[(Start(), Move.EMPTY)] = {Middle(s) for s in midpoints}
+        nfa = NFA(Start(), Middle(nfa1.end), transitions, captures)
     nfa.remove_redundant_states()
     return nfa
 
@@ -680,32 +678,35 @@ def MatchSubtract(nfa1: NFA, nfa2: NFA, from_right: bool, negate: bool) -> NFA:
 def MatchSubtractInside(nfa1: NFA, nfa2: NFA, proper: bool, replace: Optional[NFA] = None) -> NFA:
     """Handles: A->B, A->>B"""
     # like MatchContains, but link (2) and (4)/(5) using partial intersection
+    LeftFirst, Left, Replace, RightFirst, Right = new_states("->l1", "->l2", "->m", "->r1", "->r2")
     t1, t1e, c1, t3, c3, t3e, t4, t4e, c4 = {}, {}, {}, {}, {}, {}, {}, {}, {}
     if proper:
-        t1 = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
-        t1e = {(("1", s), i): {("2", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
-        c1 = {(("1", s), i): cs for (s, i), cs in nfa1.captures.items()}
-    t2 = {(("2", s), i): {("2", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
-    c2 = {(("2", s), i): cs for (s, i), cs in nfa1.captures.items()}
+        t1 = {(LeftFirst(s), i): {LeftFirst(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t1e = {(LeftFirst(s), i): {Left(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
+        c1 = {(LeftFirst(s), i): cs for (s, i), cs in nfa1.captures.items()}
+    t2 = {(Left(s), i): {Left(t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
+    c2 = {(Left(s), i): cs for (s, i), cs in nfa1.captures.items()}
     t2es = []
     if replace:
-        t3 = {(("3", s, q), i): {("3", s, t) for t in ts} for (q, i), ts in replace.transitions.items() for s in nfa1.states}
-        c3 = {(("3", s, q), i): cs for (q, i), cs in replace.captures.items() for s in nfa1.states}
-        t3e = {(("3", s, replace.end), Move.EMPTY): {(("4", s) if proper else ("5", s))} for s in nfa1.states}
+        t3 = {(Replace(s, q), i): {Replace(s, t) for t in ts} for (q, i), ts in replace.transitions.items() for s in nfa1.states}
+        c3 = {(Replace(s, q), i): cs for (q, i), cs in replace.captures.items() for s in nfa1.states}
+        t3e = {(Replace(s, replace.end), Move.EMPTY): {(RightFirst(s) if proper else Right(s))} for s in nfa1.states}
     for s in nfa1.states:
         both = MatchBoth(nfa1, nfa2, start_from={(s, nfa2.start)}, stop_at={(a, nfa2.end) for a in nfa1.states})
         new_end = {a for a, _ in both.transitions.get((both.start, Move.EMPTY), set())}
         new_start = {a[0] for (a, i), cs in both.transitions.items() if i == Move.EMPTY and both.end in cs}
-        t2es.append({(("2", e), Move.EMPTY): {(("3", s, replace.start) if replace else ("4", s) if proper else ("5", s)) for s in new_start} for e in new_end})
+        t2es.append(
+            {(Left(e), Move.EMPTY): {(Replace(s, replace.start) if replace else RightFirst(s) if proper else Right(s)) for s in new_start} for e in new_end}
+        )
     if proper:
-        t4 = {(("4", s), i): {("4", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
-        t4e = {(("4", s), i): {("5", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
-        c4 = {(("4", s), i): cs for (s, i), cs in nfa1.captures.items()}
-    t5 = {(("5", s), i): {("5", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
-    c5 = {(("5", s), i): cs for (s, i), cs in nfa1.captures.items()}
+        t4 = {(RightFirst(s), i): {RightFirst(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t4e = {(RightFirst(s), i): {Right(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
+        c4 = {(RightFirst(s), i): cs for (s, i), cs in nfa1.captures.items()}
+    t5 = {(Right(s), i): {Right(t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
+    c5 = {(Right(s), i): cs for (s, i), cs in nfa1.captures.items()}
     transitions = merge_trans(t1, t1e, t2, *t2es, t3, t3e, t4, t4e, t5)
     captures = merge_trans(c1, c2, c3, c4, c5)
-    nfa = NFA(("1", nfa1.start) if proper else ("2", nfa1.start), ("5", nfa1.end), transitions, captures)
+    nfa = NFA(LeftFirst(nfa1.start) if proper else Left(nfa1.start), Right(nfa1.end), transitions, captures)
     nfa.remove_redundant_states()
     return nfa
 
@@ -730,12 +731,13 @@ def MatchSubtractOutside(nfa1: NFA, nfa2: NFA, proper: bool) -> NFA:
     nfas: List[NFA] = []
     midpoints = {b for a, b in both_start_end if any(b == b2 for a2, b2 in both_end_start)}
     for m in midpoints:
-        transitions: Transitions = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
-        captures: Captures = {(("1", s), i): cs for (s, i), cs in nfa1.captures.items()}
-        transitions["0", Move.EMPTY] = {("1", a) for a, b in both_start_end if b == m}
+        Start, Middle, End = new_states("-<a", "-<m", "-<z")
+        transitions: Transitions = {(Middle(s), i): {Middle(t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
+        captures: Captures = {(Middle(s), i): cs for (s, i), cs in nfa1.captures.items()}
+        transitions[Start(), Move.EMPTY] = {Middle(a) for a, b in both_start_end if b == m}
         for a in {a for a, b in both_end_start if b == m}:
-            transitions.setdefault((("1", a), Move.EMPTY), set()).add("1")
-        nfa = NFA("0", "1", transitions, captures)
+            transitions.setdefault((Middle(a), Move.EMPTY), set()).add(End())
+        nfa = NFA(Start(), End(), transitions, captures)
         nfa.remove_redundant_states()
         nfas.append(nfa)
     return MatchEither(*nfas)
@@ -773,8 +775,8 @@ def MatchSubtractAlternating(nfa1: NFA, nfa2: NFA, ordered: bool, from_right: bo
     if len(start_state) == 1:
         nfa = NFA(first(start_state), (nfa1.end, nfa2.end), transitions, captures)
     else:
-        transitions[("0", Move.EMPTY)] = start_state
-        nfa = NFA("0", (nfa1.end, nfa2.end), transitions, captures)
+        transitions[("a", Move.EMPTY)] = start_state
+        nfa = NFA("a", (nfa1.end, nfa2.end), transitions, captures)
     nfa.remove_redundant_states()
     return nfa
 
@@ -791,24 +793,25 @@ def MatchSubtractInterleaved(nfa1: NFA, nfa2: NFA, proper: bool, from_right: boo
             if (a, i) in nfa1.captures:
                 captures[(a, b), i] = nfa1.captures[(a, i)]
     for (ab, i), tus in both.transitions.items():
-        if ab != "1":
-            transitions.setdefault((ab, Move.EMPTY), set()).update(tus - {"2"})
+        if ab != both.start:
+            transitions.setdefault((ab, Move.EMPTY), set()).update(tus - {both.end})
 
     if not proper:
-        transitions[((nfa1.end, nfa2.end), Move.EMPTY)] = {"1"}
-        nfa = NFA((nfa1.start, nfa2.start), "1", transitions, captures)
+        transitions[((nfa1.end, nfa2.end), Move.EMPTY)] = {"z"}
+        nfa = NFA((nfa1.start, nfa2.start), "z", transitions, captures)
     elif from_right:
-        t1 = {(("1", s), i): {("1", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
-        t1e = {(("1", s), i): {("2", (t, nfa2.start)) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
-        c1 = {(("1", s), i): cs for (s, i), cs in nfa1.captures.items()}
-        t2 = {(("2", s), i): {("2", t) for t in ts} for (s, i), ts in transitions.items()}
-        c2 = {(("2", s), i): cs for (s, i), cs in captures.items()}
-        t2e = {(("2", (s, nfa2.end)), i): {("3", t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
-        t3 = {(("3", s), i): {("3", t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
-        c3 = {(("3", s), i): cs for (s, i), cs in nfa1.captures.items()}
+        First, Middle, Last = new_states("-^a", "-^m", "-^z")
+        t1 = {(First(s), i): {First(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i == Move.EMPTY}
+        t1e = {(First(s), i): {Middle((t, nfa2.start)) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
+        c1 = {(First(s), i): cs for (s, i), cs in nfa1.captures.items()}
+        t2 = {(Middle(s), i): {Middle(t) for t in ts} for (s, i), ts in transitions.items()}
+        c2 = {(Middle(s), i): cs for (s, i), cs in captures.items()}
+        t2e = {(Middle((s, nfa2.end)), i): {Last(t) for t in ts} for (s, i), ts in nfa1.transitions.items() if i != Move.EMPTY}
+        t3 = {(Last(s), i): {Last(t) for t in ts} for (s, i), ts in nfa1.transitions.items()}
+        c3 = {(Last(s), i): cs for (s, i), cs in nfa1.captures.items()}
         transitions = merge_trans(t1, t1e, t2, t2e, t3)
         captures = merge_trans(c1, c2, c3)
-        nfa = NFA(("1", nfa1.start), ("3", nfa1.end), transitions, captures)
+        nfa = NFA(First(nfa1.start), Last(nfa1.end), transitions, captures)
     else:
         ts = both.expand_epsilons({(nfa1.start, nfa2.start)})
         start_states = {u for (s, i), us in both.transitions.items() if s in ts and i != Move.EMPTY for u in us}
@@ -818,10 +821,10 @@ def MatchSubtractInterleaved(nfa1: NFA, nfa2: NFA, proper: bool, from_right: boo
                 ts.add(t)
         end_states = {s for (s, i), us in both.transitions.items() if any(u in ts for u in us) and i != Move.EMPTY}
 
-        transitions[("0", Move.EMPTY)] = start_states
+        transitions[("a", Move.EMPTY)] = start_states
         for s in end_states:
-            transitions[(s, Move.EMPTY)] = {"1"}
-        nfa = NFA("0", "1", transitions, captures)
+            transitions[(s, Move.EMPTY)] = {"z"}
+        nfa = NFA("a", "z", transitions, captures)
     nfa.remove_redundant_states()
     return nfa
 
@@ -831,11 +834,12 @@ def MatchReversed(nfa: NFA) -> NFA:
     # just reverse the edges (with special handling for *-transitions)
     transitions: Transitions = {}
     captures: Captures = {}
+    (Extra,) = new_states("r")
     for (s, i), ts in nfa.transitions.items():
         for t in ts:
             if i == Move.ALL:
                 if any(r != s and t in vs for (r, j), vs in nfa.transitions.items()):
-                    extra_state = ("r", s, t)
+                    extra_state = Extra(s, t)
                     transitions.setdefault((t, Move.EMPTY), set()).add(extra_state)
                     t = extra_state
                 for (r, j), _ in nfa.transitions.items():
@@ -901,7 +905,7 @@ def MatchRotated(nfa: NFA, shift: int) -> NFA:
     else:
         window = MatchLength(shift, shift)
         intersection = MatchBoth(nfa, window, start_from={(a, window.start) for a in nfa.states})
-        intersection_starts = {s[0] for s in intersection.transitions.get(("1", Move.EMPTY), set()) if s[0] != nfa.start}
+        intersection_starts = {s[0] for s in intersection.transitions.get((intersection.start, Move.EMPTY), set()) if s[0] != nfa.start}
         for middle in intersection_starts:
             move = MatchBoth(nfa, window, start_from={(middle, window.start)})
             keep = NFA(nfa.start, middle, nfa.transitions, nfa.captures)

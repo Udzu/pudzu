@@ -320,25 +320,28 @@ def char_class(chars: str, negated: bool = False) -> str:
             return f"[{'^'*negated}{chars}]"
         return chars
 
-    # TODO: rewrite this! also escape -^\] once we can parse that
-    chars = "".join(sorted(chars, key=lambda s: ({"-": 0, "^": 2}.get(s, 1), s)))
-    ords = tmap(ord, chars)
-    diffs = [b - a for a, b in zip(ords, ords[1:])]
-    i, out = 0, ""
-    for run, n in ((r, len(list(g))) for r, g in groupby(diffs, key=lambda i: i == 1)):
-        if run:
-            out += f"{chars[i]}-{chars[i+n]}" if n >= 2 else chars[i : i + n + 1]
-            i += n + 1
-        elif i == 0 and i + n + 1 == len(chars):
-            out += chars
-            i += n + 1
-        elif i == 0 or i + n == len(chars):
-            out += chars[i : i + n]
-            i += n
+    ordered = sorted(set(chars))
+    runs, i = [], 0
+    ords = [ord(c) - i for i, c in enumerate(ordered)]
+    for _, g in groupby(ords):
+        n = len([*g])
+        runs += ordered[i : i + n] if n < 4 else [ordered[i] + "-" + ordered[i + n - 1]]
+        i += n
+
+    def sort_key(r):
+        if "]" in r:
+            return 0
+        if "-" in r[::2]:
+            return 1 if r[0] == "-" and "]" not in ordered else 4
+        if "^" in r:
+            return 3
         else:
-            out += chars[i : i + n - 1]
-            i += n - 1
-    return f"[{'^'*negated}{''.join(out)}]"
+            return 2
+
+    runs.sort(key=lambda s: sort_key(s))
+
+    # TODO: escape -^\] when needed once we can parse that
+    return f"[{'^'*negated}{''.join(runs)}]"
 
 
 def new_states(*names: str) -> List[Callable[..., State]]:

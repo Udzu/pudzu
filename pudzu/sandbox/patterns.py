@@ -1,6 +1,5 @@
 import argparse
 import copy
-import graphviz  # type: ignore
 import json
 import logging
 import math
@@ -12,11 +11,14 @@ from enum import Enum
 from functools import reduce
 from itertools import groupby, product
 from pathlib import Path
-from pyparsing import printables as ascii_printables, pyparsing_unicode as ppu, srange  # type: ignore
 from tempfile import TemporaryDirectory
-from typing import cast, Any, Callable, Dict, FrozenSet, Iterable, List, Optional, Set, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, FrozenSet, Iterable, List, Optional, Sequence, Set, Tuple, Union, cast
 
-from pudzu.utils import optional_import, merge, merge_with, first, tmap  # type: ignore
+import graphviz
+from pudzu.utils import first, merge, merge_with, optional_import, tmap
+from pyparsing import printables as ascii_printables
+from pyparsing import pyparsing_unicode as ppu
+from pyparsing import srange
 
 State = Any  # really it's Union[str, Tuple['State']]
 Move = Enum("Move", "EMPTY ALL")
@@ -222,7 +224,7 @@ class NFA:
                 i = random.choice(non_empty)
                 if i == Move.ALL:
                     # TODO: match with supported scripts?
-                    options = list(set(string.ascii_letters + string.digits + " '") - set(choices))
+                    options = list(set(string.ascii_letters + string.digits + " '") - set(i for i in choices if isinstance(i, str)))
                     output += random.choice(options)
                 elif isinstance(i, str):
                     output += i
@@ -320,6 +322,7 @@ def char_class(chars: str, negated: bool = False) -> str:
             return f"[{'^'*negated}{chars}]"
         return chars
 
+    # find runs of length 4+
     ordered = sorted(set(chars))
     runs, i = [], 0
     ords = [ord(c) - i for i, c in enumerate(ordered)]
@@ -328,6 +331,7 @@ def char_class(chars: str, negated: bool = False) -> str:
         runs += ordered[i : i + n] if n < 4 else [ordered[i] + "-" + ordered[i + n - 1]]
         i += n
 
+    # order things to minimise likelihood of having to escape anything
     def sort_key(r):
         if "]" in r:
             return 0
@@ -995,7 +999,7 @@ class Pattern:
         return self.nfa.example(min_length, max_length)
 
     # parsing (should really go via an AST here)
-    from pyparsing import Forward, Group, Literal, OneOrMore, Optional, ParserElement, Word, alphanums, alphas, infixNotation, nums, oneOf, opAssoc  # type: ignore
+    from pyparsing import Forward, Group, Literal, OneOrMore, Optional, ParserElement, Word, alphanums, alphas, infixNotation, nums, oneOf, opAssoc
 
     ParserElement.setDefaultWhitespaceChars("")
     ParserElement.enablePackrat()

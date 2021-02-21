@@ -7,8 +7,9 @@ import lxml
 import pandas as pd
 import requests
 from pudzu.dates import *
-from pudzu.sandbox.tureen import *
 from pudzu.utils import *
+
+from pudzu.sandbox.tureen import *
 
 requests_cache = optional_import("requests_cache")
 

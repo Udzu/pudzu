@@ -1,11 +1,11 @@
 import importlib.resources
 import re
+from pathlib import Path
+from typing import Collection, Optional, Sequence
+
 import numpy as np
 import pandas as pd
-
-from pathlib import Path
 from pkg_resources import resource_listdir
-from typing import Optional, Collection, Sequence
 from pudzu.utils import *
 
 logger = logging.getLogger("unicode")

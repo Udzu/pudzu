@@ -7,7 +7,7 @@ include = ["pudzu/sandbox/unicode/*.txt"]
 keywords = ["pudzu", "visualization", "pillow", "unicode"]
 
 authors = ["Uri Granta <uri.granta+python@gmail.com>"]
-homepage = "https://github.com/Udzu/pudzu-packages/pudzu-charts/"
+homepage = "https://github.com/Udzu/pudzu/"
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",

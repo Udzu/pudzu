@@ -291,7 +291,7 @@ class NFA:
         unvisited = set(self.states)
         distances = {s: 0 if s == self.start else math.inf for s in self.states}
         current = self.start
-        while True:
+        while current in unvisited:
             base = distances[current]
             for (r, i), ss in self.transitions.items():
                 if r == current:
@@ -305,6 +305,7 @@ class NFA:
             current, distance = min(distances.items(), key=lambda x: math.inf if x[0] not in unvisited else x[1])
             if distance == math.inf:
                 return None
+        return None
 
     def max_length(self) -> Optional[int]:
         """ The maximum possible length match. """
@@ -1252,6 +1253,28 @@ class RegexUnion(Regex):
             if any(regex_implies(r, s) for s in regexes - {r}):
                 regexes.remove(r)
 
+        # AB|AC|D = A(B|C|ε)
+        prefix = first(first(r.regexes) for r in regexes if isinstance(r, RegexConcat))
+        if prefix and all(isinstance(r, RegexConcat) and first(r.regexes) == prefix or r == prefix for r in regexes):
+            stripped = {RegexConcat(r.regexes[1:]) if isinstance(r, RegexConcat) else RegexConcat() for r in regexes}
+            return RegexConcat((prefix, RegexUnion(stripped)))
+
+        # BA|CA|DA = (B|C|ε)A
+        suffix = first(r.regexes[-1] for r in regexes if isinstance(r, RegexConcat) and r.regexes)
+        if suffix and all(isinstance(r, RegexConcat) and r.regexes and r.regexes[-1] == suffix or r == suffix for r in regexes):
+            stripped = {RegexConcat(r.regexes[:-1]) if isinstance(r, RegexConcat) else RegexConcat() for r in regexes}
+            return RegexConcat((RegexUnion(stripped), suffix))
+
+        # AA*|ε = A*|ε
+        if any(r.min_length() == 0 for r in regexes):
+            for r in {
+                r
+                for r in regexes
+                if isinstance(r, RegexConcat) and len(r.regexes) == 2 and isinstance(r.regexes[-1], RegexStar) and r.regexes[0] == r.regexes[-1].regex
+            }:
+                regexes.remove(r)
+                regexes.add(r.regexes[-1])
+
         # (A)=A
         if len(regexes) == 1:
             return first(regexes)
@@ -1287,13 +1310,46 @@ class RegexConcat(Regex):
         if any(r == RegexUnion() for r in regexes):
             return RegexUnion()
         # (A(BC)D) = (ABCD)
-        regexes = tuple(s for x in (r.regexes if isinstance(r, RegexConcat) else [r] for r in regexes) for s in x)
+        regexes = [s for x in (r.regexes if isinstance(r, RegexConcat) else [r] for r in regexes) for s in x]
+
+        # peephole optimizer
+        while True:
+            # A* A = A A* (canonical form)
+            i = first(i for i in range(len(regexes) - 1) if isinstance(regexes[i], RegexStar) and cast(RegexStar, regexes[i]).regex == regexes[i + 1])
+            if i is not None:
+                regexes[i], regexes[i + 1] = regexes[i + 1], regexes[i]
+                continue
+            # A* B* = A* if A => B
+            i = first(
+                i
+                for i in range(len(regexes) - 1)
+                if isinstance(regexes[i], RegexStar)
+                and isinstance(regexes[i + 1], RegexStar)
+                and regex_implies(cast(RegexStar, regexes[i]).regex, cast(RegexStar, regexes[i + 1]).regex)
+            )
+            if i is not None:
+                del regexes[i]
+                continue
+            # A* B* = A* if A => B
+            i = first(
+                i
+                for i in range(len(regexes) - 1)
+                if isinstance(regexes[i], RegexStar)
+                and isinstance(regexes[i + 1], RegexStar)
+                and regex_implies(cast(RegexStar, regexes[i + 1]).regex, cast(RegexStar, regexes[i]).regex)
+            )
+            if i is not None:
+                del regexes[i + 1]
+                continue
+            # nothing left to optimize
+            break
+
         # (A) = A
         if len(regexes) == 1:
             return first(regexes)
 
         obj = super().__new__(cls)
-        obj.regexes = regexes
+        obj.regexes = tuple(regexes)
         return obj
 
     def members(self):

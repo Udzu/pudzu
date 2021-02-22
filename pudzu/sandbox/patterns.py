@@ -4,15 +4,17 @@ import math
 import random
 import re
 import string
+import warnings
 from abc import ABC, abstractmethod
 from enum import Enum
-from functools import reduce
+from functools import lru_cache, reduce
 from itertools import groupby, product
 from pathlib import Path
 from typing import Any, Callable, Dict, FrozenSet, Iterable, List, Optional, Set, Tuple, Union, cast
 
 import graphviz
 from pudzu.utils import first, merge, merge_with
+from pyparsing import ParseException
 from pyparsing import printables as ascii_printables
 from pyparsing import pyparsing_unicode as ppu
 from pyparsing import srange
@@ -31,6 +33,7 @@ DEBUG = False
 DICTIONARY_FSM = None
 EXPLICIT_FSM = None
 SUBPATTERNS = {}
+EXTRA_PRINTABLES = ""
 
 
 class NFA:
@@ -1009,7 +1012,7 @@ class Pattern:
     _m99_to_99 = (Option("-") + _0_to_99).setParseAction(lambda t: t[-1] * (-1 if len(t) == 2 else 1))
     _id = Word(alphas + "_", alphanums + "_")
 
-    printables = ppu.Latin1.printables + " "
+    printables = ppu.Latin1.printables + " " + EXTRA_PRINTABLES
     literal_exclude = r"()+*.?<>#{}^_&|$\[]-"
     set_exclude = r"\]"
 
@@ -1051,7 +1054,7 @@ class Pattern:
         )
         | (atom + "*").setParseAction(lambda t: MatchRepeated(t[0], repeat=True, optional=True))
         | (atom + "?").setParseAction(lambda t: MatchRepeated(t[0], optional=True))
-        | (atom + "{" + _0_to_99 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], t[2], int(t[2])))
+        | (atom + "{" + _0_to_99 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], t[2], t[2]))
         | (atom + "{" + _0_to_99 + ",}").setParseAction(lambda t: MatchRepeatedNplus(t[0], t[2]))
         | (atom + "{" + _0_to_99 + "," + _0_to_99 + "}").setParseAction(lambda t: MatchRepeatedN(t[0], t[2], t[4]))
         | ("¬" + atom).setParseAction(lambda t: MatchDFA(t[1], negate=True))
@@ -1244,9 +1247,10 @@ class RegexUnion(Regex):
             regexes -= {r for r in regexes if isinstance(r, RegexChars)}
             regexes.add(chars)
 
-        # TODO: generalise into A|B|C = B|C when A=>B ?
-        if RegexConcat() in regexes and any(isinstance(r, RegexStar) for r in regexes):
-            regexes.remove(RegexConcat())
+        # A|B|C = B|C if A=>B
+        for r in list(regexes):
+            if any(regex_implies(r, s) for s in regexes - {r}):
+                regexes.remove(r)
 
         # (A)=A
         if len(regexes) == 1:
@@ -1296,13 +1300,77 @@ class RegexConcat(Regex):
         return self.regexes
 
     def to_string(self):
-        return "ε" if not self.regexes else "({})".format("".join(map(str, self.regexes)))
+        return ".{0}" if not self.regexes else "({})".format("".join(map(str, self.regexes)))
 
     def min_length(self):
         return sum(r.min_length() for r in self.regexes)
 
     def max_length(self):
         return sum(r.max_length() for r in self.regexes)
+
+
+@lru_cache(maxsize=None)
+def regex_implies(a: Regex, b: Regex) -> bool:
+    """Whether one regex implies the other."""
+    if isinstance(a, RegexChars) and isinstance(b, RegexChars):
+        return set(a.chars) <= set(b.chars)
+    elif isinstance(a, RegexChars) and isinstance(b, RegexNegatedChars):
+        return not (set(a.chars) & set(b.chars))
+    elif isinstance(a, RegexNegatedChars) and isinstance(b, RegexNegatedChars):
+        return set(a.chars) >= set(b.chars)
+    elif isinstance(a, RegexStar) and isinstance(b, RegexStar):
+        return regex_implies(a.regex, b.regex)
+    elif isinstance(a, RegexUnion):
+        return all(regex_implies(r, b) for r in a.regexes)
+    elif isinstance(b, RegexUnion):
+        return any(regex_implies(a, r) for r in b.regexes)
+    elif isinstance(a, RegexConcat) and isinstance(b, RegexStar) and all(regex_implies(r, b) for r in a.regexes):
+        return True
+    elif isinstance(b, RegexStar) and regex_implies(a, b.regex):
+        return True
+    elif a.max_length() < b.min_length() or a.min_length() > b.max_length():
+        return False
+    try:
+        # the slow way! - but it doesn't work with e.g. emoji injected via \f or \w 🙁
+        return Pattern(f"¬(¬({a})|{b})").nfa.min_length() is None
+    except ParseException:
+        warnings.warn("Cannot fully simplify regular expression due to non-Latin characters", UnicodeWarning)
+        return False
+
+
+def regex(pattern: str) -> Regex:
+    """Generate a Regex object directly from basic regular expression syntax. Useful for testing."""
+
+    from pyparsing import Forward, Literal, OneOrMore, ParserElement, Word, infixNotation, nums, opAssoc
+
+    ParserElement.setDefaultWhitespaceChars("")
+    ParserElement.enablePackrat()
+
+    _0_to_99 = Word(nums, min=1, max=2).setParseAction(lambda t: int("".join(t[0])))
+    printables = ppu.Latin1.printables + " " + EXTRA_PRINTABLES
+    literal_exclude = r"()+*.?{}^|$\[]"
+    set_exclude = r"\]"
+
+    literal = Word(printables, excludeChars=literal_exclude, exact=1).setParseAction(lambda t: RegexChars(t[0]))
+    dot = Literal(".").setParseAction(lambda t: RegexNegatedChars(""))
+    nset = ("[^" + Word(printables, excludeChars=set_exclude, min=1) + "]").setParseAction(lambda t: RegexNegatedChars(srange(f"[{t[1]}]")))
+    set = ("[" + Word(printables, excludeChars=set_exclude, min=1) + "]").setParseAction(lambda t: RegexChars(srange(f"[{t[1]}]")))
+
+    expr = Forward()
+    group = ("(" + expr + ")").setParseAction(lambda t: t[1])
+    atom = literal | dot | nset | set | group
+    item = (
+        (atom + "*").setParseAction(lambda t: RegexStar(t[0]))
+        | (atom + "+").setParseAction(lambda t: t[0] + RegexStar(t[0]))
+        | (atom + "?").setParseAction(lambda t: RegexConcat() | t[0])
+        | (atom + "{" + _0_to_99 + "}").setParseAction(lambda t: RegexConcat([t[0]] * t[2]))
+        | (atom + "{" + _0_to_99 + ",}").setParseAction(lambda t: RegexConcat([t[0]] * t[2]) + RegexStar(t[0]))
+        | atom
+    )
+    items = OneOrMore(item).setParseAction(lambda t: RegexConcat(t))
+    expr <<= infixNotation(items, [("|", 2, opAssoc.LEFT, lambda t: RegexUnion(t[0][::2]))])
+
+    return expr.parseString(pattern, parseAll=True)[0]
 
 
 def main() -> None:
@@ -1401,6 +1469,7 @@ REFERENCES
 
     if args.examples_only is not None or args.regex_only:
         logger.setLevel(logging.ERROR)
+        warnings.simplefilter("ignore")
 
     if args.dict:
         logger.info(f"Compiling dictionary from '{args.dict}'")

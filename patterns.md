@@ -572,14 +572,15 @@ and then eliminate intermediate states while keeping the remaining edges labelle
 with consistent regular expressions describing those transitions. For
 a full description, see for example [this Stack Exchange answer](https://cs.stackexchange.com/questions/2016/how-to-convert-finite-automata-to-regular-expressions/2389#2389).
 Since the resulting expressions are often inefficiently verbose, we apply
-a few heuristics to try to simplify them, but more work could be done here.
+various heuristics to simplify them, but more work could be done here
+(especially as regards speed).
 To generate an equivalent regular expression for a given pattern, pass in the `-r` parameter.
 These regular expressions also make it easy to figure out the shortest and longest
 possible match lengths for the pattern.
 
 ```bash
 > patterns "the^^A+" -Mr
-[16:13:51] patterns:INFO - Equivalent regex: '^((thA|tAA*h)A*e)$'
+[16:13:51] patterns:INFO - Equivalent regex: '^(t(AA*h|hA)A*e)$'
 [16:13:51] patterns:INFO - Match lengths: 4+
 ```
 

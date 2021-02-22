@@ -1274,6 +1274,8 @@ class RegexUnion(Regex):
             }:
                 regexes.remove(r)
                 regexes.add(r.regexes[-1])
+                if RegexConcat() in regexes:
+                    regexes.remove(RegexConcat())
 
         # (A)=A
         if len(regexes) == 1:
@@ -1289,9 +1291,10 @@ class RegexUnion(Regex):
     def to_string(self):
         if not self.regexes:
             return "∅"
-        return "({}){}".format(
-            "|".join(re.sub(r"^\((.*)\)$", r"\1", str(r)) for r in self.regexes if r != RegexConcat()), "?" * (RegexConcat() in self.regexes)
-        )
+
+        ss = [re.sub(r"^\((.*)\)$", r"\1", str(r)) for r in self.regexes if r != RegexConcat()]
+        unbracketed = len(ss) == 1 and len(ss[0]) == 1 or ss[0].startswith("[")
+        return ("{}{}" if unbracketed else "({}){}").format("|".join(ss), "?" * (RegexConcat() in self.regexes))
 
     def min_length(self):
         return -math.inf if not self.regexes else min([r.min_length() for r in self.regexes])

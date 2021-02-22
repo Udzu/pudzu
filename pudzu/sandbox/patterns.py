@@ -1,6 +1,4 @@
 import argparse
-import copy
-import json
 import logging
 import math
 import random
@@ -11,11 +9,10 @@ from enum import Enum
 from functools import reduce
 from itertools import groupby, product
 from pathlib import Path
-from tempfile import TemporaryDirectory
-from typing import Any, Callable, Dict, FrozenSet, Iterable, List, Optional, Sequence, Set, Tuple, Union, cast
+from typing import Any, Callable, Dict, FrozenSet, Iterable, List, Optional, Set, Tuple, Union, cast
 
 import graphviz
-from pudzu.utils import first, merge, merge_with, optional_import, tmap
+from pudzu.utils import first, merge, merge_with
 from pyparsing import printables as ascii_printables
 from pyparsing import pyparsing_unicode as ppu
 from pyparsing import srange
@@ -43,11 +40,11 @@ class NFA:
     - *-moves (only used if there is no other matching move)
     """
 
-    def __init__(self, start: State, end: State, transitions: Transitions, captures: Captures = {}):
+    def __init__(self, start: State, end: State, transitions: Transitions, captures: Optional[Captures] = None):
         self.start = start
         self.end = end
         self.transitions = transitions
-        self.captures = captures
+        self.captures = captures or {}
         self.states = {self.start, self.end} | {s for s, _ in self.transitions.keys()} | {t for ts in self.transitions.values() for t in ts}
 
     def __repr__(self) -> str:
@@ -248,7 +245,6 @@ class NFA:
                 if self.transitions.get((state, Move.ALL)):
                     # TODO: match with supported scripts?
                     least_any = minmax(set(ascii_printables + " ") - {i for (s, i) in self.transitions if s == state})
-                    x = set(ppu.Latin1.printables + " ") - {i for (s, i) in self.transitions if s == state}
                     if not least_char or least_any == minmax((least_any, least_char)):
                         least_char, next_state = least_any, first(self.transitions[(state, Move.ALL)])
             if not least_char:
@@ -263,15 +259,15 @@ class NFA:
 
     def regex(self) -> "Regex":
         """Generate a regex corresponding to the NFA."""
-        L = {(i, j): RegexEmpty() if i == j else RegexUnion() for i in self.states for j in self.states}
+        L = {(i, j): RegexConcat() if i == j else RegexUnion() for i in self.states for j in self.states}
         for (i, a), js in self.transitions.items():
             for j in js:
                 if a == Move.ALL:
-                    L[i, j] += RegexNegatedChars("".join(b for k, b in self.transitions if i == k and isinstance(b, str)))
+                    L[i, j] |= RegexNegatedChars("".join(b for k, b in self.transitions if i == k and isinstance(b, str)))
                 elif a == Move.EMPTY:
-                    L[i, j] += RegexEmpty()
+                    L[i, j] |= RegexConcat()
                 else:
-                    L[i, j] += RegexChars(a)
+                    L[i, j] |= RegexChars(a)
         remaining = set(self.states)
         for k in self.states:
             if k == self.start or k == self.end:
@@ -279,10 +275,11 @@ class NFA:
             remaining.remove(k)
             for i in remaining:
                 for j in remaining:
-                    L[i, i] += RegexConcat(L[i, k], RegexStar(L[k, k]), L[k, i])
-                    L[j, j] += RegexConcat(L[j, k], RegexStar(L[k, k]), L[k, j])
-                    L[i, j] += RegexConcat(L[i, k], RegexStar(L[k, k]), L[k, j])
-                    L[j, i] += RegexConcat(L[j, k], RegexStar(L[k, k]), L[k, i])
+                    L[i, i] |= RegexConcat((L[i, k], RegexStar(L[k, k]), L[k, i]))
+                    L[j, j] |= RegexConcat((L[j, k], RegexStar(L[k, k]), L[k, j]))
+                    L[i, j] |= RegexConcat((L[i, k], RegexStar(L[k, k]), L[k, j]))
+                    L[j, i] |= RegexConcat((L[j, k], RegexStar(L[k, k]), L[k, i]))
+
         return L[self.start, self.end]
 
     def min_length(self) -> Optional[int]:
@@ -348,6 +345,7 @@ def char_class(chars: str, negated: bool = False) -> str:
     return f"[{'^'*negated}{''.join(runs)}]"
 
 
+# pylint: disable=unbalanced-tuple-unpacking
 def new_states(*names: str) -> List[Callable[..., State]]:
     """Return functions for generating new state names using the given labels.
     Note that names are sorted alphabetically when generating FSM descriptions."""
@@ -364,7 +362,7 @@ def merge_trans(*args):
 
 
 def MatchEmpty() -> NFA:
-    """RegexEmpty match"""
+    """Empty match"""
     return NFA("1", "2", {("1", Move.EMPTY): {"2"}})
 
 
@@ -390,13 +388,13 @@ def MatchWords(words: Iterable[str]) -> NFA:
 
 
 def MatchDictionary(path: Path) -> NFA:
-    """Handles: \w"""
+    r"""Handles: \w"""
     with open(str(path), "r", encoding="utf-8") as f:
         return MatchWords(w.rstrip("\n") for w in f)
 
 
 def ExplicitFSM(path: Path) -> NFA:
-    """Handles: \f"""
+    r"""Handles: \f"""
     transitions: Transitions = {}
     with open(str(path), "r", encoding="utf-8") as f:
         for line in f:
@@ -410,11 +408,11 @@ def ExplicitFSM(path: Path) -> NFA:
                     raise ValueError("START state should have no inbound arrows")
                 elif x == "SPACE":
                     x = " "
-                if re.match("^\[\^.+]$", x):
+                if re.match(r"^\[\^.+]$", x):
                     transitions.setdefault((start, Move.ALL), set()).update(end)
                     for x in srange(x):
                         transitions.setdefault((start, x), set())
-                elif re.match("^\[.+]$", x):
+                elif re.match(r"^\[.+]$", x):
                     for x in srange(x):
                         transitions.setdefault((start, x), set()).update(end)
                 elif x in {"EMPTY", "ALL"}:
@@ -999,14 +997,16 @@ class Pattern:
         return self.nfa.example(min_length, max_length)
 
     # parsing (should really go via an AST here)
-    from pyparsing import Forward, Group, Literal, OneOrMore, Optional, ParserElement, Word, alphanums, alphas, infixNotation, nums, oneOf, opAssoc
+    from pyparsing import Forward, Group, Literal, OneOrMore
+    from pyparsing import Optional as Option
+    from pyparsing import ParserElement, Word, alphanums, alphas, infixNotation, nums, oneOf, opAssoc
 
     ParserElement.setDefaultWhitespaceChars("")
     ParserElement.enablePackrat()
 
     # TODO: character escaping, supported scripts
     _0_to_99 = Word(nums, min=1, max=2).setParseAction(lambda t: int("".join(t[0])))
-    _m99_to_99 = (Optional("-") + _0_to_99).setParseAction(lambda t: t[-1] * (-1 if len(t) == 2 else 1))
+    _m99_to_99 = (Option("-") + _0_to_99).setParseAction(lambda t: t[-1] * (-1 if len(t) == 2 else 1))
     _id = Word(alphas + "_", alphanums + "_")
 
     printables = ppu.Latin1.printables + " "
@@ -1032,10 +1032,10 @@ class Pattern:
         | ("(?s:" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchShifted(t[1], i) for i in range(1, 26)]))
         | ("(?R" + _m99_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchRotated(t[3], t[1]))
         | ("(?R<=" + _0_to_99 + ":" + expr + ")").setParseAction(lambda t: MatchEither(*[MatchRotated(t[3], i) for i in range(-t[1], t[1] + 1) if i != 0]))
-        | (
-            "(?S:" + expr + ")[" + Optional(_m99_to_99, None) + ":" + Optional(_m99_to_99, None) + Optional(":" + Optional(_m99_to_99, 1), 1) + "]"
-        ).setParseAction(lambda t: MatchSlice(t[1], t[3], t[5], t[-2]))
-        | ("(?/" + expr + "/" + expr + "/" + expr + "/" + Optional("s") + ")").setParseAction(
+        | ("(?S:" + expr + ")[" + Option(_m99_to_99, None) + ":" + Option(_m99_to_99, None) + Option(":" + Option(_m99_to_99, 1), 1) + "]").setParseAction(
+            lambda t: MatchSlice(t[1], t[3], t[5], t[-2])
+        )
+        | ("(?/" + expr + "/" + expr + "/" + expr + "/" + Option("s") + ")").setParseAction(
             lambda t: MatchSubtractInside(t[1], t[3], proper=(t[7] == "s"), replace=t[5])
         )
         | ("(?&" + _id + "=" + expr + ")").setParseAction(lambda t: SUBPATTERNS.update({t[1]: t[3]}) or MatchEmpty())
@@ -1094,13 +1094,13 @@ class Pattern:
     )
 
 
-# Regex reconstructions (extra hacky)
+# Regex reconstructions
 
 
 class Regex(ABC):
     @abstractmethod
     def members(self) -> Any:
-        """Members, used for equality testing."""
+        """Members, used for equality testing and hashing."""
 
     @abstractmethod
     def to_string(self) -> str:
@@ -1130,33 +1130,29 @@ class Regex(ABC):
 
     def __add__(self, other):
         if isinstance(other, Regex):
-            return RegexUnion(self, other)
+            return RegexConcat((self, other))
         else:
-            raise NotImplemented
+            return NotImplemented
 
-
-class RegexEmpty(Regex):
-    def members(self):
-        return ()
-
-    def to_string(self):
-        return ""  # should only appear by itself
-
-    def min_length(self):
-        return 0
-
-    def max_length(self):
-        return 0
+    def __or__(self, other):
+        if isinstance(other, Regex):
+            return RegexUnion((self, other))
+        else:
+            return NotImplemented
 
 
 class RegexChars(Regex):
+
+    chars: str
+
     def __new__(cls, chars):
+        # [] = ∅
         if not chars:
             return RegexUnion()
-        return super().__new__(cls)
 
-    def __init__(self, chars):
-        self.chars = "".join(sorted(set(chars)))
+        obj = super().__new__(cls)
+        obj.chars = "".join(sorted(set(chars)))
+        return obj
 
     def members(self):
         return self.chars
@@ -1178,7 +1174,7 @@ class RegexNegatedChars(Regex):
     def members(self):
         return self.chars
 
-    def to_string(self, brackets=False):
+    def to_string(self):
         return char_class(self.chars, negated=True)
 
     def min_length(self):
@@ -1189,17 +1185,25 @@ class RegexNegatedChars(Regex):
 
 
 class RegexStar(Regex):
+
     regex: Regex
 
     def __new__(cls, regex: Regex):
-        if isinstance(regex, RegexEmpty) or isinstance(regex, RegexStar):
+
+        # ε* = ε
+        if regex == RegexConcat():
             return regex
-        elif regex == RegexUnion():
-            return RegexEmpty()
-        elif isinstance(regex, RegexUnion) and RegexEmpty() in regex.regexes:
-            regex = RegexUnion(*[r for r in regex.regexes if r != RegexEmpty()])
-        elif isinstance(regex, RegexConcat) and all(isinstance(r, RegexStar) for r in regex.regexes):
-            regex = RegexUnion(cast(RegexStar, r).regex for r in regex.regexes)
+        # (A*)* = A*
+        elif isinstance(regex, RegexStar):
+            return regex
+
+        # (ε|A|B|C)* = (A|B|C)*
+        if isinstance(regex, RegexUnion) and RegexConcat() in regex.regexes:
+            regex = RegexUnion(r for r in regex.regexes if r != RegexConcat())
+        # (A*B*C*)* = (A|B|C)*
+        if isinstance(regex, RegexConcat) and all(isinstance(r, RegexStar) for r in regex.regexes):
+            regex = RegexStar(RegexUnion(cast(RegexStar, r).regex for r in regex.regexes))
+
         obj = super().__new__(cls)
         obj.regex = regex
         return obj
@@ -1218,33 +1222,38 @@ class RegexStar(Regex):
 
 
 class RegexUnion(Regex):
-    regexes: Tuple[Regex]
 
-    def __new__(cls, *regexes):
-        all_ = {r for x in (r.regexes if isinstance(r, RegexUnion) else [r] for r in regexes) for r in x}
-        regexes = set()
-        # Merge character classes
-        if any(isinstance(r, RegexNegatedChars) for r in all_):
-            regexes.add(
-                RegexNegatedChars(
-                    set.intersection(*[set(r.chars) for r in all_ if isinstance(r, RegexNegatedChars)])
-                    - {c for r in all_ if isinstance(r, RegexChars) for c in r.chars}
-                )
+    regexes: FrozenSet[Regex]
+
+    def __new__(cls, regexes: Iterable[Regex] = ()):
+
+        # (A|(B|C)|D)=(A|B|C|D)
+        regexes = {s for x in (r.regexes if isinstance(r, RegexUnion) else [r] for r in regexes) for s in x}
+
+        # ([^ab]|[ac]|C) = ([^b]|C)
+        if any(isinstance(r, RegexNegatedChars) for r in regexes):
+            nchars = RegexNegatedChars(
+                set.intersection(*[set(r.chars) for r in regexes if isinstance(r, RegexNegatedChars)])
+                - {c for r in regexes if isinstance(r, RegexChars) for c in r.chars}
             )
-        elif any(isinstance(r, RegexChars) for r in all_):
-            chars = {c for r in all_ if isinstance(r, RegexChars) for c in r.chars}
-            if chars:
-                regexes.add(RegexChars(chars))
-        # Don't include epsilon if there's a star already
-        if RegexEmpty() in all_ and not (any(isinstance(r, RegexStar) for r in all_)):
-            regexes.add(RegexEmpty())
-        # Add the rest...
-        regexes |= {r for r in all_ if all(not (isinstance(r, c)) for c in (RegexNegatedChars, RegexChars, RegexEmpty))}
+            regexes -= {r for r in regexes if isinstance(r, RegexNegatedChars) or isinstance(r, RegexChars)}
+            regexes.add(nchars)
+        # ([ab]|[ac]|C) = ([abc]|C)
+        elif any(isinstance(r, RegexChars) for r in regexes):
+            chars = RegexChars({c for r in regexes if isinstance(r, RegexChars) for c in r.chars})
+            regexes -= {r for r in regexes if isinstance(r, RegexChars)}
+            regexes.add(chars)
 
+        # TODO: generalise into A|B|C = B|C when A=>B ?
+        if RegexConcat() in regexes and any(isinstance(r, RegexStar) for r in regexes):
+            regexes.remove(RegexConcat())
+
+        # (A)=A
         if len(regexes) == 1:
             return first(regexes)
+
         obj = super().__new__(cls)
-        obj.regexes = tuple(regexes)
+        obj.regexes = frozenset(regexes)
         return obj
 
     def members(self):
@@ -1253,36 +1262,32 @@ class RegexUnion(Regex):
     def to_string(self):
         if not self.regexes:
             return "∅"
-
-        def debracket(r, optional=False):
-            s = str(r)
-            if optional:
-                return s + "?"
-            return s[1:-1] if s.startswith("(") else s
-
-        has_empty = RegexEmpty() in self.regexes
-        regexes = [debracket(r, i == 0 and has_empty) for i, r in enumerate(r for r in self.regexes if r != RegexEmpty())]
-        return "({})".format("|".join(regexes))
+        return "({}){}".format(
+            "|".join(re.sub(r"^\((.*)\)$", r"\1", str(r)) for r in self.regexes if r != RegexConcat()), "?" * (RegexConcat() in self.regexes)
+        )
 
     def min_length(self):
-        return -math.inf if not self.regexes else min(*[r.min_length() for r in self.regexes])
+        return -math.inf if not self.regexes else min([r.min_length() for r in self.regexes])
 
     def max_length(self):
-        return -math.inf if not self.regexes else max(*[r.max_length() for r in self.regexes])
+        return -math.inf if not self.regexes else max([r.max_length() for r in self.regexes])
 
 
 class RegexConcat(Regex):
+
     regexes: Tuple[Regex]
 
-    def __new__(cls, *regexes):
+    def __new__(cls, regexes: Iterable[Regex] = ()):
+
+        # (A∅B) = ∅
         if any(r == RegexUnion() for r in regexes):
             return RegexUnion()
-        regexes = tuple(r for x in (r.regexes if isinstance(r, RegexConcat) else [r] for r in regexes) for r in x if not isinstance(r, RegexEmpty))
-
+        # (A(BC)D) = (ABCD)
+        regexes = tuple(s for x in (r.regexes if isinstance(r, RegexConcat) else [r] for r in regexes) for s in x)
+        # (A) = A
         if len(regexes) == 1:
             return first(regexes)
-        elif len(regexes) == 0:
-            return RegexEmpty()
+
         obj = super().__new__(cls)
         obj.regexes = regexes
         return obj
@@ -1291,7 +1296,7 @@ class RegexConcat(Regex):
         return self.regexes
 
     def to_string(self):
-        return "({})".format("".join(map(str, self.regexes)))
+        return "ε" if not self.regexes else "({})".format("".join(map(str, self.regexes)))
 
     def min_length(self):
         return sum(r.min_length() for r in self.regexes)
@@ -1424,7 +1429,7 @@ REFERENCES
 
     if args.regex_only:
         regex = pattern.nfa.regex()
-        regex_repr = f"^{regex}$" if regex != RegexUnion() else "$a"
+        regex_repr = "$." if regex == RegexUnion() else "^$" if regex == RegexConcat() else f"^{regex}$"
         print(regex_repr)
         return
 
@@ -1445,7 +1450,7 @@ REFERENCES
 
     if args.regex:
         regex = pattern.nfa.regex()
-        regex_repr = '"^' + str(regex) + '$"' if regex != RegexUnion() else "$a"
+        regex_repr = "$." if regex == RegexUnion() else "^$" if regex == RegexConcat() else f"^{regex}$"
         logger.info(f"Equivalent regex: {regex_repr}")
         min_length = regex.min_length()
         max_length = regex.max_length()

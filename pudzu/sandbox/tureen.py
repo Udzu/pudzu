@@ -1,8 +1,6 @@
 import itertools
-import logging
 import operator
 import re
-from collections import OrderedDict
 
 import bs4
 from pudzu.utils import *

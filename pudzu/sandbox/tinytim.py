@@ -1,5 +1,5 @@
 from collections import namedtuple
-from turtle import *
+from turtle import fd, heading, lt, pd, position, pu, rt, setheading, setposition  # pylint: disable=no-name-in-module
 
 from pudzu.utils import *
 

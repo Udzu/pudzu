@@ -34,6 +34,7 @@ DICTIONARY_FSM = None
 EXPLICIT_FSM = None
 SUBPATTERNS = {}
 EXTRA_PRINTABLES = ""
+SLOW_SIMPLIFICATION = True
 
 
 class NFA:
@@ -1359,7 +1360,16 @@ class RegexConcat(Regex):
         return self.regexes
 
     def to_string(self):
-        return ".{0}" if not self.regexes else "({})".format("".join(map(str, self.regexes)))
+        ss = [str(r) for r in self.regexes]
+        while True:
+            # replace A A* with A+
+            i = first(i for i in range(len(ss) - 1) if ss[i] + "*" == ss[i + 1])
+            if i is not None:
+                ss[i + 1] = ss[i + 1][:-1] + "+"
+                del ss[i]
+                continue
+            break
+        return ".{0}" if not self.regexes else "({})".format("".join(ss))
 
     def min_length(self):
         return sum(r.min_length() for r in self.regexes)
@@ -1389,12 +1399,15 @@ def regex_implies(a: Regex, b: Regex) -> bool:
         return True
     elif a.max_length() < b.min_length() or a.min_length() > b.max_length():
         return False
-    try:
-        # the slow way! - but it doesn't work with e.g. emoji injected via \f or \w 🙁
-        return Pattern(f"¬(¬({a})|{b})").nfa.min_length() is None
-    except ParseException:
-        warnings.warn("Cannot fully simplify regular expression due to non-Latin characters", UnicodeWarning)
-        return False
+    if SLOW_SIMPLIFICATION:
+        # the very slow way! - but it doesn't work with e.g. emoji injected via \f or \w 🙁
+        try:
+            logger.debug("Checking whether %s => %s", a, b)
+            return Pattern(f"¬(¬({a})|{b})").nfa.min_length() is None
+        except ParseException:
+            warnings.warn("Cannot fully simplify regular expression due to non-Latin characters", UnicodeWarning)
+            return False
+    return False
 
 
 def regex(pattern: str) -> Regex:
@@ -1524,11 +1537,12 @@ REFERENCES
     group.add_argument("-R", dest="regex_only", action="store_true", help="output a standard equivalent regex and quit")
 
     args = parser.parse_args()
-    global DICTIONARY_FSM, EXPLICIT_FSM
+    global DICTIONARY_FSM, EXPLICIT_FSM, SLOW_SIMPLIFICATION
 
     if args.examples_only is not None or args.regex_only:
         logger.setLevel(logging.ERROR)
         warnings.simplefilter("ignore")
+        SLOW_SIMPLIFICATION = False
 
     if args.dict:
         logger.info(f"Compiling dictionary from '{args.dict}'")

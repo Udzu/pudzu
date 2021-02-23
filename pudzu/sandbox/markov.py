@@ -9,7 +9,6 @@ import string
 import sys
 import unicodedata
 from collections import Counter
-from numbers import Integral
 
 # Simple Markov n-gram based generator.
 

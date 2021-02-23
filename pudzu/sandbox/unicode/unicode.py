@@ -1,4 +1,5 @@
 import importlib.resources
+import logging
 import re
 from pathlib import Path
 from typing import Collection, Optional, Sequence
@@ -6,7 +7,7 @@ from typing import Collection, Optional, Sequence
 import numpy as np
 import pandas as pd
 from pkg_resources import resource_listdir
-from pudzu.utils import *
+from pudzu.utils import artial
 
 logger = logging.getLogger("unicode")
 logger.setLevel(logging.INFO)
@@ -65,14 +66,14 @@ def extract_property(filename: str, path: Optional[Path] = None) -> pd.DataFrame
 
     # remove whitespace and set (possibly non-unique) index
     df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
-    df.index = df.Code_Point.str.replace("\.\..*", "", regex=True).apply(artial(int, 16))
+    df.index = df.Code_Point.str.replace(r"\.\..*", "", regex=True).apply(artial(int, 16))
 
     # Filter out Surrogate and Private Use characters (though non-existent characters may remain)
     df = df.loc[(df.index < 0xD800) | ((df.index > 0xF8FF) & (df.index < 0xF0000))]
 
     # expand code ranges
     expanded = df
-    ranges = df[df.Code_Point.str.contains("\.\.")]
+    ranges = df[df.Code_Point.str.contains(r"\.\.")]
     for i, az in enumerate(ranges.Code_Point):
         a, z = map(artial(int, 16), az.split(".."))
         copies = ranges.iloc[np.full(z - a, i)]

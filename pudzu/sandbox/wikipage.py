@@ -1,9 +1,7 @@
-from math import log
-from statistics import mean, median
 from urllib.parse import unquote
 
 import bs4
-import lxml
+import lxml  # pylint: disable=unused-import
 import pandas as pd
 import requests
 from pudzu.dates import *
@@ -88,7 +86,7 @@ class WikiPage(CachedPage):
     # api calls
 
     def pageviews(self, start, end, granularity="monthly", access="all-access", agent="all-agents"):
-        """A JSON object representing the number of page views for a given period. See https://wikimedia.org/api/rest_v1/#!/Pageviews_data/get_metrics_pageviews_per_article_project_access_agent_article_granularity_start_end for details"""
+        """A JSON object representing the number of page views for a given period."""
 
         def format_date(d):
             if isinstance(d, Date):
@@ -112,7 +110,7 @@ class WikiPage(CachedPage):
             response = requests.get(query_api, params=parameters).json()
             for page_id in response["query"]["pages"]:
                 if "revisions" not in response["query"]["pages"][page_id]:
-                    logger.warning("Missing revision information for {}".format(self.title))
+                    logger.warning("Missing revision information for %s", self.title)
                     break
                 revisions += len(response["query"]["pages"][page_id]["revisions"])
             if "continue" in response:
@@ -173,7 +171,7 @@ class WDPage(CachedPage):
     def api_call(cls, parameters):
         """Wikidata api call."""
         logurl = "{}?{}".format(cls.API, "&".join("{}={}".format(k, v) for k, v in parameters.items()))
-        logger.debug("WikiData API: {}".format(logurl))
+        logger.debug("WikiData API: %s", logurl)
         json = cls.CACHE.get(cls.API, params=assoc_in(parameters, ["format"], "json"), headers=cls.HEADERS).json()
         if "error" in json:
             raise Exception("WikiData API error for {}: {}".format(logurl, json["error"].get("info", "(no info)")))
@@ -235,7 +233,7 @@ class WDPage(CachedPage):
         if langs:
             missing_langs = [l for l in langs if not any(lang == l for lang, *_ in labels)]
             if missing_langs:
-                logger.log(logging.WARNING, "Missing {} labels for {}".format(self.name(), ", ".join(missing_langs)))
+                logger.warning("Missing %s labels for %s", self.name(), ", ".join(missing_langs))
         return pd.DataFrame(labels, columns=columns)
 
     @staticmethod

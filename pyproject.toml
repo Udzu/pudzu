@@ -47,12 +47,13 @@ pytest-mypy = "*"
 pytest-pylint = "*"
 
 [tool.taskipy.tasks]
-test = "pytest --pylint --mypy pudzu"
+tests = "pytest --pylint --mypy pudzu tests"
 format = "task isort && task black"
-mypy = "pytest --mypy -m mypy pudzu"
-pylint = "pytest --pylint -m pylint pudzu"
-black = "black pudzu"
-isort = "isort pudzu"
+mypy = "pytest --mypy -m mypy pudzu tests"
+pylint = "pytest --pylint -m pylint pudzu tests"
+pytest = "pytest pudzu tests"
+black = "black pudzu tests"
+isort = "isort pudzu tests"
 
 [tool.black]
 line-length = 160

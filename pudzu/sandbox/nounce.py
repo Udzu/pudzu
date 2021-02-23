@@ -175,7 +175,7 @@ class Nouncer(abc.MutableMapping):
     PHONEME_REGEX = re.compile(PHONEME_PATTERN)
     PRONUNCIATION_REGEX = re.compile("(?:{phoneme})*".format(phoneme=PHONEME_PATTERN))
     PARENTHESES_REGEX = re.compile("[(]([^)]+)[)]")
-    BRACKETS_REGEX = re.compile("\[([^\]]+)\]")
+    BRACKETS_REGEX = re.compile(r"\[([^\]]+)\]")
 
     def ipa_to_phonemes(self, pronunciation):
         def normalise(string):

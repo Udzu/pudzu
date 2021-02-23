@@ -584,7 +584,9 @@ A|B|A       = A|B
 A|B|C       = B|C if A < B
 AB|AC|A     = A(B|C|ε)
 BA|CA|A     = (B|C|ε)A
-AA*|ε       = A*
+AA*|B|C     = A*|B|C if ε satisfies B
+A(BC)D      = ABCD
+AεB         = AB
 A*A         = AA* (canonical form)
 A*B*        = A* if A < B or B* if B < A
 ε*          = ε
@@ -605,6 +607,7 @@ generating the FSMs for A and B and checking whether `¬(¬A|B)` is empty or not
  [ab] < [abc]
  [ab] < [^cd]
 [^ab] < [^a]
+    ε < A*
    A* < B*    iff A < B
 A|B|C < D     iff all(x < D for x in ABC)
     A < B|C|D iff any(A < x for x in BCD)

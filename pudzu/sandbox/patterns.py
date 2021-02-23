@@ -1429,6 +1429,9 @@ def regex_implies(a: Regex, b: Regex) -> bool:
     # A < B|C|D iff any(A < BCD)
     elif isinstance(b, RegexUnion):
         return any(regex_implies(a, r) for r in b.regexes)
+    # ε => A*
+    elif a == RegexConcat() and isinstance(b, RegexStar):
+        return True
     # A < B* if A < B
     elif isinstance(b, RegexStar) and regex_implies(a, b.regex):
         return True

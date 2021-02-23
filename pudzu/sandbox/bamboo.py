@@ -1,6 +1,6 @@
 import fnmatch
 import glob
-import math
+import logging
 import operator
 import re
 from contextlib import nullcontext
@@ -8,6 +8,7 @@ from contextlib import nullcontext
 import numpy as np
 import pandas as pd
 from pudzu.utils import *
+from pudzu.utils import identity, ignoring_exceptions, ignoring_extra_args, nnn, non, non_string_iterable, optional_import
 
 tqdm = optional_import("tqdm")
 pyparsing = optional_import("pyparsing")
@@ -81,7 +82,7 @@ def _split_columns(df, columns, delimiter, converter=identity):
 def _explode_to_columns(df, column, append=True):
     """Transform each element of list-likes into a new column, with NaNs for unfilled columns."""
     max_length = df[column].apply(ignoring_exceptions(len, 0)).max()
-    new_cols = {f"{column}_{i}": df[column].apply(ignoring_exceptions(lambda v: v[i], np.nan)) for i in range(max_length)}
+    new_cols = {f"{column}_{i}": df[column].apply(ignoring_exceptions(lambda v, j=i: v[j], np.nan)) for i in range(max_length)}
     df = df.assign(**new_cols)
     return df if append else df[list(new_cols)]
 
@@ -140,7 +141,7 @@ def pd_print(item, **kwargs):
 # filter expressions
 
 if pyparsing:
-    from pyparsing import *
+    from pyparsing import CaselessLiteral, Combine, Literal, Optional, QuotedString, Word, alphas, alphas8bit, nums, oneOf, opAssoc, operatorPrecedence
 
     class FilterExpression:
         """Filter factory based on filter expressions such as "name~John and (age>18 or consent:true)".
@@ -164,8 +165,7 @@ if pyparsing:
         number_exponent = CaselessLiteral("E")("float") + Optional(sign) + integer
         number = Combine(Optional(sign) + number_base + Optional(number_exponent)).setParseAction(lambda t: float(t[0]) if t.float else int(t[0]))
 
-        def onlen(f):
-            return lambda x, y: f(len(x), y)
+        onlen = lambda f: (lambda x, y: f(len(x), y))
 
         num_ops = {
             "<": operator.lt,
@@ -191,8 +191,7 @@ if pyparsing:
         }
         exist_ops = {":": lambda x, y: {"exists": not non(x), "true": bool(x)}[y.lower()]}
 
-        def oneOfOpMap(map):
-            return oneOf(list(map.keys())).setParseAction(lambda t: ignoring_exceptions(map[t[0]], False))
+        oneOfOpMap = lambda map: oneOf(list(map.keys())).setParseAction(lambda t: ignoring_exceptions(map[t[0]], False))
 
         num_op = oneOfOpMap(num_ops)
         str_op = oneOfOpMap(str_ops)

@@ -6,8 +6,20 @@ from pudzu.sandbox.patterns import *
 @pytest.mark.parametrize(
     "regex_a,regex_b",
     [
-        ["a*", "a*a*"],
-        ["a|b", "[ab]"],
+        ["a|b|b", "[ab]"],
+        ["[ab]|[ac]", "[abc]"],
+        ["a*a*", "a*"],
+        ["a*aa*", "a+"],
+        ["(a*)*", "a*"],
+        ["a|b|a*", "b|a*"],
+        ["ab|ac", "a(b|c)"],
+        ["ab|ac|a", "a(b|c)?"],
+        ["ba|ca", "(b|c)a"],
+        ["ba|ca|a", "(b|c)?a"],
+        ["(a*b*c*)*", "(a|b|c)*"],
+        ["(aa|a)*", "a*"],
+        ["(a|b*)*", "(a|b)*"],
+        ["(a*|b*|c*)*", "(a|b|c)*"],
     ],
 )
 def test_regex_simplification(regex_a, regex_b):

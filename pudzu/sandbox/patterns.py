@@ -1207,7 +1207,28 @@ class RegexStar(Regex):
             regex = RegexUnion(r for r in regex.regexes if r != RegexConcat())
         # (A*B*C*)* = (A|B|C)*
         if isinstance(regex, RegexConcat) and all(isinstance(r, RegexStar) for r in regex.regexes):
-            regex = RegexStar(RegexUnion(cast(RegexStar, r).regex for r in regex.regexes))
+            regex = RegexUnion(cast(RegexStar, r).regex for r in regex.regexes)
+
+        if isinstance(regex, RegexUnion):
+            regexes = set(regex.regexes)
+            for r in list(regexes):
+                # (A*|B|C)* = (A|B|C)*
+                if isinstance(r, RegexStar):
+                    regexes.remove(r)
+                    r = r.regex
+                    regexes.add(r)
+                # (A|B|C)* = (B|C)* if A => B*
+                if any(regex_implies(r, RegexStar(s)) for s in regexes - {r}):
+                    regexes.remove(r)
+            regex = RegexUnion(regexes)
+
+        # (ABC)* = B* if all(ABC => B*)
+        if isinstance(regex, RegexConcat):
+            for r in regex.regexes:
+                star = RegexStar(r)
+                if all(regex_implies(s, star) for s in regex.regexes):
+                    regex = r
+                    break
 
         obj = super().__new__(cls)
         obj.regex = regex
@@ -1235,6 +1256,11 @@ class RegexUnion(Regex):
         # (A|(B|C)|D)=(A|B|C|D)
         regexes = {s for x in (r.regexes if isinstance(r, RegexUnion) else [r] for r in regexes) for s in x}
 
+        # A|B|C = B|C if A=>B
+        for r in list(regexes):
+            if any(regex_implies(r, s) for s in regexes - {r}):
+                regexes.remove(r)
+
         # ([^ab]|[ac]|C) = ([^b]|C)
         if any(isinstance(r, RegexNegatedChars) for r in regexes):
             nchars = RegexNegatedChars(
@@ -1242,17 +1268,15 @@ class RegexUnion(Regex):
                 - {c for r in regexes if isinstance(r, RegexChars) for c in r.chars}
             )
             regexes -= {r for r in regexes if isinstance(r, RegexNegatedChars) or isinstance(r, RegexChars)}
-            regexes.add(nchars)
+            if not any(regex_implies(nchars, s) for s in regexes):
+                regexes.add(nchars)
+
         # ([ab]|[ac]|C) = ([abc]|C)
         elif any(isinstance(r, RegexChars) for r in regexes):
             chars = RegexChars({c for r in regexes if isinstance(r, RegexChars) for c in r.chars})
             regexes -= {r for r in regexes if isinstance(r, RegexChars)}
-            regexes.add(chars)
-
-        # A|B|C = B|C if A=>B
-        for r in list(regexes):
-            if any(regex_implies(r, s) for s in regexes - {r}):
-                regexes.remove(r)
+            if not any(regex_implies(chars, s) for s in regexes):
+                regexes.add(chars)
 
         # AB|AC|D = A(B|C|ε)
         prefix = first(first(r.regexes) for r in regexes if isinstance(r, RegexConcat))
@@ -1334,7 +1358,7 @@ class RegexConcat(Regex):
             if i is not None:
                 del regexes[i]
                 continue
-            # A* B* = A* if A => B
+            # A* B* = B* if B => A
             i = first(
                 i
                 for i in range(len(regexes) - 1)
@@ -1381,26 +1405,42 @@ class RegexConcat(Regex):
 @lru_cache(maxsize=None)
 def regex_implies(a: Regex, b: Regex) -> bool:
     """Whether one regex implies the other."""
+    # A < B
+    if a == b:
+        return True
+    # [ab] < [abc]
     if isinstance(a, RegexChars) and isinstance(b, RegexChars):
         return set(a.chars) <= set(b.chars)
+    # [ab] < [^cd]
     elif isinstance(a, RegexChars) and isinstance(b, RegexNegatedChars):
         return not (set(a.chars) & set(b.chars))
+    # [^ab] < [^a]
     elif isinstance(a, RegexNegatedChars) and isinstance(b, RegexNegatedChars):
         return set(a.chars) >= set(b.chars)
+    # [^...] !< [...]
+    elif isinstance(a, RegexNegatedChars) and isinstance(b, RegexChars):
+        return False
+    # A* < B* iff A < B
     elif isinstance(a, RegexStar) and isinstance(b, RegexStar):
         return regex_implies(a.regex, b.regex)
+    # A|B|C < D iff all(ABC < D)
     elif isinstance(a, RegexUnion):
         return all(regex_implies(r, b) for r in a.regexes)
+    # A < B|C|D iff any(A < BCD)
     elif isinstance(b, RegexUnion):
         return any(regex_implies(a, r) for r in b.regexes)
-    elif isinstance(a, RegexConcat) and isinstance(b, RegexStar) and all(regex_implies(r, b) for r in a.regexes):
-        return True
+    # A < B* if A < B
     elif isinstance(b, RegexStar) and regex_implies(a, b.regex):
         return True
+    # ABC < D* if all(A < D)
+    elif isinstance(a, RegexConcat) and isinstance(b, RegexStar) and all(regex_implies(r, b) for r in a.regexes):
+        return True
+    # incompatible length
     elif a.max_length() < b.min_length() or a.min_length() > b.max_length():
         return False
+    # the slow way using FMSs
     if SLOW_SIMPLIFICATION:
-        # the very slow way! - but it doesn't work with e.g. emoji injected via \f or \w 🙁
+        # currently doesn't work with e.g. emoji injected via \f or \w 🙁
         try:
             logger.debug("Checking whether %s => %s", a, b)
             return Pattern(f"¬(¬({a})|{b})").nfa.min_length() is None

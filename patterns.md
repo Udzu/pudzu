@@ -571,21 +571,61 @@ is based on **state elimination**: start with the original NFA
 and then eliminate intermediate states while keeping the remaining edges labelled 
 with consistent regular expressions describing those transitions. For
 a full description, see for example [this Stack Exchange answer](https://cs.stackexchange.com/questions/2016/how-to-convert-finite-automata-to-regular-expressions/2389#2389).
-Since the resulting expressions are often inefficiently verbose, we apply
-various heuristics to simplify them, but more work could be done here
-(especially as regards speed).
+
+Since the resulting expressions are typically inefficiently verbose, we apply
+various heuristics to simplify them. Implemented rules include:
+
+```
+[ab]|[ac]   = [abc]
+[ab]|[^ac]  = [^c]
+[^ab]|[^ac] = [^a]
+A|(B|C)|D   = A|B|C|D
+A|B|A       = A|B
+A|B|C       = B|C if A < B
+AB|AC|A     = A(B|C|ε)
+BA|CA|A     = (B|C|ε)A
+AA*|ε       = A*
+A*A         = AA* (canonical form)
+A*B*        = A* if A < B or B* if B < A
+ε*          = ε
+A**         = A*
+(ε|B|C)*    = (B|C)*
+(A*|B|C)*   = (A|B|C)*
+(A*B*C*)*   = (A|B|C)*
+(A|B|C)*    = (B|C)* if A < B*
+(ABC)*      = B* if all(x < B* for x in ABC)
+```
+
+A number of the rules depend on knowing whether A < B: i.e. whether any match for A will also
+match B. This is also implemented with heuristics (see below), but with the slow fallback of
+generating the FSMs for A and B and checking whether `¬(¬A|B)` is empty or not.
+
+```
+    A < A
+ [ab] < [abc]
+ [ab] < [^cd]
+[^ab] < [^a]
+   A* < B*    iff A < B
+A|B|C < D     iff all(x < D for x in ABC)
+    A < B|C|D iff any(A < x for x in BCD)
+    A < B*    if  A < B  
+  ABC < D*    if  all(x < D for x in ABC)
+   A !< B     if  max_length(A) < min_length(B) or vice versa
+```
+
+
 To generate an equivalent regular expression for a given pattern, pass in the `-r` parameter.
 These regular expressions also make it easy to figure out the shortest and longest
 possible match lengths for the pattern.
 
 ```bash
 > patterns "the^^A+" -Mr
-[16:13:51] patterns:INFO - Equivalent regex: '^(t(AA*h|hA)A*e)$'
+[16:13:51] patterns:INFO - Equivalent regex: '^(t(A+h|hA)A*e)$'
 [16:13:51] patterns:INFO - Match lengths: 4+
 ```
 
 To output just an equivalent regex then quit (e.g. to use as an argument for grep), pass in the 
-`-R` parameter.
+`-R` parameter. This mode avoid using the slow FSM fallback described above.
 
 ### Generating NFA diagrams
 

@@ -613,13 +613,17 @@ A|B|C < D     iff all(x < D for x in ABC)
     A < B|C|D iff any(A < x for x in BCD)
     A < B*    if  A < B  
   ABC < D*    if  all(x < D for x in ABC)
-   A !< B     if  max_length(A) < min_length(B) or vice versa
+
+   A !< B     if  min_length(A) < min_length(B)
+   A !< B     if  max_length(A) > max_length(B)
+   A !< B     if  first_character(A) !< first_character(B)
+   A !< B     if  last_character(A) !< last_character(B)
 ```
 
 
 To generate an equivalent regular expression for a given pattern, pass in the `-r` parameter.
 These regular expressions also make it easy to figure out the shortest and longest
-possible match lengths for the pattern.
+possible match lengths for the pattern, as well as the possible first and last characters.
 
 ```bash
 > patterns "the^^A+" -Mr

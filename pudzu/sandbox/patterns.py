@@ -1119,6 +1119,10 @@ class Regex(ABC):
     def max_length(self) -> float:
         """Maximum match length (-inf for no match, inf for infinite)."""
 
+    @abstractmethod
+    def first_character(self, from_end: bool = False) -> "Regex":
+        """A Regex describing the first (or last) matching character."""
+
     def __repr__(self):
         return f"{self.to_string()}"
 
@@ -1171,6 +1175,9 @@ class RegexChars(Regex):
     def max_length(self):
         return 1
 
+    def first_character(self, from_end: bool = False) -> Regex:
+        return self
+
 
 class RegexNegatedChars(Regex):
     def __init__(self, chars):
@@ -1187,6 +1194,9 @@ class RegexNegatedChars(Regex):
 
     def max_length(self):
         return 1
+
+    def first_character(self, from_end: bool = False) -> Regex:
+        return self
 
 
 class RegexStar(Regex):
@@ -1245,6 +1255,9 @@ class RegexStar(Regex):
 
     def max_length(self):
         return 0 if self.regex.max_length() == 0 else math.inf
+
+    def first_character(self, from_end: bool = False) -> Regex:
+        return RegexConcat() | self.regex.first_character(from_end)
 
 
 class RegexUnion(Regex):
@@ -1327,6 +1340,9 @@ class RegexUnion(Regex):
     def max_length(self):
         return -math.inf if not self.regexes else max([r.max_length() for r in self.regexes])
 
+    def first_character(self, from_end: bool = False) -> Regex:
+        return RegexUnion(r.first_character(from_end) for r in self.regexes)
+
 
 class RegexConcat(Regex):
 
@@ -1401,6 +1417,19 @@ class RegexConcat(Regex):
     def max_length(self):
         return sum(r.max_length() for r in self.regexes)
 
+    def first_character(self, from_end: bool = False) -> Regex:
+        fc = RegexUnion()
+        for r in self.regexes[:: -1 if from_end else 1]:
+            fcr = r.first_character(from_end)
+            if isinstance(fcr, RegexUnion) and RegexConcat() in fcr.regexes:
+                fc = RegexUnion([fc, *[r for r in fcr.regexes if r != RegexConcat()]])
+            else:
+                fc |= fcr
+                break
+        else:
+            fc |= RegexConcat()
+        return fc
+
 
 @lru_cache(maxsize=None)
 def regex_implies(a: Regex, b: Regex) -> bool:
@@ -1439,15 +1468,22 @@ def regex_implies(a: Regex, b: Regex) -> bool:
     elif isinstance(a, RegexConcat) and isinstance(b, RegexStar) and all(regex_implies(r, b) for r in a.regexes):
         return True
     # incompatible length
-    elif a.max_length() < b.min_length() or a.min_length() > b.max_length():
+    elif a.min_length() < b.min_length() or a.max_length() > b.max_length():
+        return False
+    # incompatible first characters
+    elif not regex_implies(a.first_character(), b.first_character()):
+        return False
+    # incompatible last characters
+    elif not regex_implies(a.first_character(from_end=True), b.first_character(from_end=True)):
         return False
     # the slow way using FMSs
     if SLOW_SIMPLIFICATION:
-        # currently doesn't work with e.g. emoji injected via \f or \w 🙁
         try:
-            logger.debug("Checking whether %s => %s", a, b)
-            return Pattern(f"¬(¬({a})|{b})").nfa.min_length() is None
+            ans = Pattern(f"¬(¬({a})|{b})").nfa.min_length() is None
+            logger.debug("%s =%s=> %s", a, "=" if ans else "/", b)
+            return ans
         except ParseException:
+            # currently doesn't work with e.g. emoji injected via \f or \w 🙁
             warnings.warn("Cannot fully simplify regular expression due to non-Latin characters", UnicodeWarning)
             return False
     return False

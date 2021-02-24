@@ -28,11 +28,27 @@ def test_regex_simplification(regex_a, regex_b):
 
 
 @pytest.mark.parametrize(
-    "regex_in,regex_out",
+    "reg,reg_fmt",
     [
         ["aa*", "(a+)"],
     ],
 )
-def test_regex_formatting(regex_in, regex_out):
+def test_regex_formatting(reg, reg_fmt):
     """Check that a regex has the expected string representation."""
-    assert str(regex(regex_in)) == regex_out
+    assert str(regex(reg)) == reg_fmt
+
+
+@pytest.mark.parametrize(
+    "reg,first_char,last_char",
+    [
+        ["the", "t", "e"],
+        ["t?he*", "[th]", "[eh]"],
+        ["the|a", "[ta]", "[ea]"],
+        ["[^a]|a*", ".?", ".?"],
+        [".{0}", ".{0}", ".{0}"],
+    ],
+)
+def test_regex_first_character(reg, first_char, last_char):
+    """Check that a regex has the expected first and last characters."""
+    assert regex(reg).first_character() == regex(first_char)
+    assert regex(reg).first_character(from_end=True) == regex(last_char)

@@ -134,30 +134,44 @@ class NFA:
                     del self.transitions[k]
                 self.states -= removable
 
-    def render(self, name: str, console: bool = False) -> None:
+    def render(self, name: str, console: bool = False, compact: bool = False) -> None:
         """Render the NFA as a dot.svg file."""
         bg = "transparent" if console else "white"
         fg = "white" if console else "black"
         g = graphviz.Digraph(format="svg")
         g.attr(rankdir="LR", bgcolor=bg)
 
+        states = set(self.states)
+        start = self.start
+        ends = {self.end}
+
+        if compact:
+            if {i for (s, i) in self.transitions if s == self.start} == {Move.EMPTY} and len(self.transitions.get((self.start, Move.EMPTY), set())) == 1:
+                states.remove(self.start)
+                start = first(self.transitions[(self.start, Move.EMPTY)])
+            if {i for (s, i), ts in self.transitions.items() if self.end in ts} == {Move.EMPTY}:
+                states.remove(self.end)
+                ends = {s for (s, i), ts in self.transitions.items() if self.end in ts}
+
         # states
-        for s in self.states:
-            if s == self.start:
-                g.node(str(s), root="true", label="", color=fg)
+        for s in states:
+            shape = "doublecircle" if s in ends else "ellipse"
+            root = "true" if s == start else "false"
+            g.node(str(s), root=root, shape=shape, label="", color=fg)
+            if s == start:
                 g.node("prestart", style="invisible")
                 g.edge("prestart", str(s), style="bold", color=fg)
-            elif s == self.end:
-                g.node(str(s), shape="doublecircle", label="", color=fg)
-            else:
-                g.node(str(s), label="", color=fg)
 
         # transitions
         reverse_dict: Dict[State, Dict[Tuple[State, FrozenSet[CaptureGroup]], Set[Input]]] = {}
         for (s, i), ts in self.transitions.items():
+            if s not in states:
+                continue
             if not ts:
                 g.node(str(("fail", s)), label="", color=fg)
             for t in ts or {("fail", s)}:
+                if t not in states:
+                    continue
                 c = frozenset(self.captures.get((s, i), set()))
                 reverse_dict.setdefault(s, {}).setdefault((t, c), set()).add(i)
 
@@ -1449,6 +1463,9 @@ def regex_implies(a: Regex, b: Regex) -> bool:
     # [^...] !< [...]
     elif isinstance(a, RegexNegatedChars) and isinstance(b, RegexChars):
         return False
+    # ε < A*
+    elif a == RegexConcat() and isinstance(b, RegexStar):
+        return True
     # A* < B* iff A < B
     elif isinstance(a, RegexStar) and isinstance(b, RegexStar):
         return regex_implies(a.regex, b.regex)
@@ -1458,9 +1475,6 @@ def regex_implies(a: Regex, b: Regex) -> bool:
     # A < B|C|D iff any(A < BCD)
     elif isinstance(b, RegexUnion):
         return any(regex_implies(a, r) for r in b.regexes)
-    # ε => A*
-    elif a == RegexConcat() and isinstance(b, RegexStar):
-        return True
     # A < B* if A < B
     elif isinstance(b, RegexStar) and regex_implies(a, b.regex):
         return True
@@ -1608,6 +1622,7 @@ REFERENCES
     parser.add_argument("-v", dest="invert", action="store_true", help="invert match")
     parser.add_argument("-s", dest="svg", metavar="NAME", default=None, help="save FSM image and description")
     parser.add_argument("-c", dest="console", action="store_true", help="save FSM image for console")
+    parser.add_argument("-C", dest="compact", action="store_true", help="compact start/end nodes in FSM image")
     parser.add_argument("-x", dest="example", action="store_true", help="generate an example matching string")
     parser.add_argument("-r", dest="regex", action="store_true", help="generate a standard equivalent regex")
     parser.add_argument("-b", dest="bounds", action="store_true", help="generate lexicographic match bounds")
@@ -1656,12 +1671,12 @@ REFERENCES
 
     if args.svg:
         logger.info(f"Rendering NFA diagram to '{args.svg}.dot.svg'")
-        pattern.nfa.render(args.svg)
+        pattern.nfa.render(args.svg, compact=args.compact)
         pattern.nfa.save(args.svg, renumber_states=not DEBUG)
 
     if args.console:
         logger.info(f"Rendering NFA console diagram to 'console.dot.svg'")
-        pattern.nfa.render("fsm_console", console=True)
+        pattern.nfa.render("fsm_console", console=True, compact=args.compact)
 
     if args.example:
         logger.info(f"Example match: {pattern.example()!r}")

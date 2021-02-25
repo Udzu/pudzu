@@ -43,11 +43,12 @@ pudzu-dates = { path = "../pudzu-packages/pudzu-dates", develop = true }
 pudzu-pillar = { path = "../pudzu-packages/pudzu-pillar", develop = true }
 pudzu-charts = { path = "../pudzu-packages/pudzu-charts", develop = true }
 pytest = "*"
+pytest-cov = "*"
 pytest-mypy = "*"
 pytest-pylint = "*"
 
 [tool.taskipy.tasks]
-tests = "pytest --pylint --mypy pudzu tests"
+tests = "pytest --pylint --mypy --cov pudzu --cov-report html:htmlcov -W ignore::DeprecationWarning pudzu tests"
 format = "task isort && task black"
 mypy = "pytest --mypy -m mypy pudzu tests"
 pylint = "pytest --pylint -m pylint pudzu tests"

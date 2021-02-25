@@ -139,12 +139,11 @@ such as `[a-z]` and `[^aeiou]` can easily be converted into a two state FSM
 with the appropriate transitions. Ranges aren't expressed directly in 
 the FSM, though doing so would potentially be useful for large Unicode character classes.
 
-For visualisation reasons, I decided to introduce a
+For simplicity, I decided to introduce a
 special * state transition that's used if there is no other match. This allows
-visualising a negated class like `[^a]` without showing every possible matching input.
+implementing a negated class like `[^a]` without handling every possible matching input.
 However, for efficiency it's more common to implement transitions via a lookup table of character
-values (with Unicode characters compiled down to byte sequences),
-and compact notation can easily be implemented just in the visualisation stage. 
+values, with Unicode characters compiled down to byte sequences. 
   
 ```bash
 patterns "[ae].[^y]"
@@ -207,7 +206,7 @@ by converting it to a DFA first. Negation also suggests a different way to imple
 conjunction: `A&B` can alternatively be implemented as `¬(¬A|¬B)`.
 
 ```bash
-patterns "¬(..)"
+patterns "¬(.*no.*)"
 ```
 
 ![negation NFA](images/negation.png)

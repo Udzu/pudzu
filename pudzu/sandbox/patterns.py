@@ -167,9 +167,7 @@ class NFA:
         for (s, i), ts in self.transitions.items():
             if s not in states:
                 continue
-            if not ts:
-                g.node(str(("fail", s)), label="", color=fg)
-            for t in ts or {("fail", s)}:
+            for t in ts:
                 if t not in states:
                     continue
                 c = frozenset(self.captures.get((s, i), set()))
@@ -178,7 +176,10 @@ class NFA:
         for s, d in reverse_dict.items():
             for (t, c), ii in d.items():
                 for move in (i for i in ii if isinstance(i, Move)):
-                    label = {Move.ALL: "*", Move.EMPTY: "ε"}[move]
+                    if move == Move.EMPTY:
+                        label = "ε"
+                    else:
+                        label = char_class("".join(j for u, j in self.transitions if u == s and isinstance(j, str)), negated=True)
                     if c:
                         label += f" {{{','.join(c)}}}"
                     g.edge(str(s), str(t), label=label, color=fg, fontcolor=fg)
@@ -1126,6 +1127,10 @@ class Regex(ABC):
         """Regex string representation."""
 
     @abstractmethod
+    def to_repr(self) -> str:
+        """Debug string representation."""
+
+    @abstractmethod
     def min_length(self) -> float:
         """Minimum match length (-inf for no match)."""
 
@@ -1183,6 +1188,9 @@ class RegexChars(Regex):
     def to_string(self):
         return char_class(self.chars, negated=False)
 
+    def to_repr(self):
+        return f"Chars[{self.chars}]"
+
     def min_length(self):
         return 1
 
@@ -1202,6 +1210,9 @@ class RegexNegatedChars(Regex):
 
     def to_string(self):
         return char_class(self.chars, negated=True)
+
+    def to_repr(self):
+        return f"NChars[{self.chars}]"
 
     def min_length(self):
         return 1
@@ -1263,6 +1274,9 @@ class RegexStar(Regex):
 
     def to_string(self):
         return f"{self.regex}*"
+
+    def to_repr(self):
+        return f"Star[{self.regex.to_repr()}]"
 
     def min_length(self):
         return 0
@@ -1344,9 +1358,14 @@ class RegexUnion(Regex):
         if not self.regexes:
             return "∅"
 
-        ss = [re.sub(r"^\((.*)\)$", r"\1", str(r)) for r in self.regexes if r != RegexConcat()]
-        unbracketed = len(ss) == 1 and len(ss[0]) == 1 or ss[0].startswith("[")
+        rs = [r for r in self.regexes if r != RegexConcat()]
+        ss = [re.sub(r"^\((.*)\)$", r"\1", str(r)) for r in rs]
+        unbracketed = len(rs) == 1 and (isinstance(rs[0], RegexChars) or isinstance(rs[0], RegexNegatedChars))
         return ("{}{}" if unbracketed else "({}){}").format("|".join(ss), "?" * (RegexConcat() in self.regexes))
+
+    def to_repr(self):
+        subrepr = ", ".join(r.to_repr() for r in self.regexes)
+        return f"Union[{subrepr}]"
 
     def min_length(self):
         return -math.inf if not self.regexes else min([r.min_length() for r in self.regexes])
@@ -1424,6 +1443,10 @@ class RegexConcat(Regex):
                 continue
             break
         return ".{0}" if not self.regexes else "({})".format("".join(ss))
+
+    def to_repr(self):
+        subrepr = ", ".join(r.to_repr() for r in self.regexes)
+        return f"Concat[{subrepr}]"
 
     def min_length(self):
         return sum(r.min_length() for r in self.regexes)

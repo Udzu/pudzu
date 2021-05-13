@@ -15,7 +15,7 @@ DESCRIPTIONS = [
 " from Latin //ferrārius// (“ironsmith”), from //ferrum// (“iron”)",
 " from Latin //faber// (“craftsman”)",
 " from Proto-Slavic //*kovati// (“to forge”)",
-" from Proto-Baltic ??",
+" from Proto-Balto-Slavic *kolʔ- (“to hammer””)",
 " from Proto-Celtic //*goban// (“smith”)",
 " from Proto-Finnic //*seppä// (“smith”)",
 " from Proto-Turkic //*temürči// (“blacksmith”)",
@@ -39,7 +39,7 @@ def labelfn(c, w, h):
     return Image.from_text_bounded(label, (w, h), 24, papply(LFONT(c), bold=True), align="center", padding=(0,0,0,2))
     
 map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
-legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, box_sizes=(40,...), header=HEADER, footer=FOOTER, fonts=partial(FONT, 16))
+legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, box_sizes=(40,...), header=HEADER, footer=FOOTER, font_family=partial(FONT, 16))
 chart = map.place(legend, align=(1,0))
 
 title = Image.from_column([

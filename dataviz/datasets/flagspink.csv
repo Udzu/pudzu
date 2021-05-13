@@ -2,10 +2,12 @@ group,name,description,image
 national,Spain,lion rampant,https://upload.wikimedia.org/wikipedia/en/thumb/9/9a/Flag_of_Spain.svg/1024px-Flag_of_Spain.svg.png
 national,Mexico,prickly pears,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1024px-Flag_of_Mexico.svg.png
 national,Turks and Caicos Islands,conch shell,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Flag_of_the_Turks_and_Caicos_Islands.svg/1024px-Flag_of_the_Turks_and_Caicos_Islands.svg.png
-subnational,Espírito Santa,Brazil,https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Bandeira_do_Esp%C3%ADrito_Santo.svg/1024px-Bandeira_do_Esp%C3%ADrito_Santo.svg.png
-subnational,Jalal-Abad,Kyrgyzstan,https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Jalal_abad_flag.svg/1024px-Jalal_abad_flag.svg.png
-subnational,Newfoundland,Canada; unofficial,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Newfoundland_Tricolour.svg/1024px-Newfoundland_Tricolour.svg.png
+regional,Chai Nat,Thailand,https://upload.wikimedia.org/wikipedia/commons/b/bf/Chai_Nat_Flag.png
+regional,Espírito Santa,Brazil,https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Bandeira_do_Esp%C3%ADrito_Santo.svg/1024px-Bandeira_do_Esp%C3%ADrito_Santo.svg.png
+regional,Newfoundland,Canada; unofficial,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Newfoundland_Tricolour.svg/1024px-Newfoundland_Tricolour.svg.png
+municipal,El Chaltén,Argentina,https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Bandera_del_Municipio_de_El_Chalt%C3%A9n.svg/1024px-Bandera_del_Municipio_de_El_Chalt%C3%A9n.svg.png
+municipal,Jalal-Abad,Kyrgyzstan,https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Jalal_abad_flag.svg/1024px-Jalal_abad_flag.svg.png
+municipal,La Tebaida,Colombia,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_La_Tebaida_%28Quind%C3%ADo%29.svg/1024px-Flag_of_La_Tebaida_%28Quind%C3%ADo%29.svg.png
 pride,LGBT,original 1978 design,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Gay_flag_8.svg/1024px-Gay_flag_8.svg.png
 pride,bisexual,,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Bisexual_Pride_Flag.svg/1024px-Bisexual_Pride_Flag.svg.png
 pride,transgender,,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Transgender_Pride_flag.svg/1024px-Transgender_Pride_flag.svg.png
-

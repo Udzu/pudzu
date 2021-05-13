@@ -53,7 +53,7 @@ bar = bar.place(legend, 0, padding=(150,50))
 
 title = Image.from_column([
      Image.from_text("Dis-proportional representation".upper(), FONT(60, bold=True), bg="white")
-    , Image.from_text("winners and losers of the UK's first-past-the-post voting (1979–2017)".upper(), FONT(32), bg="white")
+    , Image.from_text("winners and losers of the UK's first-past-the-post voting (1979–2019)".upper(), FONT(32), bg="white")
     ], bg="white", padding=(0, 5)).pad((0,0,0,10), "white")
 img = Image.from_column([title, bar], bg="white")
 img.place(Image.from_text("/u/Udzu", FONT(16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)

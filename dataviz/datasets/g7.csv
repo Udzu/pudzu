@@ -10,7 +10,8 @@ US,president,George H. W. Bush,Republican,20 January 1989,20 January 1993,right
 US,president,Bill Clinton,Democratic,20 January 1993,20 January 2001,left
 US,president,George W. Bush,Republican,20 January 2001,20 January 2009,right
 US,president,Barack Obama,Democratic,20 January 2009,20 January 2017,left
-US,president,Donald Trump,Republican,20 January 2017,,right
+US,president,Donald Trump,Republican,20 January 2017,20 January 2021,right
+US,president,Joe Biden,Democratic,20 January 2021,,left
 US,senate,86,Democratic,3 January 1959,3 January 1961,left
 US,senate,87,Democratic,3 January 1961,3 January 1963,left
 US,senate,88,Democratic,3 January 1963,3 January 1965,left
@@ -42,7 +43,9 @@ US,senate,111,Democratic,3 January 2009,3 January 2011,left
 US,senate,112,Democratic,3 January 2011,3 January 2013,left
 US,senate,113,Democratic,3 January 2013,3 January 2015,left
 US,senate,114,Republican,3 January 2015,3 January 2017,right
-US,senate,115,Republican,3 January 2017,,right
+US,senate,115,Republican,3 January 2017,3 January 2019,right
+US,senate,116,Republican,3 January 2019,3 January 2021,right
+US,senate,117,Republican,3 January 2021,,left
 US,house,86,Democratic,3 January 1959,3 January 1961,left
 US,house,87,Democratic,3 January 1961,3 January 1963,left
 US,house,88,Democratic,3 January 1963,3 January 1965,left
@@ -72,7 +75,9 @@ US,house,111,Democratic,3 January 2009,3 January 2011,left
 US,house,112,Republican,3 January 2011,3 January 2013,right
 US,house,113,Republican,3 January 2013,3 January 2015,right
 US,house,114,Republican,3 January 2015,3 January 2017,right
-US,house,115,Republican,3 January 2017,,right
+US,house,115,Republican,3 January 2017,3 January 2019,right
+US,house,116,Republican,3 January 2019,3 January 2021,left
+US,house,117,Republican,3 January 2021,,left
 France,president,Charles de Gaulle,UNR,8 January 1959,28 April 1969,right
 France,president,Georges Pompidou,UDR,20 June 1969,2 April 1974,right
 France,president,Valéry Giscard d'Estaing,RI/PR,27 May 1974,21 May 1981,right
@@ -103,7 +108,8 @@ France,premier,François Fillon,UMP,17 May 2007,10 May 2012,right
 France,premier,Jean-Marc Ayrault,PS,15 May 2012,31 March 2014,left
 France,premier,Manuel Valls,PS,31 March 2014,6 December 2016,left
 France,premier,Bernard Cazeneuve,PS,6 December 2016,10 May 2017,left
-France,premier,Édouard Philippe,LR,15 May 2017,,right
+France,premier,Édouard Philippe,LR,15 May 2017,3 July 2020,right
+France,premier,Jean Castex,LREM,3 July 2020,,right
 Germany,chancellor,Konrad Adenauer,CDU,15 September 1949,11 October 1963,right
 Germany,chancellor,Ludwig Erhard,CDU (affiliated),17 October 1963,30 November 1966,right
 Germany,chancellor,Kurt Georg Kiesinger,CDU,1 December 1966,21 October 1969,right
@@ -123,7 +129,8 @@ UK,premier,John Major,Conservative,28 November 1990,2 May 1997,right
 UK,premier,Tony Blair,Labour,2 May 1997,27 June 2007,left
 UK,premier,Gordon Brown,Labour,27 June 2007,11 May 2010,left
 UK,premier,David Cameron,Conservative,11 May 2010,13 July 2016,right
-UK,premier,Theresa May,Conservative,13 July 2016,,right
+UK,premier,Theresa May,Conservative,13 July 2016,24 July 2019,right
+UK,premier,Boris Johnson,Conservative,24 July 2019,,right
 EU,commission president,Walter Hallstein,CD,1 January 1958,30 June 1967,right
 EU,commission president,Jean Rey,L,30 June 1967,1 July 1970,centre
 EU,commission president,Franco Maria Malfatti,CD,1 July 1970,1 March 1972,right
@@ -135,7 +142,8 @@ EU,commission president,Jacques Delors,PES,6 January 1985,24 January 1995,left
 EU,commission president,Jacques Santer,EPP,24 January 1995,15 March 1999,right
 EU,commission president,Romano Prodi,ELDR,17 September 1999,22 November 2004,centre
 EU,commission president,José Manuel Barroso,EPP,22 November 2004,1 November 2014,right
-EU,commission president,Jean-Claude Juncker,CSV,1 November 2014,,right
+EU,commission president,Jean-Claude Juncker,CSV,1 November 2014,30 November 2019,right
+EU,commission president,Ursula von der Leyen,CDU,1 December 2019,,right
 Canada,premier,John Diefenbaker,Progressive Conservative,21 June 1957,22 April 1963,right
 Canada,premier,Lester B. Pearson,Liberal,22 April 1963,20 April 1968,left
 Canada,premier,Pierre Trudeau,Liberal,20 April 1968,3 June 1979,left
@@ -174,7 +182,8 @@ Japan,premier,Tarō Asō,LDP,24 September 2008,16 September 2009,right
 Japan,premier,Yukio Hatoyama,DPJ,16 September 2009,8 June 2010,left
 Japan,premier,Naoto Kan,DPJ,8 June 2010,2 September 2011,left
 Japan,premier,Yoshihiko Noda,DPJ,2 September 2011,26 December 2012,left
-Japan,premier,Shinzō Abe,LDP,26 December 2012,,right
+Japan,premier,Shinzō Abe,LDP,26 December 2012,16 September 2020,right
+Japan,premier,Yoshihide Suga,LDP,16 September 2020,,right
 Italy,premier,Antonio Segni,DC,15 February 1959,23 March 1960,right
 Italy,premier,Fernando Tambroni,DC,25 March 1960,26 July 1960,right
 Italy,premier,Amintore Fanfani,DC,26 July 1960,21 June 1963,right
@@ -209,4 +218,6 @@ Italy,premier,Silvio Berlusconi,FI,8 May 2008,16 November 2011,right
 Italy,premier,Mario Monti,Independent,16 November 2011,28 April 2013,centre
 Italy,premier,Enrico Letta,PD,28 April 2013,22 February 2014,left
 Italy,premier,Matteo Renzi,PD,22 February 2014,12 December 2016,left
-Italy,premier,Paolo Gentiloni,PD,12 December 2016,,left
+Italy,premier,Paolo Gentiloni,PD,12 December 2016,1 June 2018,left
+Italy,premier,Giuseppe Conte,M5S,1 June 2018,13 February 2021,centre
+Italy,premier,Mario Draghi,Independent,13 February 2021,,centre

@@ -41,7 +41,7 @@ def colorfn(c):
     elif c in ['Country Borders']: return "#AAAAAA"
     elif c not in df.index: return "grey"
     elif len(cols << [PALETTE[CATEGORIES.index(x)] for x in df.group.get(c)]) == 1: return cols()[0]
-    else: return Stripe(10, cols()[0], cols()[1])
+    else: return Stripe(20, cols()[0], cols()[1])
     
 def labelfn(c, w, h):
     if c not in df.index: return None
@@ -49,7 +49,7 @@ def labelfn(c, w, h):
     return Image.from_text_bounded(label, (w, h), 24, papply(LFONT(c), bold=True), align="center", padding=(0,0,0,2))
     
 map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
-legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, box_sizes=(40,...), footer=FOOTER, fonts=partial(FONT, 16))
+legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, box_sizes=(40,...), footer=FOOTER, font_family=partial(FONT, 16))
 chart = map.place(legend, align=(1,0))
 
 title = Image.from_column([

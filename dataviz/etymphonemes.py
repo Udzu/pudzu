@@ -4,7 +4,7 @@ from pudzu.sandbox.bamboo import *
 df = pd.read_csv("datasets/etymphonemes.csv").set_index("language").fillna("")
 FONT = calibri
 
-def combo(c1, c2): return Stripe(10, c1, c2)
+def combo(c1, c2): return Stripe(20, c1, c2)
 
 def colorfn(c, *args, mapping):
     if c in ['Sea', 'Language Borders']: return "white"
@@ -27,7 +27,7 @@ def chartfn(pal, descriptions, subtitle):
     title = Image.from_text(subtitle, FONT(60, bold=True), "black", padding=10)
     chart = map_chart("maps/Eurolang.png", partial(colorfn, mapping=dict(pal)))
     legend = generate_legend(tmap(boxfn, ["grey", pal[0][1], pal[1][1], combo(pal[0][1], pal[1][1])],
-                                         counts(pal[0][0], pal[1][0])), descriptions, header="Distribution", fonts=partial(FONT, 32))
+                                         counts(pal[0][0], pal[1][0])), descriptions, header="Distribution", font_family=partial(FONT, 32))
     chart = chart.place(legend, align=(1,0), padding=10)
     return Image.from_column([chart, title], bg="white")
 

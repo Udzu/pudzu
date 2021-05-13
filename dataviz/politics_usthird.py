@@ -31,7 +31,7 @@ LEGEND = [
 ("American Independent Party", "1968, 72", "Right-wing segregationist party.", PURPLE, "https://upload.wikimedia.org/wikipedia/commons/c/c9/George_C_Wallace.jpg"),
 ("Eugene McCarthy", "1976", "Independent campaign by McCarthy, who'd previously sought the Democratic nomination, largely focused on ballot access.", GREY, "http://www.historycentral.com/Bio/people/images/mccarthy.gif"),
 ("John B. Anderson", "1980", "Independent campaign by Anderson, who'd sought the Republican nomination, running as a moderate counterpoint to Reagan.", GREY, "https://upload.wikimedia.org/wikipedia/commons/c/ca/JohnAnderson.png"),
-("Libertarian Party", "1984, 88, 2012, 16", "Libertarian party.", YELLOW, "https://www.nationalreview.com/sites/default/files/gary-johnson-profile.jpg"),
+("Libertarian Party", "1984, 88, 2012, 16, 20", "Libertarian party.", YELLOW, "https://www.nationalreview.com/sites/default/files/gary-johnson-profile.jpg"),
 ("Perot/Reform Party", "1992, 96", "Protectionist, fiscally conservative campaigns by billionaire Ross Perot.", PURPLE, "https://i.ytimg.com/vi/Tz651SPuyck/hqdefault.jpg"),
 ("Nader/Green Party", "2000, 04, 08", "Campaigns focused on progressive consumer rights and government reform.", GREEN, "http://www.trbimg.com/img-57490004/turbine/la-le-al-gore-ralph-nader-2000-20160527-snap")
 ]
@@ -39,7 +39,8 @@ LEGEND = [
 PARTY_COL = { p : c for p, _, _, c, *i in LEGEND }
 
 # Bar chart
-votes = pd.read_csv("datasets/uselections_third.csv").set_index("year").update_columns(percent=lambda p: p / 100)
+votes = pd.read_csv("datasets/uselections_third.csv").set_index("year")
+votes["percent"] = votes["percent"] / 100
 
 def color_fn(c, r, v):
     return PARTY_COL.get(votes.party.iloc[r], GREY)
@@ -78,7 +79,7 @@ labels = [Image.from_column([
 Image.from_text("{} [{}]".format(p, y), arial(16, bold=True), "black", "white"),
 Image.from_text(d, arial(12), "black", "white", max_width=400, padding=(0,2))
 ], xalign=0) for p,y,d,_,*i in LEGEND]
-legend = generate_legend(boxes, labels, header="By political party".upper(), spacing=0, fonts=papply(arial, 20))
+legend = generate_legend(boxes, labels, header="By political party".upper(), spacing=0, font_family=papply(arial, 20))
 
 img = Image.from_row([img, legend], bg="white", padding=10)
 img = Image.from_column([title, img], bg="white", padding=(0,10))

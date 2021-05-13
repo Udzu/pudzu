@@ -7,25 +7,28 @@ palette = ['#3c7f6b', '#79aa73']
 
 def colorfn(c):
     if c in ['Sea', 'Borders']: return "white"
-    elif c in ['Hungary', 'Finland', 'Germany', 'Greece', 'Albania']: return palette[0]
+    elif c in ['Hungary', 'Finland', 'Germany', 'Greece', 'Albania', 'Georgia', 'Armenia']: return palette[0]
     elif c not in df.index: return "grey"
     else: return palette[1]
     
 def labelfn(c, w,h):
     if c not in df.index: return None
-    if c in ["Greece"]: sz = 12
+    if c in ["Ireland"]: sz = 10
+    elif c in ["Greece", "Norway", "Netherlands", "UK", "Ireland"]: sz = 12
     else: sz = 14
     return Image.from_column([
-        Image.from_text(df.language[c], arial(sz, italics=True)),
+        Image.EMPTY_IMAGE if df.language[c] == "English" else Image.from_text(df.language[c], arial(sz, italics=True)),
         Image.from_text(df.name[c], arial(sz, bold=True), max_width=w, align="center"),
         Image.from_text(df.meaning[c], arial(10), max_width=w, align="center")
     ])
     
-map = map_chart("maps/Europe.png", colorfn, labelfn)
+map = map_chart("maps/Europe2.png", colorfn, labelfn)
 legend = generate_legend(palette, [
-"countries with English (and non-English) exonyms*.",
-"countries with only non-English exonyms*."
-], header="Type of exonym", footer="*only counting exonyms not derived from a borrowing or translation of the country's native name.", box_sizes=40, max_width=250)
+"countries with both English and non-English exonyms.",
+"countries with only non-English exonyms."
+], header="Type of exonym", footer=r"""Excludes exonyms derived from a borrowing or direct translation of the country's native name.
+
+* Helvetia is also Switzerland's official name in Latin, so is arguably not an exonym.""", box_sizes=40, max_width=450, font_family=partial(arial, 16))
 chart = map.place(legend, align=(1,0), padding=10)
 
 title = Image.from_column([

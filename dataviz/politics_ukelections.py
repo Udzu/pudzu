@@ -43,7 +43,7 @@ legend = Image.from_array([legend_row("Conservative", "#393b79"),
                            legend_row("did not vote", "#bdbdbd")
                            ], xalign=(0.5,0), padding=(2,5))
                            
-title = Image.from_text("Votes versus seats at UK general elections (1966-2017)", font("arial", 28, bold=True), "black", bg="white").pad((0,0,0,15), bg="white")
+title = Image.from_text("Votes versus seats at UK general elections (1966–2019)", font("arial", 28, bold=True), "black", bg="white").pad((0,0,0,15), bg="white")
 text = Image.from_text("Chart highlights the top three parties by popular vote share. The number of seats is printed on each bar.\n\nData is from Wikipedia.", arial(12), "black", bg="white", max_width=140)
 legendtext = Image.from_column([legend, text], padding=(0,10), xalign=0)
 img = Image.from_row([chart, legendtext], bg="white", yalign=0, padding=(10,0))

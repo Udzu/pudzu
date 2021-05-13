@@ -51,7 +51,7 @@ def labelfn(c, w, h):
     return Image.from_text_bounded(label, (w, h), 24, papply(LFONT(c), bold=True), align="center", padding=(0,0,0,2))
     
 map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
-legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, box_sizes=(40,...), footer=FOOTER, fonts=partial(FONT, 16))
+legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, box_sizes=(40,...), footer=FOOTER, font_family=partial(FONT, 16))
 chart = map.place(legend, align=(1,0))
 
 title = Image.from_column([

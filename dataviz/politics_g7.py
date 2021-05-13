@@ -10,12 +10,13 @@ START = dateparser.parse('1 January 1960').date()
 END = datetime.date.today()
 
 def duration(d):
-    return END - max(START, dateparser.parse(d['start']).date())
+    return dateparser.parse(get_non(d, 'end', END.isoformat())).date() - max(START, dateparser.parse(d['start']).date())
     
 def percentage_left(df):
     return sum((duration(d) for _,d in df[df.spectrum == "left"].iterrows()), datetime.timedelta(0)) / sum((duration(d) for _,d in df.iterrows()), datetime.timedelta(0))
     
-groups = pd.read_csv("datasets/g7.csv").groupby_rows(lambda d: "{} ({})".format(d['country'], d['office']))
+df = pd.read_csv("datasets/g7.csv")
+groups = df.groupby(by=lambda idx: "{} ({})".format(df['country'][idx], df['office'][idx]))
 group_order = sorted(list(groups.groups), key=lambda s: percentage_left(groups.get_group(s)), reverse=True)
 data = [groups.get_group(g) for g in group_order]
 

@@ -31,7 +31,7 @@ def labelfn(c, w, h):
     return Image.from_text_bounded(label, (w, h), 24, papply(LFONT(c), bold=True), align="center", padding=(0,0,0,2))
     
 map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
-legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, header="Etymologies", box_sizes=[(40,40 if len(d)<90 else 60) for d in DESCRIPTIONS], footer=FOOTER, max_width=320, fonts=partial(FONT, 16))
+legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, header="Etymologies", box_sizes=[(40,40 if len(d)<90 else 60) for d in DESCRIPTIONS], footer=FOOTER, max_width=320, font_family=partial(FONT, 16))
 chart = map.place(legend, align=(1,0), padding=10)
 
 title = Image.from_text("SUNDAY IN DIFFERENT LANGUAGES", FONT(60, bold=True))

@@ -21,8 +21,8 @@ def labelfn(c, w, h):
     label = df.word[c].replace("\\n", "\n")
     return Image.from_text_bounded(label, (w, h), 24, papply(arial, bold=True), align="center", padding=(0,0,0,2))
     
-map = map_chart("maps/Eurolang.png", colorfn, labelfn)
-legend = generate_legend(PALETTE[:len(DESCRIPTIONS)], DESCRIPTIONS, header="Etymologies", footer=FOOTER, box_sizes=[(120,...) for d in DESCRIPTIONS], max_width=400, fonts=partial(arial, 16))
+map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
+legend = generate_legend(PALETTE[:len(DESCRIPTIONS)], DESCRIPTIONS, header="Etymologies", footer=FOOTER, box_sizes=[(120,...) for d in DESCRIPTIONS], max_width=400, font_family=partial(arial, 16))
 chart = map.place(legend, align=(1,0), padding=10)
 
 title = Image.from_column([

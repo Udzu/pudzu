@@ -9,6 +9,10 @@ CATEGORIES = ["p", "b", "m", "o"]
 PALETTE = ['#a0b301', '#ffe065','#3a2506', "#cc5555"]
 #PALETTE = ['#a0b301', '#ffe065', 
 
+FONT = arial
+UFONT = partial(font, "fonts/arialu")
+LFONT = lambda l: FONT if l not in ["Georgian", "Armenian", "Arabic", "Hebrew", "Persian"] else UFONT
+
 def catcol(cat):
     return PALETTE[CATEGORIES.index(cat)]
 
@@ -20,32 +24,24 @@ def colorfn(c):
     elif c in ['Country Borders']: return "#AAAAAA"
     elif c not in df.index: return "grey"
     elif len(df.group[c]) == 1: return catcol(df.group[c][0])
-    else: return stripes([catcol(c) for c in df.group[c]])
+    else: return Stripe(20, *[catcol(c) for c in df.group[c]])
     
 def labelfn(c, w, h):
-    fg = "white" if c in ["Turkish"] else "black"
     if c not in df.index: return None
+    fg = "white" if df.group[c][0] == "m" else "black"
     label = df.word[c].replace("\\n", "\n")
-    return Image.from_text_bounded(label, (w, h), 24, papply(arial, bold=True), fg=fg, align="center", padding=(0,0,0,2))
+    return Image.from_text_bounded(label, (w, h), 24, papply(LFONT(c), bold=True), fg=fg, align="center", padding=(0,0,0,2))
     
-map = map_chart("maps/Eurolang.png", colorfn, labelfn)
+map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
 
 # legend
 
-def box(c, shape=(120,80)): return Image.new("RGBA", shape, c)
-def boxtext(s): return Image.from_text(s, arial(14), padding=(10,0,0,3), max_width=120, align="left")
-def sectiontext(s): return Image.from_text(s, arial(14, bold=True))
+DESCRIPTIONS = [
+"from the Carib platano", "from the Wolof banana", "from the Arabic mauz", 
+"from Icelandic for 'bent fruit'\nor Armenian for 'Adam's fig'" ]
 
-boxes = Image.from_array([
-[box(PALETTE[0]), boxtext("from the Carib platano")],
-[box(PALETTE[1]), boxtext("from the Wolof banana")],
-[box(PALETTE[2]), boxtext("from the Arabic mauz")],
-[box(PALETTE[3]), boxtext("from the Icelandic for 'bent fruit' (rare)")]
-], bg="white", xalign=0)
+legend = generate_legend(PALETTE, DESCRIPTIONS, header="Word origin", box_sizes=(120,80), box_mask=Image.open("icons/banana.png").convert("L").invert_mask(), font_family=partial(arial, 16))
 
-section = Image.from_column([sectiontext("Word origin"), boxes], bg="white", xalign=0, padding=(0,5))
-
-legend = Image.from_column([section], bg="white", xalign=0, padding=10).pad(1, "black")
 chart = map.place(legend, align=(1,0), padding=10)
 
 title = Image.from_column([

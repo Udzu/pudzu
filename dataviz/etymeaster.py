@@ -12,15 +12,12 @@ PALETTE = PALETTE[:3] + PALETTE[4:7] + PALETTE[9:]
 def catcol(cat):
     return PALETTE[CATEGORIES.index(cat)]
 
-def stripes(colors, height=4, width=100):
-    return Image.from_column([Image.new("RGBA", (width, height), c) for c in colors])
-
 def colorfn(c):
     if c in ['Sea', 'Language Borders']: return "white"
     elif c in ['Country Borders']: return "#AAAAAA"
     elif c not in df.index: return "grey"
     elif len(df.group[c]) == 1: return catcol(df.group[c][0])
-    else: return stripes([catcol(c) for c in df.group[c]])
+    else: return Stripe(20, *[catcol(c) for c in df.group[c]])
     
 def labelfn(c, w, h):
     if c not in df.index: return None

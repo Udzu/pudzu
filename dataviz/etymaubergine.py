@@ -4,8 +4,8 @@ from PIL import ImageEnhance
 
 df = pd.read_csv("datasets/etymaubergine.csv").set_index("language").fillna("a")
 FONT = sans
-UFONT = font_family("arial", "/usr/share/fonts/truetype/msttcorefonts/arial")
-LFONT = lambda l: FONT if l not in ["Arabic", "Hebrew", "Persian"] else UFONT
+UFONT = partial(font, "fonts/arialu")
+LFONT = lambda l: FONT if l not in ["Georgian", "Armenian", "Arabic", "Hebrew", "Persian"] else UFONT
 
 CATEGORIES = ["a", "e", "c", "s", "?" ]
 PALETTE = [VegaPalette10.PURPLE, VegaPalette10.ORANGE, VegaPalette10.BLUE, VegaPalette10.GREEN, VegaPalette10.BROWN.brighten(0.05) ]

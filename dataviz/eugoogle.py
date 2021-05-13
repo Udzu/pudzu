@@ -13,6 +13,7 @@ def colorfn(c, type, bg):
 def labelfn(c, w, h, type):
     # TODO: better label handling!
     s = ignoring_exceptions(lambda : get_non(df.loc[c], type, "?"))()
+    # return Image.from_text_bounded(s, (w, h), 14, papply(arial, bold=True), align="center", padding=(0,0,0,2)) if s else s
     return Image.from_text(s, arial(14, bold=True), "black", max_width=w, align="center", padding=(0,0,0,2)) if s else s
     
 cs = []

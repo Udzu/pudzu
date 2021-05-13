@@ -27,7 +27,7 @@ def labelfn(c, w, h):
     return Image.from_text_bounded(label, (w, h), 24, papply(font, "fonts/arialu", bold=True), align="center", padding=(0,0,0,2))
     
 map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
-legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, header="Etymologies", footer=FOOTER, box_sizes=[(40,47 if len(d)<90 else 67) for d in DESCRIPTIONS], max_width=320, fonts=partial(font, "fonts/arialu", 16))
+legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, header="Etymologies", footer=FOOTER, box_sizes=[(40,47 if len(d)<90 else 67) for d in DESCRIPTIONS], max_width=320, font_family=partial(font, "fonts/arialu", 16))
 chart = map.place(legend, align=(1,0), padding=10)
 
 title = Image.from_column([

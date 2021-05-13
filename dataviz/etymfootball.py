@@ -9,25 +9,26 @@ CATEGORIES = ["origin", "loan", "germanic", "calque", "soccer", "kick", "leg"]
 PALETTE = ['#28455a', '#3c7f6b', '#79aa73', '#c7c79e', "#844f96", "#cc5555", "#e7de80"]
 #PALETTE = ["#1764ab", "#4a97c9", "#326e69", "#70a771", "#844f96", "#cc5555", "#ccb974"]
 
+FONT = sans
+UFONT = partial(font, "fonts/arialu")
+LFONT = lambda l: FONT if l not in ["Georgian", "Armenian", "Arabic", "Hebrew", "Persian"] else UFONT
+
 def catcol(cat):
     return PALETTE[CATEGORIES.index(cat)]
-
-def stripes(colors, height=4, width=100):
-    return Image.from_column([Image.new("RGBA", (width, height), c) for c in colors])
 
 def colorfn(c):
     if c in ['Sea', 'Language Borders']: return "white"
     elif c in ['Country Borders']: return "#AAAAAA"
     elif c not in df.index: return "grey"
     elif len(df.group[c]) == 1: return catcol(df.group[c][0])
-    else: return stripes([catcol(c) for c in df.group[c]])
+    else: return Stripe(20, *[catcol(c) for c in df.group[c]])
     
 def labelfn(c, w, h):
     if c not in df.index: return None
     label = df.word[c].replace("\\n", "\n")
-    return Image.from_text_bounded(label, (w, h), 24, papply(arial, bold=True), align="center", padding=(0,0,0,2))
+    return Image.from_text_bounded(label, (w, h), 24, papply(LFONT(c), bold=True), align="center", padding=(0,0,0,2))
     
-map = map_chart("maps/Eurolang.png", colorfn, labelfn)
+map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
 
 # legend
 

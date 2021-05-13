@@ -4,7 +4,7 @@ from pudzu.sandbox.bamboo import *
 # generate map
 df = pd.read_csv("datasets/eunavajo.csv").set_index("country")
 PALETTE = ['#3c7f6b', '#79aa73', 'grey']
-PALETTE.insert(1, Rectangle(40, Stripe(10, PALETTE[0], PALETTE[1])))
+PALETTE.insert(1, Rectangle(40, Stripe(20, PALETTE[0], PALETTE[1])))
 FONT = calibri
 
 def colorfn(c):
@@ -17,7 +17,7 @@ def colorfn(c):
 def labelfn(c, w,h):
    if c in ["Moldova", "Belarus", "Kosovo"]: return Image.from_text("?", FONT(16, bold=True))
    if c not in df.index: return None
-   return first((img for sz in range(16,6,-1) for img in [Image.from_column([
+   return first((img for sz in range(20,6,-1) for img in [Image.from_column([
         Image.from_text(df.name[c], FONT(sz, bold=True), max_width=w, align="center"),
         Image.EMPTY_IMAGE if non(df.meaning[c]) else Image.from_text("({})".format(df.meaning[c]), FONT(sz-2), max_width=w, align="center")
     ])] if img.width <= w and img.height <= h), None)
@@ -28,7 +28,7 @@ legend = generate_legend(PALETTE, [
 "**loan-translations**, a.k.a. calques.",
 "**neologisms**, mostly coined during WWII for use by Code Talkers and used since.",
 "**unknown**"
-], header="EXONYM ETYMOLOGY", box_sizes=40, max_width=350)
+], header="EXONYM ETYMOLOGY", box_sizes=40, max_width=350, font_family=partial(FONT, 16))
 chart = map.place(legend, align=(1,0), padding=10)
 
 title = Image.from_column([

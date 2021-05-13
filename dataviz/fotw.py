@@ -17,6 +17,7 @@ class HeraldicPalette(metaclass=NamedPaletteMeta):
     T = "#804000" # 7 brown
     O = "#ff8000" # 8 orange
     C = "#75aadb" # 9 sky blue
+    Q = "#ffc0cb" # A pink
 
 def runs(row): return (np.ediff1d(row) != 0).sum() + 1
 

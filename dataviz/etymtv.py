@@ -14,6 +14,10 @@ FOOTER = None
 
 PALETTE = [VegaPalette10.BLUE, VegaPalette10.LIGHTBLUE, VegaPalette10.ORANGE, VegaPalette10.RED]
  
+FONT = sans
+UFONT = partial(font, "fonts/arialu")
+LFONT = lambda l: FONT if l not in ["Georgian", "Armenian", "Arabic", "Hebrew", "Persian"] else UFONT
+
 def colorfn(c):
     if c in ['Sea', 'Language Borders']: return "white"
     elif c in ['Country Borders']: return "#AAAAAA"
@@ -26,12 +30,12 @@ def colorfn(c):
 def labelfn(c, w, h):
     if c not in df.index: return None
     label = df.word[c].replace("\\n", "\n")
-    return Image.from_text_bounded(label, (w, h), 24, papply(arial, bold=True), align="center", padding=(0,0,0,2))
+    return Image.from_text_bounded(label, (w, h), 24, papply(LFONT(c), bold=True), align="center", padding=(0,0,0,2))
     
-map = map_chart("maps/Eurolang.png", colorfn, labelfn)
-legend = generate_legend(PALETTE[:len(DESCRIPTIONS)], DESCRIPTIONS, header="Etymologies", footer=FOOTER, box_sizes=[(40,... if len(d) > 60 else 30) for d in DESCRIPTIONS], max_width=400)
+map = map_chart("maps/Eurolang2.png", colorfn, labelfn)
+legend = generate_legend(PALETTE[:len(DESCRIPTIONS)], DESCRIPTIONS, header="Etymologies", footer=FOOTER, box_sizes=[(40,... if len(d) > 60 else 30) for d in DESCRIPTIONS], max_width=400, font_family=partial(arial, 16))
 chart = map.place(legend, align=(1,0), padding=10)
-title = Image.from_text("TELEVISION IN DIFFERENT LANGUAGES", arial(48, bold=True))
+title = Image.from_text("TELEVISION (THE MEDIUM) IN DIFFERENT LANGUAGES", arial(40, bold=True))
 img = Image.from_column([title, chart], bg="white", padding=5)
 img.place(Image.from_text("/u/Udzu", font("arial", 16), fg="black", bg="white", padding=5).pad((1,1,0,0), "black"), align=1, padding=10, copy=False)
 img.save("output/etymtv.png")

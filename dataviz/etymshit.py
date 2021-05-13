@@ -37,15 +37,12 @@ COLORS[8:-1] = tmap(lambda c: c.darken(0.5), COLORS[8:-1])
 def catcol(cat):
     return COLORS[-1] if cat not in GROUPS else COLORS[GROUPS.index(cat)]
 
-def stripes(colors, height=4, width=100):
-    return Image.from_column([Image.new("RGBA", (width, height), c) for c in colors])
-
 def colorfn(c):
     if c in ['Sea', 'Language Borders']: return "white"
     elif c in ['Country Borders']: return "#AAAAAA"
     elif c not in df.index: return "grey"
     elif len(df.group[c]) == 1: return catcol(df.group[c][0])
-    else: return stripes([catcol(c) for c in df.group[c]])
+    else: return Stripe(20, *[catcol(c) for c in df.group[c]])
     
 def labelfn(c, w, h):
     if c not in df.index: return None

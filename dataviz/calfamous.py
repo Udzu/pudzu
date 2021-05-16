@@ -64,11 +64,18 @@ def row_label(row):
 
 chart = grid_chart(array, cell, col_label=col_label, row_label=row_label)
 
-TITLE = "The most famous non-living person born on each day of the year"
-FOOTER = """* Old Style date, prior to the adoption of the Gregorian Calendar ** official birthday; actual date unknown
-fame measure is based on Wikipedia article lengths, revision counts and monthly views, averaged across different language Wikipedias"""
+FONT = sans
+TITLE = "The most famous deceased person born on each day of the year"
+SUBTITLE = "based on Wikipedia article lengths, revision counts and monthly views, averaged across different language Wikipedias"
+FOOTER = "* Old Style date, prior to local adoption of the Gregorian Calendar  ** official birthday: actual date unknown"
 
+img = Image.from_column([
+    Image.from_text(TITLE.upper(), FONT(140, bold=True), "white"),
+    Image.from_text(SUBTITLE, FONT(70, italics=True), "white"),
+    chart,
+    Image.from_text(FOOTER, FONT(60, italics=True), "white", line_spacing=5)
+], padding=20, bg="black")
 
-# Counter(int("-1" if "BC" in b else b[:2]) for b in df.born if b != "?")
-
-chart.save("output/calfamous.png")
+img.place(Image.from_text("/u/Udzu", FONT(32), fg="white", bg="black", padding=10).pad((2,2,0,0), "white"), align=1, padding=20, copy=False)
+   
+img.save("output/calfamous.png")

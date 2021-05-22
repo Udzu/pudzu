@@ -1,4 +1,5 @@
 from pudzu.charts import *
+from pudzu.sandbox.bamboo import *
 import seaborn as sns
 
 PALETTE = tmap(RGBA, sns.color_palette())
@@ -20,7 +21,7 @@ except OSError:
         return df.loc[state][cols].apply(ignoring_exceptions(int, 0)).sum()
 
     records = []
-    for y in range(1860,2017,4):
+    for y in range(1860,2021,4):
         tclass = "elections_states" if y != 1976 else "ver11"
         dfs = pd.read_html("http://www.presidency.ucsb.edu/showelection.php?year={}".format(y), "Rhode Island", attrs={"class": tclass})
         df = dfs[0].set_index(0)

@@ -14,17 +14,15 @@ CATEGORIES = ["n", "c", "f", "o", "e", "l", "t"]
 
 DESCRIPTIONS = [
 """from the Proto-Indo-European //*ne// ("not")""",
-"""normally the negated form of the verb is used instead of 'no', but where a standalone form is used it typically derives from //*ne//""",
+"""normally the negated form of the verb is used instead of 'no', but any standalone forms typically derive from //*ne//""",
 """from Proto-Finno-Ugric //*ne// ("not") or //*e-// (negative verb stem)""",
-"""possibly from Proto-Indo-European *(ne) h₂óyu kʷid ("(not) on your life")""",
+"""possibly from Proto-Indo-European *//(ne) hóyu kʷid// ("(not) on your life")""",
 """from Proto-Basque *eze ("not")""",
 """from Proto-Semitic //*lā// ("not")""",
-"""from Proto-Turkic //*yōk// ("no")
-from clipping of Persian //na xeyr// < no + Arabic //khayr// good""",
+"""//yok// from Proto-Turkic //*yōk// ("no")
+//hayır// from Persian //na xeyr// ("not good")""",
 ]
 
-FOOTER = "Irish and Scottish Gaelic"
- 
 def colorfn(c):
     cols = ValueBox()
     if c in ['Sea', 'Language Borders']: return "white"
@@ -40,7 +38,7 @@ def labelfn(c, w, h):
     return Image.from_text_bounded(label, (w, h), 24, papply(LFONT(c), bold=True), align="center", padding=(0,0,0,2))
     
 map = map_chart("maps/Eurolang.png", colorfn, labelfn)
-legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, box_sizes=(40,...), footer=FOOTER, font_family=partial(FONT, 16), max_width=400)
+legend = generate_legend(PALETTE[:len(CATEGORIES)], DESCRIPTIONS, box_sizes=(40,...), font_family=partial(FONT, 16), max_width=350)
 chart = map.place(legend, align=(1,0))
 
 title = Image.from_column([

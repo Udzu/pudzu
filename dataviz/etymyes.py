@@ -19,7 +19,7 @@ DESCRIPTIONS = [
 """from Latin //hoc ille// ("this he (said)")""",
 """from Proto-Slavic //*da// """,
 """from Proto-Balto-Slavic //*tas// ("that")""",
-"""from Proto-Indo-European //*h₁ónos// ("that one")
+"""from Proto-Indo-European //*hónos// ("that one")
 – //ano// is from phrase //to je ono// ("that is it")""",
 """from another source:
 – //bai// from Proto-Basque //*ba-// (assertive prefix)

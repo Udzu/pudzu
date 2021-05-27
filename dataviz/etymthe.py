@@ -10,19 +10,17 @@ UFONT = partial(font, "fonts/arialu")
 LFONT = lambda l: FONT if l not in ["Georgian", "Armenian", "Arabic", "Hebrew", "Persian"] else UFONT
 
 P = VegaPalette10
-PALETTE = [P.ORANGE, P.BLUE, P.GREEN, P.RED, P.PURPLE, P.GREY]
-CATEGORIES = ["s", "d", "y", "l", "o", "n"]
+PALETTE = [P.BLUE, P.GREEN, P.RED, P.ORANGE, P.PURPLE, P.GREY]
+CATEGORIES = ["d", "y", "l", "s", "o", "n"]
 
 DESCRIPTIONS = [
-"""from Proto-Celtic //*sindos// (**this**) < ??""",
-"""from Proto-Indo-European //*só// (**that**)""",
+"""from Proto-Indo-European //*só// (**that**), via Proto-Germanic //*se//, Proto-Celtic //*sindos//, Proto-Balto-Slavic //*tas//, et al.""",
 """from Proto-Indo-European //*hénos// (**yon**=that there)""",
 """from Latin //illum// (**him/that**) < PIE //*hel-// (**other**)
 cognate with the English word //all//""",
+"""possibly from Proto-Semitic //*hal//""",
 """from another source:
-– Arabic/Hebrew possibly from Proto-Semitic //*hal//
-– Hungarian from Proto-Uralic //*o// (**that/that other**)
-– Macedonian has three definite articles, based on the object's position; one is from //*só//, another from //*hé//""",
+– Hungarian from Proto-Uralic //*o// (**that/that other**)""",
 """definite article not used""",
 ]
 
@@ -46,6 +44,7 @@ chart = map.place(legend, align=(1,0))
 
 title = Image.from_column([
 Image.from_text("'THE' IN DIFFERENT EUROPEAN LANGUAGES", FONT(48, bold=True)),
+Image.from_text("the (nominative singular) definite article", FONT(36, italics=True)),
 ],
 bg="white")
 

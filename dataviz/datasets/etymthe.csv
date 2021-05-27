@@ -2,44 +2,44 @@ language,word,group
 Albanian,-a/-i/-u,o
 Basque,-a,o
 Belarusian,
-Breton,al/an/ar,s
+Breton,al/an/ar,d
 Bulgarian,-ът/-та/-то,d
-Catalan,el/la,l
+Catalan,el/la/l',l
 Czech,
 Danish,-en/-et\nden/det,yd
 Dutch,de/het,d
 English,the,d
 Estonian,
-Faroese,-in/tann/hin,yd
+Faroese,-in/-ið\ntann/tað,yd
 Finnish,
 French,le/la/l',l
 Galician,o/a,l
 German,der/die/das,d
-Greek,ο,d
+Greek,ο/η/το,d
 Hungarian,a/az,o
-Icelandic,-inn/hinn,y
-Irish,an,s
-Italian,il/la,l
+Icelandic,-inn/-in/-ið\nhinn/hin/hið,y
+Irish,an,d
+Italian,il/lo/la/l',l
 Latvian,
 Lithuanian,
 Luxembourgish,d'/de'/den',d
-Macedonian,*,o
-Maltese,il-,o
-Norwegian,-en/det,yd
+Macedonian,-от/-та/-то,d
+Maltese,il-,s
+Norwegian,-et/-en/-a\ndet/den,yd
 Polish,
 Portuguese,o/a,l
 Romanian,-ul/-a\ncel/cea,l
 Russian,
-Scottish,an,s
+Scottish,an,d
 Serbo-Croatian,
 Slovak,
 Slovene,
-Spanish,el/la,l
-Swedish,-en/den,yd
+Spanish,el/la/lo,l
+Swedish,-en/-et\n/den/det,yd
 Turkish,
 Ukrainian,
-Welsh,y,s
+Welsh,y/yr/'r,d
 
-Armenian,-ը (-ə),y
-Arabic,ال (al),o
-Hebrew,ה־ (ha),o
+Armenian,-ը (-ə)\n-ն (-n),y
+Arabic,ال (al),s
+Hebrew,ה־ (ha),s

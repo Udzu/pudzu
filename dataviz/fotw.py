@@ -121,6 +121,19 @@ def rwb(p):
         elif ds == { 1, 2, 3, 9}: return "X"
 
 @omit_types
+def gwb(p):
+    """Gold-white-black flags"""
+    img = Image.open(p)
+    if img.width < img.height: return None
+    img = img.to_rgba().remove_transparency("white")
+    ap = np.array(img.to_palette(HeraldicPalette))
+    u, f = np.unique(ap, return_counts=True)
+    d = { k : v for k,v in zip(u,f) if v > img.width * 2 }
+    if all(v > ap.size // 50 for v in d.values()):
+        ds = set(d)
+        if ds == { 0, 1, 5 }: return "X"
+
+@omit_types
 def grey(p):
     """Flags with grey"""
     img = Image.open(p)

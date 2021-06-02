@@ -1,0 +1,9 @@
+country,job,total,natural,homicide,suicide,years
+US,presidents,44,4,4,0,232
+UK,PMs,54,6,1,0,300
+France,presidents,24,2,2,0,154
+Germany,chancellors,31,0,0,2,150
+Canada,PMs,22,2,0,0,154
+Japan,PMs,65,3,2,0,136
+Italy,PMs,58,2,0,0,160
+

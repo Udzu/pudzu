@@ -5,7 +5,7 @@ groups = list(remove_duplicates(df.group))
 array = [[dict(r) for _,r in df.iterrows() if r.group == g] for g in groups]
 data = pd.DataFrame(array, index=list(remove_duplicates(df.group)))
 
-FONT = calibri
+FONT = calibri or sans
 fg, bg="black", "#EEEEEE"
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 

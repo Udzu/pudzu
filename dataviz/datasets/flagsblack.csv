@@ -1,17 +1,51 @@
 group,name,description,image
-flags of states\nor proto-states,Republic of Siena,????–1555,https://upload.wikimedia.org/wikipedia/commons/d/d3/Bandera_de_Siena.png
-flags of states\nor proto-states,Kingdom of Prussia,1701–1918; civil flag,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Civil_flag_of_Prussia_1701-1935.svg/1000px-Civil_flag_of_Prussia_1701-1935.svg.png
-flags of states\nor proto-states,Corsican Republic,"1755–1769; also Corsica, France",https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Flag_of_Corsica.svg/1024px-Flag_of_Corsica.svg.png
-flags of states\nor proto-states,Free Territory,1918–1921; variant,https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/%D0%9C%D0%B0%D1%85%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%BD%D0%B0%D0%BC%D1%8F.svg/1024px-%D0%9C%D0%B0%D1%85%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%BD%D0%B0%D0%BC%D1%8F.svg.png
+_states and\nproto-states,Teutonic Order,1???-1525,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Flag_of_the_State_of_the_Teutonic_Order.svg/1920px-Flag_of_the_State_of_the_Teutonic_Order.svg.png
+_states and\nproto-states,Hohenzollern,1???-1850,https://upload.wikimedia.org/wikipedia/commons/d/d6/Flag_of_Hohenzollern-Hechingen_and_Sigmaringen.png
+_states and\nproto-states,Kingdom of Prussia,1701–1918; civil flag,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Civil_flag_of_Prussia_1701-1935.svg/1000px-Civil_flag_of_Prussia_1701-1935.svg.png
+_states and\nproto-states,Corsican Republic,"1755–1769; now France",https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Flag_of_Corsica.svg/1024px-Flag_of_Corsica.svg.png
+_states and\nproto-states,Free Territory,1918–1921; variant,https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/%D0%9C%D0%B0%D1%85%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%BD%D0%B0%D0%BC%D1%8F.svg/1024px-%D0%9C%D0%B0%D1%85%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%BD%D0%B0%D0%BC%D1%8F.svg.png
+_states,Cyrenaica Emirate,1949-51,https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Flag_of_Cyrenaica.svg/1280px-Flag_of_Cyrenaica.svg.png
 _states,Japan (Shogunate),18??–1868,https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Flag_of_the_Tokugawa_Shogunate.svg/1280px-Flag_of_the_Tokugawa_Shogunate.svg.png
 _states,Afghanistan,1901–1919,https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Flag_of_Afghanistan_%281901%E2%80%931919%29.svg/1280px-Flag_of_Afghanistan_%281901%E2%80%931919%29.svg.png
 _states,Afghanistan (Taliban),1997–2001,https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Flag_of_Taliban.svg/1280px-Flag_of_Taliban.svg.png
 _states,Islamic State,2006–2017,https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/AQMI_Flag_asymmetric.svg/1280px-AQMI_Flag_asymmetric.svg.png
-regional flags,"Prussia, Germany",1892–1918,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Prussia_%281892-1918%29.svg/1280px-Flag_of_Prussia_%281892-1918%29.svg.png
-regional flags,"Cornwall, UK",,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Cornwall.svg/1024px-Flag_of_Cornwall.svg.png
-regional flags,"Brittany, France",,https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_Brittany_%28Gwenn_ha_du%29.svg/1024px-Flag_of_Brittany_%28Gwenn_ha_du%29.svg.png
-regional flags,"Terengganu, Malaysia",,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Flag_of_Terengganu.svg/1024px-Flag_of_Terengganu.svg.png
-_subnational,"Ceuta, Spain",,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Flag_Ceuta.svg/1024px-Flag_Ceuta.svg.png
-_subnational,"Fribourg, Switzerland",,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_Canton_of_Fribourg.svg/1022px-Flag_of_Canton_of_Fribourg.svg.png
-_subnational,"Basel-Stadt, Switzerland",,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Flag_of_Canton_of_Basel.svg/1022px-Flag_of_Canton_of_Basel.svg.png
-_subnational,"Appenzell, Switzerland",,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Canton_of_Appenzell_Innerrhoden.svg/1022px-Flag_of_Canton_of_Appenzell_Innerrhoden.svg.png
+_regions and\ncities,"Cornwall","England",https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Cornwall.svg/1024px-Flag_of_Cornwall.svg.png
+_regions and\ncities,"Brittany","France",https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_Brittany_%28Gwenn_ha_du%29.svg/1024px-Flag_of_Brittany_%28Gwenn_ha_du%29.svg.png
+_regions and\ncities,"Flintshire","Wales",https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Flag_of_Flintshire.svg/1920px-Flag_of_Flintshire.svg.png
+_regions and\ncities,Libson,Portugal,https://upload.wikimedia.org/wikipedia/commons/1/16/Bandeira_municipal_de_Lisboa.png
+_regions and\ncities,Metz,France,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Metz_flag.svg/1280px-Metz_flag.svg.png
+
+_b,Blankenberge,Belgium,https://www.crwflags.com/fotw/images/b/be-vwvbk.gif
+_b,Ghent,Belgium,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Vlag_van_Gent.svg/1280px-Vlag_van_Gent.svg.png
+_b,Gooik,Belgium,https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Flag_of_Gooik.svg/1280px-Flag_of_Gooik.svg.png
+_b,Izegem,Belgium,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Izegem_vlag.svg/1280px-Izegem_vlag.svg.png
+_b,Jabbeke,Belgium,https://www.fotw.info/images/b/be-vwvja.gif
+_b2,Meerhout,Belgium,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flag_of_Meerhout.svg/1280px-Flag_of_Meerhout.svg.png
+_b2,Roeselare,Belgium,https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Flag_of_Roeselare.svg/1280px-Flag_of_Roeselare.svg.png
+_b2,Waimes,Belgium,https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Flag_of_Waimes.svg/1280px-Flag_of_Waimes.svg.png
+_b2,Wezembeek-Oppem,Belgium,https://www.fotw.info/images/b/be-vbrwo.gif
+_b2,Delft,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Flag_of_Delft.svg/1280px-Flag_of_Delft.svg.png
+
+_g,"Prussia","Germany; 1892–1918",https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Prussia_%281892-1918%29.svg/1280px-Flag_of_Prussia_%281892-1918%29.svg.png
+_g,"Prussia","Germany; 1918-1933",https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Prussia_%281918%E2%80%931933%29.svg/1920px-Flag_of_Prussia_%281918%E2%80%931933%29.svg.png
+_g,Herford,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Flagge_Kreis_Herford.svg/1920px-Flagge_Kreis_Herford.svg.png
+_g,Osnabrück,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Hissflagge_der_Stadt_Osnabr%C3%BCck.svg/1920px-Hissflagge_der_Stadt_Osnabr%C3%BCck.svg.png
+_g,Ulm,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Flag_of_Ulm.svg/1280px-Flag_of_Ulm.svg.png
+
+_x,Pahang,Malaysia,https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Pahang.svg/1920px-Flag_of_Pahang.svg.png
+_x,"Terengganu","Malaysia",https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Flag_of_Terengganu.svg/1024px-Flag_of_Terengganu.svg.png
+_x,Buenos Aires,Argentina,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Bandera_de_la_Ciudad_de_Buenos_Aires.svg/1280px-Bandera_de_la_Ciudad_de_Buenos_Aires.svg.png
+_x,Silver Fern,New Zealand emblem,https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Silver_fern_flag.svg/1280px-Silver_fern_flag.svg.png
+_x,Jolly Roger,,https://cdn10.bigcommerce.com/s-hhbbk/products/1577/images/50398/MISC0001__44874.1580484038.1280.1280.png?c=2
+
+_s,Central Finland,Finland,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Keski-suomi_lippu.svg/1024px-Keski-suomi_lippu.svg.png
+_s,"Appenzell","Switzerland",https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Canton_of_Appenzell_Innerrhoden.svg/1022px-Flag_of_Canton_of_Appenzell_Innerrhoden.svg.png
+_s,"Basel-Stadt","Switzerland",https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Flag_of_Canton_of_Basel.svg/1022px-Flag_of_Canton_of_Basel.svg.png
+_s,"Fribourg","Switzerland",https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_Canton_of_Fribourg.svg/1022px-Flag_of_Canton_of_Fribourg.svg.png
+_s,Aeschi bei Spiez,Switzerland,https://www.fotw.info/images/c/ch-be149.gif
+_s2,Castrisch,Switzerland,https://www.fotw.info/images/c/ch-gr174.gif
+_s2,Clugin,Switzerland,https://www.fotw.info/images/c/ch-gr047.gif
+_s2,Says,Switzerland,https://www.fotw.info/images/c/ch-gr094.gif
+_s2,Surcasti,Switzerland,https://www.fotw.info/images/c/ch-gr197.gif
+_s2,Zwingen,Switzerland,https://www.fotw.info/images/c/ch-bl028.gif
+

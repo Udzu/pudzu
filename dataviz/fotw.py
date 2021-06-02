@@ -93,7 +93,7 @@ def bands(n):
         return cat
     return bands
 
-def colors(color):
+def colors(color: str):
     """Simple heuristic for detecting a Heraldic color."""
     @omit_types
     def colors(p):
@@ -121,8 +121,8 @@ def rwb(p):
         elif ds == { 1, 2, 3, 9}: return "X"
 
 @omit_types
-def gwb(p):
-    """Gold-white-black flags"""
+def kwb(p):
+    """Black-white-blue flags"""
     img = Image.open(p)
     if img.width < img.height: return None
     img = img.to_rgba().remove_transparency("white")
@@ -131,7 +131,29 @@ def gwb(p):
     d = { k : v for k,v in zip(u,f) if v > img.width * 2 }
     if all(v > ap.size // 50 for v in d.values()):
         ds = set(d)
-        if ds == { 0, 1, 5 }: return "X"
+        if ds == { 1, 2, 5 }: return "B"
+        elif ds == { 1, 9, 5}: return "C"
+        elif ds == { 1, 2, 5, 9}: return "X"
+
+def colorset(colors: str, exclusive: bool = True):
+    """Detecting multiple colors"""
+
+    colset = { HeraldicPalette.names.index(c) for c in colors }
+
+    @omit_types
+    def colorset(p):
+        """Gold-white-black flags"""
+        img = Image.open(p)
+        if img.width < img.height: return None
+        img = img.to_rgba().remove_transparency("white")
+        ap = np.array(img.to_palette(HeraldicPalette))
+        u, f = np.unique(ap, return_counts=True)
+        d = { k : v for k,v in zip(u,f) if v > img.width * 2 }
+        if all(v > ap.size // 50 for v in d.values()):
+            ds = set(d)
+            if ds == colset or (not exclusive and colset < ds): return "X"
+    return colorset
+
 
 @omit_types
 def grey(p):

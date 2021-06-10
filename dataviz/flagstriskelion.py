@@ -17,14 +17,14 @@ def process(d):
     flag = flag.resize_fixed_aspect(height=198) if flag.width / flag.height < 1.3 else flag.resize((318,198))
     flag = flag.pad(1, "grey")
     return Image.from_column([
-      Image.from_text(d['name'], FONT(32, bold=True), beard_line=True, fg=fg),
+      Image.from_text_bounded(d['name'].replace(r"\n","\n"), (320,200), 32, partial(FONT, bold=True), beard_line=True, align="center", fg=fg),
       Image.from_text(description, FONT(24, italics=True), fg=fg),
       flag
       ], padding=2, bg=bg, equal_widths=True)
 
-title = Image.from_text("Flags containing triskelions".upper(), FONT(80, bold=True), fg=fg, bg=bg).pad(40, bg)
+title = Image.from_text("Flags containing triskelions".upper(), FONT(76, bold=True), fg=fg, bg=bg).pad(40, bg)
 
-grid = grid_chart(data, process, padding=(10,20), fg=fg, bg=bg, yalign=(0.5,0.5,0.5), row_label=lambda r: None if data.index[r].startswith("_") else Image.from_text(data.index[r].replace(r"\n","\n").upper(), FONT(32, bold=True), align="center"))
+grid = grid_chart(data, process, padding=(10,20), fg=fg, bg=bg, yalign=(0.5,1.0,0.5), row_label=lambda r: None if data.index[r].startswith("_") else Image.from_text(data.index[r].replace(r"\n","\n").upper(), FONT(32, bold=True), align="center"))
 img = Image.from_column([title, grid, Rectangle((0,40))], bg=bg)
 img.place(Image.from_text("/u/Udzu", FONT(24), fg=fg, bg=bg, padding=5).pad((1,1,0,0), fg), align=1, padding=5, copy=False)
 img.save("output/flagstriskelion.png")

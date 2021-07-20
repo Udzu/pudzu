@@ -1,6 +1,5 @@
 country,to,to_score,from,from_score
 Albania,Italy,10.7,Macedonia,10.9
-Andorra,Spain,10.0,Spain,10.8
 Armenia,Russia,10.3,Russia,9.8
 Austria,Serbia,6.4,Slovenia,3.2
 Azerbaijan,Turkey,12.0,Turkey,12.0
@@ -26,7 +25,7 @@ Italy,Ukraine,7.7,Albania,10.7
 Latvia,Estonia,9.2,Lithuania,10.4
 Lithuania,Latvia,10.4,Latvia,7.6
 Luxembourg,Malta,6.8,Malta,6.3
-Macedonia,Albania,10.9,Serbia,10.2
+North Macedonia,Albania,10.9,Serbia,10.2
 Malta,Italy,8.2,Slovakia,6.9
 Moldova,Romania,11.6,Romania,11.3
 Monaco,France,6.6,Italy,6.6
@@ -34,6 +33,7 @@ Montenegro,Serbia,11.4,Serbia,10.7
 Netherlands,Armenia,7.8,Hungary,5.6
 Norway,Sweden,7.5,Iceland,5.8
 Poland,Ukraine,7.9,Ukraine,5.8
+Sweden,Denmark,6.2,Denmark,8.6
 Portugal,Moldova,7.8,Andorra,9.1
 Romania,Moldova,11.3,Moldova,11.6
 Russia,Armenia,9.8,Belarus,11.0
@@ -41,8 +41,8 @@ San Marino,Bulgaria,7.0,Albania,5.8
 Serbia,Montenegro,10.7,Montenegro,11.4
 Slovakia,Malta,6.9,Ukraine,4.7
 Slovenia,Serbia,9.8,Montenegro,7.3
+Andorra,Spain,10.0,Spain,10.8
 Spain,Andorra,10.8,Andorra,10.0
-Sweden,Denmark,6.2,Denmark,8.6
 Switzerland,Serbia,9.5,Luxembourg,4.2
 Turkey,Azerbaijan,12.0,Azerbaijan,12.0
 UK,Ireland,6.6,Luxembourg,6.5

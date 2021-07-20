@@ -1,30 +1,44 @@
 group,name,description,image
 
 _1,Republic of Transkei,Bantustan (1976-94),https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Transkei.svg/1024px-Flag_of_Transkei.svg.png
-_1,Republic of Venda,Bantustan (1979-94),https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Flag_of_Venda.svg/1024px-Flag_of_Venda.svg.png
+_1,Republic of Venda,Bantustan (1979-94),https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Venda_%281973%E2%80%931994%29.svg/1920px-Flag_of_Venda_%281973%E2%80%931994%29.svg.png
 _1,Republic of Damaraland,Bantustan (1980-89),https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_Damaraland.svg/1024px-Flag_of_Damaraland.svg.png
+_1,Murrawarri Republic,micronation,https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Flag_of_Murrawarri_Republic.svg/1024px-Flag_of_Murrawarri_Republic.svg.png
 
-_2,Manus Province,Papua New Guinea,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Flag_of_Manus.svg/1024px-Flag_of_Manus.svg.png
-_2,Mae Hong Son Province,Thailand,https://upload.wikimedia.org/wikipedia/commons/3/35/Flag_of_Mae_Hong_Son_Province.png
+_2a,Elego Marakwet County,"Kenya",https://upload.wikimedia.org/wikipedia/commons/8/87/Elgeyo_Marakwet_Flag.png
+_2a,Nakuru County,Kenya,https://www.crwflags.com/fotw/images/k/ke-nak.gif
+_2a,Vihiga County,"Kenya",https://www.crwflags.com/fotw/images/k/ke-vihig.gif
+_2a,Wajir County,"Kenya",https://www.crwflags.com/fotw/images/k/ke-wajir.gif
+_2a,Kitwe,"Zambia",https://fotw.info/images/z/zm-kit.gif
+
+_2b,Úpice,"Czech Republic",https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Flag_of_Upice.svg/1024px-Flag_of_Upice.svg.png
+_2b,Kiviõli,Estonia,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Flag_of_Kivi%C3%B5li.svg/1024px-Flag_of_Kivi%C3%B5li.svg.png
+_2b,Żebbuġ,"Malta",https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Flag_of_%C5%BBebbu%C4%A1%2C_Gozo.svg/1024px-Flag_of_%C5%BBebbu%C4%A1%2C_Gozo.svg.png
+_2b,Węgrów,"Poland",https://fotw.info/images/p/pl-ma-wr.gif
+_2b,La Carolina,"Spain",https://www.crwflags.com/fotw/images/e/es-j-lac.gif
+
+_2,Chaiyaphum Province,Thailand,https://upload.wikimedia.org/wikipedia/commons/0/0d/Chaiyaphum_Flag.png
+_2,Mae Hong Son Province,Thailand,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Flag_Mae_Hong_Son_Province.png/1280px-Flag_Mae_Hong_Son_Province.png
 _2,Maha Sarakham Province,Thailand,https://upload.wikimedia.org/wikipedia/commons/7/79/Mahasarakham_PV_Flag.png
-_2,Berkshire,UK,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Flag_of_Berkshire.svg/1024px-Flag_of_Berkshire.svg.png
+_2,Manus Province,Papua New Guinea,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Flag_of_Manus.svg/1024px-Flag_of_Manus.svg.png
+_2,Adnyamathanha,Australia,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Adnyamathanha_Flag.svg/1024px-Adnyamathanha_Flag.svg.png
 
 _3us,Fresno,"California",https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Flag_of_Fresno%2C_California.svg/999px-Flag_of_Fresno%2C_California.svg.png
 _3us,Brown County,"Ohio",https://www.crwflags.com/fotw/images/u/us-oh-br.gif
 _3us,Franklin County,"Pennsylvania",https://www.crwflags.com/fotw/images/u/us-pa-fk.gif
+_3us,Dorado,Puerto Rico,https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/DoradoFlag.svg/1280px-DoradoFlag.svg.png
 _3us,Utuado,"Puerto Rico",https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/UtuadoFlag.svg/1024px-UtuadoFlag.svg.png
 
-_2a,Vihiga County,"Kenya",https://upload.wikimedia.org/wikipedia/commons/e/e0/Flag_of_Vihiga_County.png
-_2a,Wajir County,"Kenya",https://upload.wikimedia.org/wikipedia/commons/d/d1/Flag_of_Wajir_County.png
-_2a,Nakuru County,Kenya,https://upload.wikimedia.org/wikipedia/commons/1/10/Flag_of_Nakuru_County.png
-_2a,Kitwe,"Zambia",https://fotw.info/images/z/zm-kit.gif
+_3,Arauquita,"Colombia",https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Arauquita_%28Arauca%29.svg/1024px-Flag_of_Arauquita_%28Arauca%29.svg.png
+_3,El Carmen de Viboral,"Colombia",https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Flag_of_El_Carmen_de_Viboral.svg/1024px-Flag_of_El_Carmen_de_Viboral.svg.png
+_3,Quibdó,Colombia,https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Flag_of_Quibd%C3%B3.svg/1024px-Flag_of_Quibd%C3%B3.svg.png
+_3,Quipile,Colombia,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Flag_of_Quipile_%28Cundinamarca%29.svg/1024px-Flag_of_Quipile_%28Cundinamarca%29.svg.png
+_3,Bagaces,Costa Rica,https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Bandera_de_Bagaces_%28Costa_Rica%29.png/1024px-Bandera_de_Bagaces_%28Costa_Rica%29.png
 
-_2b,Úpice,"Czech Republic",https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Flag_of_Upice.svg/1024px-Flag_of_Upice.svg.png
-_2b,Żebbuġ,"Malta",https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Flag_of_%C5%BBebbu%C4%A1%2C_Gozo.svg/1024px-Flag_of_%C5%BBebbu%C4%A1%2C_Gozo.svg.png
-_2b,Węgrów,"Poland",https://fotw.info/images/p/pl-ma-wr.gif
-_2b,La Carolina,"Spain",https://620aa84a-a-62cb3a1a-s-sites.googlegroups.com/site/simbolosdejaen/home/sierra-morena/la-carolina/la-carolina_bandera.png?attachauth=ANoY7cp78c5XA7ZYoEVa7_trxTlO29OGO4lahM6zi-THy0wxQHXQ2OWgP8hQzKJYRIc1y-DGSH3nWQTYIvG4ULCFAvVD83jzoCIF6BTozOjELEvmgmeHpbkYZW0ACbfy6ebMcowPz6YgQz_orbrK1NBvj1Lzw6Qu9Vcu7ZG6s0YkDxfzOt96E2cUP7Op3Ddh_lubZ_XD54YcEMhv2AAXszgLiX6BOJf3tbcCLnRyvtTgD5pHuEj88Ln-3TUO_ucbuaVYcWodZPnNsNEHiILpqAYhmvqragXkjQ%3D%3D&attredirects=0
+_3z,Cássia,Brazil,https://www.crwflags.com/FOTW/images/b/br-mg-165.gif
+_3z,Canaã dos Carajás,Brazil,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Bandeira_de_Cana%C3%A3_dos_Caraj%C3%A1s_%28Par%C3%A1%29.svg/1280px-Bandeira_de_Cana%C3%A3_dos_Caraj%C3%A1s_%28Par%C3%A1%29.svg.png
+_3z,Jacobo Hunter,Peru,https://www.fotw.info/images/p/pe-jhu1.gif
+_3z,Progress Pride,LGBT pride flag,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/LGBTQ%2B_rainbow_flag_Quasar_%22Progress%22_variant.svg/1920px-LGBTQ%2B_rainbow_flag_Quasar_%22Progress%22_variant.svg.png
+_3z,Bear Brotherhood,gay pride flag,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Bear_Brotherhood_flag.svg/1024px-Bear_Brotherhood_flag.svg.png
 
-_2c,Arauquita,"Colombia",https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Arauquita_%28Arauca%29.svg/1024px-Flag_of_Arauquita_%28Arauca%29.svg.png
-_2c,El Carmen de Viboral,"Colombia",https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Flag_of_El_Carmen_de_Viboral.svg/1024px-Flag_of_El_Carmen_de_Viboral.svg.png
-_2c,Adnyamathanha,Aboriginal cultural flag,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Adnyamathanha_Flag.svg/1024px-Adnyamathanha_Flag.svg.png
-_2c,Bear Brotherhood,gay pride flag,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Bear_Brotherhood_flag.svg/1024px-Bear_Brotherhood_flag.svg.png
+

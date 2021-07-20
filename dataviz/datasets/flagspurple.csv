@@ -1,36 +1,61 @@
 group,name,description,image
-national,Dominica,on the parrot,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Flag_of_Dominica.svg/1024px-Flag_of_Dominica.svg.png
-national,Nicaragua,on the rainbow,https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Nicaragua.svg/1024px-Flag_of_Nicaragua.svg.png
-national,Belize?,on the tools?,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Flag_of_Belize.svg/1024px-Flag_of_Belize.svg.png
-national,Bolivia,variant flag since 2009,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Banner_of_the_Qulla_Suyu.svg/1024px-Banner_of_the_Qulla_Suyu.svg.png
-pride,LGBT,rainbow flag,https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Gay_flag.svg/1024px-Gay_flag.svg.png
-pride,bisexual,,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Bi_flag.svg/1024px-Bi_flag.svg.png
-pride,asexual,,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Asexual_flag.svg/1024px-Asexual_flag.svg.png
-pride,genderqueer,,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Genderqueer_flag-pride.svg/1024px-Genderqueer_flag-pride.svg.png
-pride,nonbinary,,https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Nonbinary_flag.svg/1024px-Nonbinary_flag.svg.png
-pride,intersex,,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Intersex_flag.svg/1024px-Intersex_flag.svg.png
-Spanish,Spanish Republic,1931–1939,https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Flag_of_Spain_%281931_-_1939%29.svg/1024px-Flag_of_Spain_%281931_-_1939%29.svg.png
-Spanish,Balearic Islands,,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Flag_of_the_Balearic_Islands.svg/1024px-Flag_of_the_Balearic_Islands.svg.png
-Spanish,Majorca,,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Mallorca.svg/1024px-Flag_of_Mallorca.svg.png
-Spanish,Castile and León,,https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Flag_of_Castile_and_Le%C3%B3n.svg/1280px-Flag_of_Castile_and_Le%C3%B3n.svg.png
-Spanish,Málaga,,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Flag_of_M%C3%A1laga%2C_Spain.svg/1024px-Flag_of_M%C3%A1laga%2C_Spain.svg.png
-Spanish,Cádiz,,https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Bandera_de_C%C3%A1diz.svg/1024px-Bandera_de_C%C3%A1diz.svg.png
-Japanese,Gunma,,https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Gunma_Prefecture.svg/1024px-Flag_of_Gunma_Prefecture.svg.png
-Japanese,Kyoto,,https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Kyoto_Prefecture.svg/1024px-Flag_of_Kyoto_Prefecture.svg.png
-Japanese,Okayama,,https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Flag_of_Okayama_Prefecture.svg/1024px-Flag_of_Okayama_Prefecture.svg.png
-Japanese,Tokyo,,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Flag_of_Tokyo_Prefecture.svg/1024px-Flag_of_Tokyo_Prefecture.svg.png
-Japanese,Yamanashi,,https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Yamanashi_Prefecture.svg/1024px-Flag_of_Yamanashi_Prefecture.svg.png
-Japanese,Kawasaki,,https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Flag_of_Kawasaki.svg/1024px-Flag_of_Kawasaki.svg.png
-Indian,Baudh State,1???–1948,https://upload.wikimedia.org/wikipedia/commons/d/d6/Drapeau_Baudh.png
-Indian,Dungarpur State,1???–1947,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Flag_of_Dungarp.svg/1024px-Flag_of_Dungarp.svg.png
-Indian,Jaisalmer State,1???–1947,https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Flag_of_Jaisalmer.svg/1024px-Flag_of_Jaisalmer.svg.png
-Indian,Kutlehar Estate,1???–1957,https://upload.wikimedia.org/wikipedia/commons/c/c6/Kutlehar_state_flag.png
-Indian,Mansa State,1???–1948,https://www.crwflags.com/Fotw/images/i/in_mansa.gif
-Indian,Rajpipla State,1???–1948,https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Flag_of_Rajpipla.svg/1024px-Flag_of_Rajpipla.svg.png
-other,Iroquois,,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_the_Iroquois_Confederacy.svg/1024px-Flag_of_the_Iroquois_Confederacy.svg.png
-other,Connecticut,USA,https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Flag_of_Connecticut.svg/994px-Flag_of_Connecticut.svg.png
-other,Jewish Autonomous Oblast,Russia,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Flag_of_the_Jewish_Autonomous_Oblast.svg/1024px-Flag_of_the_Jewish_Autonomous_Oblast.svg.png
-other,Kuban People's Republic,1918–1920,https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Kuban_People%27s_Republic.svg/1024px-Flag_of_Kuban_People%27s_Republic.svg.png
-other,Orange Order,Northern Ireland,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Flag_of_the_Orange_Order.svg/1024px-Flag_of_the_Orange_Order.svg.png
-other,Scout Movement,WOSM,https://upload.wikimedia.org/wikipedia/en/thumb/5/5a/World_Organization_of_the_Scout_Movement_flag.svg/1024px-World_Organization_of_the_Scout_Movement_flag.svg.png
+n,Dominica,on the parrot,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Flag_of_Dominica.svg/1024px-Flag_of_Dominica.svg.png
+n,Nicaragua,on the rainbow,https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Nicaragua.svg/1024px-Flag_of_Nicaragua.svg.png
+n,Bolivia,variant flag since 2009,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Banner_of_the_Qulla_Suyu.svg/1024px-Banner_of_the_Qulla_Suyu.svg.png
+n,Sultunate of Sulu,19th century,https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Late_19th_Century_Flag_of_Sulu.svg/1024px-Late_19th_Century_Flag_of_Sulu.svg.png
+n,Kuban People's Republic,1918–1920,https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Kuban_People%27s_Republic.svg/1024px-Flag_of_Kuban_People%27s_Republic.svg.png
+
+S,Spanish Republic,1931–1939,https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Flag_of_Spain_%281931%E2%80%931939%29.svg/1920px-Flag_of_Spain_%281931%E2%80%931939%29.svg.png
+S,Balearic Islands,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Flag_of_the_Balearic_Islands.svg/1024px-Flag_of_the_Balearic_Islands.svg.png
+S,Majorca,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Mallorca.svg/1024px-Flag_of_Mallorca.svg.png
+S,Castile and León,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Flag_of_Castile_and_Le%C3%B3n.svg/1280px-Flag_of_Castile_and_Le%C3%B3n.svg.png
+S,Cantabrian labarum,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Cantabrian_L%C3%A1baru_Flag.svg/1920px-Cantabrian_L%C3%A1baru_Flag.svg.png
+
+e,Exmoor,England,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Exmoor_Flag.svg/1024px-Exmoor_Flag.svg.png
+e,Flore,England,https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flore_village_flag.svg/1920px-Flore_village_flag.svg.png
+e,Oost Gelre,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Oost_Gelre_vlag.svg/1280px-Oost_Gelre_vlag.svg.png
+e,Orange Order,Northern Ireland,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Flag_of_the_Orange_Order.svg/1024px-Flag_of_the_Orange_Order.svg.png
+e,Suffragettes,"WSPU, UK",https://i.redd.it/vt0focqkqs211.png
+
+ee,Jewish Autonomous Oblast,Russia,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Flag_of_the_Jewish_Autonomous_Oblast.svg/1024px-Flag_of_the_Jewish_Autonomous_Oblast.svg.png
+ee,Moscow Southern Okrug,Russia,https://upload.wikimedia.org/wikipedia/commons/8/8a/Flag_of_South_district_in_Moscow.png
+ee,Troitsk,Russia,https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Flag_of_Troitsk_%28Chelyabinsk_oblast%29.svg/1920px-Flag_of_Troitsk_%28Chelyabinsk_oblast%29.svg.png
+ee,Vyshgorod Raion,Ukraine,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Vyshhorod_Raion%2C_Kyiv_Oblast.svg/1920px-Flag_of_Vyshhorod_Raion%2C_Kyiv_Oblast.svg.png
+ee,Volapük,conlang,https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Flag_of_Volap%C3%BCk.svg/1920px-Flag_of_Volap%C3%BCk.svg.png
+
+J,Gunma,Japan,https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Gunma_Prefecture.svg/1024px-Flag_of_Gunma_Prefecture.svg.png
+J,Kyoto,Japan,https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Kyoto_Prefecture.svg/1024px-Flag_of_Kyoto_Prefecture.svg.png
+J,Okayama,Japan,https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Flag_of_Okayama_Prefecture.svg/1024px-Flag_of_Okayama_Prefecture.svg.png
+J,Tokyo,Japan,https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Flag_of_Tokyo_Metropolis.svg/1920px-Flag_of_Tokyo_Metropolis.svg.png
+J,Yamanashi,Japan,https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Yamanashi_Prefecture.svg/1024px-Flag_of_Yamanashi_Prefecture.svg.png
+
+J2,Okutama,Japan,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Flag_of_Okutama%2C_Tokyo.svg/1920px-Flag_of_Okutama%2C_Tokyo.svg.png
+J2,Shibuya,Japan,https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Shibuya%2C_Tokyo.svg/1920px-Flag_of_Shibuya%2C_Tokyo.svg.png
+J2,Tachikawa,Japan,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Flag_of_Tachikawa%2C_Tokyo.svg/1920px-Flag_of_Tachikawa%2C_Tokyo.svg.png
+J2,Tama,Japan,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Flag_of_Tama%2C_Tokyo.svg/1920px-Flag_of_Tama%2C_Tokyo.svg.png
+J2,Tenri,Japan,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Flag_of_Tenri%2C_Nara.svg/1920px-Flag_of_Tenri%2C_Nara.svg.png
+
+T,Amnatcharoen,Thailand,https://upload.wikimedia.org/wikipedia/commons/9/9b/Flag_Amnatcharoen_Province.png
+T,Bueng Kan,Thailand,https://upload.wikimedia.org/wikipedia/commons/9/96/Flag_of_Bueng_Kan_Province.png
+T,Chiang Rai,Thailand,https://upload.wikimedia.org/wikipedia/commons/1/19/Chiangrai_Flag.png
+T,Phattalung,Thailand,https://upload.wikimedia.org/wikipedia/commons/9/9e/Phattalung_provincial_flag_.png
+T,Phitsanulok,Thailand,https://upload.wikimedia.org/wikipedia/commons/7/79/Phitsanulok_provincial_flag.png
+
+na,Iroquois,North America,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_the_Iroquois_Confederacy.svg/1024px-Flag_of_the_Iroquois_Confederacy.svg.png
+na,Ottawa,"1987-2000, Canada",https://i.redd.it/shz684igmwv31.png
+na,Phoenix,USA,https://www.crwflags.com/fotw/images/u/us-az-px-l.gif
+na,Connecticut,USA,https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Flag_of_Connecticut.svg/994px-Flag_of_Connecticut.svg.png
+na,Scout Movement,WOSM,https://upload.wikimedia.org/wikipedia/en/thumb/5/5a/World_Organization_of_the_Scout_Movement_flag.svg/1024px-World_Organization_of_the_Scout_Movement_flag.svg.png
+
+a,Cusco,Peru,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Flag_of_Cusco.svg/1920px-Flag_of_Cusco.svg.png
+a,Jaén,Peru,https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Bandera_de_Jaen_%28Peru%29.png/1920px-Bandera_de_Jaen_%28Peru%29.png
+a,Quindío,Colombia,https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_Quind%C3%ADo.svg/1920px-Flag_of_Quind%C3%ADo.svg.png
+a,Macaé,Brazil,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Bandeira-macae.svg/1920px-Bandeira-macae.svg.png
+a,Bandiaterra,fictional,https://upload.wikimedia.org/wikipedia/commons/1/14/Flag_of_Bandiaterra.png
+
+pride,LGBT,pride flag,https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Gay_Pride_Flag.svg/1024px-Gay_Pride_Flag.svg.png
+pride,bisexual,pride flag,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Bisexual_Pride_Flag.svg/1920px-Bisexual_Pride_Flag.svg.png
+pride,asexual,pride flag,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Asexual_Pride_Flag.svg/1920px-Asexual_Pride_Flag.svg.png
+pride,nonbinary,pride flag,https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Nonbinary_flag.svg/1280px-Nonbinary_flag.svg.png
+pride,intersex,pride flag,https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Intersex_Pride_Flag.svg/1280px-Intersex_Pride_Flag.svg.png
 

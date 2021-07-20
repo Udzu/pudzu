@@ -93,7 +93,7 @@ def bands(n):
         return cat
     return bands
 
-def colors(color: str):
+def color(color: str):
     """Simple heuristic for detecting a Heraldic color."""
     @omit_types
     def colors(p):
@@ -102,7 +102,7 @@ def colors(color: str):
         ap = np.array(img.to_palette(HeraldicPalette))
         u, f = np.unique(ap, return_counts=True)
         d = { HeraldicPalette.names[k] : v for k,v in zip(u,f) }
-        if d.get(color) > (img.width * img.height / 6): return color
+        if d.get(color) > (img.width * img.height / 10): return color
     return colors
     
 @omit_types
@@ -121,8 +121,8 @@ def rwb(p):
         elif ds == { 1, 2, 3, 9}: return "X"
 
 @omit_types
-def kwb(p):
-    """Black-white-blue flags"""
+def gwb(p):
+    """Green-white-blue flags"""
     img = Image.open(p)
     if img.width < img.height: return None
     img = img.to_rgba().remove_transparency("white")
@@ -131,15 +131,15 @@ def kwb(p):
     d = { k : v for k,v in zip(u,f) if v > img.width * 2 }
     if all(v > ap.size // 50 for v in d.values()):
         ds = set(d)
-        if ds == { 1, 2, 5 }: return "B"
-        elif ds == { 1, 9, 5}: return "C"
-        elif ds == { 1, 2, 5, 9}: return "X"
+        if ds == { 1, 2, 6 }: return "B"
+        elif ds == { 1, 9, 6}: return "C"
+        elif ds == { 1, 2, 6, 9}: return "X"
 
-def colorset(colors: str, exclusive: bool = True):
+def colorset(*colors: str, exclusive: bool = True):
     """Detecting multiple colors"""
 
-    colset = { HeraldicPalette.names.index(c) for c in colors }
-
+    colsets = { color : { HeraldicPalette.names.index(c) for c in color}  for color in colors}
+    
     @omit_types
     def colorset(p):
         """Gold-white-black flags"""
@@ -148,10 +148,11 @@ def colorset(colors: str, exclusive: bool = True):
         img = img.to_rgba().remove_transparency("white")
         ap = np.array(img.to_palette(HeraldicPalette))
         u, f = np.unique(ap, return_counts=True)
-        d = { k : v for k,v in zip(u,f) if v > img.width * 2 }
-        if all(v > ap.size // 50 for v in d.values()):
-            ds = set(d)
-            if ds == colset or (not exclusive and colset < ds): return "X"
+        d = { k : v for k,v in zip(u,f) if v > img.width * img.height * 0.05 }
+        ds = set(d)
+        for color, colset in colsets.items():
+            if colset == ds: return color
+            if not exclusive and colset < ds: return "X"+color
     return colorset
 
 

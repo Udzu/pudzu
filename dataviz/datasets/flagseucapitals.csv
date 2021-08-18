@@ -1,0 +1,57 @@
+group,name,description,image
+
+A+,Amsterdam,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Flag_of_Amsterdam.svg/1280px-Flag_of_Amsterdam.svg.png
+A+,Berlin,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Berlin.svg/1920px-Flag_of_Berlin.svg.png
+A+,Moscow,Russia,https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Moscow%2C_Russia.svg/1280px-Flag_of_Moscow%2C_Russia.svg.png
+
+A,Kyiv,Ukraine,https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Flag_of_Kyiv_Kurovskyi.svg/1280px-Flag_of_Kyiv_Kurovskyi.svg.png
+A,London,United Kingdom,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Flag_of_the_City_of_London.svg/1920px-Flag_of_the_City_of_London.svg.png
+A,Nicosia,Cyprus,https://www.fotw.info/images/c/cy-nico.gif
+A,Podgorica,Montenegro,https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Podgorica%2C_Montenegro.svg/1920px-Flag_of_Podgorica%2C_Montenegro.svg.png
+A,Tbilisi,Georgia,https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Tbilisi.svg/1920px-Flag_of_Tbilisi.svg.png
+A,Bern,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Flag_of_Canton_of_Bern.svg/1024px-Flag_of_Canton_of_Bern.svg.png
+
+B,Andorra la Vella,Andorra,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Flag_of_Andorra_la_Vella.svg/1280px-Flag_of_Andorra_la_Vella.svg.png
+B,Minsk,Belarus,https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Flag_of_Minsk%2C_Belarus.svg/1280px-Flag_of_Minsk%2C_Belarus.svg.png
+B,Nur-Sultan,Kazakhstan,https://i.imgur.com/MvNUXMN.png
+B,Sarajevo,Bosnia,https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Flag_of_Sarajevo.svg/1920px-Flag_of_Sarajevo.svg.png
+B,Tallinn,Estonia,https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Tallinn.svg/1920px-Flag_of_Tallinn.svg.png
+B,Helsinki,Finland,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Flag_of_Helsinki.svg/1024px-Flag_of_Helsinki.svg.png
+
+C,Brussels,Belgium,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Brussel_vlag.svg/1280px-Brussel_vlag.svg.png
+C,Baku,Azerbaijan,https://www.crwflags.com/fotw/images/a/az-baku.gif
+C,Budapest,Hungary,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Flag_of_Budapest_%282011-%29.svg/1280px-Flag_of_Budapest_%282011-%29.svg.png
+C,Lisbon,Portugal,https://upload.wikimedia.org/wikipedia/commons/1/16/Bandeira_municipal_de_Lisboa.png
+C,Oslo,Norway,https://i.imgur.com/YQfXPrp.png
+C,Belgrade,Serbia,https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Flag_of_Belgrade%2C_Serbia.svg/1024px-Flag_of_Belgrade%2C_Serbia.svg.png
+C_,Reykjavík,Iceland,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Flag_of_Reykjavik%2C_Iceland.svg/1280px-Flag_of_Reykjavik%2C_Iceland.svg.png
+C_,Tirana,Albania,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Tirana.svg/1024px-Flag_of_Tirana.svg.png
+C_,Valletta,Malta,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Flag_of_Valletta%2C_Malta.svg/1280px-Flag_of_Valletta%2C_Malta.svg.png
+C_,Vienna,Austria,https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Vienna_%28state%29.svg/1280px-Flag_of_Vienna_%28state%29.svg.png
+C_,Vilnius,Lithuania,https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vilnius.svg/1920px-Flag_of_Vilnius.svg.png
+C_,Stockholm,Sweden,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Flag_of_Stockholm.svg/1024px-Flag_of_Stockholm.svg.png
+
+D,Athens,Greece,https://upload.wikimedia.org/wikipedia/en/thumb/0/0d/Flag_of_Athens%2C_Greece.svg/1280px-Flag_of_Athens%2C_Greece.svg.png
+D,Bucharest,Romania,https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/ROU_Bucharest_Flag.png/1280px-ROU_Bucharest_Flag.png
+D,Dublin,Ireland,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/IRL_Dublin_flag.svg/1920px-IRL_Dublin_flag.svg.png
+D,Ljubljana,Slovenia,https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Flag_of_Ljubljana.svg/1920px-Flag_of_Ljubljana.svg.png
+D,Madrid,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Bandera_de_la_ciudad_de_Madrid.svg/1280px-Bandera_de_la_ciudad_de_Madrid.svg.png
+D,Skopje,North Macedonia,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_Skopje%2C_North_Macedonia.svg/800px-Flag_of_Skopje%2C_North_Macedonia.svg.png
+D_,Paris,France,https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Flag_of_Paris_with_coat_of_arms.svg/1280px-Flag_of_Paris_with_coat_of_arms.svg.png
+D_,Rome,Italy,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Flag_of_Rome.svg/1024px-Flag_of_Rome.svg.png
+D_,Prague,Czechia,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Flag_of_Prague.svg/1280px-Flag_of_Prague.svg.png
+D_,Warsaw,Poland,https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Flag_of_Warsaw.svg/1920px-Flag_of_Warsaw.svg.png
+D_,Zagreb,Croatia,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Flag_of_Zagreb.svg/1920px-Flag_of_Zagreb.svg.png
+
+E,Bratislava,Slovakia,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Flag_of_Bratislava.svg/1280px-Flag_of_Bratislava.svg.png
+E,Chisinau,Moldova,https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Flag_of_Chi%C8%99in%C4%83u.svg/1920px-Flag_of_Chi%C8%99in%C4%83u.svg.png
+E,Riga,Latvia,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Flag_of_Riga.svg/1920px-Flag_of_Riga.svg.png
+E,Luxembourg,Luxembourg,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Flag_of_Luxembourg_%28city%29.svg/1280px-Flag_of_Luxembourg_%28city%29.svg.png
+E,San Marino,San Marino,https://upload.wikimedia.org/wikipedia/commons/3/3d/Flag_of_City_of_San_Marino.png
+E,Vaduz,Liechtenstein,https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Flag_of_Vaduz_Liechtenstein-1.svg/320px-Flag_of_Vaduz_Liechtenstein-1.svg.png
+
+F,Ankara,Turkey,https://www.crwflags.com/fotw/images/t/tr-06-an.gif
+F,Pristina,Kosovo,https://upload.wikimedia.org/wikipedia/commons/a/a1/Flag_of_Pristina.png
+F,Sofia,Bulgaria,https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/BG_Sofia_flag.svg/1920px-BG_Sofia_flag.svg.png
+F,Yerevan,Armenia,https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_Yerevan.jpeg
+

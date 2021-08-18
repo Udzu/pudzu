@@ -1,0 +1,43 @@
+group,name,description,image
+
+_u,California,USA,https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_California.svg/1280px-Flag_of_California.svg.png
+_u,Missouri,USA,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Flag_of_Missouri.svg/1920px-Flag_of_Missouri.svg.png
+_u,Alaska,USA,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Flag_of_Alaska.svg/1024px-Flag_of_Alaska.svg.png
+_u,White Bear Township,"Minnesota, USA",https://www.fotw.info/images/u/us-mnwbr.gif
+_u,Byron,"Minnesota, USA",https://www.fotw.info/images/u/us-mnbyr.gif
+
+_r,Yaroslavl Oblast,Russia,https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Yaroslavl_Oblast.svg/1024px-Flag_of_Yaroslavl_Oblast.svg.png
+_r,Anadyr,"Chukotka, Russia",https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Anadyr_%28Chukotka%29.svg/1024px-Flag_of_Anadyr_%28Chukotka%29.svg.png
+_r,Kalevala,"Karelia, Russia",https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Flag_of_Kalevala.svg/1280px-Flag_of_Kalevala.svg.png
+_r,Lyantor,"Yugra, Russia",https://upload.wikimedia.org/wikipedia/commons/c/c0/Flag_of_Lyantor_%28Yugra%29.png
+_r,Medvezhyegorsky District,"Karelia, Russia",https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Medvezhyegorsky_District.svg/1024px-Flag_of_Medvezhyegorsky_District.svg.png
+
+_r2,Mezhgorye,"Bashkortostan, Russia",https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Flag_of_Mezhgorye_%28Bashkortostan%29.svg/1024px-Flag_of_Mezhgorye_%28Bashkortostan%29.svg.png
+_r2,Perm,"Perm Krai, Russia",https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Perm.svg/1024px-Flag_of_Perm.svg.png
+_r2,Prionezhsky District,"Karelia, Russia",https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Flag_of_Prionezhsky_District.svg/1024px-Flag_of_Prionezhsky_District.svg.png
+_r2,Zheleznogorsk,"Krasnoyarsk Krai, Russia",https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Flag_of_Zheleznogorsk.svg/1024px-Flag_of_Zheleznogorsk.svg.png
+_r2,Zakarpattia Oblast,Ukraine,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Flag_of_Transcarpathian_Oblast.svg/1024px-Flag_of_Transcarpathian_Oblast.svg.png
+
+_p,Barwice,Poland,https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/POL_Barwice_flag.svg/1024px-POL_Barwice_flag.svg.png
+_p,Kościerzyna,Poland,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/POL_Ko%C5%9Bcierzyna_flag.svg/1280px-POL_Ko%C5%9Bcierzyna_flag.svg.png
+_p,Ożarów,Poland,https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/POL_gmina_O%C5%BCar%C3%B3w_flag.svg/1024px-POL_gmina_O%C5%BCar%C3%B3w_flag.svg.png
+_p,Przemyśl,Poland,https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/POL_Przemy%C5%9Bl_flag.svg/1024px-POL_Przemy%C5%9Bl_flag.svg.png
+_p,Siauliai,Lithuania,https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_Siauliai.JPG
+
+_c,Bartošovice v Orlických horách,Czechia,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Barto%C5%A1ovice_v_Orlick%C3%BDch_hor%C3%A1ch_CZ.svg/1024px-Flag_of_Barto%C5%A1ovice_v_Orlick%C3%BDch_hor%C3%A1ch_CZ.svg.png
+_c,Bernartice,Czechia,https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Flag_of_Bernartice.svg/1024px-Flag_of_Bernartice.svg.png
+_c,Kunčice nad Labem,Czechia,https://rekos.psp.cz/data/images/35578/800x500/579424.gif
+_c,Přimda,Czechia,https://rekos.psp.cz/data/images/42266/800x500/498_primdav.jpg
+_c,Šafov,Czechia,https://rekos.psp.cz/data/images/43748/800x500/safov_vlajka-pdf.jpg
+
+_g,Beernem,Belgium,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Beernem_vlag.svg/1525px-Beernem_vlag.svg.png
+_g,Berlin,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Berlin.svg/1920px-Flag_of_Berlin.svg.png
+_g,Saxony-Anhalt,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Flag_of_Saxony-Anhalt_%28state%29.svg/1920px-Flag_of_Saxony-Anhalt_%28state%29.svg.png
+_g,Madrid,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Bandera_de_la_ciudad_de_Madrid.svg/1280px-Bandera_de_la_ciudad_de_Madrid.svg.png
+_g,Bern,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Flag_of_Canton_of_Bern.svg/1022px-Flag_of_Canton_of_Bern.svg.png
+
+_d,Warwickshire,England,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Warwickshire.svg/1024px-Flag_of_Warwickshire.svg.png
+_d,Otepää Parish,Estonia,https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Flag_of_Otep%C3%A4%C3%A4_Parish.svg/1920px-Flag_of_Otep%C3%A4%C3%A4_Parish.svg.png
+_d,Satakunta,Finland,https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Satakunta-flag.svg/1024px-Satakunta-flag.svg.png
+_d,Fredrikstad,Norway,https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Flag_of_Fredrikstad.svg/1280px-Flag_of_Fredrikstad.svg.png
+_d,Bear Brotherhood,gay pride flag,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Bear_Brotherhood_flag.svg/1920px-Bear_Brotherhood_flag.svg.png

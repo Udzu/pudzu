@@ -1,0 +1,51 @@
+group,name,description,image
+
+_ind,Angola,,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Angola.svg/1280px-Flag_of_Angola.svg.png
+_ind,East Timor,,https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flag_of_East_Timor.svg/1920px-Flag_of_East_Timor.svg.png
+_ind,Germany,,https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/1024px-Flag_of_Germany.svg.png
+_ind,Papua New Guinea,,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Flag_of_Papua_New_Guinea.svg/1280px-Flag_of_Papua_New_Guinea.svg.png
+_ind,Belgium,,https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Belgium.svg/1024px-Flag_of_Belgium.svg.png
+
+_c,Uganda,,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Flag_of_Uganda.svg/1280px-Flag_of_Uganda.svg.png
+_c,Bravantice,Czech Republic,https://upload.wikimedia.org/wikipedia/commons/5/55/Bravantice_prapor.png
+_c,Mikuleč,Czech Republic,https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Flag_of_Mikulec.svg/1280px-Flag_of_Mikulec.svg.png
+_c,Terezín,Czech Republic,https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Terezin_LT_CZ_flag.svg/1280px-Terezin_LT_CZ_flag.svg.png
+
+_g,Lower Saxony,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Flag_of_Lower_Saxony.svg/1280px-Flag_of_Lower_Saxony.svg.png
+_g,Rhineland-Palatinate,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Rhineland-Palatinate.svg/1280px-Flag_of_Rhineland-Palatinate.svg.png
+_g,Saarland,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Flag_of_Saarland.svg/1920px-Flag_of_Saarland.svg.png
+_g,Weimar,Germany,https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Hissflagge_Weimar.svg/1920px-Hissflagge_Weimar.svg.png
+
+_n,Best,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Best_North_Brabant.svg/1280px-Flag_of_Best_North_Brabant.svg.png
+_n,Nij Beets,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Nij_Beets_vlag.svg/1920px-Nij_Beets_vlag.svg.png
+_n,Ruurlo,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Ruurlo_vlag.svg/1280px-Ruurlo_vlag.svg.png
+_n,Stein,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Stein.svg/1280px-Flag_of_Stein.svg.png
+
+_e,Utrechtse Heuvelrug,Netherlands,https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Utrechtse_Heuvelrug_vlag.svg/1280px-Utrechtse_Heuvelrug_vlag.svg.png
+_e,Piława Górna,Poland,https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/POL_Pi%C5%82awa_G%C3%B3rna_flag.svg/1920px-POL_Pi%C5%82awa_G%C3%B3rna_flag.svg.png
+_e,Pakosławice,Poland,https://www.fotw.info/images/p/pl-op-pk.gif
+_e,Tomaszów Mazowiecki,Poland,https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/POL_Tomasz%C3%B3w_Mazowiecki_flag.svg/1920px-POL_Tomasz%C3%B3w_Mazowiecki_flag.svg.png
+
+_s,Palekh,Russia,https://upload.wikimedia.org/wikipedia/commons/5/5f/Flag_of_Palekh_%28Ivanovo_oblast%29.png
+_s,Artés,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Bandera_d%27Art%C3%A9s.svg/1280px-Bandera_d%27Art%C3%A9s.svg.png
+_s,Malla,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Bandera_de_Malla.svg/1280px-Bandera_de_Malla.svg.png
+_s,Palau de Santa Eulàlia,Spain,https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Flag_of_Palau_de_Santa_Eul%C3%A0lia.svg/1280px-Flag_of_Palau_de_Santa_Eul%C3%A0lia.svg.png
+
+_u,Macarani,Brazil,https://www.fotw.info/images/b/br-ba-237.gif
+_u,Norte de Santander,Colombia,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Norte_de_Santander.svg/1280px-Flag_of_Norte_de_Santander.svg.png
+_u,Táchira,Venezuela,https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_T%C3%A1chira.svg/1280px-Flag_of_T%C3%A1chira.svg.png
+_u,Guyama,Puerto Rico,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Flag_of_Guayama%2C_Puerto_Rico.svg/1920px-Flag_of_Guayama%2C_Puerto_Rico.svg.png
+
+_a,Raj of Sarawak,1841-1946,https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_the_Raj_of_Sarawak_%281870%29.svg/1024px-Flag_of_the_Raj_of_Sarawak_%281870%29.svg.png
+_a,Negeri Sembilan,Malaysia,https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Flag_of_Negeri_Sembilan.svg/1920px-Flag_of_Negeri_Sembilan.svg.png
+_a,Sarawak,Malaysia,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Flag_of_Sarawak.svg/1920px-Flag_of_Sarawak.svg.png
+_a,Australian Aborigines,Australia,https://upload.wikimedia.org/wikipedia/en/thumb/3/3f/Australian_Aboriginal_Flag.svg/1920px-Australian_Aboriginal_Flag.svg.png
+
+_c,Walloon Brabant,Belgium,https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Drapeau_Province_BE_Brabant_Wallon.svg/1024px-Drapeau_Province_BE_Brabant_Wallon.svg.png
+_g,Bern,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Flag_of_Canton_of_Bern.svg/1024px-Flag_of_Canton_of_Bern.svg.png
+_n,Geneva,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_Canton_of_Geneva.svg/1024px-Flag_of_Canton_of_Geneva.svg.png
+_e,Uri,Switzerland,https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Flag_of_Canton_of_Uri.svg/1024px-Flag_of_Canton_of_Uri.svg.png
+_s,Etagnières,Switzerland,https://www.crwflags.com/Fotw/images/c/ch-vd090.gif
+_u,Les Enfers,Switzerland,https://www.crwflags.com/fotw/images/c/ch-ju039.gif
+_a,Lichtensteig,Switzerland,https://www.fotw.info/images/c/ch-sg018.gif
+

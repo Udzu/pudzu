@@ -1,13 +1,19 @@
 from pudzu.charts import *
 
 FILES = {
- "israstine": "Some flags for a united Israel-Palestine",
- "saudi": "Some flags in the style of Saudi Arabia",
- "canada": "Some flags in the style of Canada",
- "california": "Some flags in the style of California",
+# "israstine": "Some flags for a united Israel-Palestine",
+# "saudi": "Some flags in the style of Saudi Arabia",
+# "canada": "Some flags in the style of Canada",
+# "california": "Some flags in the style of California",
+ "gadsden": "10 Variations on the Gadsden Flag",
 }
 
-def columns(file): return 5 if file == "california" else 4
+COLUMNS = {
+    "california": 5,
+    "gadsden": 5
+}
+
+def columns(file): return COLUMNS.get(file, 4)
 
 for file, label in FILES.items():
 

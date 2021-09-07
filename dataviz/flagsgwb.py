@@ -22,7 +22,7 @@ def process(d):
       flag
       ], padding=2, bg=bg, equal_widths=True)
 
-title = Image.from_text("Flags that have Gold, White & Black".upper(), FONT(96, bold=True), fg=fg, bg=bg).pad(40, bg)
+title = Image.from_text("Gold, White and Black flags".upper(), FONT(96, bold=True), fg=fg, bg=bg).pad(40, bg)
 
 grid = grid_chart(data, process, padding=(10,20), fg=fg, bg=bg, yalign=(0.5,0.5,0.5), row_label=lambda r: None if data.index[r].startswith("_") else Image.from_text("{}\nflags".format(data.index[r]).upper(), FONT(32, bold=True), align="center", line_spacing=3))
 img = Image.from_column([title, grid, Rectangle((0,40))], bg=bg)

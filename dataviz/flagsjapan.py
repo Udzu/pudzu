@@ -7,7 +7,7 @@ df = pd.read_csv("datasets/flagsjapan.csv")
 array = list(generate_batches([dict(r) for _,r in df.iterrows()], COLS))
 data = pd.DataFrame(array)
 
-FONT = sans
+FONT = sans # partial(font, "fonts/arialu")
 fg, bg="black", "#EEEEEE"
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
 
@@ -19,7 +19,7 @@ def process(d):
     flag = flag.pad(N, "grey")
     return Image.from_column([
       Image.from_text_bounded(d['name'].replace(r"\n","\n"), (N*320 if "Switzerland" not in description else N*200,N*200), N*32, partial(FONT, bold=True), beard_line=True, align="center", fg=fg),
-      Image.from_text_bounded(description, (N*320 if "Switzerland" not in description else N*200,N*200), N*24, partial(FONT, italics=True), align="center", fg=fg),
+      Image.from_text_bounded(description, (N*320 if "Switzerland" not in description else N*200,N*200), N*24, partial(FONT), align="center", fg=fg),
       flag
       ], padding=N*2, bg=bg, equal_widths=True)
 

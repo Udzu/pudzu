@@ -2,9 +2,11 @@ from pudzu.charts import *
 from generate import *
 from statistics import mean
 
-flags = pd.read_csv("../dataviz/datasets/countries.csv").split_columns(('country'), "|").split_rows('country').set_index('country').flag
+flags = pd.read_csv("../dataviz/datasets/countries.csv").split_columns(('country'), "|").explode('country').set_index('country').flag
 flags["northern_cyprus"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Flag_of_the_Turkish_Republic_of_Northern_Cyprus.svg/1024px-Flag_of_the_Turkish_Republic_of_Northern_Cyprus.svg.png"
 flags["somaliland"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Flag_of_Somaliland.svg/1024px-Flag_of_Somaliland.svg.png"
+flags["Afghanistan"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Flag_of_Taliban.svg/1024px-Flag_of_Taliban.svg.png"
+flags["Saint Barthélemy"] = flags["France"]
 
 def to_linear(srgb):
     c = srgb / 255

@@ -21,7 +21,7 @@ flags = pd.read_csv("datasets/usstates.csv").set_index("name").flag
 PALETTE = [VegaPalette10.BLUE, VegaPalette10.LIGHTBLUE, VegaPalette10.RED]
 LABELS = [
 "contains state name",
-"contains state initials",
+"contains state initial(s)",
 "mentions God",
 ]
 PALETTE = PALETTE[:len(LABELS)]

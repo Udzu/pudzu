@@ -31,9 +31,9 @@ def dict_from_vals(**kwargs):
     return { v : k for k, vs in kwargs.items() for v in vs }
     
 def generate_datamap(name, datamap, palette={}, width=2500, height=1000,
-                     map_path="libraries/datamaps.world.hires.js", codifier=codify_countries,
+                     map_path="libraries/datamaps.world.hires.js", scope="world", codifier=codify_countries,
                      geography={"borderWidth": 0.8}, default_fill="#BBBBBB", crisp_edges=False,
-                     patterns=None):
+                     patterns=None, labels=None, label_size=20):
     """Generate a D3 datamap html file with a button for saving as a PNG.
     - name (filename): output filename (goes in temp/ by default)
     - datamap (dict): mapping from region to palette member or RGBA color
@@ -41,11 +41,14 @@ def generate_datamap(name, datamap, palette={}, width=2500, height=1000,
     - width (int): output width [2500]
     - height (int): output height [1000]
     - map_path (filename): datamap file path ["libraries/datamaps.world.hires.js"]
+    - scope (string): map scope ["world"]
     - codifier (datamap->datamap): datamap conversion [codify_countries]
     - geography (json): geographyConfig section ({"borderWidth": 0.8})
     - default_fill (color): default fill ["#BBBBBB"]
     - crisp_edges (bool): disable antialiasing [False]
     - patterns (SVG): optional SVG pattern definitions [None]
+    - labels (dict): optional mapping from region to label [None]
+    - label_size (int): label font size [20]
     """
     TEMPLATE = r"""<!DOCTYPE html>
 <html>
@@ -59,6 +62,7 @@ def generate_datamap(name, datamap, palette={}, width=2500, height=1000,
 <script>
     var map = new Datamap({
       element: document.getElementById('container'),
+      scope: '{{scope}}',
       width: {{width}},
       height: {{height}},
       geographyConfig: {{geography_config}},
@@ -67,6 +71,7 @@ def generate_datamap(name, datamap, palette={}, width=2500, height=1000,
     });
     {{crispy}}
     {{patterns}}
+    {{labels}}
 </script>
 </body>"""
     palette = merge({ "defaultFill": default_fill }, palette)
@@ -86,6 +91,8 @@ def generate_datamap(name, datamap, palette={}, width=2500, height=1000,
     crispy = 'document.getElementsByTagName("svg")[0].setAttribute("shape-rendering", "crispEdges")' * crisp_edges
     if not patterns: patterns = ''
     else: patterns = f"document.getElementsByTagName('svg')[0].insertAdjacentHTML('afterbegin', `{patterns}`)"
+    if not labels: labels = ''
+    else: labels = f"var labels = {labels};\nmap.labels({{customLabelText: labels, fontSize: {label_size}}});"
     html = substitute(TEMPLATE, **locals())
     with open("temp/"+name+".html", "w", encoding="utf-8") as f:
         f.write("\n".join(l for l in html.split("\n") if l.strip()))

@@ -141,7 +141,7 @@ def pd_print(item, **kwargs):
 # filter expressions
 
 if pyparsing:
-    from pyparsing import CaselessLiteral, Combine, Literal, Optional, QuotedString, Word, alphas, alphas8bit, nums, oneOf, opAssoc, operatorPrecedence
+    from pyparsing import CaselessLiteral, Combine, Literal, Optional, QuotedString, Word, alphas, alphas8bit, nums, oneOf, opAssoc, infixNotation
 
     class FilterExpression:
         """Filter factory based on filter expressions such as "name~John and (age>18 or consent:true)".
@@ -203,7 +203,7 @@ if pyparsing:
         exist_value = CaselessLiteral("True") | CaselessLiteral("Exists")
 
         base_expr = (key_value + (str_op + str_value | num_op + number | exist_op + exist_value)).setParseAction(lambda t: [t])
-        expr = operatorPrecedence(
+        expr = infixNotation(
             base_expr,
             [
                 (Literal("not").setParseAction(lambda t: operator.not_), 1, opAssoc.RIGHT),

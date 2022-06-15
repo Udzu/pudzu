@@ -1,0 +1,37 @@
+group,name,description,image
+
+_o,Crimea,,https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Crimea.svg/1024px-Flag_of_Crimea.svg.png
+_o,Dnipropetrovsk Oblast,,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Dnipropetrovsk_Oblast.svg/1024px-Flag_of_Dnipropetrovsk_Oblast.svg.png
+_o,Donetsk Obast,,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Flag_of_Donetsk_Oblast.svg/1024px-Flag_of_Donetsk_Oblast.svg.png
+_o,Ivano-Frankivsk Oblast,,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Flag_of_Ivano-Frankivsk_Oblast.svg/1024px-Flag_of_Ivano-Frankivsk_Oblast.svg.png
+_o,Kherson Oblast,,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_Kherson_Oblast.svg/1024px-Flag_of_Kherson_Oblast.svg.png
+_o,Kirovohrad Oblast,,https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_Kirovohrad_Oblast.svg/1024px-Flag_of_Kirovohrad_Oblast.svg.png
+
+_o2,Kyiv City,,https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Flag_of_Kyiv_Kurovskyi.svg/1280px-Flag_of_Kyiv_Kurovskyi.svg.png
+_o2,Kyiv Oblast,,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Flag_of_Kyiv_Oblast.svg/1280px-Flag_of_Kyiv_Oblast.svg.png
+_o2,Odessa Oblast,,https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Odesa_Oblast.svg/1024px-Flag_of_Odesa_Oblast.svg.png
+_o2,Poltava Oblast,,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Poltava_Oblast.svg/1024px-Flag_of_Poltava_Oblast.svg.png
+_o2,Transcarpathian Oblast,,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Flag_of_Transcarpathian_Oblast.svg/1024px-Flag_of_Transcarpathian_Oblast.svg.png
+_o2,Volhynian Oblast,,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Flag_of_Volhynian_Oblast.svg/1024px-Flag_of_Volhynian_Oblast.svg.png
+
+_c,Antoniny,Khmelnytskyi Oblast,https://upload.wikimedia.org/wikipedia/commons/f/f1/Antoniny_prapor.png
+_c,Bakhmut,Donetsk Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Flag_of_Bakhmut_%28Donetsk_Oblast%29.svg/1024px-Flag_of_Bakhmut_%28Donetsk_Oblast%29.svg.png
+_c,Berezan,Kyiv Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/%D0%9F%D1%80%D0%B0%D0%BF%D0%BE%D1%80_%D0%91%D0%B5%D1%80%D0%B5%D0%B7%D0%B0%D0%BD%D1%96.svg/1024px-%D0%9F%D1%80%D0%B0%D0%BF%D0%BE%D1%80_%D0%91%D0%B5%D1%80%D0%B5%D0%B7%D0%B0%D0%BD%D1%96.svg.png
+_c,Brovary,Kyiv Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Flag_of_Brovary.svg/1024px-Flag_of_Brovary.svg.png
+_c,Chyhyryn,Cherkasy Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Chyhyryn_flag.svg/1024px-Chyhyryn_flag.svg.png
+_c,Donetsk,Donetsk Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Flag_of_Donetsk.svg/1280px-Flag_of_Donetsk.svg.png
+
+_c2,Horishni Plavni,Poltava Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_Horishni_Plavni.svg/1024px-Flag_of_Horishni_Plavni.svg.png
+_c2,Odessa,Odessa Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Flag_of_Odessa.svg/1024px-Flag_of_Odessa.svg.png
+_c2,Omelnyk,Poltava Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Flag_of_Omelnyk.svg/1024px-Flag_of_Omelnyk.svg.png
+_c2,Piatykhatky,Dnipropetrovsk Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Piatykhatky_flag_%283-2%29.svg/1024px-Piatykhatky_flag_%283-2%29.svg.png
+_c2,Reshetylivka,Poltava Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Reshetylivka_flag.svg/1024px-Reshetylivka_flag.svg.png
+_c2,Saky,Crimea,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/FLA_Saky%2C_Crimea%2C_Ukraine.svg/1024px-FLA_Saky%2C_Crimea%2C_Ukraine.svg.png
+
+_c3,Sudak,Crimea,https://upload.wikimedia.org/wikipedia/commons/c/cc/Flag_of_Sudak.png
+_c3,Yuzhnoukrainsk,Mykolaiv Oblast,https://upload.wikimedia.org/wikipedia/commons/7/77/Yuzhnoukrayinsk_prapor.png
+_c3,Zhytomyr,Zhytomyr Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Flag_of_Zhytomyr.svg/1024px-Flag_of_Zhytomyr.svg.png
+_c3,Izmail Raion,Odessa Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Izmayil_Raion_flag.svg/1024px-Izmayil_Raion_flag.svg.png
+_c3,Poltava Raion,Poltava Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Flag_of_Poltava_Raion.svg/1280px-Flag_of_Poltava_Raion.svg.png
+_c3,Synelnykove Raion,Dnipropetrovsk Oblast,https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_Synelnykove_raion.svg/1024px-Flag_of_Synelnykove_raion.svg.png
+

@@ -1,10 +1,6 @@
 from pudzu.charts import *
 from pudzu.sandbox.bamboo import *
 
-# ----------------------
-# 40 under 40 grid chart
-# ----------------------
-
 df = pd.read_csv("datasets/etymfoodeponyms.csv")
 data = pd.DataFrame(list(generate_batches((dict(row) for _,row in df.iterrows()), 8)))
 default_img = "https://s-media-cache-ak0.pinimg.com/736x/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"

@@ -24,6 +24,8 @@ def cell(d):
     
     if d['name'] not in df.index:
         img = Image.new("RGBA", (200, 180), "#777777" if d['code'] == "DC" else "#AAAAAA")
+        if d['code'] == "DC":
+            img = img.place(Image.from_text("*", arial(16, bold=True), fg="black"))
     else:
         person = df.loc[d['name']]
         names = person["names"].split(",")
@@ -51,14 +53,15 @@ grid = grid_chart(statetable, cell, bg="white").pad(10, "white")
 
 title = Image.from_column([
 Image.from_text("Statues of the National Statuary Hall Collection".upper(), arial(74, bold=True), fg="black", bg="white").pad((10,0), bg="white"),
-Image.from_text("2 statues selected by each state to represent it at the United States Capitol in Washington D.C. (plus former statues in parentheses)", arial(36, italics=True), fg="black", bg="white", align="center", padding=(0,2)).pad((10,10,10,5), bg="white")
+Image.from_text("2 statues selected by each state to represent it at the United States Capitol in Washington D.C. (with former statues in parentheses)", arial(36, italics=True), fg="black", bg="white", align="center", padding=(0,2)).pad((10,10,10,5), bg="white")
 ], bg="white").pad((0,20,0,30),bg="white")
 
 birth_footnotes = [
 "In 2019, Arkansas voted to replace Clarke and Rose with Johnny Cash and Daisy Lee Gatson Bates, but this hasn't happened yet.",
 "In 2020, Virginia voted to replace Lee with Barbara Rose Johns, but while Lee's statue was removed immediately Johns' statue is still pending.",
 "Clarke (AR) and Aycock (NC) were prominent postbellum white supremacists, Calhoun (SC) a prominent antebellum one.",
-"Kenna (WV) served as a Confederate soldier as a child but was not otherwise associated with the Confederate cause."
+"Kenna (WV) served as a Confederate soldier as a child but was not otherwise associated with the Confederate cause.",
+"Displayed alongside (but not as part of) the Collection are two statues representing DC (Frederick Douglass and Pierre L'Enfant) and a statue of Rosa Parks.",
 ]
 comment = Image.from_text("*" + "\n ".join(birth_footnotes), arial(24, italics=True), fg="black", bg="white").pad((0,1,0,0), "black").pad((0,20,0,10),bg="white")
 

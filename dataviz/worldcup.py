@@ -6,8 +6,7 @@ df = pd.read_csv("datasets/worldcup.csv").split_columns(["wcs", "wws"], "|") \
                                          .assign(wcc=lambda df: df.wcs.str.len()) \
                                          .assign_rows(wwc=lambda d: sum([1,0.2][w=='*'] for w in d.wws)) \
                                          .assign(total=lambda df: df.wcc+df.wwc) \
-                                         .sort_values(["total", "wwc"], ascending=False)
-
+                                         .sort_values(["total", "wcc"], ascending=False, ignore_index=True)
 
 ylabel = Image.from_text("combined number of World Wars and World Cups won", arial(18), padding=(5,2,5,10), bg="white").transpose(Image.ROTATE_90)
 
@@ -31,7 +30,7 @@ def clabel(c,r,v,w,h):
 chart = bar_chart(df[['wcc','wwc']], 100, 800, type=BarChartType.STACKED, colors=[VegaPalette10.ORANGE, VegaPalette10.BLUE],
     spacing=5, ymax=7, rlabels=rlabel, ylabel=ylabel, clabels={ BarChartLabelPosition.INSIDE : clabel },
     grid_interval=1, label_interval=1, label_font=arial(14, bold=False),
-    legend_fonts=partial(arial, 18), legend_position=(1,0), legend_args={'header': 'thing wot we won'.upper(), 'labels': ['FIFA World Cup', 'World War'], 'footer': "* France surrendered during WWII and spent most of the War under a collaborationist regime, but also took part in the victory under the Free French Forces. Italy fought on the Axis side until 1943, when it split into a collaborationist puppet state in the North and an Allied state in the south. Argentina and Uruguay both declared war on Germany at the very end of WWII, but didn't see any fighting.", 'max_width': 500})
+    legend_fonts=partial(arial, 18), legend_position=(1,0), legend_args={'header': 'thing wot we won'.upper(), 'labels': ['FIFA World Cup', 'World War'], 'footer': "* France surrendered during WWII and spent most of the War under a collaborationist regime, but also took part in the victory under the Free French Forces. Italy fought on the Axis side until 1943, when it split into a collaborationist puppet state in the North and an Allied state in the South. Argentina and Uruguay both declared war on Germany at the very end of WWII, but didn't see any fighting.", 'max_width': 500})
     
 title = Image.from_column([
 Image.from_text('“Two World Wars and One World Cup”'.upper(), arial(40, bold=True), padding=(5,10,5,2)),

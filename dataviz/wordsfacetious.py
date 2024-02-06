@@ -32,6 +32,6 @@ for words in grid:
     cols.append(col)
 
 chart = Image.from_row(cols, bg="white", padding=20)
-title = Image.from_text_bounded("lexical items containing all 5 vowels once".upper(), chart.size, 60, partial(arial, bold=True))
+title = Image.from_text_bounded("words or phrases containing all 5 vowels once".upper(), chart.size, 60, partial(arial, bold=True))
 img = Image.from_column([title, chart], padding=10, bg="white")
 img.save("output/wordsfacetious.png")

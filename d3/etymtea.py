@@ -13,7 +13,8 @@ PALETTE = {
 "ot": VegaPalette10.PINK,
 "c": VegaPalette10.BLUE,
 "oc": VegaPalette10.LIGHTBLUE,
-"o": VegaPalette10.ORANGE,
+"o": VegaPalette10.PURPLE,
+"oo": VegaPalette10.ORANGE,
  }
 DESCRIPTIONS = {
 "t": """**tea, thé, té**, etc
@@ -22,15 +23,16 @@ from Min Nan //tê//, mostly via Dutch and English""",
 • Polish **herbata**, Lithuanian **arbata** < Latin //herba thea//
 • Malagasy **dite** < French //du thé//""",
 "c": """**chá, chāy, shāy**, etc
-from Mandarin //chá///Cantonese //chàh//, via Persian or Portuguese""",
+from Mandarin //chá// or Cantonese //chàh//, via Persian or Portuguese""",
 "oc": """with an additional morpheme:
-• Wolof **àttaaya** < Arabic aš-šhāy""",
-"o": """from another origin:
+• Wolof **àttaaya**, Krio **ataya** < Arabic aš-šhāy""",
+"o": """from an earlier cognate term:
 • Vietnamese **trà**, Bhutanese **ja** < Middle Chinese
-• Burmese **lakhpak** ("arm leaf")
+• Burmese **lakhpak** ("tea + leaf") < Proto-Sino-Tibetan""",
+"oo": """from an unrelated origin:
 • Quechua **q’uñi yaku** ("warm water")
-• Shona **putugadzike**
-• Guarani **ñanary**"""
+• Shona **svutugadzike** ("sip put-down")
+• Guarani **ñanary** (?)""",
 }
 PATTERNS = ""
 
@@ -67,7 +69,7 @@ chart = chart.place(legend, align=(0,1), padding=100)
 
 title = Image.from_column([
 Image.from_text("TEA VERSUS CHAI", sans(72, bold=True)),
-Image.from_text("the word for tea around the world", sans(36, italics=True))],
+Image.from_text("the most common word for tea in each country", sans(36, italics=True))],
 bg="white")
 
 img = Image.from_column([title, chart], bg="white", padding=5)

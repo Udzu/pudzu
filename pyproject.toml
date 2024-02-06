@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pudzu"
-version = "0.9.3"
+version = "0.9.4"
 description = "Various dataviz-oriented utilities"
 packages = [{ include = "pudzu" }]
 include = ["pudzu/sandbox/unicode/*.txt"]
@@ -16,9 +16,6 @@ classifiers = [
 ]
 license = "MIT"
 
-[tool.poetry.scripts]
-patterns = "pudzu.sandbox.patterns:main"
-
 [tool.poetry.dependencies]
 python = "^3.8"
 beautifulsoup4 = "^4.7.1"
@@ -27,10 +24,11 @@ lxml = "^4.4.2"
 pandas = "^1.4"
 pyparsing = "^3.0"
 requests = "^2.22.0"
-pudzu-utils = "^0.9.2"
-pudzu-dates = "^0.9.1"
-pudzu-pillar = "^0.9.2"
-pudzu-charts = "^0.9.2"
+pudzu-utils = "^0.9.3"
+pudzu-dates = "^0.9.3"
+pudzu-pillar = "^0.9.3"
+pudzu-charts = "^0.9.3"
+pudzu-patterns = "^0.9.3"
 
 [tool.poetry.dev-dependencies]
 mypy = "*"
@@ -42,6 +40,7 @@ pudzu-utils = { path = "../pudzu-packages/pudzu-utils", develop = true }
 pudzu-dates = { path = "../pudzu-packages/pudzu-dates", develop = true }
 pudzu-pillar = { path = "../pudzu-packages/pudzu-pillar", develop = true }
 pudzu-charts = { path = "../pudzu-packages/pudzu-charts", develop = true }
+pudzu-patterns = { path = "../pudzu-packages/pudzu-patterns", develop = true }
 pytest = "*"
 pytest-cov = "*"
 pytest-mypy = "*"

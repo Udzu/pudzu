@@ -13,6 +13,7 @@ The stable modules can be installed using `pip` as described in the [pudzu-packa
 ## Stable modules
 - [pudzu-utils](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-utils) - various utility functions and data structures.
 - [pudzu-dates](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-dates) - date classes supporting flexible calendars, deltas and ranges.
+- [pudzu-patterns](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-patterns) - NFA-based pattern matcher supporting novel operations and modifiers.
 - [pudzu-pillar](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-pillar) - various monkey-patched Pillow utilities.
 - [pudzu-charts](https://github.com/Udzu/pudzu-packages/tree/master/pudzu-charts) - Pillow-based charting tools.
 
@@ -21,7 +22,6 @@ The stable modules can be installed using `pip` as described in the [pudzu-packa
 - [pudzu.sandbox.bamboo](bamboo.md) - various monkey-patched Pandas utilities.
 - [pudzu.sandbox.markov](markov.md) - simple Markov Chain n-gram based generator.
 - [pudzu.sandbox.nounce](nounce.md) - simple IPA-based pronouncing and rhyming dictionary.
-- [pudzu.sandbox.patterns](patterns.md) - NFA-based pattern matcher supporting novel operations and modifiers.
 - pudzu.sandbox.tinytim - simple turtle-based LSystem renderer.
 - [pudzu.sandbox.tureen](tureen.md) - various BeautifulSoup utilities.
 - [pudzu.sandbox.unicode](unicode.md) - Unicode-related data and utilities.

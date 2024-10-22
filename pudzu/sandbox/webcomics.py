@@ -14,6 +14,7 @@ from pudzu.utils import *
 from pudzu.pillar import *
 
 logger = logging.getLogger("webcomics")
+rate_limit_ms = ThreadLocalBox()
 
 # https://web.archive.org/web/20160415033105/http://comicrack.cyolito.com/dokuwiki/doku.php?id=guides:creating_webcomics
 
@@ -23,7 +24,7 @@ logger = logging.getLogger("webcomics")
 def url_content(url: str) -> str:
     logger.debug(f"Loading {url}")
     response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
-    time.sleep(1.0)
+    time.sleep(rate_limit_ms.value / 1000)
     return response.content.decode()
 
 
@@ -96,7 +97,7 @@ class PostProcessing:
         # save
         stem, ext = os.path.splitext(filename)
         if self.convert is not None:
-            ext = self.convertave
+            ext = self.convert
             filename = f"{stem}.{ext}"
         if ext.lower() in {"jpg", "jpeg"}:
             img.convert("RGB").save(f"{path}/{filename}", quality=self.quality or 75)
@@ -193,15 +194,16 @@ class WebComic:
 
     name: str  # comic name
     sources: Sequence[Scraper | Images]  # sequence of image sources
-    # TODO: rate limiting?
+    rate_limit_ms: int = 500  # sleep between url requests
     # TODO: auto-generated cover page?
 
     def get_images(self) -> list[ImageUrl]:
-        images = []
-        for source in self.sources:
-            images += source.get_images()
-        logger.info(f"Total image URLS: {log_urls(images)}")
-        return images
+        with self.rate_limit_ms >> rate_limit_ms:
+            images = []
+            for source in self.sources:
+                images += source.get_images()
+            logger.info(f"Total image URLS: {log_urls(images)}")
+            return images
 
     def save_images(self, images: Sequence[ImageUrl]) -> list[str]:
         paths = []
@@ -212,6 +214,7 @@ class WebComic:
             _, uext = os.path.splitext(uparse.path)
             filename = str(i).zfill(n) + uext
             img = Image.from_url_with_cache(url.url, self.name, filename, headers=headers)
+            time.sleep(self.rate_limit_ms / 1000)
             if url.process is not None:
                 filename = url.process.process(img, self.name, filename)
             paths.append(filename)

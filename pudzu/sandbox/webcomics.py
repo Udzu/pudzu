@@ -91,6 +91,16 @@ class ImageUrl:
 
 
 @dataclass
+class Images:
+    """A hardcoded image source (with an optional numeric range)"""
+
+    image: str  # image URL (can contain a numeric range)
+
+    def get_images(self) -> list[ImageUrl]:
+        return [ImageUrl(url) for url in expand_range(self.image)]
+
+
+@dataclass
 class Scraper:
     """A scraper image source."""
 
@@ -145,15 +155,6 @@ class Scraper:
         return remove_duplicates_and_log(images, "image")
 
 
-@dataclass
-class Images:
-    """A hardcoded image source (with an optional numeric range)"""
-
-    image: str  # image URL (can contain a numeric range)
-
-    def get_images(self) -> list[ImageUrl]:
-        return [ImageUrl(url) for url in expand_range(self.image)]
-
 
 @dataclass
 class WebComic:
@@ -172,25 +173,28 @@ class WebComic:
         logger.info(f"Total image URLS: {log_urls(images)}")
         return images
 
-    def save_images(self, images: Sequence[ImageUrl]) -> None:
+    def save_images(self, images: Sequence[ImageUrl]) -> list[str]:
+        paths = []
         n = floor(log10(len(images))) + 1
         for i, url in enumerate(images, 1):
             headers = None if url.referer is None else {"Referer": url.referer}
             uparse = urlparse(url.url)
             _, uext = os.path.splitext(uparse.path)
-            Image.from_url_with_cache(url.url, self.name, str(i).zfill(n) + uext, headers=headers)
+            filename = str(i).zfill(n) + uext
+            Image.from_url_with_cache(url.url, self.name, filename, headers=headers)
+            paths.append(filename)
+        return paths
 
-    def zip_images(self) -> None:
+    def zip_images(self, filenames: Sequence[str]) -> None:
         with zipfile.ZipFile(f"{self.name}.cbz", "w", compression=zipfile.ZIP_STORED) as zip:
             zip.write(self.name)
-            for file in sorted(glob.glob(f"{self.name}/*")):
-                if any(file.lower().endswith(ext) for ext in ("jpg", "Jpeg", "gif", "png")):
-                    zip.write(file)
+            for filename in filenames:
+                zip.write(f"{self.name}/{filename}")
 
     def make_cbr(self) -> None:
         images = self.get_images()
-        self.save_images(images)
-        self.zip_images()
+        filenames = self.save_images(images)
+        self.zip_images(filenames)
 
     @classmethod
     def from_json(cls, path: str) -> "WebComic":

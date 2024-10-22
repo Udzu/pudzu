@@ -78,15 +78,44 @@ class Matcher:
 
 
 @dataclass(frozen=True)
+class PostProcessing:
+    """Image postprocessing"""
+
+    bg: Optional[RGBA | str | int] = None  # background colour to apply
+    convert: Optional[str] = None  # file format to convert to
+    quality: Optional[int] = None  # jpeg quality
+    # TODO: script?
+
+    def process(self, img: Image.Image, path: str, filename: str) -> str:
+        filename = f"[post]{filename}"
+
+        # background transparency
+        if self.bg is not None:
+            img = img.convert("RGBA").remove_transparency(self.bg)
+
+        # save
+        stem, ext = os.path.splitext(filename)
+        if self.convert is not None:
+            ext = self.convertave
+            filename = f"{stem}.{ext}"
+        if ext.lower() in {"jpg", "jpeg"}:
+            img.convert("RGB").save(f"{path}/{filename}", quality=self.quality or 75)
+        else:
+            img.save(f"{path}/{filename}")
+
+        return filename
+
+@dataclass(frozen=True)
 class ImageUrl:
     """An image URL (with an optional referrer URL)"""
 
     url: str
     referer: Optional[str] = None
+    process: Optional[PostProcessing] = None
 
     def __eq__(self, other):
         if isinstance(other, ImageUrl):
-            return self.url == other.url
+            return self.url == other.url and self.process == other.process
         return NotImplemented
 
 
@@ -95,9 +124,10 @@ class Images:
     """A hardcoded image source (with an optional numeric range)"""
 
     image: str  # image URL (can contain a numeric range)
+    process: Optional[PostProcessing] = None  # image post-processing
 
     def get_images(self) -> list[ImageUrl]:
-        return [ImageUrl(url) for url in expand_range(self.image)]
+        return [ImageUrl(url, process=self.process) for url in expand_range(self.image)]
 
 
 @dataclass
@@ -108,6 +138,7 @@ class Scraper:
     image: Matcher  # matcher for images
     traverse: Sequence[Matcher] = ()  # matchers to get to image pages
     next: Optional[Matcher] = None  # matcher to get to next start page
+    process: Optional[PostProcessing] = None  # image post-processing
 
     def get_images(self) -> list[ImageUrl]:
         images = []
@@ -140,7 +171,7 @@ class Scraper:
             new_images = absolute(self.image.matches(content), url)
             if len(new_images) == 0:
                 logger.warning(f"No images found at {url}")
-            images += [ImageUrl(img, url) for img in new_images]
+            images += [ImageUrl(img, referer=url, process=self.process) for img in new_images]
             if self.next is not None:
                 next_urls += absolute(self.next.matches(content), url)
         images = remove_duplicates_and_log(images, "image")
@@ -162,9 +193,8 @@ class WebComic:
 
     name: str  # comic name
     sources: Sequence[Scraper | Images]  # sequence of image sources
-    # TODO: auto-generated cover page?
     # TODO: rate limiting?
-    # TODO: image postprocessing? (e.g. remove transparency, convert/compress)
+    # TODO: auto-generated cover page?
 
     def get_images(self) -> list[ImageUrl]:
         images = []
@@ -181,7 +211,9 @@ class WebComic:
             uparse = urlparse(url.url)
             _, uext = os.path.splitext(uparse.path)
             filename = str(i).zfill(n) + uext
-            Image.from_url_with_cache(url.url, self.name, filename, headers=headers)
+            img = Image.from_url_with_cache(url.url, self.name, filename, headers=headers)
+            if url.process is not None:
+                filename = url.process.process(img, self.name, filename)
             paths.append(filename)
         return paths
 

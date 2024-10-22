@@ -18,12 +18,12 @@ logger = logging.getLogger("webcomics")
 # https://web.archive.org/web/20160415033105/http://comicrack.cyolito.com/dokuwiki/doku.php?id=guides:creating_webcomics
 
 
-# TODO: cache to disk (but handle changes)?
+# TODO: cache to disk?
 @cache
 def url_content(url: str) -> str:
     logger.debug(f"Loading {url}")
     response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
-    time.sleep(1.0)  # TODO: custom rate limit?
+    time.sleep(1.0)
     return response.content.decode()
 
 
@@ -44,6 +44,20 @@ def log_urls(urls):
 
 def progress(urls):
     return tqdm(urls) if len(urls) >= 4 else urls
+
+
+def expand_range(url):
+    ranges = re.findall(r"\[(\d+)\-(\d+)\]", url)
+    if len(ranges) > 1:
+        raise ValueError(f"Multiple ranges found in {url!r}")
+    elif len(ranges) == 1:
+        start, stop = ranges[0]
+        digits = min(len(start), len(stop))
+        m, n = int(start), int(stop)
+        dir = 1 if n >= m else -1
+        return [re.sub(r"\[(\d+)\-(\d+)\]", str(n).zfill(digits), url) for n in range(m, n + dir, dir)]
+    else:
+        return [url]
 
 
 @dataclass
@@ -80,21 +94,20 @@ class ImageUrl:
 class Scraper:
     """A scraper image source."""
 
-    start: str
-    image: Matcher
-    traverse: Sequence[Matcher] = ()
-    next: Optional[Matcher] = None
+    start: str  # start page (can contain a numeric range)
+    image: Matcher  # matcher for images
+    traverse: Sequence[Matcher] = ()  # matchers to get to image pages
+    next: Optional[Matcher] = None  # matcher to get to next start page
 
-    # TODO: allow ranges in start URL?
-    def get_images(
-        self,
-        start: Optional[str] = None,
-        previous_starts: Optional[set[str]] = None,
-    ) -> list[ImageUrl]:
-        if previous_starts is None:
-            previous_starts = set()
-        if start is None:
-            start = self.start
+    def get_images(self) -> list[ImageUrl]:
+        images = []
+        previous_starts = set()
+        for url in expand_range(self.start):
+            images += self.get_images_from(url, previous_starts)
+        return images
+
+    def get_images_from(self, start: str, previous_starts: set[str]) -> list[ImageUrl]:
+        if not previous_starts:
             logger.info(f"Start URL: {start}")
         elif start in previous_starts:
             logger.warning(f"Skipping duplicate next URL: {start}")
@@ -127,7 +140,7 @@ class Scraper:
             logger.info(f"Next URLS: {log_urls(next_urls)}")
 
         for next_url in next_urls:
-            images += self.get_images(next_url, previous_starts | {start})
+            images += self.get_images_from(next_url, previous_starts | {start})
 
         return remove_duplicates_and_log(images, "image")
 
@@ -136,29 +149,21 @@ class Scraper:
 class Images:
     """A hardcoded image source (with an optional numeric range)"""
 
-    image: str
+    image: str  # image URL (can contain a numeric range)
 
     def get_images(self) -> list[ImageUrl]:
-        ranges = re.findall(r"\[(\d+)\-(\d+)\]", self.image)
-        if len(ranges) > 1:
-            raise ValueError(f"Multiple ranges found in {self.image!r}")
-        elif len(ranges) == 1:
-            start, stop = ranges[0]
-            digits = min(len(start), len(stop))
-            m, n = int(start), int(stop)
-            dir = 1 if n >= m else -1
-            return [ImageUrl(re.sub(r"\[(\d+)\-(\d+)\]", str(n).zfill(digits), self.image)) for n in range(m, n + dir, dir)]
-        else:
-            return [ImageUrl(self.image)]
+        return [ImageUrl(url) for url in expand_range(self.image)]
 
 
 @dataclass
 class WebComic:
     """A web comic definition."""
 
-    name: str
-    sources: Sequence[Scraper | Images]
-    # TODO: bg: Optional[color] = None
+    name: str  # comic name
+    sources: Sequence[Scraper | Images]  # sequence of image sources
+    # TODO: auto-generated cover page?
+    # TODO: rate limiting?
+    # TODO: image postprocessing? (e.g. remove transparency, convert/compress)
 
     def get_images(self) -> list[ImageUrl]:
         images = []

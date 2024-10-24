@@ -1,4 +1,3 @@
-import glob
 import json
 import time
 import zipfile
@@ -18,15 +17,27 @@ rate_limit_ms = ThreadLocalBox()
 
 # https://web.archive.org/web/20160415033105/http://comicrack.cyolito.com/dokuwiki/doku.php?id=guides:creating_webcomics
 
+def url_content(url: str, cache: bool) -> str:
+    filepath = os.path.join("cache", url_to_filepath(url))
+    if cache and os.path.isfile(filepath):
+        logger.debug(f"Loading {url} from cache")
+        return Path(filepath).read_text()
 
-# TODO: cache to disk?
-@cache
-def url_content(url: str) -> str:
     logger.debug(f"Loading {url}")
     response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
+    content = response.content.decode()
     time.sleep(rate_limit_ms.value / 1000)
-    return response.content.decode()
 
+    if cache:
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        Path(filepath).write_text(content)
+        Path(filepath+".source").write_text(url)
+    return content
+
+def uncache(url: str) -> None:
+    logger.info(f"Removing {url} from disk cache")
+    filepath = os.path.join("cache", url_to_filepath(url))
+    Path(filepath).unlink()
 
 def remove_duplicates_and_log(seq, desc, key=lambda v: v):
     unique_seq = remove_duplicates(seq, key=key)
@@ -68,6 +79,7 @@ class Matcher:
     match: str
     reverse: bool = False
     sort: bool = False
+    cache: bool = True
 
     def matches(self, html: str) -> Sequence[str]:
         matches = re.findall(self.match, html)
@@ -83,26 +95,32 @@ class PostProcessing:
     """Image postprocessing"""
 
     bg: Optional[RGBA | str | int] = None  # background colour to apply
+    remove_transparency: bool = False  # remove GIF transparency
     convert: Optional[str] = None  # file format to convert to
     quality: Optional[int] = None  # jpeg quality
-    # TODO: script?
+    optimize: bool = False # optimize conversion
 
     def process(self, img: Image.Image, path: str, filename: str) -> str:
-        filename = f"[post]{filename}"
 
-        # background transparency
-        if self.bg is not None:
-            img = img.convert("RGBA").remove_transparency(self.bg)
-
-        # save
         stem, ext = os.path.splitext(filename)
         if self.convert is not None:
             ext = self.convert
-            filename = f"{stem}.{ext}"
+        filename = f"{stem}[{hash(self)}].{ext}"
+
+        if os.path.isfile(f"{path}/{filename}"):
+            return filename
+
+        # transparency
+        if self.remove_transparency and "transparency" in img.info:
+            del img.info["transparency"]
+        elif self.bg is not None:
+            img = img.convert("RGBA").remove_transparency(self.bg)
+
+        # save
         if ext.lower() in {"jpg", "jpeg"}:
-            img.convert("RGB").save(f"{path}/{filename}", quality=self.quality or 75)
+            img.convert("RGB").save(f"{path}/{filename}", quality=self.quality or 75, optimize=self.optimize)
         else:
-            img.save(f"{path}/{filename}")
+            img.save(f"{path}/{filename}", optimize=self.optimize)
 
         return filename
 
@@ -140,6 +158,7 @@ class Scraper:
     traverse: Sequence[Matcher] = ()  # matchers to get to image pages
     next: Optional[Matcher] = None  # matcher to get to next start page
     process: Optional[PostProcessing] = None  # image post-processing
+    cache: bool = True # whether to cache the start pages
 
     def get_images(self) -> list[ImageUrl]:
         images = []
@@ -159,22 +178,27 @@ class Scraper:
 
         images = []
         urls = [start]
+        cache = self.cache
         for traverser in self.traverse:
             new_urls = []
             for url in progress(urls):
-                new_urls += absolute(traverser.matches(url_content(url)), url)
+                new_urls += absolute(traverser.matches(url_content(url, cache)), url)
             urls = remove_duplicates_and_log(new_urls, "traverse")
             logger.info(f"Traverse URLS: {log_urls(urls)}")
+            cache = traverser.cache
 
         next_urls = []
         for url in progress(urls):
-            content = url_content(url)
+            content = url_content(url, cache)
             new_images = absolute(self.image.matches(content), url)
             if len(new_images) == 0:
                 logger.warning(f"No images found at {url}")
             images += [ImageUrl(img, referer=url, process=self.process) for img in new_images]
             if self.next is not None:
-                next_urls += absolute(self.next.matches(content), url)
+                new_next_urls = absolute(self.next.matches(content), url)
+                if cache and len(new_next_urls) == 0:
+                    uncache(url)
+                next_urls += new_next_urls
         images = remove_duplicates_and_log(images, "image")
         logger.info(f"Image URLS: {log_urls(images)}")
         next_urls = remove_duplicates_and_log(next_urls, "next")
@@ -194,8 +218,7 @@ class WebComic:
 
     name: str  # comic name
     sources: Sequence[Scraper | Images]  # sequence of image sources
-    rate_limit_ms: int = 500  # sleep between url requests
-    # TODO: auto-generated cover page?
+    rate_limit_ms: int = 200  # sleep between url requests
 
     def get_images(self) -> list[ImageUrl]:
         with self.rate_limit_ms >> rate_limit_ms:
@@ -213,8 +236,7 @@ class WebComic:
             uparse = urlparse(url.url)
             _, uext = os.path.splitext(uparse.path)
             filename = str(i).zfill(n) + uext
-            img = Image.from_url_with_cache(url.url, self.name, filename, headers=headers)
-            time.sleep(self.rate_limit_ms / 1000)
+            img = Image.from_url_with_cache(url.url, self.name, filename, headers=headers, sleep_ms=self.rate_limit_ms)
             if url.process is not None:
                 filename = url.process.process(img, self.name, filename)
             paths.append(filename)

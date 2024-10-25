@@ -98,7 +98,7 @@ class Matcher:
 class PostProcessing:
     """Image postprocessing"""
 
-    bg: Optional[RGBA | str | int] = None  # background colour to apply
+    bg: Optional[str] = None  # background colour to apply
     remove_transparency: bool = False  # remove GIF transparency
     convert: Optional[str] = None  # file format to convert to
     quality: Optional[int] = None  # jpeg quality
@@ -281,11 +281,16 @@ class WebComic:
 
 def main():
     parser = argparse.ArgumentParser(description="Convert a webcomic to a CBR file. Leaves behind cached webpages and images to speed up updates.")
-    parser.add_argument("spec", metavar="spec.json", type=str, help="webcomic JSON spec")
+    parser.add_argument("spec", metavar="SPEC.json", type=str, help="webcomic JSON spec")
     parser.add_argument("--image_urls", action="store_true", help="just print (but don't download) the image URLs", default=None)
-    parser.add_argument("--name", type=str, help="comic name (overrides spec)", default=None)
-    parser.add_argument("--rate", metavar="RATE_MS", type=int, help="sleep between URL requests (overrides spec)", default=None)
+    parser.add_argument("--name", type=str, help="override comic name", default=None)
+    parser.add_argument("--rate", metavar="RATE_MS", type=int, help="override sleep between URL requests", default=None)
+    parser.add_argument("--schema", action="store_true", help="just print JSON spec schema (ignoring spec)", default=None)
     args = parser.parse_args()
+
+    if args.schema:
+        print(json.dumps(dataclass_to_json_schema(WebComic), indent=2))
+        return
 
     wc = WebComic.from_json(args.spec)
     if args.name is not None:

@@ -1,8 +1,9 @@
+import argparse
 import json
+import subprocess
 import time
 import zipfile
 from dataclasses import dataclass
-from functools import cache
 from typing import Optional
 from urllib.parse import urljoin
 
@@ -12,6 +13,7 @@ from tqdm import tqdm
 from pudzu.utils import *
 from pudzu.pillar import *
 
+logging.getLogger("pillar").setLevel(logging.INFO)
 logger = logging.getLogger("webcomics")
 rate_limit_ms = ThreadLocalBox()
 
@@ -99,15 +101,23 @@ class PostProcessing:
     convert: Optional[str] = None  # file format to convert to
     quality: Optional[int] = None  # jpeg quality
     optimize: bool = False # optimize conversion
+    script: Optional[str] = None # script
+
+    def hash(self) -> str:
+        # persistent string hash
+        sorted_repr = json.dumps(dataclasses.asdict(self), sort_keys=True)
+        return hashlib.sha1(sorted_repr.encode("utf-8")).hexdigest()
 
     def process(self, img: Image.Image, path: str, filename: str) -> str:
 
         stem, ext = os.path.splitext(filename)
         if self.convert is not None:
             ext = self.convert
-        filename = f"{stem}[{hash(self)}].{ext}"
 
-        if os.path.isfile(f"{path}/{filename}"):
+        filename = f"{stem}[{self.hash()}].{ext}"
+        fullpath = f"{path}/{filename}"
+
+        if os.path.isfile(fullpath):
             return filename
 
         # transparency
@@ -118,9 +128,13 @@ class PostProcessing:
 
         # save
         if ext.lower() in {"jpg", "jpeg"}:
-            img.convert("RGB").save(f"{path}/{filename}", quality=self.quality or 75, optimize=self.optimize)
+            img.convert("RGB").save(fullpath, quality=self.quality or 75, optimize=self.optimize)
         else:
-            img.save(f"{path}/{filename}", optimize=self.optimize)
+            img.save(fullpath, optimize=self.optimize)
+
+        # script
+        if self.script is not None:
+            subprocess.run([self.script, fullpath])
 
         return filename
 
@@ -221,6 +235,7 @@ class WebComic:
     rate_limit_ms: int = 200  # sleep between url requests
 
     def get_images(self) -> list[ImageUrl]:
+        logger.info(f"Getting image URLs")
         with self.rate_limit_ms >> rate_limit_ms:
             images = []
             for source in self.sources:
@@ -229,9 +244,10 @@ class WebComic:
             return images
 
     def save_images(self, images: Sequence[ImageUrl]) -> list[str]:
+        logger.info(f"Downloading images")
         paths = []
         n = floor(log10(len(images))) + 1
-        for i, url in enumerate(images, 1):
+        for i, url in progress(list(enumerate(images, 1))):
             headers = None if url.referer is None else {"Referer": url.referer}
             uparse = urlparse(url.url)
             _, uext = os.path.splitext(uparse.path)
@@ -243,6 +259,7 @@ class WebComic:
         return paths
 
     def zip_images(self, filenames: Sequence[str]) -> None:
+        logger.info(f"Generating CBZ file")
         with zipfile.ZipFile(f"{self.name}.cbz", "w", compression=zipfile.ZIP_STORED) as zip:
             zip.write(self.name)
             for filename in filenames:
@@ -258,3 +275,16 @@ class WebComic:
         with open(path, "r") as f:
             d = json.load(f)
         return dataclass_from_json(cls, d)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Convert a webcomic to a CBR file.")
+    parser.add_argument("spec.json", type=str, help="webcomic JSON spec")
+    # TODO: rate, no-cache, urls-only
+    args = parser.parse_args()
+
+    wc = WebComic.from_json(args.spec)
+    wc.make_cbr()
+
+if __name__ == "__main__":
+    main()

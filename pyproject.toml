@@ -16,6 +16,9 @@ classifiers = [
 ]
 license = "MIT"
 
+[tool.poetry.scripts]
+web2cbz = "pudzu.sandbox.webcomics:main"
+
 [tool.poetry.dependencies]
 python = "^3.8"
 beautifulsoup4 = "^4.7.1"

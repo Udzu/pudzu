@@ -259,7 +259,7 @@ class WebComic:
         return paths
 
     def zip_images(self, filenames: Sequence[str]) -> None:
-        logger.info(f"Generating CBZ file")
+        logger.info(f"Generating {self.name}.cbz")
         with zipfile.ZipFile(f"{self.name}.cbz", "w", compression=zipfile.ZIP_STORED) as zip:
             zip.write(self.name)
             for filename in filenames:
@@ -279,12 +279,22 @@ class WebComic:
 
 def main():
     parser = argparse.ArgumentParser(description="Convert a webcomic to a CBR file.")
-    parser.add_argument("spec.json", type=str, help="webcomic JSON spec")
+    parser.add_argument("spec", metavar="spec.json", type=str, help="webcomic JSON spec")
+    parser.add_argument("--image_urls", action="store_true", help="just print (but don't download) the image URLs", default=None)
+    parser.add_argument("--rate", metavar="time_ms", type=int, help="sleep between URL requests (overrides spec)", default=None)
+
     # TODO: rate, no-cache, urls-only
     args = parser.parse_args()
 
     wc = WebComic.from_json(args.spec)
-    wc.make_cbr()
+    if args.rate is not None:
+        wc.rate_limit_ms = args.rate
+
+    if args.image_urls:
+        images = wc.get_images()
+        print("\n".join([img.url for img in images]))
+    else:
+        wc.make_cbr()
 
 if __name__ == "__main__":
     main()

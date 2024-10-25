@@ -34,7 +34,7 @@ UNICODEDATA_COLUMNS = [
 
 
 def extract_unicodedata(path: Optional[Path] = None) -> pd.DataFrame:
-    """ Convert UnicodeData.txt into a DataFrame. """
+    """Convert UnicodeData.txt into a DataFrame."""
     logger.info(f"Extracting {UNICODEDATA_FILENAME} from {path or 'package'}...")
 
     with open(path / UNICODEDATA_FILENAME, encoding="utf-8") if path else importlib.resources.open_text(__package__, UNICODEDATA_FILENAME) as fh:
@@ -58,7 +58,7 @@ def extract_unicodedata(path: Optional[Path] = None) -> pd.DataFrame:
 
 
 def extract_property(filename: str, path: Optional[Path] = None) -> pd.DataFrame:
-    """ Convert a UCD file containing enumerated or binary properties. """
+    """Convert a UCD file containing enumerated or binary properties."""
     logger.info(f"Extracting {filename} from {path or 'package'}...")
 
     with open(path / filename, encoding="utf-8") if path else importlib.resources.open_text(__package__, filename) as fh:
@@ -90,7 +90,7 @@ def extract_property(filename: str, path: Optional[Path] = None) -> pd.DataFrame
 
 
 def unicode_data(properties: Collection[str] = ("Blocks", "PropList"), path: Optional[Path] = None) -> pd.DataFrame:
-    """ Extract core unicode data and properties, from the packaged files or from a given path. """
+    """Extract core unicode data and properties, from the packaged files or from a given path."""
     df = extract_unicodedata(path)
     for property in sorted(set(properties)):
         df[property] = extract_property(f"{property}.txt", path)
@@ -98,7 +98,7 @@ def unicode_data(properties: Collection[str] = ("Blocks", "PropList"), path: Opt
 
 
 def unicode_resources(path: Optional[Path] = None) -> Sequence[str]:
-    """ List Unicode resource *.txt files in the package or given path. """
+    """List Unicode resource *.txt files in the package or given path."""
     if path:
         return sorted(r.stem for r in Path(path).glob("*.txt"))
     else:

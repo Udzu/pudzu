@@ -8,16 +8,16 @@ from typing import Optional
 from urllib.parse import urljoin
 
 import requests
-from tqdm import tqdm
-
-from pudzu.utils import *
 from pudzu.pillar import *
+from pudzu.utils import *
+from tqdm import tqdm
 
 logging.getLogger("pillar").setLevel(logging.INFO)
 logger = logging.getLogger("webcomics")
 rate_limit_ms = ThreadLocalBox()
 
 # https://web.archive.org/web/20160415033105/http://comicrack.cyolito.com/dokuwiki/doku.php?id=guides:creating_webcomics
+
 
 def url_content(url: str, cache: bool) -> str:
     filepath = os.path.join("cache", url_to_filepath(url))
@@ -33,13 +33,15 @@ def url_content(url: str, cache: bool) -> str:
     if cache:
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         Path(filepath).write_text(content)
-        Path(filepath+".source").write_text(url)
+        Path(filepath + ".source").write_text(url)
     return content
+
 
 def uncache(url: str) -> None:
     logger.info(f"Removing {url} from disk cache")
     filepath = os.path.join("cache", url_to_filepath(url))
     Path(filepath).unlink()
+
 
 def remove_duplicates_and_log(seq, desc, key=lambda v: v):
     unique_seq = remove_duplicates(seq, key=key)
@@ -78,10 +80,10 @@ def expand_range(url):
 class Matcher:
     """A regex-based URL matcher. Expects either zero or one matching groups."""
 
-    match: str
-    reverse: bool = False
-    sort: bool = False
-    cache: bool = True
+    match: str  # regex matcher (should contain zero or one matching groups)
+    reverse: bool = False  # reverse match order
+    sort: bool = False  # sort matches
+    cache: bool = True  # whether to cache the matched pages (note: images are always cached)
 
     def matches(self, html: str) -> Sequence[str]:
         matches = re.findall(self.match, html)
@@ -100,8 +102,8 @@ class PostProcessing:
     remove_transparency: bool = False  # remove GIF transparency
     convert: Optional[str] = None  # file format to convert to
     quality: Optional[int] = None  # jpeg quality
-    optimize: bool = False # optimize conversion
-    script: Optional[str] = None # script
+    optimize: bool = False  # optimize conversion
+    script: Optional[str] = None  # script
 
     def hash(self) -> str:
         # persistent string hash
@@ -138,6 +140,7 @@ class PostProcessing:
 
         return filename
 
+
 @dataclass(frozen=True)
 class ImageUrl:
     """An image URL (with an optional referrer URL)"""
@@ -172,7 +175,7 @@ class Scraper:
     traverse: Sequence[Matcher] = ()  # matchers to get to image pages
     next: Optional[Matcher] = None  # matcher to get to next start page
     process: Optional[PostProcessing] = None  # image post-processing
-    cache: bool = True # whether to cache the start pages
+    cache: bool = True  # whether to cache the start pages
 
     def get_images(self) -> list[ImageUrl]:
         images = []
@@ -223,7 +226,6 @@ class Scraper:
             images += self.get_images_from(next_url, previous_starts | {start})
 
         return remove_duplicates_and_log(images, "image")
-
 
 
 @dataclass
@@ -278,15 +280,16 @@ class WebComic:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert a webcomic to a CBR file.")
+    parser = argparse.ArgumentParser(description="Convert a webcomic to a CBR file. Leaves behind cached webpages and images to speed up updates.")
     parser.add_argument("spec", metavar="spec.json", type=str, help="webcomic JSON spec")
     parser.add_argument("--image_urls", action="store_true", help="just print (but don't download) the image URLs", default=None)
-    parser.add_argument("--rate", metavar="time_ms", type=int, help="sleep between URL requests (overrides spec)", default=None)
-
-    # TODO: rate, no-cache, urls-only
+    parser.add_argument("--name", type=str, help="comic name (overrides spec)", default=None)
+    parser.add_argument("--rate", metavar="RATE_MS", type=int, help="sleep between URL requests (overrides spec)", default=None)
     args = parser.parse_args()
 
     wc = WebComic.from_json(args.spec)
+    if args.name is not None:
+        wc.name = args.name
     if args.rate is not None:
         wc.rate_limit_ms = args.rate
 
@@ -295,6 +298,7 @@ def main():
         print("\n".join([img.url for img in images]))
     else:
         wc.make_cbr()
+
 
 if __name__ == "__main__":
     main()

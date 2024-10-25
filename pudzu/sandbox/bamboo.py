@@ -138,10 +138,17 @@ def pd_print(item, **kwargs):
         print(item)
 
 
+def print_rows(item):
+    """Print a value with max_rows disabled."""
+    pd_print(item, max_rows=None)
+
+
+pr = print_rows
+
 # filter expressions
 
 if pyparsing:
-    from pyparsing import CaselessLiteral, Combine, Literal, Optional, QuotedString, Word, alphas, alphas8bit, nums, oneOf, opAssoc, infixNotation
+    from pyparsing import CaselessLiteral, Combine, Literal, Optional, QuotedString, Word, alphas, alphas8bit, infixNotation, nums, oneOf, opAssoc
 
     class FilterExpression:
         """Filter factory based on filter expressions such as "name~John and (age>18 or consent:true)".

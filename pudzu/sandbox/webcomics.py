@@ -4,7 +4,7 @@ import subprocess
 import time
 import zipfile
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Annotated
 from urllib.parse import urljoin
 
 import requests
@@ -80,10 +80,10 @@ def expand_range(url):
 class Matcher:
     """A regex-based URL matcher. Expects either zero or one matching groups."""
 
-    match: str  # regex matcher (should contain zero or one matching groups)
-    reverse: bool = False  # reverse match order
-    sort: bool = False  # sort matches
-    cache: bool = True  # whether to cache the matched pages (note: images are always cached)
+    match: Annotated[str, "regex matcher (should contain zero or one matching groups)"]
+    reverse: Annotated[bool, "reverse match order"] = False
+    sort: Annotated[bool, "sort matches"] = False
+    cache: Annotated[bool, "whether to cache the matched pages (note: images are always cached)"] = True
 
     def matches(self, html: str) -> Sequence[str]:
         matches = re.findall(self.match, html)
@@ -98,12 +98,12 @@ class Matcher:
 class PostProcessing:
     """Image postprocessing"""
 
-    bg: Optional[str] = None  # background colour to apply
-    remove_transparency: bool = False  # remove GIF transparency
-    convert: Optional[str] = None  # file format to convert to
-    quality: Optional[int] = None  # jpeg quality
-    optimize: bool = False  # optimize conversion
-    script: Optional[str] = None  # script
+    bg: Annotated[Optional[str], "background colour to apply"] = None
+    remove_transparency: Annotated[bool, "remove GIF transparency"] = False
+    convert: Annotated[Optional[str], "file format to convert to"] = None
+    optimize: Annotated[bool, "optimize format conversion"] = False
+    quality: Annotated[Optional[int], "jpeg quality"] = None
+    script: Annotated[Optional[str], "script"] = None
 
     def hash(self) -> str:
         # persistent string hash
@@ -159,8 +159,8 @@ class ImageUrl:
 class Images:
     """A hardcoded image source (with an optional numeric range)"""
 
-    image: str  # image URL (can contain a numeric range)
-    process: Optional[PostProcessing] = None  # image post-processing
+    image: Annotated[str, "image URL (can contain a numeric range)"]
+    process: Annotated[Optional[PostProcessing], "image post-processing"] = None
 
     def get_images(self) -> list[ImageUrl]:
         return [ImageUrl(url, process=self.process) for url in expand_range(self.image)]
@@ -170,12 +170,12 @@ class Images:
 class Scraper:
     """A scraper image source."""
 
-    start: str  # start page (can contain a numeric range)
-    image: Matcher  # matcher for images
-    traverse: Sequence[Matcher] = ()  # matchers to get to image pages
-    next: Optional[Matcher] = None  # matcher to get to next start page
-    process: Optional[PostProcessing] = None  # image post-processing
-    cache: bool = True  # whether to cache the start pages
+    start: Annotated[str, "start page (can contain a numeric range)"]
+    image: Annotated[Matcher, "regex matcher for images"]
+    traverse: Annotated[Sequence[Matcher], "regex matchers to get to image pages"] = ()
+    next: Annotated[Optional[Matcher], "regex matcher to get to next start page"] = None
+    process: Annotated[Optional[PostProcessing], "image post-processing"] = None
+    cache: Annotated[bool, "whether to cache the start pages"] = True
 
     def get_images(self) -> list[ImageUrl]:
         images = []
@@ -232,9 +232,9 @@ class Scraper:
 class WebComic:
     """A web comic definition."""
 
-    name: str  # comic name
-    sources: Sequence[Scraper | Images]  # sequence of image sources
-    rate_limit_ms: int = 200  # sleep between url requests
+    name: Annotated[str, "comic name"]
+    sources: Annotated[Sequence[Scraper | Images], "sequence of image sources"]
+    rate_limit_ms: Annotated[int, "sleep between url requests"] = 200
 
     def get_images(self) -> list[ImageUrl]:
         logger.info(f"Getting image URLs")

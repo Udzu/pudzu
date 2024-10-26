@@ -276,7 +276,7 @@ class WebComic:
     def from_json(cls, path: str) -> "WebComic":
         with open(path, "r") as f:
             d = json.load(f)
-        return dataclass_from_json(cls, d)
+        return dataclass_from_dict(cls, d)
 
 
 def main():

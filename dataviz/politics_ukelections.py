@@ -1,5 +1,6 @@
 from pudzu.charts import *
 from pudzu.sandbox.bamboo import *
+from pudzu.pillar import *
 
 # ------------
 # UK elections

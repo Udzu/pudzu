@@ -1,4 +1,6 @@
 import pathlib
+from statistics import median
+
 import numpy as np
 from math import log
 

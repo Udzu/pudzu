@@ -1,4 +1,6 @@
 from pudzu.charts import *
+from toolz import merge, keymap
+
 from pudzu.sandbox.bamboo import *
 import json
 

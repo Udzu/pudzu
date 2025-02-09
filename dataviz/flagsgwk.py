@@ -1,4 +1,5 @@
 from pudzu.charts import *
+from pudzu.pillar import *
 
 df = pd.read_csv("datasets/flagsgwk.csv")
 groups = list(remove_duplicates(df.group))

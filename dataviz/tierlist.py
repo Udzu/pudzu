@@ -6,7 +6,7 @@ SRC = "tiertimeloop"
 
 TITLE = {
     "tiermagicschool": "PF series with an academy setting",
-    "tiertimeloop": "time loop/regression series",
+    "tiertimeloop": "time loop/regression PF",
 }[SRC]
 
 ranks = "SABCDF"
@@ -14,7 +14,8 @@ max_row = 10
 include_empty = False
 df = pd.read_csv(f"datasets/{SRC}.csv")
 ldict = {
-    "F": "haven't\nread\nyet"
+    "D": "haven't\nread\nyet",
+    "F": "haven't\nread yet\n(but on hiatus)"
 }
 
 # TODO: rewrite all of this!
@@ -22,7 +23,7 @@ array = [x for r in ranks for x in list(generate_batches([[]] if df[df.tier == r
 indices = [(r, i) for r in ranks for i,x in enumerate(list(generate_batches([[]] if df[df.tier == r].img.empty and include_empty else df[df.tier == r].img, max_row)))]
 data = pd.DataFrame(array, index=indices)
 overlays = pd.DataFrame([x for r in ranks for x in list(generate_batches([[]] if df[df.tier == r].img.empty and include_empty
-                         else df[df.tier == r].apply(lambda d: d["name"] if d["overlay"] == "Y" else None, axis=1),
+                         else df[df.tier == r].overlay.replace(np.nan, None),
                          max_row))])
 
 
